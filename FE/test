@@ -1,0 +1,59 @@
+        <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="400">
+            <div class="box">
+              <img src="assets/img/depNu2.jpg" class="img-fluid" alt="">
+              <h5>Voluptatem voluptatum alias</h5>
+              <p>Man’s Shoes</p>
+              <p>1 colours<p>
+                  <P class="col text-dark  ">1,099,000đ</P>
+
+            </div>
+          </div>
+
+          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="600">
+            <div class="box">
+              <img src="assets/img/sepKid.jpg" class="img-fluid" alt="">
+              <h5>Fugit cupiditate alias nobis.</h5>
+              <p>Man’s Shoes</p>
+              <p>1 colours<p>
+                  <P class="col text-dark  ">1,099,000đ</P>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <section id="values" class="values">
+        <div class="container" data-aos="fade-up">
+          <div class="row ms-5">
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+              <div class="box">
+                <img src="assets/img/dep1.jpg" class="img-fluid" alt="">
+                <h5 class="align-items-left">ClownZ Slipper Full box</h5>
+                <p>Man’s Shoes</p>
+              <p>1 colours<p>
+                  <P class="col text-dark  ">1,099,000đ</P>
+
+              </div>
+            </div>
+  
+            <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="400">
+              <div class="box">
+                <img src="assets/img/depNu2.jpg" class="img-fluid" alt="">
+                <h5>Beach Sandals Non-slip</h5>
+                <p>Man’s Shoes</p>
+              <p>1 colours<p>
+                  <P class="col text-dark  ">1,099,000đ</P>
+              </div>
+            </div>
+  
+            <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="600">
+              <div class="box">
+                <img src="assets/img/sepKid.jpg" class="img-fluid" alt="">
+                <h5>Fugit cupiditate alias nobis.</h5>
+                <p>Man’s Shoes</p>
+              <p>1 colours<p>
+                  <P class="col text-dark  ">1,099,000đ</P>
+              </div>
+            </div>
+  
+          </div>
