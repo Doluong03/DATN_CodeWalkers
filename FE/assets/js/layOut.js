@@ -1,3 +1,4 @@
+let host = "http://localhost:8080/CodeWalkers" ; 
 const app = angular.module("app",["ngRoute"]);
 app.config(function($routeProvider, $locationProvider){
     $locationProvider.hashPrefix('');
@@ -7,17 +8,18 @@ app.config(function($routeProvider, $locationProvider){
         controller: "LayOutController"
     })
 })
-let host = "http://localhost:8080/CodeWalkers" ; 
 app.controller("LayOutController", function($scope,$http) {
     // Logic của controller ở đây
-    $scope.listPr = [];
+    $scope.items = [];
     $scope.loadAllPr = function(){
         var url = `${host}/api/product`;
         $http.get(url).then(res =>{
-            $scope.listPr = res.data;
+            $scope.items = res.data;
+            console.log(res.data)
             console.log("Success",res);
         }).catch(error =>{
             console.log("Error",error);
         })
     }
+    $scope.loadAllPr();
 });

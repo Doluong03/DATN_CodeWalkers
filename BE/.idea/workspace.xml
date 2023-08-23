@@ -5,243 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d71f0bcd-3842-4ca2-8ea3-67831a91f29e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/BE.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/AsmBeApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/HomeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Address.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Bill.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/BillDetails.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Brands.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Commune.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/DeliveryNote.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/District.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Image.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Material.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Product.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Province.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Rate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Size.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Status.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Users.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/AddressRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/BillDetailsRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/BillRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/BrandRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/CategoryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/CommuneRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/DeliveryNoteRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/DistrictRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ImageRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/MaterialRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ProductDetailRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ProductRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ProvinceRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/RateRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/SizeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/StatusRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/AddressService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/BillDetailService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/BillService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/BrandService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/CategoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/CommuneService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/DeliveryNoteService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/DistrictService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ImageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/MaterialService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductDetailService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProvinceService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/RateService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/SizeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/StatusService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/AdressImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillDetailImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BrandImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/CategoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/CommuneImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/DeliveryNoteImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/DistrictImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ImageImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/MaterialImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductDetailImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProvinceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/RateImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/SizeImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/StatusImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/UserImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/test/java/com/example/asm_be/AsmBeApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/BeApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/Controller/HomeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Address.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Bill.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/BillDetails.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Brands.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Commune.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/DeliveryNote.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/District.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Image.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Material.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Product.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/ProductDetail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Province.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Rate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Size.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Status.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/entities/Users.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/AddressRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/BillDetailsRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/BillRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/BrandRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/CategoryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/CommuneRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/DeliveryNoteRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/DistrictRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/ImageRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/MaterialRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/ProductDetailRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/ProductRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/ProvinceRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/RateRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/SizeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/StatusRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/repositories/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/AddressService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/BillDetailService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/BillService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/BrandService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/CategoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/CommuneService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/DeliveryNoteService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/DistrictService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/ImageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/MaterialService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/ProductDetailService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/ProductService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/ProvinceService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/RateService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/SizeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/StatusService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/AdressImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/BillDetailImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/BillImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/BrandImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/CategoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/CommuneImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/DeliveryNoteImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/DistrictImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/ImageImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/MaterialImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/ProductDetailImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/ProductImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/ProvinceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/RateImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/SizeImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/StatusImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/java/com/example/main/service/impl/UserImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BackEnd/BE/src/test/java/com/example/main/BeApplicationTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/HELP.md" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/HELP.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/AsmBeApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/HomeController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Address.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Bill.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/BillDetails.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Brands.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Category.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Commune.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/DeliveryNote.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/District.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Image.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Material.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Product.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/ProductDetail.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Province.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Rate.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Size.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Status.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Users.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/AddressRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/BillDetailsRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/BillRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/BrandRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/CategoryRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/CommuneRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/DeliveryNoteRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/DistrictRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/ImageRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/MaterialRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/ProductDetailRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/ProductRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/ProvinceRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/RateRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/SizeRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/StatusRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/UserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/AddressService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/BillDetailService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/BillService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/BrandService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/CategoryService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/CommuneService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/DeliveryNoteService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/DistrictService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/ImageService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/MaterialService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/ProductDetailService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/ProductService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/ProvinceService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/RateService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/SizeService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/StatusService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/UserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/AdressImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillDetailImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BrandImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/CategoryImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/CommuneImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/DeliveryNoteImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/DistrictImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ImageImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/MaterialImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ProductDetailImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ProductImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ProvinceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/RateImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/SizeImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/StatusImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/UserImpl.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE/assets/js/layOut.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/layOut.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/layoutUser.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/layoutUser.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/page/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/page/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,34 +21,18 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
   <component name="ProjectId" id="2UNP1WXGWsltH9g29KKxWVVzTkk" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/DATN/BE",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
   <component name="RunManager">
     <configuration name="AsmBeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="ASM_BE" />
@@ -301,7 +52,11 @@
       <updated>1692776849911</updated>
       <workItem from="1692776850905" duration="717000" />
       <workItem from="1692777765241" duration="12000" />
-      <workItem from="1692779531389" duration="263000" />
+      <workItem from="1692779531389" duration="1158000" />
+      <workItem from="1692808254770" duration="345000" />
+      <workItem from="1692808662434" duration="33000" />
+      <workItem from="1692809492099" duration="64000" />
+      <workItem from="1692809600958" duration="17000" />
     </task>
     <servers />
   </component>
