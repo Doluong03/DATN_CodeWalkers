@@ -3,7 +3,7 @@ const app = angular.module("app", ["ngRoute"]);
 app.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
     $routeProvider
-        .when("/", {
+        .when("/home", {
             templateUrl: "page/home.html",
             controller: "LayOutController"
         })
@@ -11,9 +11,14 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: "page/detail.html",
             controller: "LayOutController"
         })
+        .when("/cart", {
+            templateUrl: "page/cart-item.html",
+            controller: "LayOutController"
+        })
 })
-app.controller("LayOutController", function ($scope, $http, $routeParams, $location) {
+app.controller("LayOutController", function ($scope, $http, $routeParams, $location,$anchorScroll) {
     // Logic của controller ở đây
+    $anchorScroll("pageContent");
     $scope.items = [];
 
     $scope.itemDetail = [];

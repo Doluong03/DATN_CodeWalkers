@@ -761,7 +761,6 @@ section {
   margin: 0;
 }
 
-.feture-tabs .nav-pills {}
 
 .feture-tabs .nav-pills .nav-link {
   background-color: #aaaaaa;
@@ -929,9 +928,41 @@ section {
   width: 20px;
   height: 100%;
 }
+
 .carousel-control-next-icon {
   color: #111;
 }
+
+/*--------------------------------------------------------------
+# Cart_Items
+--------------------------------------------------------------*/
+
+.span_item p select {
+  border: 0;
+  height: 30px;
+  width: 25%;
+}
+
+.span_item p select option {
+  border: 0;
+  color: #012970;
+}
+
+
+
+.input-group button {
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  border: 1 #878b8f;
+  background-color: #ffffff;
+}
+
+.input-group input {
+  width: 15%;
+  height: 30px;
+  text-align: center;
+} 
 
 /*--------------------------------------------------------------
 # Services
