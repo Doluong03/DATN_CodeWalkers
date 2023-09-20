@@ -36,18 +36,20 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+
+</style>
 </head>
 
 <body ng-app="app">
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top">
-    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+    <div class="container-fluid container-xl d-flex align-items-center ">
 
-      <a href="#home" class="logo d-flex align-items-center">
+      <a href="#home" class="logo d-flex align-items-center" style="margin-top: -30px;margin-left: -29px;">
         <img src="assets/img/logo.png" alt="">
-        <!-- <span>CodeWalkers</span> -->
       </a>
+  
 
       <nav id="navbar" class="navbar">
         <ul>
@@ -98,32 +100,36 @@
 
   <!-- banner  -->
   <!-- ======= Hero Section ======= -->
-  <section id="hero" class="hero d-flex align-items-center ">
-    <div id="carouselExampleInterval" class="carousel slide offset-1 ps-5 pt-5 " data-bs-ride="carousel">
-      <div class="carousel-inner ">
-        <div class="carousel-item active " data-bs-interval="10000">
-          <img src="assets/img/bn.jpg" class="d-block " alt="...">
+  <section id="hero" class="hero d-flex align-items-center" style="margin-top: 70px; margin-bottom: 20px;">
+    <div class="container">
+        <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="10000">
+                    <img src="assets/img/bn.jpg" class="d-block w-100 img-fluid" alt="...">
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <img src="assets/img/banner2.png" class="d-block w-100 img-fluid" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="..." class="d-block w-100 img-fluid" alt="...">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <div class="carousel-item" data-bs-interval="2000">
-          <img src="assets/img/banner2.png" class="d-block   " alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="..." class="d-block" alt="...">
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
     </div>
-    </div>
-  </section><!-- End Hero -->
+</section>
+
+  
+  <!-- End Hero -->
 
   <!-- Main -->
   <main id="main">

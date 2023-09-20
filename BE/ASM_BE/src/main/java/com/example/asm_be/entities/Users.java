@@ -18,7 +18,7 @@ public class Users {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    private UUID id;
 
     @Column(name = "ma_dang_nhap")
     private String code;
@@ -32,11 +32,12 @@ public class Users {
     @Column(name = "ho_khach_hang")
     private String fName;
 
-    @Column(name = "NgaySinh")
+    @Column(name = "ngay_sinh")
     private Date dateOfBirth;
 
     @Column(name = "so_dien_thoai")
     private String phoneNumber;
+
     @Column(name = "gioi_tinh")
     private Boolean gender;
 
@@ -45,7 +46,7 @@ public class Users {
     private Address address;
 
     @Column(name = "email")
-    private String Email;
+    private String email;
 
     @Column(name = "mat_khau")
     private String password;

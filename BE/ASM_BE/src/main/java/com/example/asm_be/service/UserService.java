@@ -11,10 +11,10 @@ public interface UserService {
 
     public Users getOne(UUID id);
 
-    public Users save(Users users);
+    public boolean save(Users users);
 
-    public Users update(Users users);
+    public boolean update(UUID idUsers,Users users);
 
-    public void delete(Users users);
+    public boolean delete(UUID idUsers);
 
 }
