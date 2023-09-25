@@ -16,9 +16,9 @@ import java.util.UUID;
 @Table(name = "TrangThai")
 public class Status {
     @Id
-    @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @Column(name = "id_trang_thai")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int Id;
 
     @Column(name = "ten_trang_thai")
     private String name;

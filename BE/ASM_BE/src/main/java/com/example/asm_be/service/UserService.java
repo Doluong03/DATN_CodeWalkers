@@ -1,15 +1,16 @@
 package com.example.asm_be.service;
 
 import com.example.asm_be.entities.Users;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
+@Service
 public interface UserService {
 
     public List<Users> getAll();
 
-    public Users getOne(UUID id);
+    public Users getOne(int id);
 
     public Users save(Users users);
 

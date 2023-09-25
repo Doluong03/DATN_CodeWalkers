@@ -22,7 +22,7 @@ public class MaterialImpl implements MaterialService {
     }
 
     @Override
-    public Material getOne(UUID id) {
+    public Material getOne(int id) {
         return materialRepository.findById(id).get();
     }
 

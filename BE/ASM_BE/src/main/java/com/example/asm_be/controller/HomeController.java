@@ -21,10 +21,15 @@ public class HomeController {
         return ResponseEntity.ok(productDetailService.getAll());
     }
 
+    @GetMapping("/api/product_bs")
+    public ResponseEntity<Collection<ProductDetail>> getProductBestSL(){
+        return ResponseEntity.ok(productDetailService.getPrBetsSl());
+    }
 
     @GetMapping("/api/product/{id}")
-    public ResponseEntity<ProductDetail> getDetailProduct(@PathVariable("id") UUID id){
+    public ResponseEntity<ProductDetail> getDetailProduct(@PathVariable("id") int id){
         return ResponseEntity.ok(productDetailService.getOne(id));
     }
+
 
 }

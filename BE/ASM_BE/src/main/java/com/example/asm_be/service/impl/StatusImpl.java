@@ -22,7 +22,7 @@ public class StatusImpl implements StatusService {
     }
 
     @Override
-    public Status getOne(UUID id) {
+    public Status getOne(int id) {
         return statusRepository.findById(id).get();
     }
 

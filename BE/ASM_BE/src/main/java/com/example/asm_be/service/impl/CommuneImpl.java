@@ -22,7 +22,7 @@ public class CommuneImpl implements CommuneService {
     }
 
     @Override
-    public Commune getOne(UUID id) {
+    public Commune getOne(int id) {
         return communeRepository.findById(id).get();
     }
 
