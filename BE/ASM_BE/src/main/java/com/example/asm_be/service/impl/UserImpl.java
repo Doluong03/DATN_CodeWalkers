@@ -16,28 +16,42 @@ import java.util.UUID;
 public class UserImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
-    @Override
     public List<Users> getAll() {
-        return userRepository.findAll();
+        return this.userRepository.findAll();
     }
 
-    @Override
     public Users getOne(UUID id) {
-        return userRepository.findById(id).get();
+        return null;
     }
 
-    @Override
-    public Users save(Users user) {
-        return userRepository.save(user);
+    public boolean save(Users users) {
+        try {
+            this.userRepository.save(users);
+            return true;
+        } catch (Exception var3) {
+            var3.getMessage();
+            return false;
+        }
     }
 
-    @Override
-    public Users update(Users user) {
-        return userRepository.save(user);
+    public boolean update(UUID idUsers, Users users) {
+        try {
+            users.setId(idUsers);
+            this.userRepository.save(users);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
     }
 
-    @Override
-    public void delete(Users user) {
-        userRepository.delete(user);
-    }
+    public boolean delete(UUID idUsers) {
+        try {
+            this.userRepository.deleteById(idUsers);
+            return true;
+        } catch (Exception var3) {
+            var3.getMessage();
+            return false;
+        }
+
 }

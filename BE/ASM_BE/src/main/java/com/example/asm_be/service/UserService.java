@@ -7,14 +7,14 @@ import java.util.UUID;
 
 public interface UserService {
 
-    public List<Users> getAll();
+    List<Users> getAll();
 
-    public Users getOne(UUID id);
+    Users getOne(UUID id);
 
-    public Users save(Users users);
+    boolean save(Users users);
 
-    public Users update(Users users);
+    boolean update(UUID idUsers, Users users);
 
-    public void delete(Users users);
+    boolean delete(UUID idUsers);
 
 }
