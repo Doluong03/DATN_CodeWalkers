@@ -22,7 +22,7 @@ public class SizeImpl implements SizeService {
     }
 
     @Override
-    public Size getOne(UUID id) {
+    public Size getOne(int id) {
         return sizeRepository.findById(id).get();
     }
 
@@ -39,5 +39,10 @@ public class SizeImpl implements SizeService {
     @Override
     public void delete(Size size) {
         sizeRepository.delete(size);
+    }
+
+    @Override
+    public Size findByName(String name) {
+        return sizeRepository.findByName(name);
     }
 }

@@ -21,7 +21,7 @@ public class BillImpl implements BillService {
     }
 
     @Override
-    public Bill getOne(UUID id) {
+    public Bill getOne(int id) {
         return billRepository.findById(id).get();
     }
 

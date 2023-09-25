@@ -22,7 +22,7 @@ public class ProvinceImpl implements ProvinceService {
     }
 
     @Override
-    public Province getOne(UUID id) {
+    public Province getOne(int id) {
         return provinceRepository.findById(id).get();
     }
 

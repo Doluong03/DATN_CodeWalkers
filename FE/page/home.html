@@ -34,16 +34,20 @@
         <header class="section-header">
           <p class="text-dark">BEST SELLER</p>
         </header>
-        <div class="row ms-5">
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in items">
+        <div class="row ms-5 ">
+          <div class="col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in items">
             <div class="box">
+              <a ng-href="#/product-detail/{{pr.id}}">
                 <img ng-src="assets/img/product/{{pr.image.main}}.jpg" class="img-fluid" alt="">
-                <h5 class="align-items-left">{{pr.product.name}}</h5> 
+                    <h5 class="align-items-left">{{pr.product.name}}</h5> 
+                
                 <p>{{pr.category.name}}</p>
                 <p>{{pr.quantity}}</p>
-                <p class="col text-dark">{{pr.price}}</p>
+                <p class="col text-dark">{{pr.price | vndCurrency }}</p>
+              </a>
             </div>
         </div>
+        
         
         </div>
         
@@ -102,3 +106,4 @@
 
 
     </section><!-- End PROMOTIONAL Section -->
+

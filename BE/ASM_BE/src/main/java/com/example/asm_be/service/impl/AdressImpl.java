@@ -21,7 +21,7 @@ public class AdressImpl implements AddressService {
     }
 
     @Override
-    public Address getOne(UUID id) {
+    public Address getOne(int id) {
         return addressRepository.findById(id).get();
     }
 

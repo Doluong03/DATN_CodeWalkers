@@ -22,7 +22,7 @@ public class CategoryImpl implements CategoryService {
     }
 
     @Override
-    public Category getOne(UUID id) {
+    public Category getOne(int id) {
         return categoryRepository.findById(id).get();
     }
 

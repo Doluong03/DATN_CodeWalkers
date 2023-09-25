@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "SanPham")
@@ -17,18 +18,38 @@ import java.util.UUID;
 @Table(name = "SanPham")
 public class Product {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @Column(name = "id_san_pham")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "ma_san_pham")
     private String code;
 
     @Column(name = "ten_san_pham")
     private String name;
-    @Column(name = "created_at")
-    private Date createdAt;
+
+    @Column(name = "anh_chinh")
+    private String mainImg;
+
+    @Column(name = "mo_ta")
+    private String description;
+
+    @ManyToOne()
+    @JoinColumn(name = "thuong_hieu_id")
+    private Brands brands;
+
+    @ManyToOne()
+    @JoinColumn(name = "phan_loai_id")
+    private Category category;
+
+    @ManyToOne()
+    @JoinColumn(name = "danh_gia_id")
+    private Rate rate;
+
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;
+
+    @OneToMany(mappedBy = "product" ,fetch = FetchType.LAZY)
+    private List<Image> listImage;
 }

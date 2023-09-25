@@ -17,26 +17,24 @@ import java.util.UUID;
 @Table(name = "HoaDon")
 public class Bill {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @Column(name = "id_hoa_don")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "ma_hoa_don")
     private String code;
 
-    @Column(name = "phuong_thuc_thanh_toan")
-    private String payment;
-
-    @Column(name = "mo_ta")
+    @Column(name = "ghi_chu")
     private String description;
 
-    @Column(name = "created_at")
+    @Column(name = "ngay_lap")
     private Date createdAt;
 
     @ManyToOne
     @JoinColumn(name = "khach_hang_id")
     private Users users;
+
     @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+    @JoinColumn(name = "nguoi_lap_id")
+    private Staff staff;
 }

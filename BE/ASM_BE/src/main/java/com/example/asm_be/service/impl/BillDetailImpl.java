@@ -22,7 +22,7 @@ public class BillDetailImpl implements BillDetailService {
     }
 
     @Override
-    public BillDetails getOne(UUID id) {
+    public BillDetails getOne(int id) {
         return billDetailsRepository.findById(id).get();
     }
 
