@@ -16,8 +16,6 @@ import java.util.UUID;
 public class UserImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
-
-
     public List<Users> getAll() {
         return this.userRepository.findAll();
     }
@@ -55,5 +53,5 @@ public class UserImpl implements UserService {
             var3.getMessage();
             return false;
         }
-    }
+
 }

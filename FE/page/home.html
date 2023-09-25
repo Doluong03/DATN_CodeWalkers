@@ -1,0 +1,115 @@
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about ">
+      <header class="section-header">
+        <p class="text-dark">WE HAVE WHAT'S NEW</p>
+      </header>
+      <div class="container" data-aos="fade-up">
+        <div class="row gx-0 ms-5">
+          <div class="card col  align-items-center m-4 border border-0" style="width: 30rem; ">
+            <img src="./assets/img/dep1.jpg" class="card-img-center   border border-4 rounded-4 w-100 p-2 h-75" alt="...">
+            <div class="card-body">
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+          <div class="card col  align-items-center m-4 border border-0" style="width: 30rem;">
+            <img src="./assets/img/depNu2.jpg" class="card-img-center border border-4 rounded-4  w-100 p-2 h-75" alt="...">
+            <div class="card-body">
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+          <div class="card col  align-items-center m-4 border border-0" style="width: 30rem;">
+            <img src="./assets/img/sepKid.jpg" class="card-img-center border border-4 rounded-4  w-100 p-2 h-75" alt="...">
+            <div class="card-body">
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- End About Section -->
+    <!-- Product -->
+    <!-- ======= Values Section ======= -->
+    <section id="values" class="values" >
+      <div class="container" data-aos="fade-up">
+        <header class="section-header">
+          <p class="text-dark">BEST SELLER</p>
+        </header>
+        <div class="row ms-5" ng-controller="LayOutController">
+          <div class="card text-center col-3 px-5 border-0" ng-repeat="product in listPr | filter: {name:searchText}">
+            <a href="#detail" class="prod-img bg-secondary bg-opacity-25   h-100">
+                <img onclick="changeImage(this) "src="Image/{{product.image.main}}.jpg" alt="" class=" img-fluid  mt-3  h-75  "></a>
+
+            <div class="mt-2 mb-2">
+                <a href="#detail" class="text-decoration-none text-dark">{{product.name}}</a>
+
+            </div>
+            <div class="fw-bold mb-3">
+                {{product.price | currency}}
+            </div>
+        </div>
+
+          <!-- <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in listPr">
+            <div class="box">
+                <img ng-src="assets/img/product/{{pr.image.main}}.jpg" class="img-fluid" alt="">
+                <h5 class="align-items-left">{{pr.product.name}}</h5> 
+                <p>{{pr.category.name}}</p>
+                <p>{{pr.quantity}}</p>
+                <p class="col text-dark">{{pr.price}}</p>
+            </div> -->
+        </div>
+        
+        </div>
+
+    </section>
+
+    <!-- ======= PROMOTIONAL Section ======= -->
+    <section id="features" class="features">
+      <div class="container" data-aos="fade-up">
+        <header class="section-header">
+          <p class="text-dark">PROMOTIONAL PRODUCTS</p>
+        </header>
+        <div class="row ms-5">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="box">
+              <img src="assets/img/dep1.jpg" class="img-fluid" alt="">
+              <h5 class="align-items-left">ClownZ Slipper Full box</h5>
+              <p>Man’s Shoes</p>
+              <p>1 colours<p>
+                <div class="row">
+                  <P class="col text-danger ">1,099,000đ</P>
+                  <P class="col text-decoration-line-through">1,499,000đ</P>
+                </div>
+             
+            </div>
+          </div>
+
+          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="400">
+            <div class="box">
+              <img src="assets/img/depNu2.jpg" class="img-fluid" alt="">
+              <h5>Voluptatem voluptatum alias</h5>
+              <p>Man’s Shoes</p>
+              <p>1 colours<p>
+                <div class="row">
+                  <P class="col text-danger ">1,099,000đ</P>
+                  <P class="col text-decoration-line-through">1,499,000đ</P>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="600">
+            <div class="box">
+              <img src="assets/img/sepKid.jpg" class="img-fluid" alt="">
+              <h5>Fugit cupiditate alias nobis.</h5>
+              <p>Man’s Shoes</p>
+              <p>1 colours<p>
+                <div class="row">
+                  <P class="col text-danger ">1,099,000đ</P>
+                  <P class="col text-decoration-line-through">1,499,000đ</P>
+                </div>
+            </div>
+          </div>
+
+        </div>
+
+
+    </section><!-- End PROMOTIONAL Section -->
