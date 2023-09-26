@@ -1,4 +1,15 @@
-﻿
+﻿-- Bật chế độ IDENTITY_INSERT cho bảng
+SET IDENTITY_INSERT ChiTietSanPham ON;
+
+-- Xóa dữ liệu trong bảng (nếu cần)
+DELETE FROM ChiTietSanPham;
+
+-- Reset lại giá trị identity
+DBCC CHECKIDENT ('ChiTietSanPham', RESEED, 0);
+
+-- Tắt chế độ IDENTITY_INSERT
+SET IDENTITY_INSERT ChiTietSanPham OFF;
+-- chay doan trên trước khi insert dữ liệu 
 
 --insert du lieu demo
 
