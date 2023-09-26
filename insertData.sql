@@ -289,3 +289,12 @@ VALUES
   (N'Nguyễn Văn P', N'0901122334', N'Trần Thị Q', N'0912233445', N'2023-09-15', N'2023-09-16', 55.0, N'Mô tả phiếu giao 8', 8, 8, 1),
   (N'Trần Thị R', N'0901122334', N'Nguyễn Văn S', N'0912233445', N'2023-09-17', N'2023-09-18', 60.0, N'Mô tả phiếu giao 9', 9, 9, 1),
   (N'Nguyễn Văn T', N'0901122334', N'Trần Thị U', N'0912233445', N'2023-09-19', N'2023-09-20', 65.0, N'Mô tả phiếu giao 10', 10, 10, 1);
+--Thêm bản ghi bảng "VaiTro"
+ INSERT INTO VaiTro(ten_vai_tro)
+ VALUES
+ (N'Admin'),(N'User');
+ --Thêm bản ghi bảng "TaiKhoan"
+ INSERT INTO TaiKhoan(user_name,password,vai_tro_id,trang_thai_id)
+ VALUES
+  ('huyadmin',N'1',1,1),
+  ('huyuser',N'1',2,1);
