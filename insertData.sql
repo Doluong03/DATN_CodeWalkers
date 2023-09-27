@@ -85,16 +85,17 @@ VALUES
   -- Thêm bản ghi liên quan đến sản phẩm giày vào bảng "DanhGia"
 INSERT INTO DanhGia (danh_gia, noi_dung, ngay_tao, ngay_sua, chi_tiet_san_pham_id, khach_hang_id, trang_thai_id)
 VALUES
-  (5, N'Sản phẩm rất tốt', N'2023-09-20', N'2023-09-21', 1, 101, 1),
-  (4, N'Giày chạy rất êm', N'2023-09-19', N'2023-09-20', 2, 102, 1),
-  (5, N'Sản phẩm đẹp và thoải mái', N'2023-09-18', N'2023-09-19', 3, 103, 1),
-  (3, N'Giày hơi chật', N'2023-09-17', N'2023-09-18', 4, 104, 1),
-  (4, N'Đáng giá tiền', N'2023-09-16', N'2023-09-17', 5, 105, 1),
-  (5, N'Rất hài lòng với sản phẩm', N'2023-09-15', N'2023-09-16', 6, 106, 1),
-  (4, N'Giày lười phù hợp cho mùa hè', N'2023-09-14', N'2023-09-15', 7, 107, 1),
-  (3, N'Sản phẩm không đúng kích cỡ', N'2023-09-13', N'2023-09-14', 8, 108, 1),
-  (5, N'Giày thể thao tốt cho tập luyện', N'2023-09-12', N'2023-09-13', 9, 109, 1),
-  (4, N'Giày đội mưa chất lượng', N'2023-09-11', N'2023-09-12', 10, 110, 1);
+  (5, N'Sản phẩm rất tốt', N'2023-09-20', N'2023-09-21', 1, 1, 1),
+  (4, N'Giày chạy rất êm', N'2023-09-19', N'2023-09-20', 2, 2, 1),
+  (5, N'Sản phẩm đẹp và thoải mái', N'2023-09-18', N'2023-09-19', 3, 3, 1),
+  (3, N'Giày hơi chật', N'2023-09-17', N'2023-09-18', 4, 4, 1),
+  (4, N'Đáng giá tiền', N'2023-09-16', N'2023-09-17', 5, 5, 1),
+  (5, N'Rất hài lòng với sản phẩm', N'2023-09-15', N'2023-09-16', 6, 6, 1),
+  (4, N'Giày lười phù hợp cho mùa hè', N'2023-09-14', N'2023-09-15', 7, 7, 1),
+  (3, N'Sản phẩm không đúng kích cỡ', N'2023-09-13', N'2023-09-14', 8, 8, 1),
+  (5, N'Giày thể thao tốt cho tập luyện', N'2023-09-12', N'2023-09-13', 9, 9, 1),
+  (4, N'Giày đội mưa chất lượng', N'2023-09-11', N'2023-09-12', 10, 10, 1);
+
 
 -- Thêm bản ghi giày vào bảng "SanPham"
 INSERT INTO SanPham (ma_san_pham, ten_san_pham, anh_chinh, mo_ta, phan_loai_id, thuong_hieu_id, trang_thai_id)
@@ -184,7 +185,7 @@ VALUES
   -- Thêm bản ghi về chi tiết sản phẩm giày vào bảng "ChiTietSanPham"
 INSERT INTO ChiTietSanPham (ma_chi_tiet_san_pham, don_gia, so_luong_ton, san_pham_id, kich_co_id, mau_sac_id, chat_lieu_id, trang_thai_id, khuyen_mai_id)
 VALUES
-  (N'SP001-001', 100, 50, 15, 1, 1, 1, 1, 1),
+  (N'SP001-001', 100, 50, 1, 1, 1, 1, 1, 1),
   (N'SP001-002', 120, 45, 1, 2, 2, 2, 1, 2),
   (N'SP002-001', 90, 60, 2, 3, 3, 3, 1, 3),
   (N'SP002-002', 110, 55, 2, 4, 4, 4, 1, 4),
@@ -284,18 +285,19 @@ VALUES
   (1, 75, N'Mô tả chi tiết 10', 1, 10, 10);
 
   -- Thêm bản ghi về địa chỉ vào bảng "DiaChi"
-INSERT INTO DiaChi (dia_chi_chi_tiet, phuong_xa_id, quan_huyen_id, thanh_pho_id, trang_thai_id, khach_hang_id)
+INSERT INTO DiaChi (dia_chi_chi_tiet, phuong_xa_id, quan_huyen_id, thanh_pho_id, trang_thai_id)
 VALUES
-  (N'123 Đường ABC, Phường 1, Quận 1, TP.HCM', 1, 1, 1, 1, 1),
-  (N'456 Đường XYZ, Phường 2, Quận 2, TP.HCM', 2, 2, 1, 1, 2),
-  (N'789 Đường XYZ, Phường 3, Quận 3, TP.HCM', 3, 3, 1, 1, 3),
-  (N'321 Đường ABC, Phường 4, Quận 4, TP.HCM', 4, 4, 1, 1, 4),
-  (N'567 Đường XYZ, Phường 5, Quận 5, TP.HCM', 5, 5, 1, 1, 5),
-  (N'654 Đường ABC, Phường 6, Quận 6, TP.HCM', 6, 6, 1, 1, 6),
-  (N'987 Đường XYZ, Phường 7, Quận 7, TP.HCM', 7, 7, 1, 1, 7),
-  (N'234 Đường ABC, Phường 8, Quận 8, TP.HCM', 8, 8, 1, 1, 8),
-  (N'543 Đường XYZ, Phường 9, Quận 9, TP.HCM', 9, 9, 1, 1, 9),
-  (N'876 Đường XYZ, Phường 10, Quận 10, TP.HCM', 10, 10, 1, 1, 10);
+  (N'123 Đường ABC, Phường 1, Quận 1, TP.HCM', 1, 1, 1, 1),
+  (N'456 Đường XYZ, Phường 2, Quận 2, TP.HCM', 2, 2, 1, 2),
+  (N'789 Đường XYZ, Phường 3, Quận 3, TP.HCM', 3, 3, 1, 3),
+  (N'321 Đường ABC, Phường 4, Quận 4, TP.HCM', 4, 4, 1, 4),
+  (N'567 Đường XYZ, Phường 5, Quận 5, TP.HCM', 5, 5, 1, 5),
+  (N'654 Đường ABC, Phường 6, Quận 6, TP.HCM', 6, 6, 1, 6),
+  (N'987 Đường XYZ, Phường 7, Quận 7, TP.HCM', 7, 7, 1, 7),
+  (N'234 Đường ABC, Phường 8, Quận 8, TP.HCM', 8, 8, 1, 8),
+  (N'543 Đường XYZ, Phường 9, Quận 9, TP.HCM', 9, 9, 1, 9),
+  (N'876 Đường XYZ, Phường 10, Quận 10, TP.HCM', 10, 10, 1, 10);
+
 
   -- Thêm bản ghi về phiếu giao hàng vào bảng "PhieuGiaoHang"
 INSERT INTO PhieuGiaoHang (nguoi_nhan, sdt_nguoi_nhan, nguoi_giao, sdt_nguoi_giao, ngay_giao, ngay_nhan, phi_giao_hang, mo_ta, hoa_don_id, dia_chi_id, trang_thai_id)
