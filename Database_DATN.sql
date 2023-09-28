@@ -132,11 +132,9 @@ CREATE TABLE PhuongXa (
 
 CREATE TABLE KhachHang (
   id_khach_hang int PRIMARY KEY Identity(1,1) NOT NULL,
-  ma_dang_nhap NVARCHAR(20) DEFAULT NULL,
   ten_khach_hang NVARCHAR(255) DEFAULT NULL,
   email NVARCHAR(100) DEFAULT NULL,
   so_dien_thoai NVARCHAR(10) DEFAULT NULL,
-  mat_khau NVARCHAR(30) DEFAULT NULL,
   ngay_sinh DATE DEFAULT NULL,
   gioi_tinh bit DEFAULT NULL,
   ngay_tao DATE DEFAULT NULL,
@@ -144,7 +142,8 @@ CREATE TABLE KhachHang (
   hang_id int DEFAULT NULL,
   trang_thai_id int DEFAULT NULL,
   dia_chi_id  int DEFAULT NULL,
-   id_tai_khoan INT DEFAULT NULL,
+  id_tai_khoan INT DEFAULT NULL,
+   hinh_anh_id int DEFAULT NULL
 );
 
 
@@ -204,6 +203,7 @@ CREATE TABLE NhanVien (
   mat_khau NVARCHAR(50),
   trang_thai_id int,
   id_tai_khoan INT DEFAULT NULL,
+  hinh_anh_id int DEFAULT NULL
 );
 
 CREATE TABLE GioHang(
@@ -316,9 +316,13 @@ ALTER TABLE KhuyenMai ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_t
 
 ALTER TABLE HangKhachHang ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
 
+-- Nhan Vien
 ALTER TABLE NhanVien ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
 
 ALTER TABLE NhanVien ADD FOREIGN KEY (id_tai_khoan) REFERENCES TaiKhoan (id);
+
+ALTER TABLE NhanVien ADD FOREIGN KEY (hinh_anh_id) REFERENCES HINHANH (id_hinh_anh);
+
 
 
 -----Danh gia-----
@@ -336,6 +340,9 @@ ALTER TABLE KhachHang ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_t
 ALTER TABLE khachhang ADD FOREIGN KEY (dia_chi_id) REFERENCES DiaChi (id_dia_chi);
 
 ALTER TABLE khachhang ADD FOREIGN KEY (id_tai_khoan) REFERENCES TaiKhoan (id);
+
+  ALTER TABLE KHACHHANG ADD FOREIGN KEY (hinh_anh_id) REFERENCES HINHANH (id_hinh_anh);
+
 
 
 
