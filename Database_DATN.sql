@@ -141,7 +141,6 @@ CREATE TABLE KhachHang (
   ngay_sua DATE DEFAULT NULL,
   hang_id int DEFAULT NULL,
   trang_thai_id int DEFAULT NULL,
-  dia_chi_id  int DEFAULT NULL,
   id_tai_khoan INT DEFAULT NULL,
    hinh_anh_id int DEFAULT NULL
 );
@@ -337,11 +336,9 @@ ALTER TABLE KhachHang ADD FOREIGN KEY (hang_id) REFERENCES HangKhachHang (id_han
 
 ALTER TABLE KhachHang ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
 
-ALTER TABLE khachhang ADD FOREIGN KEY (dia_chi_id) REFERENCES DiaChi (id_dia_chi);
-
 ALTER TABLE khachhang ADD FOREIGN KEY (id_tai_khoan) REFERENCES TaiKhoan (id);
 
-  ALTER TABLE KHACHHANG ADD FOREIGN KEY (hinh_anh_id) REFERENCES HINHANH (id_hinh_anh);
+ALTER TABLE KHACHHANG ADD FOREIGN KEY (hinh_anh_id) REFERENCES HINHANH (id_hinh_anh);
 
 
 
