@@ -144,7 +144,7 @@ CREATE TABLE KhachHang (
   hang_id int DEFAULT NULL,
   trang_thai_id int DEFAULT NULL,
   dia_chi_id  int DEFAULT NULL,
-   id_tai_khoan INT,
+   id_tai_khoan INT DEFAULT NULL,
 );
 
 
@@ -203,7 +203,7 @@ CREATE TABLE NhanVien (
   can_cuoc NVARCHAR(50),
   mat_khau NVARCHAR(50),
   trang_thai_id int,
-  id_tai_khoan INT,
+  id_tai_khoan INT DEFAULT NULL,
 );
 
 CREATE TABLE GioHang(
