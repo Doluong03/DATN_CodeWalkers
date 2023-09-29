@@ -142,7 +142,7 @@ CREATE TABLE KhachHang (
   hang_id int DEFAULT NULL,
   trang_thai_id int DEFAULT NULL,
   id_tai_khoan INT DEFAULT NULL,
-   hinh_anh_id int DEFAULT NULL
+   hinh_anh   NVARCHAR(max) DEFAULT NULL
 );
 
 
@@ -202,7 +202,7 @@ CREATE TABLE NhanVien (
   mat_khau NVARCHAR(50),
   trang_thai_id int,
   id_tai_khoan INT DEFAULT NULL,
-  hinh_anh_id int DEFAULT NULL
+  hinh_anh NVARCHAR(max) DEFAULT NULL
 );
 
 CREATE TABLE GioHang(
@@ -320,7 +320,6 @@ ALTER TABLE NhanVien ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_tr
 
 ALTER TABLE NhanVien ADD FOREIGN KEY (id_tai_khoan) REFERENCES TaiKhoan (id);
 
-ALTER TABLE NhanVien ADD FOREIGN KEY (hinh_anh_id) REFERENCES HINHANH (id_hinh_anh);
 
 
 
@@ -337,8 +336,6 @@ ALTER TABLE KhachHang ADD FOREIGN KEY (hang_id) REFERENCES HangKhachHang (id_han
 ALTER TABLE KhachHang ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
 
 ALTER TABLE khachhang ADD FOREIGN KEY (id_tai_khoan) REFERENCES TaiKhoan (id);
-
-ALTER TABLE KHACHHANG ADD FOREIGN KEY (hinh_anh_id) REFERENCES HINHANH (id_hinh_anh);
 
 
 
