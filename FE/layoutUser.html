@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -24,7 +25,7 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
@@ -33,7 +34,7 @@
 
 <body ng-app="app" ng-controller="LayOutController" id="pageContent">
   <!-- Nội dung của trang -->
->
+  
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top">
@@ -46,7 +47,7 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li class="dropdown scrollto active"><a href="#"><span class="text-decoration-none text-dark">News &
+          <li class="dropdown scrollto active"><a href="#product"><span class="text-decoration-none text-dark">News &
                 Featured</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
@@ -78,12 +79,25 @@
           </li>
 
           <li><a class="nav-link scrollto text-decoration-none text-dark " href="#contact">Contact</a></li>
-          <form class="d-flex align-items-left ms-4 col-lg-4  "><input placeholder="Search" type="search"
+          <form class="d-flex align-items-left ms-4 col-lg-4 "><input placeholder="Search"  type="search" name="name"
+              ng-model="name" class="form-control rounded-4" ng-keypress="onKeyPress($event)"
               class="form-control rounded-4 "></form>
-
-          <li><a class="text-decoration-none text-dark" href="#about"><i class="bi bi-person fs-3"></i></a></li>
-          <li><a class="text-decoration-none text-dark" href="#about"><i class="bi bi-heart fs-5"></i></a></li>
-          <li><a class="text-decoration-none text-dark" href="#about"><i class="bi bi-cart3 fs-5"></i></a></li>
+          <li class="dropdown text-dark"><a class="text-decoration-none text-dark" href="#about"
+              data-title="Tài khoản"><i class="bi bi-person fs-4"></i></a>
+            <ul class="userDropdown">
+              <li><a href="#" class="d-block "> <i class=" me-2 fs-5 text-end bi bi-person-fill"></i> Trang cá nhân </a>
+              </li>
+              <li>
+                <hr>
+              </li>
+              <li><a href="login.html" class="d-block "> <i class=" me-2 fs-5 text-end bi bi-box-arrow-right"></i>Đăng
+                  xuất</a></li>
+            </ul>
+          </li>
+          <li><a class="text-decoration-none text-dark" href="#about" data-title="Yêu thích"><i
+                class="bi bi-heart fs-5"></i></a></li>
+          <li><a class="text-decoration-none text-dark" href="#about" data-title="Giỏ hàng"><i
+                class="bi bi-cart3 fs-5"></i></a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -125,7 +139,7 @@
 
   <!-- Main -->
   <main id="main">
-    <div ng-view></div>
+    <div ng-view ></div>
     <!-- Test -->
 
     <!-- End Test  -->
@@ -1058,9 +1072,11 @@
 
 
   <!-- Template Main JS File -->
-  <script src="assets/js/layOut.js"></script>  
+  <script src="assets/js/layOut.js"></script>
   <script src="assets/js/main.js"></script>
-
+  <script src="assets/js/detail.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/product.js"></script>
 </body>
 
 </html>

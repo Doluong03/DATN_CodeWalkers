@@ -54,16 +54,16 @@ VALUES
   -- Thêm bản ghi liên quan đến sản phẩm giày vào bảng "DanhGia"
 INSERT INTO DanhGia (danh_gia, noi_dung, ngay_tao, ngay_sua, chi_tiet_san_pham_id, khach_hang_id, trang_thai_id)
 VALUES
-  (5, N'Sản phẩm rất tốt', N'2023-09-20', N'2023-09-21', 1, 101, 1),
-  (4, N'Giày chạy rất êm', N'2023-09-19', N'2023-09-20', 2, 102, 1),
-  (5, N'Sản phẩm đẹp và thoải mái', N'2023-09-18', N'2023-09-19', 3, 103, 1),
-  (3, N'Giày hơi chật', N'2023-09-17', N'2023-09-18', 4, 104, 1),
-  (4, N'Đáng giá tiền', N'2023-09-16', N'2023-09-17', 5, 105, 1),
-  (5, N'Rất hài lòng với sản phẩm', N'2023-09-15', N'2023-09-16', 6, 106, 1),
-  (4, N'Giày lười phù hợp cho mùa hè', N'2023-09-14', N'2023-09-15', 7, 107, 1),
-  (3, N'Sản phẩm không đúng kích cỡ', N'2023-09-13', N'2023-09-14', 8, 108, 1),
-  (5, N'Giày thể thao tốt cho tập luyện', N'2023-09-12', N'2023-09-13', 9, 109, 1),
-  (4, N'Giày đội mưa chất lượng', N'2023-09-11', N'2023-09-12', 10, 110, 1);
+  (5, N'Sản phẩm rất tốt', N'2023-09-20', N'2023-09-21', 1, 1, 1),
+  (4, N'Giày chạy rất êm', N'2023-09-19', N'2023-09-20', 2, 2, 1),
+  (5, N'Sản phẩm đẹp và thoải mái', N'2023-09-18', N'2023-09-19', 3, 3, 1),
+  (3, N'Giày hơi chật', N'2023-09-17', N'2023-09-18', 4, 4, 1),
+  (4, N'Đáng giá tiền', N'2023-09-16', N'2023-09-17', 5, 5, 1),
+  (5, N'Rất hài lòng với sản phẩm', N'2023-09-15', N'2023-09-16', 6, 6, 1),
+  (4, N'Giày lười phù hợp cho mùa hè', N'2023-09-14', N'2023-09-15', 7, 7, 1),
+  (3, N'Sản phẩm không đúng kích cỡ', N'2023-09-13', N'2023-09-14', 8, 8, 1),
+  (5, N'Giày thể thao tốt cho tập luyện', N'2023-09-12', N'2023-09-13', 9, 9, 1),
+  (4, N'Giày đội mưa chất lượng', N'2023-09-11', N'2023-09-12', 10, 10, 1);
 
 -- Thêm bản ghi giày vào bảng "SanPham"
 INSERT INTO SanPham (ma_san_pham, ten_san_pham, anh_chinh, mo_ta, phan_loai_id, thuong_hieu_id, trang_thai_id)

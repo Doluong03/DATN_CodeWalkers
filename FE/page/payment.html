@@ -1,0 +1,82 @@
+<div class="payment container">
+    <div class="row">
+        <div class="logo col-lg-1 me-3"> <img src="/assets/img/logo.png" class=" border-dark " alt=""> </div>
+        <h3 class="fw-bold col-lg-3 mt-4 ms-4  text-success">| Thanh toán</h3>
+    </div>
+    <div class="hr mt-4"></div>
+    <div class="row mt-3 ms-3">
+        <h4 class="fw-bold text-danger ">Địa chỉ nhận hàng</h4>
+        <div class="address row">
+            <div class="col-lg-4 fw-bold"> Đỗ Đức Lương | (+84) 0865683753</div>
+            <div class="col-lg">Chấn đông hoàn Long Yên Mỹ Hưng Yên, Xã Hoàn Long, Huyện Yên Mỹ, Hưng Yên</div>
+            <a class="col-lg-1 text-end me-4" href="#Change"> Thay đổi </a>
+        </div>
+    </div>
+    <div class="ms-4 mt-5">
+        <table class="">
+            <thead>
+                <tr>
+                    <th colspan="7">Sản phẩm </th>
+                    <th>Đơn giá </th>
+                    <th>Số lượng </th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tr>
+                <td class="  w-75" colspan="7">
+                    <div class="row mt-4">
+                        <div class="col-lg-4">
+                            <img src="/assets/img/dep1.jpg" class="w-50 rounded-4" alt="${ct.chiTietSP.moTa}">
+                        </div>
+                        <div class="col-lg-4 d-flex align-items-center ">
+                            <p class="border border">${ct.chiTietSP.moTa}</p>
+                        </div>
+                    </div>
+
+                </td>
+                <td class="">1.000đ</td>
+                <td id="totalPrice" class="ps-4 ">1</td>
+                <td id="totalPrice" class="ps-4 ">1.000đ</td>
+            </tr>
+            </c:forEach>
+        </table>
+    </div>
+    <hr>
+    <div class="ms-4">
+        <div class="promotional_code align-items-center row">
+            <div class="col-lg-2 row">
+                <i class="bi bi-ticket-perforated-fill fs-1 col-lg-1"></i>
+                <p class="col-lg ms-5 mt-2 fs-4">Voucher</p>
+            </div>
+            <div class="col"></div>
+            <a class="col-lg-2 text-end me-5" href="#Change"> Chọn voucher </a>
+        </div>
+    </div>
+    <div class="row ms-3 mt-5">
+        <div class="col-lg-5">
+            <h3>Phương thức thanh toán</h3>
+        </div>
+        <div class="col-lg text-end ms-5">
+            <h5>Thanh toán khi nhận hàng </h5>
+        </div>
+        <a class="col-lg-2 text-end me-5" href="#Change"> Thay đổi</a>
+    </div>
+    <div class="col-5 offset-7 mt-5">
+        <div class="row me-5">
+            <h5 class="col-lg-4 offset-5">Tổng tiền hàng: </h5>
+            <h5 class="col-lg-3 text-end ">1.000đ </h5>
+        </div>
+        <div class="row me-5">
+            <h5 class="col-lg-4 offset-5">Phí vận chuyển: </h5>
+            <h5 class="col-lg-3 text-end ">1.000.000đ </h5>
+        </div>
+        <div class="row me-5">
+            <h5 class="col-lg-4 offset-5">Tổng thanh toán: </h5>
+            <h4 class="col-lg-3 text-end text-danger  ">1.001.000đ </h4>
+        </div>
+        <div class="text-end col-lg-8 offset-3 mt-1">
+            <button class="btn btn-danger w-50 me-5">Đặt hàng</button>
+        </div>
+    </div>
+    <hr>
+</div>
