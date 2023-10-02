@@ -20,4 +20,9 @@ public interface ProductDetailService {
     public void delete(ProductDetail productDetail);
 
     public List<ProductDetail> getPrBetsSl();
+
+    public List<ProductDetail> findByName(String keyWord);
+    public List<ProductDetail> getSortedProducts();
+    public List<ProductDetail> getSortedProducts_priceAsc();
+    public List<ProductDetail> getSortedProducts_priceDesc();
 }

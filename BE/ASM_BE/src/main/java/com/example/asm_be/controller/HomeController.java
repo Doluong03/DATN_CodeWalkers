@@ -16,10 +16,10 @@ public class HomeController {
     @Autowired
     ProductDetailService productDetailService;
 
-    @GetMapping("/api/product")
-    public ResponseEntity<Collection<ProductDetail>> getAllProduct(){
-        return ResponseEntity.ok(productDetailService.getAll());
-    }
+//    @GetMapping("/api/product")
+//    public ResponseEntity<Collection<ProductDetail>> getAllProduct(){
+//        return ResponseEntity.ok(productDetailService.getAll());
+//    }
 
     @GetMapping("/api/product_bs")
     public ResponseEntity<Collection<ProductDetail>> getProductBestSL(){

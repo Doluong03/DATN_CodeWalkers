@@ -5,12 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d71f0bcd-3842-4ca2-8ea3-67831a91f29e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ProductDetailRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ProductDetailRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductDetailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductDetailImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductDetailImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE/assets/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE/assets/js/layOut.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/layOut.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE/layoutUser.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/layoutUser.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/page/cart-item.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/page/cart-item.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE/page/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/page/detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE/page/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/page/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Image/test/sp1/Photo1-removebg-preview.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../insertData.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../insertData.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,9 +46,19 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../test/DATN_CodeWalkers" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.asm_be.repositories" />
+      <recent name="com.example.asm_be.service.impl" />
+      <recent name="com.example.asm_be.service" />
+      <recent name="com.example.asm_be.controller" />
+      <recent name="com.example.asm_be.entities" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="AsmBeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
@@ -66,10 +87,37 @@
       <workItem from="1692809637350" duration="1088000" />
       <workItem from="1693153339546" duration="3431000" />
       <workItem from="1693367299231" duration="51000" />
+      <workItem from="1693495392914" duration="545000" />
+      <workItem from="1693581060946" duration="11000" />
+      <workItem from="1693901087602" duration="54000" />
+      <workItem from="1694444199541" duration="820000" />
+      <workItem from="1694617164233" duration="1220000" />
+      <workItem from="1694772180786" duration="9000" />
+      <workItem from="1695477430551" duration="7836000" />
+      <workItem from="1695565055733" duration="10893000" />
+      <workItem from="1695659155927" duration="12000" />
+      <workItem from="1695669108475" duration="2848000" />
+      <workItem from="1695745010400" duration="621000" />
+      <workItem from="1695840760043" duration="6645000" />
+      <workItem from="1695898117829" duration="3851000" />
+      <workItem from="1696011352414" duration="290000" />
+      <workItem from="1696011999802" duration="2414000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

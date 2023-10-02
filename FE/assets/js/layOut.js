@@ -9,36 +9,30 @@ app.config(function ($routeProvider, $locationProvider) {
         })
         .when("/product-detail/:productId", {
             templateUrl: "page/detail.html",
-            controller: "LayOutController"
+            controller: "DetailController"
         })
         .when("/cart", {
             templateUrl: "page/cart-item.html",
+            controller: "CartController"
+        })
+        .when("/payment", {
+            templateUrl: "page/payment.html",
             controller: "LayOutController"
         })
+        .when("/product", {
+            templateUrl: "page/product.html",
+            controller: "ProductController"
+        })
 })
-app.controller("LayOutController", function ($scope, $http, $routeParams, $location,$anchorScroll) {
+app.controller("LayOutController", function ($scope, $http, $routeParams, $location, $anchorScroll) {
     // Logic của controller ở đây
     $anchorScroll("pageContent");
     $scope.items = [];
-
-    $scope.itemDetail = [];
-    $scope.loadDetail = function () {
-        $scope.productId = $routeParams.productId;
-        console.log($scope.productId);
-        var url = `${host}/api/product/${$scope.productId}`;
+    $scope.itemsBs = [];
+    $scope.loadAllPrBs = function () {
+        var url = `${host}/api/product_bs`;
         $http.get(url).then(res => {
-            $scope.itemDetail = res.data;
-            console.log(res.data);
-            console.log("Success", res);
-        }).catch(error => {
-            console.log("Error", error);
-        });
-    }
-    
-    $scope.loadAllPr = function () {
-        var url = `${host}/api/product`;
-        $http.get(url).then(res => {
-            $scope.items = res.data;
+            $scope.itemsBs = res.data;
             console.log(res.data);
             console.log("Success", res);
             // Gọi loadDetail sau khi tải dữ liệu thành công
@@ -48,11 +42,10 @@ app.controller("LayOutController", function ($scope, $http, $routeParams, $locat
             console.log("Error", error);
         });
     }
-  
-    $scope.loadAllPr();
+    $scope.loadAllPrBs();
 });
-app.filter('vndCurrency', function() {
-    return function(input) {
+app.filter('vndCurrency', function () {
+    return function (input) {
         if (!input) return '';
         return input.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
     };
