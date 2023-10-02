@@ -30,16 +30,18 @@ public class ProductDetail {
     @ManyToOne()
     @JoinColumn(name = "chat_lieu_id")
     private Material material;
+
     @ManyToOne()
     @JoinColumn(name = "kich_co_id")
     private Size size;
+
     @ManyToOne()
     @JoinColumn(name = "mau_sac_id")
     private Color color;
+
     @ManyToOne()
     @JoinColumn(name = "khuyen_mai_id")
     private Promotional promotional;
-
 
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")

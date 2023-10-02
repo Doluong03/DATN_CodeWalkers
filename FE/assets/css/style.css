@@ -36,6 +36,85 @@ h5,
 h6 {
   font-family: 'Times New Roman', Times, serif;
 }
+/*--------------------------------------------------------------
+# Title
+--------------------------------------------------------------*/
+a[data-title]:hover:after {
+  content: attr(data-title);
+  background: #000;
+  color: #fff;
+  padding: 4px 8px;
+  position: absolute;
+  z-index: 999;
+  top: -70%;
+  left: 80%;
+  transform: translateX(-50%);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/*--------------------------------------------------------------
+# Login
+--------------------------------------------------------------*/
+    .form{
+        margin-top: 100px;
+        margin-left: 100px;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-control-user {
+        border-radius: 50px;
+        height: 50px;
+        font-size: 12px;
+        background-color: rgb(255, 255, 255);
+    }
+
+    .custom-control-label {
+        color: gray;
+    }
+
+    .btn-user {
+        border-radius: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 8px;
+        height: 44px;
+        font-size: 14px;
+    }
+    .btn-login{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        height: 44px;
+    }
+    .bg-primary-gradient {
+        background-color: rgb(78, 89, 233);
+        color: aliceblue;
+    }
+    .bg-primary-gradient:hover {
+      background-color: rgb(78, 78, 209);
+      color: aliceblue;
+  }
+    .btn-primary-fb {
+        background-color: rgb(9, 38, 202);
+        color: aliceblue;
+    }
+    .btn-primary-fb:hover {
+      background-color: rgb(9, 35, 180);
+      color: aliceblue;
+  }
+    .small{
+        text-decoration-line: none;
+        font-size: 12px;
+    }
+    .btn-user >i{
+        margin-right: 5px;
+    }
+   
 
 /*--------------------------------------------------------------
 # Sections
@@ -573,6 +652,33 @@ section {
 /*--------------------------------------------------------------
 # Index Page
 --------------------------------------------------------------*/
+.box {
+  height: auto;
+  border-radius: 5%;
+}
+.box img {
+  height: 350px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+.img-fluid {
+height: 510px;
+width: 500px;
+}
+.css-68j8pv img{
+background-color: #af1616;
+height: 110px;
+}
+.modal-content{
+  margin-left: -200px;
+  width: 1000px;
+  height: 900px;
+}
+.detailPrWatch img {
+  width: 966px;
+  height: 800px;
+  background-color: #ffffff;
+}
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
@@ -646,7 +752,7 @@ section {
 
 
 /*--------------------------------------------------------------
-# Values
+# home
 --------------------------------------------------------------*/
 .values .box {
   padding-left: 30px;
@@ -749,7 +855,11 @@ section {
   border-radius: 5%;
 }
 
-.feture-tabs img {
+.css-68j8pv img {
+  background-color: #aaaaaa;
+  border-radius: 5%;
+}
+.prImg img {
   background-color: #aaaaaa;
   border-radius: 5%;
 }
@@ -932,7 +1042,135 @@ section {
 .carousel-control-next-icon {
   color: #111;
 }
+.size-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* Cho phép tự động xuống dòng khi không đủ không gian */
+  justify-content: start;
+  /* Căn giữa các phần tử trên cùng một hàng */
+  width: 300px;
+  margin-bottom: 10px;
+}
 
+.size {
+  border-radius: 5px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #aaaaaa;
+  color: white;
+  text-align: center;
+  width: calc(15%);
+  /* Để hiển thị tối đa 4 phần tử trên cùng một hàng */
+  margin: 3px;
+  cursor: pointer;
+}
+.size:hover {
+  background-color: lightblue; /* Màu nền khi hover */
+  color: white; /* Màu chữ khi hover */
+}
+.size input[type="radio"] {
+  cursor: pointer;
+  /* CSS cho radio button */
+  /* Bạn có thể thêm các tùy chỉnh cho radio button ở đây */
+}
+
+.size label {
+  cursor: pointer;
+  /* CSS cho nhãn */
+  /* Bạn có thể thêm các tùy chỉnh cho nhãn ở đây */
+}
+.size2-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* Cho phép tự động xuống dòng khi không đủ không gian */
+  justify-content: start;
+  /* Căn giữa các phần tử trên cùng một hàng */
+  width: 300px;
+  margin-left: 0px;
+  margin-right: 2px;
+  margin-bottom: 10px;
+}
+/*--------------------------------------------------------------
+# Product
+--------------------------------------------------------------*/
+
+.size2 {
+  border-radius: 5px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  width: 39px;
+  /* Để hiển thị tối đa 4 phần tử trên cùng một hàng */
+  margin: 3px;
+  cursor: pointer;
+ 
+}
+.size2:hover {
+  background-color: lightblue; /* Màu nền khi hover */
+  color: white; /* Màu chữ khi hover */
+}
+.size2 input[type="radio"] {
+  cursor: pointer;
+  /* CSS cho radio button */
+  /* Bạn có thể thêm các tùy chỉnh cho radio button ở đây */
+}
+.size2 label {
+  cursor: pointer;
+  /* CSS cho nhãn */
+  /* Bạn có thể thêm các tùy chỉnh cho nhãn ở đây */
+}
+
+.box_product {
+  padding-left: 10px;
+  padding-right: 15px;
+  box-shadow: 0px 0 5px rgba(1, 41, 112, 0.08);
+  text-align: left;
+  transition: 0.3s;
+  height: 100%;
+  border: 0px;
+}
+
+.box_product img {
+  transition: 0.5s;
+  background-color: #f7f7f7;
+  width: 100%;
+  height: 250px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  transform: scale(1.1);
+}
+
+.box_product h5 {
+  font-size: 18px;
+  color: black;
+  font-weight: 500;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.box_product p {
+  font-family: 'Times New Roman', Times, serif;
+  margin-bottom: 0;
+  color: #878b8f;
+}
+
+.box_product:hover {
+  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.08);
+}
+
+.box_product:hover img {
+  transform: scale(1);
+}
+
+.no-results {
+  margin-top: 100px;
+height: 500px;
+}
 /*--------------------------------------------------------------
 # Cart_Items
 --------------------------------------------------------------*/
@@ -963,6 +1201,20 @@ section {
   height: 30px;
   text-align: center;
 } 
+/*--------------------------------------------------------------
+# Payment
+--------------------------------------------------------------*/
+.payment .logo img {
+  width: 10rem;
+}
+
+.hr {
+  height: 3px;
+  width: 100%;
+  background-position-x: -30px;
+  background-size: 116px 3px;
+  background-image: repeating-linear-gradient(45deg,#6fa6d6,#6fa6d6 33px,transparent 0,transparent 41px,#f18d9b 0,#f18d9b 74px,transparent 0,transparent 82px);
+}
 
 /*--------------------------------------------------------------
 # Services
