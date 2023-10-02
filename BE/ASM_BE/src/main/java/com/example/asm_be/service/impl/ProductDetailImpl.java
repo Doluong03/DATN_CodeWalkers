@@ -1,21 +1,18 @@
 package com.example.asm_be.service.impl;
 
-import com.example.asm_be.entities.BillDetails;
-import com.example.asm_be.entities.Product;
 import com.example.asm_be.entities.ProductDetail;
 import com.example.asm_be.repositories.ProductDetailRepository;
-import com.example.asm_be.repositories.ProductRepository;
 import com.example.asm_be.service.ProductDetailService;
-import com.example.asm_be.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 @Component
-public class ProductDetailImpl implements ProductDetailService {
+public class ProductDetailImpl implements ProductDetailService  {
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
@@ -57,5 +54,39 @@ public class ProductDetailImpl implements ProductDetailService {
         return detailList;
     }
 
+    @Override
+    public List<ProductDetail> findByName(String keyWord) {
+        List<ProductDetail> allProductDetails = productDetailRepository.findAll();
+        List<ProductDetail> matchingProductDetails = new ArrayList<>();
 
+        for (ProductDetail productDetail : allProductDetails) {
+            String[] keywords = keyWord.split(""); // Tách từng ký tự của từ khoá
+            String productName = productDetail.getProduct().getName().toLowerCase();
+
+            boolean isMatch = true;
+            int keywordIndex = 0;
+            for (char c : productName.toCharArray()) {
+                if (keywordIndex < keywords.length && c == keywords[keywordIndex].charAt(0)) {
+                    keywordIndex++;
+                }
+            }
+            if (keywordIndex == keywords.length) {
+                matchingProductDetails.add(productDetail);
+            }
+        }
+        return matchingProductDetails;
+    }
+    public List<ProductDetail> getSortedProducts() {
+        return productDetailRepository.findAllByOrderByProduct_NameAsc();
+    }
+
+    @Override
+    public List<ProductDetail> getSortedProducts_priceAsc() {
+        return productDetailRepository.findAllByOrderByPriceAsc();
+    }
+
+    @Override
+    public List<ProductDetail> getSortedProducts_priceDesc() {
+        return productDetailRepository.findAllByOrderByPriceDesc();
+    }
 }
