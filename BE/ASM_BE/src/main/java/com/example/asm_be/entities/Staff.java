@@ -1,12 +1,13 @@
 package com.example.asm_be.entities;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -14,14 +15,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "NhanVien")
-public class Staff {
+public class Staff implements Serializable {
     @Id
     @Column(name = "id_nhan_vien")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name = "ho_nhan_vien")
-    private String fname;
 
     @Column(name = "ten_nhan_vien")
     private String name;
@@ -47,4 +45,11 @@ public class Staff {
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;
+
+    @OneToOne
+    @JoinColumn(name = "id_tai_khoan")
+    private Account account;
+
+    @Column(name = "hinh_anh")
+    private String image;
 }

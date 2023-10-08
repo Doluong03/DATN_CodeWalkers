@@ -2,7 +2,7 @@
 <html lang="en" ng-app="myApp">
   <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -37,6 +37,18 @@
     <link rel="stylesheet" href="/template/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/template/font-awesome-6-pro-public--master/font-awesome-6-pro/css/all.min.css">
 
+    <!-- sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Plugin exel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.2.0/exceljs.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <!-- Plugin exportToPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+    <!-- svg.js CDN -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.1/svg.min.js"></script>
+
+  
 
   </head>
   <body>
@@ -75,10 +87,10 @@
     <!-- endinject -->
     <!-- Plugin js for this page -->
     <script src="vendors/chart.js/Chart.min.js"></script>
-    <script src="vendors/datatables.net/jquery.dataTables.js"></script>
-    <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-    <script src="js/dataTables.select.min.js"></script>
 
+    
+
+  
     <!-- End plugin js for this page -->
     <!-- inject:js -->
     <script src="js/off-canvas.js"></script>
@@ -88,9 +100,7 @@
     <script src="js/todolist.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
-    <script src="js/dashboard.js"></script>
-    <script src="js/Chart.roundedBarCharts.js"></script>
-    <script src="js/chart.js"></script>
+
     <!-- End custom js for this page-->
 
     <!-- Angular library -->
@@ -103,11 +113,14 @@
     <script src="./controller/user-controller.js"></script>
     <script src="./controller/chart-controller.js"></script>
     <script src="./controller/library-js.js"></script>
-
-
+    <script src="./controller/staff-controller.js"></script>
+    <script src="./controller/manufacture-controller.js"></script>
+    
     <!-- End Controller -->
 
     <!-- <script src="../src/config/api.js"></script> -->
     <script src="route.js"></script>
+
+  
   </body>
 </html>

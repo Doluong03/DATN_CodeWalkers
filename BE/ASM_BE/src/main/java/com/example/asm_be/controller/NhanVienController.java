@@ -5,29 +5,20 @@
 
 package com.example.asm_be.controller;
 
-import com.example.asm_be.entities.ResponObject;
+import com.example.asm_be.entities.ResponeObject;
 import com.example.asm_be.entities.Staff;
 import com.example.asm_be.service.StaffService;
-import java.util.List;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin({"*"})
-@RequestMapping({"/CodeWalkers/admin"})
+@RequestMapping({"/CodeWalkers"})
 public class NhanVienController {
     @Autowired
     private StaffService staffService;
@@ -35,25 +26,31 @@ public class NhanVienController {
     public NhanVienController() {
     }
 
-    @GetMapping({"/Staff"})
+    @GetMapping({"/admin/Staff"})
     public List<Staff> getAllProduct(@RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo) {
-        Page<Staff> staffPage = this.staffService.getAll(pageNo);
+        Page<Staff> staffPage = staffService.getAll(pageNo);
         List<Staff> staffList = staffPage.getContent();
         return staffList;
     }
 
-    @PostMapping({"/Staff/insert"})
-    public ResponseEntity<ResponObject> insertStaff(@RequestBody Staff staff) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Add thanh cong", this.staffService.save(staff)));
+    @PostMapping({"/admin/Staff/insert"})
+    public ResponseEntity<ResponeObject> insertStaff(@RequestBody Staff staff) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Add thanh cong", this.staffService.save(staff)));
     }
 
-    @PutMapping({"/Staff/update/{id}"})
-    public ResponseEntity<ResponObject> insertStaff(@RequestBody Staff staff, @PathVariable("id") UUID idStaff) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Update thanh cong", this.staffService.update(idStaff, staff)));
+    @PutMapping({"/admin/Staff/update"})
+    public ResponseEntity<ResponeObject> UpdateStaff(@RequestBody Staff staff) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Update thanh cong", this.staffService.update(staff)));
     }
 
-    @DeleteMapping({"/Staff/delete/{id}"})
-    public ResponseEntity<ResponObject> deleteStaff(@PathVariable("id") UUID idStaff) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Delete thanh cong", this.staffService.delete(idStaff)));
+    @DeleteMapping({"/admin/Staff/delete/{id}"})
+    public ResponseEntity<ResponeObject> deleteStaff(@PathVariable("id") Integer idStaff) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Delete thanh cong", this.staffService.delete(idStaff)));
     }
 }

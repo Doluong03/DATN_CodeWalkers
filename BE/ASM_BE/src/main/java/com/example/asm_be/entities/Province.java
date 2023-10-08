@@ -18,7 +18,7 @@ public class Province {
     @Id
     @Column(name = "id_thanh_pho")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
     @Column(name = "ma_thanh_pho")
     private String code;

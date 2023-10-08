@@ -15,8 +15,16 @@ myApp.config(function ($routeProvider, $locationProvider) {
     })   
     .when("/nhan-vien", {
       templateUrl: "/template/nhan-vien.html",
+      controller : StaffController,
+    })
+      .when("/khach-hang", {
+      templateUrl: "/template/user.html",
       controller : UserController,
-    }) 
+    })    
+     .when("/nsx", {
+      templateUrl: "/template/manufacture.html",
+      controller : ManufactureController,
+    })  
    
     .otherwise({
       redirectTo: "/trang-chu",

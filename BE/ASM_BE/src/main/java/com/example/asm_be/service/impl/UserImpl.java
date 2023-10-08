@@ -1,26 +1,29 @@
 package com.example.asm_be.service.impl;
 
-import com.example.asm_be.entities.Address;
 import com.example.asm_be.entities.Users;
-import com.example.asm_be.repositories.AddressRepository;
 import com.example.asm_be.repositories.UserRepository;
-import com.example.asm_be.service.AddressService;
 import com.example.asm_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 
 @Component
 public class UserImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
-    public List<Users> getAll() {
-        return this.userRepository.findAll();
+
+
+    @Override
+    public Page<Users> getAll(Integer pageNo,Integer sizePage) {
+        Pageable pageable = PageRequest.of(pageNo,sizePage);
+        return userRepository.findAll(pageable);
     }
 
-    public Users getOne(UUID id) {
+    public Users getOne(Integer id) {
         return null;
     }
 
@@ -34,9 +37,8 @@ public class UserImpl implements UserService {
         }
     }
 
-    public boolean update(UUID idUsers, Users users) {
+    public boolean update( Users users) {
         try {
-            users.setId(idUsers);
             this.userRepository.save(users);
             return true;
         } catch (Exception var4) {
@@ -45,7 +47,7 @@ public class UserImpl implements UserService {
         }
     }
 
-    public boolean delete(UUID idUsers) {
+    public boolean delete(Integer idUsers) {
         try {
             this.userRepository.deleteById(idUsers);
             return true;
@@ -54,4 +56,5 @@ public class UserImpl implements UserService {
             return false;
         }
 
+    }
 }

@@ -1,4 +1,5 @@
 package com.example.asm_be.entities;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -20,14 +21,18 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "ma_dang_nhap")
-    private String code;
-
     @Column(name = "ten_khach_hang")
     private String name;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "ngay_sinh")
     private Date dateOfBirth;
+
+    @Column(name = "ngay_tao")
+    private Date createdDate;
+
+    @Column(name = "ngay_sua")
+    private Date modified;
 
     @Column(name = "so_dien_thoai")
     private String phoneNumber;
@@ -37,12 +42,22 @@ public class Users {
 
 
     @Column(name = "email")
-    private String Email;
+    private String email;
 
-    @Column(name = "mat_khau")
-    private String password;
+    @Column(name = "dia_chi")
+    private String address;
+
+    @Column(name = "hinh_anh")
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;
+
+    @OneToOne
+    @JoinColumn(name = "id_tai_khoan")
+    private Account account;
+
+
+
 }

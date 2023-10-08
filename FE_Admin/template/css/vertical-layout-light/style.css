@@ -10139,7 +10139,7 @@ pre code {
 .table th, .jsgrid .jsgrid-table th,
 .table td,
 .jsgrid .jsgrid-table td {
-  padding: 1.125rem 1.375rem;
+  padding: 1rem 0.8rem;
   vertical-align: top;
   border-top: 1px solid #CED4DA;
 }
@@ -10147,6 +10147,7 @@ pre code {
 .table thead th, .jsgrid .jsgrid-table thead th {
   vertical-align: bottom;
   border-bottom: 2px solid #CED4DA;
+  text-align: center;
 }
 
 .table tbody + tbody, .jsgrid .jsgrid-table tbody + tbody {

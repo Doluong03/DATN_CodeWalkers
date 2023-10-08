@@ -1,16 +1,17 @@
 package com.example.asm_be.DTO;
 
-import com.example.asm_be.entities.Users;
+import com.example.asm_be.entities.Manufacture;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRespone {
+public class ManufactureRespone {
 
-    private List<Users> usersList;
+    private List<Manufacture> manufactureList;
     private long totalPages;
 }

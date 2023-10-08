@@ -5,54 +5,96 @@
 
 package com.example.asm_be.controller;
 
-import com.example.asm_be.entities.ResponObject;
+import com.example.asm_be.DTO.UserRespone;
+import com.example.asm_be.entities.ResponeObject;
+import com.example.asm_be.entities.Status;
 import com.example.asm_be.entities.Users;
-import com.example.asm_be.service.ProductDetailService;
+import com.example.asm_be.service.StatusService;
 import com.example.asm_be.service.UserService;
-import java.util.List;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 @CrossOrigin({"*"})
 @RestController
 @RequestMapping({"/CodeWalkers"})
 public class KhachHangController {
-    @Autowired
-    private ProductDetailService productDetailService;
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StatusService statusService;
 
     public KhachHangController() {
     }
 
-    @GetMapping({"/api/User"})
-    public List<Users> getAllUser() {
-        return this.userService.getAll();
+    @GetMapping({"/admin/User"})
+    public UserRespone getAllUser(
+            @RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo,
+            @RequestParam(value = "sizePage",defaultValue = "5") Integer  sizePage) {
+        UserRespone userRespone = new UserRespone();
+        Page<Users> usersPage = userService.getAll(pageNo,sizePage);
+
+        userRespone.setUsersList(usersPage.getContent());
+        userRespone.setTotalPages(usersPage.getTotalPages());
+
+        return userRespone;
     }
 
-    @PostMapping({"/User/insert"})
-    public ResponseEntity<ResponObject> insertStaff(@RequestBody Users users) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Add thanh cong", this.userService.save(users)));
+    @PostMapping({"/admin/User/insert"})
+    public ResponseEntity<ResponeObject> insertStaff(@RequestBody Users users) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+        Date current = new Date();
+        Integer id = 2;
+        Status status = statusService.getOne(id);
+
+        Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
+        Date createdDate = dateFormat.parse(current.toString());
+
+        users.setDateOfBirth(BirthDayFormat);
+        users.setCreatedDate(createdDate);
+        users.setStatus(status);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Add thanh cong", userService.save(users)));
     }
 
-    @PutMapping({"/User/update/{id}"})
-    public ResponseEntity<ResponObject> insertStaff(@RequestBody Users users, @PathVariable("id") UUID idUsers) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Update thanh cong", this.userService.update(idUsers, users)));
+    @PutMapping({"/admin/User/update"})
+    public ResponseEntity<ResponeObject> UpdateStaff(@RequestBody Users users) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+        Date current = new Date();
+        Integer id = 2;
+        Status status = statusService.getOne(id);
+
+        Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
+        Date Modified = dateFormat.parse(current.toString());
+
+        users.setDateOfBirth(BirthDayFormat);
+        users.setModified(Modified);
+        users.setStatus(status);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Update thanh cong", this.userService.update(users)));
     }
 
-    @DeleteMapping({"/User/delete/{id}"})
-    public ResponseEntity<ResponObject> deleteStaff(@PathVariable("id") UUID idUsers) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Delete thanh cong", this.userService.delete(idUsers)));
+    @DeleteMapping({"/admin/User/delete/{id}"})
+    public ResponseEntity<ResponeObject> deleteStaff(@PathVariable("id") Integer idUsers) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Delete thanh cong", this.userService.delete(idUsers)));
     }
+
+
 }

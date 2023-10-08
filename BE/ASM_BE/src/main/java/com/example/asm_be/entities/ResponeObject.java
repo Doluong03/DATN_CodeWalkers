@@ -1,4 +1,4 @@
-package com.example.sell_clothing_api.Model;
+package com.example.asm_be.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

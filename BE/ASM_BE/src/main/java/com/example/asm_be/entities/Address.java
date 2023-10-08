@@ -19,18 +19,20 @@ public class Address {
     @Column(name = "id_dia_chi")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name = "dia_chi_chi_tiet")
     private String name;
+
     @ManyToOne
     @JoinColumn(name = "phuong_xa_id")
     private Commune commune;
+
     @ManyToOne
     @JoinColumn(name = "thanh_pho_id")
     private Province province;
+
     @ManyToOne
     @JoinColumn(name = "quan_huyen_id")
     private District district;
-    @ManyToOne
-    @JoinColumn(name = "khach_hang_id")
-    private Users users;
+
 }

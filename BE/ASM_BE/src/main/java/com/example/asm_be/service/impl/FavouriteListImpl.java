@@ -1,10 +1,7 @@
 package com.example.asm_be.service.impl;
 
-import com.example.asm_be.entities.Cart;
 import com.example.asm_be.entities.FavouriteList;
-import com.example.asm_be.repositories.CartRepository;
 import com.example.asm_be.repositories.FavouriteListRepository;
-import com.example.asm_be.service.CartService;
 import com.example.asm_be.service.FavouriteListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
