@@ -16,9 +16,9 @@ import java.util.UUID;
 @Table(name = "PhuongXa")
 public class Commune {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @Column(name = "id_phuong_xa")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "ma_phuong_xa")
     private String code;
@@ -29,6 +29,7 @@ public class Commune {
     @ManyToOne
     @JoinColumn(name = "thanh_pho_id")
     private Province province;
+
     @ManyToOne
     @JoinColumn(name = "quan_huyen_id")
     private District district;

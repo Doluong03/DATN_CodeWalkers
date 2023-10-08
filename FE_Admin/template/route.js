@@ -6,15 +6,15 @@ myApp.config(function ($routeProvider, $locationProvider) {
   // $routeProvider : chuyen trang
   $routeProvider
     .when("/trang-chu", {
-      templateUrl: "/FE_Admin/template/trang-chu.html",
+      templateUrl: "/template/trang-chu.html",
       controller: UserController,
     })
      .when("/bieu-do", {
-      templateUrl: "/FE_Admin/template/chart.html",
+      templateUrl: "/template/chart.html",
       controller : ChartController,
     })   
     .when("/nhan-vien", {
-      templateUrl: "/FE_Admin/template/nhan-vien.html",
+      templateUrl: "/template/nhan-vien.html",
       controller : UserController,
     }) 
    
