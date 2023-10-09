@@ -14,6 +14,8 @@ CREATE TABLE SanPham (
   phan_loai_id int DEFAULT NULL,
   thuong_hieu_id int DEFAULT NULL,
   danh_gia_id int DEFAULT NULL,
+  ngay_tao DATE DEFAULT NULL,
+  ngay_sua DATE DEFAULT NULL,
   trang_thai_id int DEFAULT NULL
 );
 CREATE TABLE SanXuat (
@@ -97,6 +99,8 @@ CREATE TABLE ChiTietSanPham (
   mau_sac_id int DEFAULT NULL,
   chat_lieu_id int DEFAULT NULL,
   trang_thai_id int DEFAULT NULL,
+  ngay_tao DATE DEFAULT NULL,
+  ngay_sua DATE DEFAULT NULL,
   khuyen_mai_id int DEFAULT NULL
 );
 
