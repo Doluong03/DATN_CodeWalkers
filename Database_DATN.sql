@@ -143,6 +143,7 @@ CREATE TABLE KhachHang (
   trang_thai_id int DEFAULT NULL,
   id_tai_khoan INT DEFAULT NULL,
    hinh_anh   NVARCHAR(max) DEFAULT NULL
+   dia_chi   NVARCHAR(max) default null
 );
 
 
