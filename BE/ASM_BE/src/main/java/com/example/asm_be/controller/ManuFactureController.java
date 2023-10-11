@@ -1,6 +1,6 @@
 package com.example.asm_be.controller;
 
-import com.example.asm_be.DTO.ManufactureRespone;
+import com.example.asm_be.dto.ManufactureRespone;
 import com.example.asm_be.entities.Manufacture;
 import com.example.asm_be.entities.ResponeObject;
 import com.example.asm_be.service.ManuFactureService;
@@ -22,11 +22,15 @@ public class ManuFactureController {
 
 
     @GetMapping({"/admin/Manufacture"})
-    public ManufactureRespone getAllManuFacture(@RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo) {
+    public ManufactureRespone getAllManuFacture(
+            @RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo
+            ,@RequestParam(value = "sizePage",defaultValue = "5") Integer sizePage)
+    {
         ManufactureRespone manufactureRespone = new ManufactureRespone();
-        Page<Manufacture> manufacturePage = manuFactureService.getAll(pageNo);
-                manufactureRespone.setManufactureList(manufacturePage.getContent());
-                manufactureRespone.setTotalPages(manufacturePage.getTotalPages());
+        Page<Manufacture> manufacturePage = manuFactureService.getAll(pageNo,sizePage);
+
+        manufactureRespone.setManufactureList(manufacturePage.getContent());
+        manufactureRespone.setTotalPages(manufacturePage.getTotalPages());
 
         return manufactureRespone;
     }

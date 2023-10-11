@@ -25,6 +25,10 @@ myApp.config(function ($routeProvider, $locationProvider) {
       templateUrl: "/template/manufacture.html",
       controller : ManufactureController,
     })  
+    .when("/product-detail", {
+      templateUrl: "/template/product-details.html",
+      controller : productDetailController,
+    }) 
    
     .otherwise({
       redirectTo: "/trang-chu",

@@ -1,18 +1,27 @@
 window.ManufactureController = function ($scope, $http, $window) {
   $scope.listManufacture = [];
   $scope.isActive = true;
+  $scope.lastIndex =0; // phần tử cuối của mảng
+  $scope.pageNo = 0;
+  $scope.sizePage = 5;
+
+  $scope.statusOptions = [
+    { value: 1, label: 'Đang hoạt động' },
+    { value: 2, label: 'Ngừng hoạt động' }
+];
   
   $scope.formManufacture = {
-    id: "",
     name: "",
-    moTa:"",
-    status: "",
+    description:"",
+    status:{
+        id:""
+    },
   };
 
   $scope.formManufactureUpdate = {
     id: "",
     name: "",
-    moTa:"",
+    description:"",
     status: "",
   };
 
@@ -47,7 +56,7 @@ window.ManufactureController = function ($scope, $http, $window) {
   $scope.nextPage = function () {
     if ($scope.pageCurrent < $scope.totalPage - 1) {
       $scope.pageCurrent++;
-      $scope.hienThi($scope.pageCurrent);
+      $scope.hienThi($scope.pageCurrent, $scope.sizePage);
     }
   };
   
@@ -55,7 +64,7 @@ window.ManufactureController = function ($scope, $http, $window) {
     if ($scope.pageCurrent > 0) {
       $scope.pageCurrent--;
     }
-    $scope.hienThi($scope.pageCurrent);
+    $scope.hienThi($scope.pageCurrent, $scope.sizePage);
   };
   
   $scope.hoveredPage = null;
@@ -68,16 +77,17 @@ window.ManufactureController = function ($scope, $http, $window) {
     $scope.hoveredPage = null;
   };
   
-  
-  $scope.pageNo = 0;
-  
-  $scope.hienThi = function (pageNo) {
-    let apiUrl = apiManufacture + "?pageNo=" + pageNo;
+  // hien thi
+
+  $scope.hienThi = function (pageNo,sizePage) {
+    let apiUrl = apiManufacture + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
     $http.get(apiUrl).then(
       function (response) {
         // Kiểm tra dữ liệu có được in ra không
         $scope.listManufacture = response.data.manufactureList;
         $scope.totalPage = response.data.totalPages;
+        $scope.lastIndex = $scope.listManufacture[$scope.listManufacture.length - 1].id;
+
         console.log(response.data);
         console.log(response.data.totalPages);
       },
@@ -87,23 +97,23 @@ window.ManufactureController = function ($scope, $http, $window) {
     );
   };
   
-  $scope.PageNo = function (pageNo) {
+  $scope.PageNo = function (pageNo, sizePage) {
     $scope.pageCurrent = pageNo; // Cập nhật pageCurrent khi chọn trang cụ thể
-    $scope.hienThi(pageNo); 
-    $scope.hoveredPage = pageNo;// Truyền giá trị pageNo vào hàm hienThi
-  };
-  
+    $scope.sizePage = sizePage; // Cập nhật sizePage
+    $scope.hienThi(pageNo, sizePage);
+    $scope.hoveredPage = pageNo; // Truyền giá trị pageNo vào hàm hienThi
+};
+
   // Gọi hàm hienThi() để lấy dữ liệu ban đầu
-  $scope.hienThi($scope.pageNo);
+  $scope.hienThi($scope.pageNo,$scope.sizePage);
   
 
   //delete data
 
-  $scope.removeStaff = function (event, index) {
+  $scope.removeStaff = function (event, item) {
     event.preventDefault();
 
-    let Manufacture = $scope.listManufacture[index];
-    let manufactureId = Manufacture.id;
+    let manufactureId = item.id;
     let api = apiManufacture + "/delete/" + manufactureId;
     Swal.fire({
       title: 'Xác nhận',
@@ -117,12 +127,12 @@ window.ManufactureController = function ($scope, $http, $window) {
         // Hành động khi người dùng ấn "Có"
         $http.delete(api).then(function () {
           Swal.fire('Xóa thành công!', '', 'success');
-          $scope.hienThi($scope.pageCurrent);
+          $scope.hienThi($scope.pageCurrent,$scope.sizePage);
       })
       .catch(function (error) {
         console.log(error);
       });
-        $scope.hienThi($scope.pageNo);
+       
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hành động khi người dùng ấn "Không"
         Swal.fire('Hủy bỏ', '', 'error');
@@ -131,17 +141,19 @@ window.ManufactureController = function ($scope, $http, $window) {
     
   };
 
-  // show form
+  // show form add
   $scope.showForm = false; // Mặc định ẩn form
   $scope.toggleForm = function () {
-    $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form
+    if ($scope.showFormUpdate) {
+      // Nếu form cập nhật đang mở, đóng nó trước khi mở form thêm mới
+      $scope.showFormUpdate = false;
+    }
+    $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
   };
-
   // add one product
 
   $scope.addUser = function (event) {
     event.preventDefault();
-    console.log($scope.formUser);
 
     Swal.fire({
       title: 'Xác nhận',
@@ -153,10 +165,11 @@ window.ManufactureController = function ($scope, $http, $window) {
     }).then((result) => {
       if (result.isConfirmed) {
         // Hành động khi người dùng ấn "Có"
+        console.log($scope.formManufacture)
         $http.post(apiManufacture + "/insert", JSON.stringify($scope.formManufacture)).then(function (response) {
           Swal.fire('Thêm thành công!', '', 'success');
-          $scope.hienThi($scope.pageCurrent);
-          $scope.formUser = {};
+          $scope.hienThi($scope.pageCurrent,$scope.sizePage);
+          $scope.formManufacture = {};
           console.log(response);
         })
         .catch(function (error) {
@@ -181,30 +194,40 @@ window.ManufactureController = function ($scope, $http, $window) {
   // show form user and load detail
 
 $scope.showFormUpdate = false;
-$scope.activeIndex = -1; // Khởi tạo activeIndex là -1
-
+$scope.activeItem = -1;
 $scope.formManufactureUpdate = {}; // Khởi tạo biểu mẫu
 
-$scope.toggleFormUpdate = function (event, index) {
+$scope.toggleFormUpdate = function (event, item) {
   event.preventDefault();
-  if ($scope.activeIndex === index && $scope.showFormUpdate) {
+  if ($scope.showForm) {
+    // Nếu form thêm mới đang mở, đóng nó trước khi mở form cập nhật
+    $scope.showForm = false;
+  }
+
+  if (item && $scope.activeItem === item && $scope.showFormUpdate) {
     // Trường hợp ấn lại dòng đã chọn và form đang hiển thị, đóng form và xóa dữ liệu
     $scope.showFormUpdate = false;
-    $scope.activeIndex = -1;
+    $scope.activeItem = null;
     $scope.formManufactureUpdate = {};
-  } else {
+  } else if (item) {
     // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
     $scope.showFormUpdate = true;
-    $scope.activeIndex = index;
+    $scope.activeItem = item;
 
-    let manufacture = $scope.listManufacture[index];
+   
     // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-    $scope.formManufactureUpdate.id = manufacture.id;
-    $scope.formManufactureUpdate.name = manufacture.name;
-    $scope.formManufactureUpdate.description = manufacture.description;
-    $scope.formManufactureUpdate.status = manufacture.status.name;
+    $scope.formManufactureUpdate.id = item.id;
+    $scope.formManufactureUpdate.name = item.name;
+    $scope.formManufactureUpdate.description = item.description;
+    $scope.formManufactureUpdate.status = item.status;
     
+  }else {
+    // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
+    $scope.showFormUpdate = false;
+    $scope.activeItem = null;
+    $scope.formUserUpdate = {};
   }
+
 };
 
 
@@ -226,7 +249,7 @@ $scope.toggleFormUpdate = function (event, index) {
         $http.put(apiManufacture + "/update", JSON.stringify($scope.formManufactureUpdate)).then(function (response) {
           Swal.fire('Cập nhật thành công!', '', 'success');
           $scope.formUserUpdate = {};
-          $scope.hienThi($scope.pageCurrent);
+          $scope.hienThi($scope.pageCurrent,$scope.sizePage);
         })
           .catch(function (error) {
             // Xử lý lỗi nếu có
@@ -271,16 +294,11 @@ $scope.import = function (files) {
       const worksheet = workbook.getWorksheet('Sheet1');
       worksheet.eachRow((row, index) => {
         if (index > 1) {
-          let user = {
+          let manu = {
             name: row.getCell(1).value,
-            dateOfBirth: formatDate(row.getCell(2).value),
-            phoneNumber: row.getCell(3).value,
-            gender: parseGender(row.getCell(4).value),
-            email: row.getCell(5).value,
-            address: row.getCell(6).value,
-            image: row.getCell(7).value
+            description : row.getCell(2).value,   
           };
-          $http.post(apiUser + "/insert", JSON.stringify(user))
+          $http.post(apiManufacture + "/insert", JSON.stringify(manu))
             .then(function (response) {
               if (!$scope.errorShown) {
                 Swal.fire({
@@ -326,21 +344,110 @@ $scope.import = function (files) {
 };
 
 
+// export pdf
+$scope.exportToPDF = function () {
+  const tableId = 'ManuFTable';
+  const fileName = 'Manufacturer.pdf';
 
+  // Tạo đối tượng jsPDF
+  const pdf = new $window.jsPDF('p', 'pt', 'letter');
 
-function formatDate(date) {
-  // Giả sử ngày đang trong định dạng ISO 8601
-  const isoDate = new Date(date);
-  const formattedDate = isoDate.toLocaleDateString("en-GB");
-  return formattedDate;
-}
+  // Thêm bảng vào PDF
+  pdf.autoTable({ html: `#${tableId}` });
 
-function parseGender(genderValue) {
-  // Giả sử giá trị của genderValue là một giá trị boolean trong Excel (đúng hoặc sai)
-  return genderValue === true;
-}
+  // Tải file PDF
+  pdf.save(`${fileName}.pdf`);
+};
 
-  
+$scope.exportToExcel = function() {
+  // Lấy bảng theo ID
+  var table = document.getElementById('ManuFTable'); // Thay id table bảng của bạn vào đây
+
+  // Lấy dữ liệu từ bảng
+  var data = [];
+  for (var i = 0; i < table.rows.length; i++) {
+    var rowData = [];
+    for (var j = 0; j < table.rows[i].cells.length; j++) {
+      rowData.push(table.rows[i].cells[j].innerText);
+    }
+    data.push(rowData);
+  }
+
+  // Tạo một workbook và một worksheet
+  var ws = XLSX.utils.aoa_to_sheet(data);
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+  // Xuất file Excel
+  XLSX.writeFile(wb, 'exported_data.xlsx');
+};
+
+$scope.exportToSVG = function() {
+  // Lấy bảng theo ID
+  var table = document.getElementById('ManuFTable'); // Thay id table bảng của bạn vào đây
+
+  // Tạo một đối tượng SVG
+  var svg = SVG().size(1000, 1000); // Kích thước SVG
+
+  // Lấy số cột của bảng
+  var numColumns = table.rows.length > 0 ? table.rows[0].cells.length : 0;
+
+  // Xác định chiều rộng của cột rộng nhất
+  var maxWidth = 0;
+  for (var i = 0; i < table.rows.length; i++) {
+    var cellWidth = table.rows[i].cells[0].offsetWidth;
+    maxWidth = Math.max(maxWidth, cellWidth);
+  }
+
+  // Thêm các đối tượng SVG từ các cột của bảng
+  for (var i = 0; i < table.rows.length; i++) {
+    for (var j = 0; j < table.rows[i].cells.length; j++) {
+      // Tính toán vị trí dựa trên chỉ số của cột
+      var xPosition = 10 + j * (maxWidth + 150); // 10 là khoảng cách giữa các cột
+      var yPosition = 30 * i + 40;
+
+      // Thêm văn bản từ cột của bảng vào SVG
+      svg.text(table.rows[i].cells[j].innerText).move(xPosition, yPosition);
+    }
+  }
+
+  // Xuất nội dung SVG dưới dạng chuỗi
+  var svgString = svg.svg();
+
+  // Xuất file SVG
+  var blob = new Blob([svgString], { type: 'image/svg+xml' });
+  var url = window.URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'exported_svg.svg';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
+
+  // hàm thay đổi số phần tử của trang
+  $scope.onSizePageChange = function () {
+    // Làm cái gì đó với giá trị mới của sizePage
+    console.log("New Size Page: " + $scope.sizePage);
+    $scope.hienThi($scope.pageNo,$scope.sizePage);
+    // Gọi các hàm khác cần thiết với giá trị mới của sizePage
+};
+
+// sort column
+$scope.sortColumn = '';
+$scope.reverseSort = false;
+
+$scope.sortData = function (column) {
+    $scope.reverseSort = ($scope.sortColumn === column) ? !$scope.reverseSort : false;
+    $scope.sortColumn = column;
+};
+
+$scope.getSortClass = function (column) {
+    if ($scope.sortColumn === column) {
+        return $scope.reverseSort ? 'sort-down' : 'sort-up';
+    }
+    return 'sort-none';
+};    
 
   // thu vien jQuery không đụng vào
   (function ($) {

@@ -171,6 +171,7 @@ window.UserController = function ($scope, $http, $window) {
       $scope.showFormUpdate = false;
     }
     $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
+    $scope.formUser={};
   };
   // add one product
 

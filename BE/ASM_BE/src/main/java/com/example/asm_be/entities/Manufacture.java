@@ -30,3 +30,4 @@ public class Manufacture implements Serializable {
     @JoinColumn(name = "trang_thai_id")
     private Status status;
 }
+

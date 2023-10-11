@@ -16,8 +16,8 @@ public class ManuFactureIplm implements ManuFactureService {
     private ManuFactureRepository manuFactureRepository;
 
     @Override
-    public Page<Manufacture> getAll(Integer pageNo) {
-        Pageable manufacturePageable = PageRequest.of(pageNo,5);
+    public Page<Manufacture> getAll(Integer pageNo,Integer sizePage) {
+        Pageable manufacturePageable = PageRequest.of(pageNo,sizePage);
         return manuFactureRepository.findAll(manufacturePageable) ;
     }
 

@@ -1,18 +1,16 @@
 package com.example.asm_be.service.impl;
 
-import com.example.asm_be.entities.BillDetails;
-import com.example.asm_be.entities.Product;
 import com.example.asm_be.entities.ProductDetail;
 import com.example.asm_be.repositories.ProductDetailRepository;
-import com.example.asm_be.repositories.ProductRepository;
 import com.example.asm_be.service.ProductDetailService;
-import com.example.asm_be.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 public class ProductDetailImpl implements ProductDetailService {
@@ -20,8 +18,9 @@ public class ProductDetailImpl implements ProductDetailService {
     private ProductDetailRepository productDetailRepository;
 
     @Override
-    public List<ProductDetail> getAll() {
-        return productDetailRepository.findAll();
+    public Page<ProductDetail> getAll(Integer pageNo,Integer sizePage) {
+        Pageable pageable = PageRequest.of(pageNo,sizePage);
+        return productDetailRepository.findAll(pageable);
     }
 
     @Override
@@ -30,18 +29,36 @@ public class ProductDetailImpl implements ProductDetailService {
     }
 
     @Override
-    public ProductDetail save(ProductDetail product) {
-        return productDetailRepository.save(product);
+    public boolean save(ProductDetail product) {
+        try {
+            productDetailRepository.save(product);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
     }
 
     @Override
-    public ProductDetail update(ProductDetail product) {
-        return productDetailRepository.save(product);
+    public boolean update(ProductDetail product) {
+        try {
+            productDetailRepository.save(product);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
     }
 
     @Override
-    public void delete(ProductDetail product) {
-        productDetailRepository.delete(product);
+    public boolean delete(Integer Idproduct) {
+        try {
+            productDetailRepository.deleteById(Idproduct);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
     }
 
     @Override

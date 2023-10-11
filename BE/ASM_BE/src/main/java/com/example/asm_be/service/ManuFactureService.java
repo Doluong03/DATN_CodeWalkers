@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ManuFactureService {
 
-    Page<Manufacture> getAll(Integer pageNo);
+    Page<Manufacture> getAll(Integer pageNo,Integer sizePage);
 
     Manufacture getOne(Integer idFacture);
 
