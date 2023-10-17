@@ -1,20 +1,20 @@
 package com.example.asm_be.security.user;
 
-import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
-public class CustomUserDetails implements UserDetails {
+public class UserDetailsCustom implements UserDetails {
 
      private String userName;
      private String password;
@@ -25,20 +25,28 @@ public class CustomUserDetails implements UserDetails {
         return this.authorities;
     }
 
-    // tù thông tin accpunt chuyển sang thông tin UserDetails
-    public static UserDetails mapAccountToUserDetails(Users Users){
-        //lấy các quyên của account
-        List<GrantedAuthority> grantedAuthorityList = Users.getRole().stream()
-                .map(roles -> new SimpleGrantedAuthority(roles.getNameRole()))
-                .collect(Collectors.toList());
-        // trả về đổi tượng account của user
-            return new CustomUserDetails(
-                    Users.getUserName(),
-                    Users.getPassword(),
-                    grantedAuthorityList
+    public static UserDetails mapUserToUserDetails(Users users) {
+        // Kiểm tra xem có vai trò hay không
+        if (users.getRole() != null) {
+            // Trường hợp có một vai trò
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(users.getRole());
+            return new UserDetailsCustom(
+                    users.getUserName(),
+                    users.getPassword(),
+                    Collections.singletonList(grantedAuthority)
             );
-               
+        } else {
+            // Trường hợp không có vai trò (hoặc có thể xử lý khác tùy thuộc vào logic của bạn)
+            return new UserDetailsCustom(
+                    users.getUserName(),
+                    users.getPassword(),
+                    Collections.emptyList()
+            );
+        }
     }
+
+
+
 
 
 

@@ -1,13 +1,15 @@
 package com.example.asm_be.entities;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import jakarta.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -50,13 +52,20 @@ public class Users {
     @Column(name = "hinh_anh")
     private String image;
 
+    @Column(name = "vai_tro")
+    private String role;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "user_name")
+    private String userName;
+
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;
 
-    @OneToOne
-    @JoinColumn(name = "id_tai_khoan")
-    private Account account;
+
 
 
 

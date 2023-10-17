@@ -1,19 +1,23 @@
 package com.example.asm_be.security;
 
 import com.example.asm_be.jwt.JwtAuthenticationFilter;
+import com.example.asm_be.security.staff.CustomDetailsService;
+import com.example.asm_be.security.user.CustomUsersDetailsService;
+import com.example.asm_be.security.user.UserDetailsCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,6 +26,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -34,6 +39,9 @@ public class WebSecurityconfig {
     @Autowired
     private CustomDetailsService customDetailsService;
 
+    @Autowired
+    private CustomUsersDetailsService userDetailsCustom;
+
     @Bean
     public JwtAuthenticationFilter authenticationFilter(){
           return new JwtAuthenticationFilter();
@@ -44,13 +52,37 @@ public class WebSecurityconfig {
         return new BCryptPasswordEncoder();
     }
 
+
+
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider customAuthenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(customDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
+
+    @Bean
+    public AuthenticationProvider userDetailsCustomAuthenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsCustom);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
+
+    //lấy dữ liệu của người dùng truyền vào rồi xác thực bằng cách gọi phương thức AuthenProvider
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        List<AuthenticationProvider> providers = Arrays.asList(
+                userDetailsCustomAuthenticationProvider(),
+                customAuthenticationProvider()
+        );
+
+        return new CustomProviderManager(providers);
+    }
+
+
+
 
 
     @Bean
@@ -77,10 +109,10 @@ public class WebSecurityconfig {
 
 
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+//        return configuration.getAuthenticationManager();
+//    }
 
 
     @Bean

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -36,7 +37,8 @@ public class KhachHangController {
     public KhachHangController() {
     }
 
-    @GetMapping({"/admin/User"})
+    @GetMapping({"/User"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public UserRespone getAllUser(
             @RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo,
             @RequestParam(value = "sizePage",defaultValue = "5") Integer  sizePage) {
@@ -50,6 +52,7 @@ public class KhachHangController {
     }
 
     @PostMapping({"/admin/User/insert"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponeObject> insertStaff(@RequestBody Users users) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
         Date current = new Date();
@@ -68,6 +71,7 @@ public class KhachHangController {
     }
 
     @PutMapping({"/admin/User/update"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponeObject> UpdateStaff(@RequestBody Users users) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
         Date current = new Date();
@@ -87,6 +91,7 @@ public class KhachHangController {
     }
 
     @DeleteMapping({"/admin/User/delete/{id}"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponeObject> deleteStaff(@PathVariable("id") Integer idUsers) {
         return ResponseEntity
                 .status(HttpStatus.OK)

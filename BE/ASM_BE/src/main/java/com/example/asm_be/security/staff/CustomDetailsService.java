@@ -1,4 +1,4 @@
-package com.example.asm_be.security;
+package com.example.asm_be.security.staff;
 
 import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
@@ -16,13 +16,9 @@ public class CustomDetailsService implements UserDetailsService {
     @Autowired
     private StaffRepository staffRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Staff> Staff = staffRepository.findByUserName(username);
-        Optional<Users> users = userRepository.findByUserNameOrEmail(username);
 
         if(Staff == null) {
             throw new UsernameNotFoundException("LoginRequest dont exists");

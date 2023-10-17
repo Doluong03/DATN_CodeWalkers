@@ -7,7 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
+@Component
 public class StaffIplm implements StaffService {
     @Autowired
     private StaffRepository staffRepository;
@@ -55,5 +59,20 @@ public class StaffIplm implements StaffService {
             var3.getMessage();
             return false;
         }
+    }
+
+    @Override
+    public Optional<Staff> findByUserName(String userName) {
+        return staffRepository.findByUserName(userName);
+    }
+
+    @Override
+    public boolean existsByUserName(String userName) {
+        return staffRepository.existsByUserName(userName);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return staffRepository.existsByEmail(email);
     }
 }

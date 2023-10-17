@@ -1,3 +1,5 @@
+package com.example.asm_be.security;
+
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.ProviderNotFoundException;

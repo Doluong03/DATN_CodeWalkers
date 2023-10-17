@@ -1,12 +1,40 @@
 
-window.UserController = function ($scope, $http, $window) {
-
+window.UserController = function ($scope, $http, $window,$rootScope) {
 
   $scope.listUSers = [];
   $scope.pageNo = 0;
   $scope.sizePage = 5;
   $scope.lastIndex =0; // phần tử cuối của mảng
+  $scope.listError=false;
 
+  //config headers
+  var headers = {
+    headers: {
+        'Authorization': 'Bearer ' + tokenAuthen(),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        // Các header khác nếu cần
+    }
+};
+
+ //token authen
+ function tokenAuthen() {
+  // Lấy dữ liệu từ localStorage
+  var userDataString = localStorage.getItem('userData');
+
+  // Kiểm tra xem dữ liệu có tồn tại không
+  if (userDataString) {
+      // Chuyển đổi dữ liệu từ chuỗi JSON sang đối tượng JavaScript
+      var userData = JSON.parse(userDataString);
+
+      // Bạn có thể sử dụng userData ở đây
+      console.log(userData.token);
+      return userData.token;
+  } else {
+      // Trường hợp không có dữ liệu trong localStorage
+      console.log('Không có dữ liệu đăng nhập trong localStorage.');
+  }
+}
 
   $scope.formUser = {
     id: "",
@@ -94,28 +122,33 @@ window.UserController = function ($scope, $http, $window) {
     $scope.hienThi($scope.pageNo,$scope.sizePage);
     // Gọi các hàm khác cần thiết với giá trị mới của sizePage
 };
-
-  
   // end phân trang
- 
-  $scope.hienThi = function (pageNo,sizePage) {
-    let apiUrl = apiUser + "?pageNo=" + pageNo+"&sizePage=" + sizePage;
-    $http.get(apiUrl).then(
-      function (response) {
-        // Kiểm tra dữ liệu có được in ra không
-        $scope.listUSers = response.data.usersList;
-        $scope.totalPage = response.data.totalPages;
-        $scope.lastIndex = $scope.listUSers[$scope.listUSers.length - 1].id;
-        console.log(response.data);
-        console.log(response.data.totalPages);
-        
-      },
-      function (error) {
-        console.log(error);
-      }
+
+
+  $scope.hienThi = function (pageNo, sizePage) {
+    
+
+    let apiUrl = apiUser + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+
+    $http.get(apiUrl,headers).then(
+        function (response) {
+            // Xử lý phản hồi thành công
+            $scope.listUSers = response.data.usersList;
+            $scope.totalPage = response.data.totalPages;
+            $scope.lastIndex = $scope.listUSers[$scope.listUSers.length - 1].id;
+            console.log(response.data);
+            console.log(response.data.totalPages);
+            $scope.listError =false;
+        },
+        function (error) {
+            // Xử lý lỗi
+            console.log(error);
+            $scope.listError =true;
+        }
     );
-  };
-  
+};
+
+
   $scope.PageNo = function (pageNo, sizePage) {
     $scope.pageCurrent = pageNo; // Cập nhật pageCurrent khi chọn trang cụ thể
     $scope.sizePage = sizePage; // Cập nhật sizePage
@@ -134,7 +167,7 @@ window.UserController = function ($scope, $http, $window) {
 
     console.log(item);
     let userId = item.id;
-    let api = apiUser + "/delete/" + userId;
+    let api = apiURL  + "admin/User/delete/" + userId;
 
     Swal.fire({
       title: 'Xác nhận',
@@ -146,7 +179,7 @@ window.UserController = function ($scope, $http, $window) {
     }).then((result) => {
       if (result.isConfirmed) {
         // Hành động khi người dùng ấn "Có"
-        $http.delete(api).then(function (response) {
+        $http.delete(api,headers).then(function (response) {
           Swal.fire('Xóa thành công!', '', 'success');
           $scope.hienThi($scope.pageCurrent,$scope.sizePage);
           console.log(response);
@@ -154,7 +187,6 @@ window.UserController = function ($scope, $http, $window) {
       .catch(function (error) {
         console.log(error);
       });
-        $scope.hienThi($scope.pageNo);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hành động khi người dùng ấn "Không"
         Swal.fire('Hủy bỏ', '', 'error');
@@ -188,7 +220,7 @@ window.UserController = function ($scope, $http, $window) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        $http.post(apiUser + "/insert", JSON.stringify($scope.formUser))
+        $http.post(apiAdmin+"User" + "/insert", JSON.stringify($scope.formUser),headers)
           .then(function (response) {
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
             Swal.fire({
@@ -271,7 +303,7 @@ $scope.toggleFormUpdate = function (event, item) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        $http.put(apiUser + "/update", JSON.stringify($scope.formUserUpdate))
+        $http.put(apiAdmin+"User/update" , JSON.stringify($scope.formUserUpdate),headers)
           .then(function (response) {
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
             Swal.fire({

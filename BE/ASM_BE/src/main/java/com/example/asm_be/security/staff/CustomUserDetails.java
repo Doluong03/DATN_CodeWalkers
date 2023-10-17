@@ -1,4 +1,4 @@
-package com.example.asm_be.security;
+package com.example.asm_be.security.staff;
 
 import com.example.asm_be.entities.Staff;
 import lombok.AllArgsConstructor;
