@@ -5,58 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d71f0bcd-3842-4ca2-8ea3-67831a91f29e" name="Changes" comment="Changes">
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/LoginController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/testController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/jwt/JwtAuthenticationEntryPoint.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/jwt/JwtAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/jwt/JwtTokenProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/payload/request/LoginRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/payload/request/SignUpRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/payload/request/userRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/payload/response/JwtRespone.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/payload/response/MessageRespone.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/RoleRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/security/CustomProviderManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/security/WebSecurityconfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/security/staff/CustomDetailsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/security/staff/CustomUserDetails.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/security/user/CustomUsersDetailsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/security/user/UserDetailsCustom.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/AuthService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/RoleService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/AuthServiceIplm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/RoleIplm.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/test.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/Auth/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/KhachHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/KhachHangController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Account.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/FavouriteDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/FavouriteDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/FavouriteDetailsId.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/FavouriteDetailsId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Role.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Staff.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Staff.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Users.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/StaffRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/StaffRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/StaffService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/StaffService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/StaffIplm.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/StaffIplm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/NhanVienController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/NhanVienController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/testController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/payload/request/SignUpRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/payload/request/SignUpRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/AuthServiceIplm.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/AuthServiceIplm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/KhachHangController.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/KhachHangController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Address.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Address.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Staff.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Staff.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Users.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Users.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/StaffRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/StaffRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/UserRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/StaffService.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/StaffService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/SatffImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/config/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/config/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/user-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/user-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/partials/_navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/partials/_navbar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/route.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,6 +84,17 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AsmBeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="ASM_BE" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.asm_be.AsmBeApplication" />
@@ -175,7 +143,8 @@
       <workItem from="1697216190609" duration="251000" />
       <workItem from="1697248303649" duration="62086000" />
       <workItem from="1697476545104" duration="9826000" />
-      <workItem from="1697554477003" duration="1499000" />
+      <workItem from="1697554477003" duration="2237000" />
+      <workItem from="1697615787855" duration="9227000" />
     </task>
     <servers />
   </component>

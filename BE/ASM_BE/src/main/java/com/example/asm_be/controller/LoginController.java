@@ -1,38 +1,65 @@
 package com.example.asm_be.controller;
 
 import com.example.asm_be.payload.request.LoginRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.asm_be.payload.request.SignUpRequest;
+import com.example.asm_be.payload.request.userRequest;
+import com.example.asm_be.payload.response.JwtRespone;
+import com.example.asm_be.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @CrossOrigin({"*"})
-@RequestMapping({"/api/test"})
+@RequestMapping({"/api/auth"})
 public class LoginController {
+    @Autowired
+    private AuthService authService;
 
-    // Build Login REST API
-    @GetMapping("/admin")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String admin(){
-        return "phan quyen admin";
+    private Set<String> tokenBlacklist = new HashSet<>();
+
+
+    @PostMapping("/signUp")
+    public ResponseEntity<?> Resgiter(@RequestBody SignUpRequest singUpRequest){
+        return authService.Register(singUpRequest);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<JwtRespone> authenticate(@RequestBody LoginRequest account){
+        return authService.Login(account);
     }
 
-    @GetMapping("/employee")
-    @PreAuthorize("hasRole('ROLE_EMPLOYEE')")
-    public String employee(){
-        return "phan quyen employee";
+    @PostMapping("/signUpUser")
+    public ResponseEntity<?> ResgiterUser(@RequestBody userRequest userRequest){
+        return authService.RegisterUser(userRequest);
     }
 
-    @GetMapping("/admin-employee")
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_EMPLOYEE')")
-    public String ca2quyen(){
-        return "phan quyen admin va employee";
+    @PostMapping("/loginUser")
+    public ResponseEntity<JwtRespone> authenticate2(@RequestBody userRequest account){
+        System.out.println(account);
+        return authService.LoginUser(account);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
+        // Extract the token from the Authorization header
+        String extractedToken = extractToken(token);
 
+        // Invalidate the token on the server side (add it to the blacklist)
+        tokenBlacklist.add(extractedToken);
 
+        // You can also perform additional cleanup tasks here
+
+        return ResponseEntity.ok("Logout successful");
+    }
+
+    private String extractToken(String authorizationHeader) {
+        // Extract the token from the "Bearer" token format
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+        return null;
+    }
 }

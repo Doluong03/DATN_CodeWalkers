@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin({"*"})
@@ -52,5 +53,11 @@ public class NhanVienController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Delete thanh cong", this.staffService.delete(idStaff)));
+    }
+
+    @GetMapping({"/admin/profile/{username}"})
+    public Staff getProfile(@PathVariable("username") String  username) {
+         Optional<Staff> staffList = staffService.findByUserName(username);
+         return (staffList.get());
     }
 }

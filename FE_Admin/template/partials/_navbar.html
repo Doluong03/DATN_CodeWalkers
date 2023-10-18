@@ -70,14 +70,14 @@
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" ng-href="/template/login.html" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile"/>
+              <img id="profileImage"  alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item" ng-href="/template/login.html">
                 <i class="ti-settings text-primary"></i>
                 Settings
               </a>
-              <a class="dropdown-item" onclick="LogoutAdmin()">
+              <a class="dropdown-item" onclick="logout()">
                 <i class="ti-power-off text-primary"></i>
                 Logout
               </a>
@@ -96,10 +96,63 @@
     </nav>
 
 
-    <script>
-      function LogoutAdmin(){
-        alert("You have been logged out")
-        localStorage.removeItem('userData');
-        window.location.href = "http://127.0.0.1:5500/template/index.html#/trang-chu";
-      }
-    </script>
+<script>
+
+          var data =  localStorage.getItem('userData');
+          var accessToken = JSON.parse(data);
+
+        function logout() {
+            // Call the server-side logout endpoint
+            fetch('http://localhost:8080/api/auth/logout', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + getAccessToken(),
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Clear the JWT from local storage or cookies
+                    clearToken();
+                    // Redirect or perform other actions after successful logout
+                    window.location.href = "/template/login.html";
+                } else {
+                    console.error('Logout failed:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error during logout:', error);
+            });
+        }
+
+        function getAccessToken() {       
+            return accessToken.token;
+        }
+
+        function clearToken() {
+            // Implement this function to clear the JWT from local storage or cookies
+            // For example, if stored in local storage:
+            localStorage.removeItem('userData');
+        }
+
+        async function fetchData() {
+   try {
+     const response = await fetch('http://localhost:8080/CodeWalkers/admin/profile/'+accessToken.username);
+
+     if (!response.ok) throw new Error('Network response was not ok');
+
+       const data = await response.json();
+
+        // Giả sử data là chuỗi Base64 bạn đã lấy được
+        const imageData = "/template/images/"+data.image;
+        // Thay đổi src của thẻ img
+        document.getElementById('profileImage').src = imageData;
+
+          console.log(data);
+        } catch (error) {
+          console.error('There was a problem with the fetch operation:', error);
+          }
+       }
+        fetchData();
+
+  </script>

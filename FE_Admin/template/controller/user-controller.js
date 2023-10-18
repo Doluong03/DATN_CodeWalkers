@@ -5,7 +5,7 @@ window.UserController = function ($scope, $http, $window,$rootScope) {
   $scope.pageNo = 0;
   $scope.sizePage = 5;
   $scope.lastIndex =0; // phần tử cuối của mảng
-  $scope.listError=false;
+  
 
   //config headers
   var headers = {
@@ -138,12 +138,10 @@ window.UserController = function ($scope, $http, $window,$rootScope) {
             $scope.lastIndex = $scope.listUSers[$scope.listUSers.length - 1].id;
             console.log(response.data);
             console.log(response.data.totalPages);
-            $scope.listError =false;
         },
         function (error) {
             // Xử lý lỗi
             console.log(error);
-            $scope.listError =true;
         }
     );
 };

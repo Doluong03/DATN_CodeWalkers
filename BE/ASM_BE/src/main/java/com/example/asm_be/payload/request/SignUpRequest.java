@@ -32,5 +32,7 @@ public class SignUpRequest {
 
     private boolean status = true;
 
+    private String image;
+
     private Set<String> listRoles;
 }

@@ -107,6 +107,7 @@ public class AuthServiceIplm implements AuthService {
         staff.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         staff.setPhoneNumber(signUpRequest.getPhoneNumber());
         staff.setStatus(signUpRequest.isStatus());
+        staff.setImage(signUpRequest.getImage());
 
         Set<String> strRoles = signUpRequest.getListRoles();
         Set<Role> listRole = new HashSet<>();
