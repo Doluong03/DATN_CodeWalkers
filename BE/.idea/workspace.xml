@@ -107,7 +107,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Download/DATN" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
      <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -250,6 +250,8 @@
       <workItem from="1697476545104" duration="9826000" />
       <workItem from="1697554477003" duration="2237000" />
       <workItem from="1697615787855" duration="9227000" />
+      <workItem from="1697613470943" duration="6853000" />
+      <workItem from="1697653245270" duration="39000" />
     </task>
     <servers />
   </component>
