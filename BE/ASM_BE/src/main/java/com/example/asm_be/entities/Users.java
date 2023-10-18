@@ -20,9 +20,6 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "ma_dang_nhap")
-    private String code;
-
     @Column(name = "ten_khach_hang")
     private String name;
 
@@ -35,12 +32,8 @@ public class Users {
     @Column(name = "gioi_tinh")
     private Boolean gender;
 
-
     @Column(name = "email")
     private String Email;
-
-    @Column(name = "mat_khau")
-    private String password;
 
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")

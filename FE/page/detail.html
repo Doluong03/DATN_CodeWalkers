@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div class="col-lg-4 prImg">
+  <div class="col-lg-4 prImg" >
     <img ng-src="{{ currentImageSource }}" class="img-fluid " alt="{{currentImageSource}}" data-bs-toggle="modal"
       data-bs-target="#exampleModal">
   </div>
@@ -111,14 +111,15 @@
     <!-- Tabs -->
   <div class="size-container">
       <div class="size" ng-repeat="sz in sizes" ng-style="{'background-color': selectedValue === sz.name ? 'lightblue' : ''}">
-          <input type="radio" name="size" id="{{sz.description}}" ng-model="selectedValue" ng-value="sz.name" class="visually-hidden" ng-click="selectSize(sz.name)">
+          <input type="radio" name="size" id="{{sz.description}}" ng-model="selectedValue" ng-value="sz.name" class="visually-hidden" ng-click="selectSize(sz.id)">
           <label for="{{sz.description}}" tabindex="-1" class="fs-5">{{sz.name}}</label>
       </div>
+      <p>{{selectedValue}}</p>
     </div>
     <!-- End Tabs -->
 
     <!-- button  -->
-    <a href="#cart" type="button" class="btn btn-dark  rounded-3 w-50 offset-2 mb-2 "> Thêm vào giỏ hàng </a>
+    <a  type="button" class="btn btn-dark  rounded-3 w-50 offset-2 mb-2 " ng-click="addCart()"> Thêm vào giỏ hàng </a>
     <a type="button" class="btn btn-light border border-5 rounded-3 w-50 offset-2"> Yêu thích ❤️ </a>
     <hr>
     <!-- End button  -->
@@ -179,12 +180,32 @@
 
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Modal -->
+<div class="custom-modal row">
+<div class="modal fade col-lg-1" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog col-lg-1">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- Modal -->
 
 <style>
+ /* Lớp CSS tùy chỉnh cho modal */
 
 </style>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- End Feature Tabs -->
 <div class="like container mb-5">
   <div class="row">

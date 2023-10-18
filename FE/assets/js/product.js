@@ -7,6 +7,7 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
     $scope.colors = [];
     $scope.items = [];
     $scope.itemsSort = [];
+    $scope.brands = [];
     $scope.loadBrand = function () {
         var url = `${host}/api/product/brand`;
         $http.get(url).then(res => {
@@ -75,6 +76,9 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
     angular.element(document).on('keypress', function(event) {
         if (event.key === 'Enter') {
             // Xử lý tìm kiếm ở đây
+            if($scope.keyword ==""){
+                $scope.loadAllPr()
+            }
             $scope.keyword=$scope.name;
             $scope.loadSearch();
         }
@@ -92,7 +96,6 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
             $scope.products = 1;
         }
             // Gọi loadDetail sau khi tải dữ liệu thành công
-            $scope.loadDetail();
             $scope.numVisibleItems = 4;
             $scope.slides = $scope.splitIntoSlides($scope.items, $scope.numVisibleItems);
         }).catch(error => {
@@ -107,7 +110,6 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
             console.log(res.data);
             console.log("Success", res);
             // Gọi loadDetail sau khi tải dữ liệu thành công
-            $scope.loadDetail();
             $scope.numVisibleItems = 4;
             $scope.slides = $scope.splitIntoSlides($scope.items, $scope.numVisibleItems);
         }).catch(error => {

@@ -1,11 +1,9 @@
 ﻿-- Bật chế độ IDENTITY_INSERT cho bảng
 SET IDENTITY_INSERT ChiTietSanPham ON;
 
--- Xóa dữ liệu trong bảng (nếu cần)
-DELETE FROM ChiTietSanPham;
-
 -- Reset lại giá trị identity
 DBCC CHECKIDENT ('ChiTietSanPham', RESEED, 0);
+DBCC CHECKIDENT ('HinhAnh', RESEED, 0);
 
 -- Tắt chế độ IDENTITY_INSERT
 SET IDENTITY_INSERT ChiTietSanPham OFF;
@@ -68,18 +66,18 @@ VALUES
 
 
   -- Thêm bản ghi liên quan đến khách hàng vào bảng "KhachHang"
-INSERT INTO KhachHang (ma_dang_nhap, ten_khach_hang, email, so_dien_thoai, mat_khau, ngay_sinh, gioi_tinh, ngay_tao, ngay_sua, trang_thai_id,id_tai_khoan)
+INSERT INTO KhachHang ( ten_khach_hang, email, so_dien_thoai, ngay_sinh, gioi_tinh, ngay_tao, ngay_sua, trang_thai_id, id_tai_khoan)
 VALUES
-  (N'customer001', N'Nguyễn Văn A', N'nguyenvana@example.com', N'0123456789', N'hashed_password1', N'1990-01-15', 1, N'2023-09-20', N'2023-09-21', 1,1),
-  (N'customer002', N'Trần Thị B', N'tranthib@example.com', N'0987654321', N'hashed_password2', N'1985-04-25', 0, N'2023-09-19', N'2023-09-20', 1,2),
-  (N'customer003', N'Lê Văn C', N'levanc@example.com', N'0369874512', N'hashed_password3', N'1995-08-10', 1, N'2023-09-18', N'2023-09-19',  1,3),
-  (N'customer004', N'Phạm Thị D', N'phamthid@example.com', N'0764532189', N'hashed_password4', N'1988-12-05', 0, N'2023-09-17', N'2023-09-18', 1,4),
-  (N'customer005', N'Hoàng Văn E', N'hoangvane@example.com', N'0932145678', N'hashed_password5', N'1992-03-30', 1, N'2023-09-16', N'2023-09-17',  1,5),
-  (N'customer006', N'Nguyễn Thị F', N'nguyenthif@example.com', N'0658749123', N'hashed_password6', N'1998-07-20', 0, N'2023-09-15', N'2023-09-16',  1,6),
-  (N'customer007', N'Vũ Văn G', N'vuvang@example.com', N'0523698741', N'hashed_password7', N'1991-02-03', 1, N'2023-09-14', N'2023-09-15',  1,7),
-  (N'customer008', N'Trần Văn H', N'tranvanh@example.com', N'0365987420', N'hashed_password8', N'1994-06-18', 1, N'2023-09-13', N'2023-09-14', 1,8),
-  (N'customer009', N'Lê Thị I', N'lethii@example.com', N'0785643210', N'hashed_password9', N'1989-10-12', 0, N'2023-09-12', N'2023-09-13',  1,9),
-  (N'customer010', N'Phạm Văn J', N'phamvanj@example.com', N'0912345678', N'hashed_password10', N'1997-05-28', 1, N'2023-09-11', N'2023-09-12', 1,10);
+  ( N'Nguyễn Văn A', N'nguyenvana@example.com', N'0123456789',   N'1990-01-15', 1, N'2023-09-20', N'2023-09-21', 1,1),
+  ( N'Trần Thị B', N'tranthib@example.com', N'0987654321',   N'1985-04-25', 0, N'2023-09-19', N'2023-09-20', 1,2),
+  ( N'Lê Văn C', N'levanc@example.com', N'0369874512',   N'1995-08-10', 1, N'2023-09-18', N'2023-09-19',  1,3),
+  ( N'Phạm Thị D', N'phamthid@example.com', N'0764532189',   N'1988-12-05', 0, N'2023-09-17', N'2023-09-18', 1,4),
+  (  N'Hoàng Văn E', N'hoangvane@example.com', N'0932145678',   N'1992-03-30', 1, N'2023-09-16', N'2023-09-17',  1,5),
+  (  N'Nguyễn Thị F', N'nguyenthif@example.com', N'0658749123',   N'1998-07-20', 0, N'2023-09-15', N'2023-09-16',  1,6),
+  (  N'Vũ Văn G', N'vuvang@example.com', N'0523698741',   N'1991-02-03', 1, N'2023-09-14', N'2023-09-15',  1,7),
+  (  N'Trần Văn H', N'tranvanh@example.com', N'0365987420',   N'1994-06-18', 1, N'2023-09-13', N'2023-09-14', 1,8),
+  (  N'Lê Thị I', N'lethii@example.com', N'0785643210',   N'1989-10-12', 0, N'2023-09-12', N'2023-09-13',  1,9),
+  ( N'Phạm Văn J', N'phamvanj@example.com', N'0912345678',  N'1997-05-28', 1, N'2023-09-11', N'2023-09-12', 1,10);
 
 
   -- Thêm bản ghi liên quan đến sản phẩm giày vào bảng "DanhGia"
@@ -196,50 +194,6 @@ VALUES
   (N'SP005-001', 60, 90, 5, 9, 9, 9, 1, 9),
   (N'SP005-002', 75, 85, 5, 10, 10, 10, 1, 10);
 
-  -- Thêm bản ghi về các thành phố vào bảng "ThanhPho"
-INSERT INTO ThanhPho (ma_thanh_pho, ten_thanh_pho)
-VALUES
-  (N'TP001', N'Hà Nội'),
-  (N'TP002', N'Hồ Chí Minh'),
-  (N'TP003', N'Đà Nẵng'),
-  (N'TP004', N'Hải Phòng'),
-  (N'TP005', N'Cần Thơ'),
-  (N'TP006', N'Hà Tĩnh'),
-  (N'TP007', N'Vinh'),
-  (N'TP008', N'Nha Trang'),
-  (N'TP009', N'Huế'),
-  (N'TP010', N'Hạ Long');
-
-
-  -- Thêm bản ghi về các quận/huyện vào bảng "QuanHuyen"
-INSERT INTO QuanHuyen (ma_quan_huyen, ten_quan_huyen, thanh_pho_id)
-VALUES
-  (N'QH001', N'Quận 1', 1),
-  (N'QH002', N'Quận 2', 1),
-  (N'QH003', N'Quận 3', 1),
-  (N'QH004', N'Quận 4', 1),
-  (N'QH005', N'Quận 5', 1),
-  (N'QH006', N'Quận 6', 2),
-  (N'QH007', N'Quận 7', 2),
-  (N'QH008', N'Quận 8', 2),
-  (N'QH009', N'Quận 9', 3),
-  (N'QH010', N'Quận 10', 3);
-
-  -- Thêm bản ghi về các phường/xã vào bảng "PhuongXa"
-INSERT INTO PhuongXa (ma_phuong_xa, ten_phuong_xa, thanh_pho_id, quan_huyen_id)
-VALUES
-  (N'PX001', N'Phường 1', 1, 1),
-  (N'PX002', N'Phường 2', 1, 2),
-  (N'PX003', N'Phường 3', 1, 3),
-  (N'PX004', N'Phường 4', 1, 4),
-  (N'PX005', N'Phường 5', 1, 5),
-  (N'PX006', N'Phường 6', 2, 6),
-  (N'PX007', N'Phường 7', 2, 7),
-  (N'PX008', N'Phường 8', 2, 8),
-  (N'PX009', N'Phường 9', 3, 9),
-  (N'PX010', N'Phường 10', 3, 10);
-
-
   -- Thêm bản ghi về nhân viên vào bảng "NhanVien"
 INSERT INTO NhanVien (ho_nhan_vien, ten_nhan_vien, ngay_sinh, gioi_tinh, dia_chi, email, so_dien_thoai, can_cuoc, mat_khau, trang_thai_id,id_tai_khoan)
 VALUES
@@ -299,18 +253,5 @@ VALUES
   (N'876 Đường XYZ, Phường 10, Quận 10, TP.HCM', 10, 10, 1, 10);
 
 
-  -- Thêm bản ghi về phiếu giao hàng vào bảng "PhieuGiaoHang"
-INSERT INTO PhieuGiaoHang (nguoi_nhan, sdt_nguoi_nhan, nguoi_giao, sdt_nguoi_giao, ngay_giao, ngay_nhan, phi_giao_hang, mo_ta, hoa_don_id, dia_chi_id, trang_thai_id)
-VALUES
-  (N'Nguyễn Văn A', N'0901234567', N'Trần Thị B', N'0912345678', N'2023-09-01', N'2023-09-02', 20.0, N'Mô tả phiếu giao 1', 1, 1, 1),
-  (N'Lê Hữu C', N'0923456789', N'Phạm Duy D', N'0934567890', N'2023-09-03', N'2023-09-04', 25.0, N'Mô tả phiếu giao 2', 2, 2, 1),
-  (N'Vũ Thị E', N'0945678901', N'Hoàng Minh F', N'0956789012', N'2023-09-05', N'2023-09-06', 30.0, N'Mô tả phiếu giao 3', 3, 3, 1),
-  (N'Đinh Thị G', N'0967890123', N'Bùi Văn H', N'0978901234', N'2023-09-07', N'2023-09-08', 35.0, N'Mô tả phiếu giao 4', 4, 4, 1),
-  (N'Ngô Thị I', N'0989012345', N'Mai Văn K', N'0990123456', N'2023-09-09', N'2023-09-10', 40.0, N'Mô tả phiếu giao 5', 5, 5, 1),
-  (N'Trần Thị L', N'0901122334', N'Nguyễn Văn M', N'0912233445', N'2023-09-11', N'2023-09-12', 45.0, N'Mô tả phiếu giao 6', 6, 6, 1),
-  (N'Hà Văn N', N'0901122334', N'Lê Thị O', N'0912233445', N'2023-09-13', N'2023-09-14', 50.0, N'Mô tả phiếu giao 7', 7, 7, 1),
-  (N'Nguyễn Văn P', N'0901122334', N'Trần Thị Q', N'0912233445', N'2023-09-15', N'2023-09-16', 55.0, N'Mô tả phiếu giao 8', 8, 8, 1),
-  (N'Trần Thị R', N'0901122334', N'Nguyễn Văn S', N'0912233445', N'2023-09-17', N'2023-09-18', 60.0, N'Mô tả phiếu giao 9', 9, 9, 1),
-  (N'Nguyễn Văn T', N'0901122334', N'Trần Thị U', N'0912233445', N'2023-09-19', N'2023-09-20', 65.0, N'Mô tả phiếu giao 10', 10, 10, 1);
 
 

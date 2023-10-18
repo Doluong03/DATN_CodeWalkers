@@ -25,4 +25,8 @@ public interface ProductDetailService {
     public List<ProductDetail> getSortedProducts();
     public List<ProductDetail> getSortedProducts_priceAsc();
     public List<ProductDetail> getSortedProducts_priceDesc();
+    public void updateProductSize(int  productId, String newSize);
+    public ProductDetail findBySize(int proId ,int sizeId);
+
+
 }

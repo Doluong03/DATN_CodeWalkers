@@ -1,7 +1,9 @@
 package com.example.asm_be.service.impl;
 
 import com.example.asm_be.entities.ProductDetail;
+import com.example.asm_be.entities.Size;
 import com.example.asm_be.repositories.ProductDetailRepository;
+import com.example.asm_be.repositories.SizeRepository;
 import com.example.asm_be.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -10,15 +12,18 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ProductDetailImpl implements ProductDetailService  {
     @Autowired
     private ProductDetailRepository productDetailRepository;
+    @Autowired
+    private SizeRepository sizeRepository;
 
     @Override
     public List<ProductDetail> getAll() {
-        return productDetailRepository.findAll();
+        return productDetailRepository.getAll();
     }
 
     @Override
@@ -43,7 +48,7 @@ public class ProductDetailImpl implements ProductDetailService  {
 
     @Override
     public List<ProductDetail> getPrBetsSl() {
-        List<ProductDetail> detailList = productDetailRepository.findAll();
+        List<ProductDetail> detailList = productDetailRepository.getAll();
         Iterator<ProductDetail> iterator = detailList.iterator();
         while (iterator.hasNext()) {
             ProductDetail x = iterator.next();
@@ -89,4 +94,27 @@ public class ProductDetailImpl implements ProductDetailService  {
     public List<ProductDetail> getSortedProducts_priceDesc() {
         return productDetailRepository.findAllByOrderByPriceDesc();
     }
+
+    @Override
+    public void updateProductSize(int productId, String newSize) {
+            // Tìm sản phẩm theo ID
+        Optional<ProductDetail> productOptional = productDetailRepository.findById(productId);
+        Optional<Size> sizeOptional = Optional.ofNullable(sizeRepository.findByName(newSize));
+        if (productOptional.isPresent()) {
+            ProductDetail product = productOptional.get();
+            // Cập nhật size của sản phẩm
+            product.setSize(sizeOptional.get());
+            productDetailRepository.save(product); // Lưu lại sản phẩm cập nhật
+        } else {
+            throw new RuntimeException("Không tìm thấy sản phẩm với ID: " + productId);
+        }
+
+    }
+
+    @Override
+    public ProductDetail findBySize(int proId, int sizeId) {
+       return productDetailRepository.findBySize(proId, sizeId);
+    }
+
+
 }

@@ -11,8 +11,18 @@ import java.util.List;
 import java.util.UUID;
 @Repository
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Integer> {
+    @Query("SELECT c\n" +
+            "FROM ChiTietSanPham c\n" +
+            "WHERE c.id IN (\n" +
+            "    SELECT MIN(c2.id)\n" +
+            "    FROM ChiTietSanPham c2\n" +
+            "    GROUP BY c2.product.id\n" +
+            ")\n")
+    List<ProductDetail> getAll();
     List<ProductDetail> findByProduct_NameContaining(String keyword);
     List<ProductDetail> findAllByOrderByProduct_NameAsc();
     List<ProductDetail> findAllByOrderByPriceAsc();
     List<ProductDetail> findAllByOrderByPriceDesc();
+    @Query("select p from ChiTietSanPham p where p.product.id=?1 and p.size.id =?2")
+    ProductDetail findBySize(int prId,int sizeId);
 }

@@ -26,6 +26,22 @@ public class Bill {
 
     @Column(name = "ghi_chu")
     private String description;
+    @Column(name = "dia_chi_chi_tiet")
+    private String address;
+    @Column(name = "phuong_xa_id")
+    private int ward;
+    @Column(name = "thanh_pho_id")
+    private int province;
+    @Column(name = "quan_huyen_id")
+    private int district;
+    @Column(name = "ngay_giao")
+    private Date shipDate;
+    @Column(name = "phi_giao_hang")
+    private Double fee;
+    @Column(name = "tong_tien")
+    private Double totalPay;
+    @Column(name = "phuong_thuc")
+    private int paymentOptions;
 
     @Column(name = "ngay_lap")
     private Date createdAt;
@@ -33,6 +49,9 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "khach_hang_id")
     private Users users;
+    @ManyToOne
+    @JoinColumn(name = "trang_thai_id")
+    private Status status;
 
     @ManyToOne
     @JoinColumn(name = "nguoi_lap_id")
