@@ -6,6 +6,7 @@ import com.example.asm_be.repositories.ProductDetailRepository;
 import com.example.asm_be.repositories.SizeRepository;
 import com.example.asm_be.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class ProductDetailImpl implements ProductDetailService  {
+public class ProductDetailImpl implements ProductDetailService {
     @Autowired
     private ProductDetailRepository productDetailRepository;
     @Autowired
@@ -24,11 +25,12 @@ public class ProductDetailImpl implements ProductDetailService  {
     @Override
     public List<ProductDetail> getAll() {
         return productDetailRepository.getAll();
+    }
 
-    // @Override
-    // public Page<ProductDetail> getAll(Integer pageNo,Integer sizePage) {
-    //     Pageable pageable = PageRequest.of(pageNo,sizePage);
-    //     return productDetailRepository.findAll(pageable);
+    @Override
+    public Page<ProductDetail> getAllPage(Integer pageNo, Integer sizePage) {
+        Pageable pageable = PageRequest.of(pageNo, sizePage);
+        return productDetailRepository.findAll(pageable);
     }
 
     @Override
@@ -82,6 +84,7 @@ public class ProductDetailImpl implements ProductDetailService  {
         }
         return detailList;
     }
+
     @Override
     public List<ProductDetail> findByName(String keyWord) {
         List<ProductDetail> allProductDetails = productDetailRepository.findAll();
@@ -104,6 +107,7 @@ public class ProductDetailImpl implements ProductDetailService  {
         }
         return matchingProductDetails;
     }
+
     public List<ProductDetail> getSortedProducts() {
         return productDetailRepository.findAllByOrderByProduct_NameAsc();
     }
@@ -120,7 +124,7 @@ public class ProductDetailImpl implements ProductDetailService  {
 
     @Override
     public void updateProductSize(int productId, String newSize) {
-            // Tìm sản phẩm theo ID
+        // Tìm sản phẩm theo ID
         Optional<ProductDetail> productOptional = productDetailRepository.findById(productId);
         Optional<Size> sizeOptional = Optional.ofNullable(sizeRepository.findByName(newSize));
         if (productOptional.isPresent()) {
@@ -136,6 +140,6 @@ public class ProductDetailImpl implements ProductDetailService  {
 
     @Override
     public ProductDetail findBySize(int proId, int sizeId) {
-       return productDetailRepository.findBySize(proId, sizeId);
+        return productDetailRepository.findBySize(proId, sizeId);
     }
 }

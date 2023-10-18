@@ -44,8 +44,6 @@ public class Users {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "dia_chi")
-    private String address;
 
     @Column(name = "hinh_anh")
     private String image;

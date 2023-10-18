@@ -10,7 +10,9 @@ import java.util.UUID;
 @Service
 public interface ProductDetailService {
 
-    public Page<ProductDetail> getAll(Integer pageNo,Integer sizePage);
+    public Page<ProductDetail> getAllPage(Integer pageNo,Integer sizePage);
+
+    public List<ProductDetail> getAll();
 
     public ProductDetail getOne(int id);
 
