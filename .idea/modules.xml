@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/DATN.iml" filepath="$PROJECT_DIR$/.idea/DATN.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BE/ASM_BE/ASM_BE.iml" filepath="$PROJECT_DIR$/BE/ASM_BE/ASM_BE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/DATN_CodeWalkers.iml" filepath="$PROJECT_DIR$/.idea/DATN_CodeWalkers.iml" />
     </modules>
   </component>
 </project>

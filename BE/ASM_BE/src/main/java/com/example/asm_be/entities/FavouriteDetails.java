@@ -1,5 +1,4 @@
 package com.example.asm_be.entities;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +12,6 @@ import lombok.Setter;
 @Setter
 @Table(name = "YeuThichChiTiet")
 public class FavouriteDetails {
-
     @Id
     @Column(name = "id_yeu_thich")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +24,6 @@ public class FavouriteDetails {
     private ProductDetail productDetail;
     @Column(name = "ghi_chu")
     private String description;
-
     @Column(name = "trang_thai")
     private int   status;
-
 }

@@ -23,7 +23,6 @@ public class ProductDetail {
     private int quantity;
     @Column(name = "don_gia")
     private double price;
-
     @ManyToOne()
     @JoinColumn(name = "san_pham_id")
     private Product product;
@@ -38,11 +37,9 @@ public class ProductDetail {
     @ManyToOne()
     @JoinColumn(name = "mau_sac_id")
     private Color color;
-
     @ManyToOne()
     @JoinColumn(name = "khuyen_mai_id")
     private Promotional promotional;
-
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;

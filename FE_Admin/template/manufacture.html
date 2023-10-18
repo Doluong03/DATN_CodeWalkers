@@ -1,0 +1,202 @@
+
+
+        <!-- start table -->
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">User table</h4>
+            
+            
+
+                <div class="search-container">
+                  <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a User">
+                  <i class="fa-light fa-magnifying-glass"></i>
+                </div>
+
+                <div class="btn-group">
+                  <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="toggleForm()">
+                    <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
+
+                  <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToPDF();">
+                         PDF                                                                  
+                  </button>
+                 
+                  <input type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)" style="display:none;">
+                  <button type="button" id="btn-icon" class="btn btn-secondary " onclick="triggerFileInput()">
+                     Upload
+                  </button>
+                    
+                  <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
+                  <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button>
+                  
+                  </div>
+                
+             
+             
+         <!-- start table -->
+                <div class="table-responsive pt-3">
+                  <table class="display expandable-table"
+                  style="width: 100%" id="ManuFTable">
+                    <thead>
+                      <tr>
+                        <th  ng-click="sortData('id')">#<span class="{{getSortClass('id')}}"></span></th>
+                        <th ng-click="sortData('tenNhaSanXuat')">Tên Nhà sản xuất<span class="{{getSortClass('tenNhaSanXuat')}}"></span></th>
+                        <th ng-click="sortData('moTa')">Mô Tả<span class="{{getSortClass('moTa')}}"></span></th>
+                        <th ng-click="sortData('trangThai')">Trạng Thái<span class="{{getSortClass('trangThai')}}"></span></th>                       
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody >
+                      <tr ng-repeat="item in listManufacture | filter:searchText | orderBy:sortColumn:reverseSort">
+                        <td>{{item.id}}</td>
+                        <td> {{item.name}}</td>
+                        <td>{{item.description}}</td>
+                        <td >
+                          <span ng-if="item.status.name == 'Đang hoạt động'" style="margin-left: -9px;">
+                              <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i> Active
+                          </span>
+                          <span ng-if="item.status.name != 'Đang hoạt động'">
+                              <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Disable
+                          </span>
+                      </td>
+                      
+                       <td >
+                         <a  href="#" ng-click="toggleFormUpdate($event,item)"  style="text-decoration: none; color: #1545e1;"><i class="fa-solid fa-pen-to-square" ></i> </a>
+                         <a href="#" ng-click="removeStaff($event,item)" style="text-decoration: none; color: #FC424A;">  <i class="fas fa-fw  fa-trash"></i> </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+              <!-- phân trang -->
+              <nav id="phantrang" aria-label="Page navigation example" style="color: #000000;">
+
+                <p style="margin-top: 20px;">Đang xem {{listManufacture[0].id}} đến {{lastIndex}} trong tổng số {{sizePage}} mục</p>
+                <!-- Phân trang -->
+                <ul class="pagination justify-content-end" style="margin-top: 20px;">
+                    <!-- Các nút phân trang ở đây -->
+                    <li class="page-item" ng-class="{ 'disabled': pageCurrent === 0, 'hovered': hoveredPage === 'previous' }">
+                      <a class="page-link" ng-click="previousPage()" ng-class="{ 'disabled-link': pageCurrent === 0 }" ng-mouseenter="onHover('previous')" ng-mouseleave="onLeave()"><span aria-hidden="true">&laquo;</span></a>
+                    </li>
+                    <li class="page-item" ng-repeat="page in pageRange()" ng-class="{ 'active': page === pageCurrent, 'hovered': hoveredPage === page }">
+                      <a class="page-link" ng-click="PageNo(page, sizePage)" ng-mouseenter="onHover(page)" ng-mouseleave="onLeave()">{{ page }}</a>
+                  </li>
+                  
+                    <li class="page-item" ng-class="{ 'disabled': pageCurrent === totalPage - 1, 'hovered': hoveredPage === 'next' }">
+                      <a class="page-link" ng-click="nextPage()" ng-class="{ 'disabled-link': pageCurrent === totalPage - 1 }" ng-mouseenter="onHover('next')" ng-mouseleave="onLeave()"> <span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                </ul>
+                   </nav>  
+
+                <div id="sizePage">
+                    <label for="itemsPerPage">Xem:</label>
+                    <select id="itemsPerPage" ng-model="sizePage" ng-init="sizePage = '5'" ng-change="onSizePageChange()">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="100">100</option>
+                    </select>
+                    <label for="itemsPerPage">mục</label>
+                </div>
+                <!-- kết thúc phân trang -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end table -->
+    
+          <!-- form add -->
+          <div class="col-12 grid-margin stretch-card" ng-if="showForm">
+            <div class="card">
+              <div class="card-body">
+                <!-- <h4 class="card-title">Basic form elements</h4> -->
+                
+                <form class="forms-sample" >
+                 
+                  
+                  <div class="form-group">
+                    <label for="exampleSelectGender">Tên Nhà Sản Xuất</label>
+                    <input type="text" class="form-control" ng-model="formManufacture.name">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="exampleSelectGender">Mô Tả</label>
+                    <input type="text" class="form-control"  ng-model="formManufacture.description">
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="exampleSelectGender">Trạng Thái</label>
+                    <select class="form-control" ng-model="formManufacture.status.id">
+                        <option value="" selected>Vui lòng chọn trạng thái</option>
+                        <option value="1">Đang hoạt động</option>
+                        <option value="2">Ngừng hoạt động</option>
+                    </select>
+                </div>
+                
+                  
+
+                  <button id="btn-action-add" type="submit"  ng-click="addUser($event)">Submit</button>
+                  <button id="btn-action-cancel"  ng-click="toggleForm()">Cancel</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          
+          <!-- form update -->
+          <div class="col-12 grid-margin stretch-card"  ng-show="showFormUpdate">
+            <div class="card">
+              <div class="card-body">
+                <!-- <h4 class="card-title">Basic form elements</h4> -->
+                
+                <form class="forms-sample" >
+                  
+                  <form class="forms-sample" >
+                    <div class="form-group">
+                      <input type="hidden" class="form-control" ng-model="formManufactureUpdate.id">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="exampleSelectGender">Tên Nhà Sản Xuất</label>
+                      <input type="text" class="form-control" ng-model="formManufactureUpdate.name">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="exampleSelectGender">Mô Tả</label>
+                      <input type="text" class="form-control" ng-model="formManufactureUpdate.description">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="exampleSelectGender">Trạng Thái</label>
+                      <select class="form-control" id="exampleSelectGender" ng-model="formManufactureUpdate.status.id"
+                              ng-options="status.value as status.label for status in statusOptions">
+                      </select>
+                  </div>
+                    
+                  <button id="btn-action-add" ng-click="UpdateUser($event)">Submit</button>
+                  <button id="btn-action-cancel" ng-click="toggleFormUpdate($event, null)">Cancel</button>
+
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="import-container">
+            <div ng-show="importing" class="import-animation"></div>
+            <p ng-show="importing">Processing...</p>
+        </div>
+
+        <Script>
+          function triggerFileInput() {
+            // Kích hoạt sự kiện click trên input-file
+             document.getElementById('input-file').click();}
+  
+         </Script>
+
+        
+                <!-- <input  type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)"> -->
+                <!-- <button class=" btn-primary"  id="add-icon" ng-click="toggleForm()" >
+                  <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i>
+                  Add new User</button> -->  
+          
