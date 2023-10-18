@@ -1,6 +1,7 @@
 package com.example.asm_be.service;
 
 import com.example.asm_be.entities.Users;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,14 +9,14 @@ import java.util.UUID;
 @Service
 public interface UserService {
 
-    public List<Users> getAll();
+    Page<Users> getAll(Integer pageNo,Integer sizePage);
 
-    public Users getOne(int id);
+    Users getOne(Integer id);
 
-    public Users save(Users users);
+    boolean save(Users users);
 
-    public Users update(Users users);
+    boolean update(Users users);
 
-    public void delete(Users users);
+    boolean delete(Integer idUsers);
 
 }

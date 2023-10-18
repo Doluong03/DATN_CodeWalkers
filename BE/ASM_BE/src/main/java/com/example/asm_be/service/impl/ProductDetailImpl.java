@@ -24,6 +24,11 @@ public class ProductDetailImpl implements ProductDetailService  {
     @Override
     public List<ProductDetail> getAll() {
         return productDetailRepository.getAll();
+
+    // @Override
+    // public Page<ProductDetail> getAll(Integer pageNo,Integer sizePage) {
+    //     Pageable pageable = PageRequest.of(pageNo,sizePage);
+    //     return productDetailRepository.findAll(pageable);
     }
 
     @Override
@@ -32,23 +37,42 @@ public class ProductDetailImpl implements ProductDetailService  {
     }
 
     @Override
-    public ProductDetail save(ProductDetail product) {
-        return productDetailRepository.save(product);
+    public boolean save(ProductDetail product) {
+        try {
+            productDetailRepository.save(product);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
     }
 
     @Override
-    public ProductDetail update(ProductDetail product) {
-        return productDetailRepository.save(product);
+    public boolean update(ProductDetail product) {
+        try {
+            productDetailRepository.save(product);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
     }
 
     @Override
-    public void delete(ProductDetail product) {
-        productDetailRepository.delete(product);
+    public boolean delete(Integer Idproduct) {
+        try {
+            productDetailRepository.deleteById(Idproduct);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
     }
 
     @Override
     public List<ProductDetail> getPrBetsSl() {
-        List<ProductDetail> detailList = productDetailRepository.getAll();
+        // List<ProductDetail> detailList = productDetailRepository.getAll();
+        List<ProductDetail> detailList = productDetailRepository.findAll();
         Iterator<ProductDetail> iterator = detailList.iterator();
         while (iterator.hasNext()) {
             ProductDetail x = iterator.next();
@@ -58,7 +82,6 @@ public class ProductDetailImpl implements ProductDetailService  {
         }
         return detailList;
     }
-
     @Override
     public List<ProductDetail> findByName(String keyWord) {
         List<ProductDetail> allProductDetails = productDetailRepository.findAll();
@@ -115,6 +138,4 @@ public class ProductDetailImpl implements ProductDetailService  {
     public ProductDetail findBySize(int proId, int sizeId) {
        return productDetailRepository.findBySize(proId, sizeId);
     }
-
-
 }
