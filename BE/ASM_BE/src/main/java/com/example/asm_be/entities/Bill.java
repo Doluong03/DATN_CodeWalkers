@@ -49,10 +49,10 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "khach_hang_id")
     private Users users;
+
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;
-
     @ManyToOne
     @JoinColumn(name = "nguoi_lap_id")
     private Staff staff;

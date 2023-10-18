@@ -1,5 +1,6 @@
 package com.example.asm_be.service.impl;
 
+
 import com.example.asm_be.entities.CartDetails;
 import com.example.asm_be.entities.Product;
 import com.example.asm_be.entities.ProductDetail;
@@ -11,10 +12,8 @@ import com.example.asm_be.repositories.SizeRepository;
 import com.example.asm_be.service.CartDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Optional;
-
 @Component
 public class CartDetailsImpl implements CartDetailService {
     @Autowired
