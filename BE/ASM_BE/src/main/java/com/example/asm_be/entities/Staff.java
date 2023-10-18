@@ -39,7 +39,7 @@ public class Staff implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "mat_khau")
+    @Column(name = "password")
     private String password; // xoa sau
 
     @Column(name = "user_name")
