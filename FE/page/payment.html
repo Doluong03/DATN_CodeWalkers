@@ -13,32 +13,36 @@
         </div>
     </div>
     <div class="ms-4 mt-5">
-        <table class="">
+        <table class="table table-hover prPay">
             <thead>
-                <tr>
-                    <th colspan="7">Sản phẩm </th>
+                <tr class="text-center table-success ">
+                    <th colspan="7" class="text-start">Sản phẩm </th>
                     <th>Đơn giá </th>
                     <th>Số lượng </th>
                     <th>Thành tiền</th>
                 </tr>
             </thead>
-            <tr>
-                <td class="  w-75" colspan="7">
-                    <div class="row mt-4">
-                        <div class="col-lg-4">
-                            <img src="/assets/img/dep1.jpg" class="w-50 rounded-4" alt="${ct.chiTietSP.moTa}">
+            <tbody>
+            <tr ng-repeat="bill in listBillDt" class="custom-row">
+                <td class=" w-75" colspan="7">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-lg-2">
+                            <img src="assets/img/product/sp1/{{bill.productDetail.product.listImage[0].link}}"
+                                class="rounded-4 h-50 w-75 " alt="{{bill.productDetail.product.listImage[0].link}}">
                         </div>
-                        <div class="col-lg-4 d-flex align-items-center ">
-                            <p class="border border">${ct.chiTietSP.moTa}</p>
+                        <div class="col-lg-3 align-middle text-center ">
+                            <p class="">{{bill.productDetail.product.name}}</p>
+                        </div>
+                        <div class="col-lg-2 align-middle text-center ">
+                            <p class="text-secondary">{{bill.productDetail.product.category.name}} , {{bill.productDetail.size.name}}</p>
                         </div>
                     </div>
-
                 </td>
-                <td class="">1.000đ</td>
-                <td id="totalPrice" class="ps-4 ">1</td>
-                <td id="totalPrice" class="ps-4 ">1.000đ</td>
+                <td class="align-middle text-center">{{bill.price | vndCurrency }}</td>
+                <td id="totalPrice" class="ps-4 align-middle text-center ">{{bill.quantity}}</td>
+                <td id="totalPrice" class="ps-4 align-middle text-center "> {{totalPrices[$index] | vndCurrency}}</td>
             </tr>
-            </c:forEach>
+        </tbody>
         </table>
     </div>
     <hr>
@@ -64,15 +68,15 @@
     <div class="col-5 offset-7 mt-5">
         <div class="row me-5">
             <h5 class="col-lg-4 offset-5">Tổng tiền hàng: </h5>
-            <h5 class="col-lg-3 text-end ">1.000đ </h5>
+            <h5 class="col-lg-3 text-end ">{{totalPrice | vndCurrency}} </h5>
         </div>
         <div class="row me-5">
             <h5 class="col-lg-4 offset-5">Phí vận chuyển: </h5>
-            <h5 class="col-lg-3 text-end ">1.000.000đ </h5>
+            <h5 class="col-lg-3 text-end ">{{randomValue| vndCurrency }}</h5>
         </div>
         <div class="row me-5">
             <h5 class="col-lg-4 offset-5">Tổng thanh toán: </h5>
-            <h4 class="col-lg-3 text-end text-danger  ">1.001.000đ </h4>
+            <h4 class="col-lg-3 text-end text-danger  ">{{totalPay | vndCurrency}}</h4>
         </div>
         <div class="text-end col-lg-8 offset-3 mt-1">
             <button class="btn btn-danger w-50 me-5">Đặt hàng</button>

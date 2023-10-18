@@ -39,13 +39,9 @@ public class DetailController {
         return ResponseEntity.ok(cartService.save(new Cart()));
     }
 
-    @PostMapping("/api/detailAdd/{id_gh}&&{id_sp}")
-    public ResponseEntity<CartDetails> addPr(@PathVariable("id_gh") int id_gh, @PathVariable("id_sp") int id_sp, CartDetails cartDetails) {
-        CartDetailsId cartDetailsId = new CartDetailsId();
-        cartDetailsId.setProductDetail(productDetailService.getOne(id_sp));
-        cartDetailsId.setCart(cartService.getOne(id_gh));
-        cartDetails.setId(cartDetailsId);
-        return ResponseEntity.ok(cartDetailService.save(cartDetails));
+    @PostMapping("/api/detailAdd/{id_gh}/{id_sp}/{id_size}")
+    public ResponseEntity<CartDetails> addPr(@PathVariable("id_gh") int id_gh, @PathVariable("id_sp") int id_sp,@PathVariable("id_size") int id_size, CartDetails cartDetails) {
+        cartDetailService.addOrUpdateCartDetail(id_gh, id_sp, id_size,cartDetails);
+        return ResponseEntity.ok().build();
     }
-
 }

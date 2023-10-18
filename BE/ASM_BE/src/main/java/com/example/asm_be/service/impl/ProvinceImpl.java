@@ -1,21 +1,24 @@
 package com.example.asm_be.service.impl;
 
-import com.example.asm_be.entities.Address;
+import com.example.asm_be.cache.DiaChiCache;
 import com.example.asm_be.entities.Province;
-import com.example.asm_be.repositories.AddressRepository;
 import com.example.asm_be.repositories.ProvinceRepository;
-import com.example.asm_be.service.AddressService;
+import com.example.asm_be.response.BaseResponse;
+import com.example.asm_be.response.ProvineResponse;
 import com.example.asm_be.service.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class ProvinceImpl implements ProvinceService {
     @Autowired
     private ProvinceRepository provinceRepository;
+
     @Override
     public List<Province> getAll() {
         return provinceRepository.findAll();
@@ -40,4 +43,6 @@ public class ProvinceImpl implements ProvinceService {
     public void delete(Province province) {
         provinceRepository.delete(province);
     }
+
+
 }

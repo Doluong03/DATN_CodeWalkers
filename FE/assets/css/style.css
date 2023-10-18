@@ -12,10 +12,13 @@
 :root {
   scroll-behavior: smooth;
 }
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans:wght@400;700&display=swap');
+
 
 body {
-  font-family: 'Times New Roman', Times, serif;
-  color: #444444;
+  font-family: 'Noto Sans', sans-serif;
+  /* Sử dụng font chữ Notosans cho body hoặc các phần tử khác */
 }
 
 a {
@@ -34,7 +37,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 /*--------------------------------------------------------------
 # Title
@@ -278,8 +281,8 @@ section {
   font-weight: 700;
   letter-spacing: 1px;
   color: #012970;
-  font-family: "Nunito", sans-serif;
-  margin-top: 3px;
+  font-family: 'Raleway', sans-serif;
+    margin-top: 3px;
 }
 
 /*--------------------------------------------------------------
@@ -310,8 +313,8 @@ section {
   align-items: center;
   justify-content: space-between;
   padding: 10px 0 10px 30px;
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 16px;
+  font-family: 'Raleway', sans-serif;
+    font-size: 16px;
   font-weight: 700;
   color: #013289;
   white-space: nowrap;
@@ -583,7 +586,7 @@ section {
 }
 
 .hero .btn-get-started span {
-  font-family: "Nunito", sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-weight: 600;
   font-size: 16px;
   letter-spacing: 1px;
@@ -721,7 +724,7 @@ height: 110px;
 }
 
 .about .btn-read-more span {
-  font-family: "Nunito", sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-weight: 600;
   font-size: 16px;
   letter-spacing: 1px;
@@ -773,11 +776,11 @@ height: 110px;
   font-size: 18px;
   color: black;
   font-weight: 500;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .values .box p {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Noto Sans', sans-serif;
   margin-bottom: 0;
   color: #6c757d;
 }
@@ -823,7 +826,7 @@ height: 110px;
 .counts .count-box p {
   padding: 0;
   margin: 0;
-  font-family: "Nunito", sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   font-size: 14px;
 }
 
@@ -1150,11 +1153,11 @@ height: 110px;
   font-size: 18px;
   color: black;
   font-weight: 500;
-  font-family: 'Times New Roman', Times, serif;
+   font-family: 'Noto Sans', sans-serif;
 }
 
 .box_product p {
-  font-family: 'Times New Roman', Times, serif;
+   font-family: 'Noto Sans', sans-serif;
   margin-bottom: 0;
   color: #878b8f;
 }
@@ -1174,7 +1177,16 @@ height: 500px;
 /*--------------------------------------------------------------
 # Cart_Items
 --------------------------------------------------------------*/
-
+.badge {
+  position: absolute;
+  top: 3%;
+  right: -24%;
+  background-color: red;
+  color: white;
+  border-radius: 50px;
+  font-size: 12px;
+  text-align: center;
+}
 .span_item p select {
   border: 0;
   height: 30px;
@@ -1215,7 +1227,12 @@ height: 500px;
   background-size: 116px 3px;
   background-image: repeating-linear-gradient(45deg,#6fa6d6,#6fa6d6 33px,transparent 0,transparent 41px,#f18d9b 0,#f18d9b 74px,transparent 0,transparent 82px);
 }
-
+.prPay img{
+background-color: #aaaaaa;
+}
+.custom-row {
+  max-height: 10px !important;
+}
 /*--------------------------------------------------------------
 # Services
 --------------------------------------------------------------*/

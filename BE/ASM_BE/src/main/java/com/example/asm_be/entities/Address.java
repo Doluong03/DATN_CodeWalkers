@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Entity(name = "DiaChi")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,15 +19,12 @@ public class Address {
     private int id;
     @Column(name = "dia_chi_chi_tiet")
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "phuong_xa_id")
-    private Commune commune;
-    @ManyToOne
-    @JoinColumn(name = "thanh_pho_id")
-    private Province province;
-    @ManyToOne
-    @JoinColumn(name = "quan_huyen_id")
-    private District district;
+    @Column(name = "phuong_xa_id")
+    private int ward;
+    @Column(name = "thanh_pho_id")
+    private int province;
+    @Column(name = "quan_huyen_id")
+    private int district;
     @ManyToOne
     @JoinColumn(name = "khach_hang_id")
     private Users users;
