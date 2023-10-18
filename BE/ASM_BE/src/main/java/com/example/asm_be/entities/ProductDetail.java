@@ -22,7 +22,7 @@ public class ProductDetail {
     @Column(name = "so_luong_ton")
     private int quantity;
     @Column(name = "don_gia")
-    private float price;
+    private double price;
 
     @ManyToOne()
     @JoinColumn(name = "san_pham_id")

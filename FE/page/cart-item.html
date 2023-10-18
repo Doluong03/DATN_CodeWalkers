@@ -12,49 +12,54 @@
                     </h4>
             </div>
             <div class="cart mt-5">
-                <h4 class="fw-bold"> Giỏ hàng</h4>
+                <h4 class="fw-bold"> Giỏ hàng ({{countItem}})</h4>
                 <div class="item" ng-repeat="pr in items">
+                    <div ng-init="idCart = pr.cart.id"></div>
                     <div class="card  border border-0 ">
                         <div class="row mt-3 ">
-                            <div class="col-lg-1 text-start">
-                                <input type="checkbox" ng-model="item.checked">
-                            </div>
+                            <!-- <div class="col-lg-1 text-start">
+                                <input type="checkbox" ng-model="pr.checked" ng-change="check()" aria-hidden="true">
+                            </div> -->
                             <div class="col-lg-4 mt-3">
-                                <img ng-src="assets/img/product/sp1/{{pr.id.productDetail.product.listImage[0].link}}"
-                                    class="card-img-center   border border-4 rounded-4 w-100 p-2 h-75 bg-secondary bg-opacity-25" alt="{{pr.id.productDetail.product.name}}">
-                            </div>
+                                <a ng-href="#/product-detail/{{pr.productDetail.id}}" class="border-0">
+                                <img ng-src="assets/img/product/sp1/{{pr.productDetail.product.listImage[0].link}}"
+                                    class="card-img-center   border border-4 rounded-4 w-100 p-2 h-75 bg-secondary bg-opacity-25" alt="{{pr.productDetail.product.name}}">
+                            </a>
+                                </div>
                             <div class="col-lg">
                                 <div class="card-body row">
                                     <div class="card-text col-lg-9">
-                                        <p class="fw-bold mb-0 fs-5">{{pr.id.productDetail.product.name}}</p>
-                                        <p class="mb-0">{{pr.id.productDetail.product.category.name}}</p>
-                                        <p class="mb-0">Màu sắc: {{pr.id.productDetail.size.name}}</p> 
+                                        <p class="fw-bold mb-0 fs-5">{{pr.productDetail.product.name}}</p>
+                                        <p class="mb-0">{{pr.productDetail.product.category.name}}</p>
+                                        <p class="mb-0">Màu sắc: {{pr.productDetail.color.name}}</p> 
                                         <span class="span_item">
-                                            <p class="mb-0  row mt-2 ">
-                                                <label for="" class="col-lg-2  ">Size</label>
-                                                <select name="size" id="" class="col-lg-2 me-4 ms-5 border border-1 border-dark mb-3" ng-model="selectedSize" ng-init="productId = pr.id">
-                                                    <option ng-repeat="sz in sizes" ng-value="sz.name" selected="{{sz.name == selectedSize ?"selected ":""}}">{{sz.name}}</option>
+                                            <p class="mb-0 row mt-2">
+                                                <label for="" class="col-lg-2">Size</label>
+                                                <select name="size" id="sizeSelect" class="col-lg-2 me-4 ms-5 border border-1 border-dark mb-3" ng-model="pr.productDetail.size.name" ng-click="updateProductId(pr.productDetail.id,pr.id)" ng-change="updateProductSize(pr.productDetail.size.name)" >
+                                                    <option ng-repeat="sz in sizes" ng-value="sz.name">{{ sz.name }}</option>
                                                 </select>
                                             </p>
-                                            <div class="row ">
-                                                <label class="col-lg-3 ms-0 ">Quantity</label>
-                                                <div class="col-lg-9   d-flex align-items-center">
-                                                    <div class="input-group quantity-input ">
+                                            <div class="row">
+                                                <label class="col-lg-3 ms-0">Quantity</label>
+                                                <div class="col-lg-9 d-flex align-items-center">
+                                                    <div class="input-group quantity-input">
                                                         <div class="input-group-prepend">
-                                                            <button class="quantity-button border-1" type="button">
+                                                            <button class="quantity-button border-1" type="button"  ng-click="decreaseQuantity(pr)" >
                                                                 <i class="bi bi-dash"></i>
                                                             </button>
                                                         </div>
-                                                        <input type="text" class="quantity-value border-1"
-                                                            aria-label="Quantity" value="1">
+                                                        <!-- Sử dụng ng-model để liên kết quantity với productInfoList.quantity -->
+                                                        <input type="text" class="quantity-value border-1" aria-label="Quantity" ng-model="pr.quantity"      ng-keypress="onInputKeyPress($event,pr.id,pr.quantity)"
+                                                        ng-blur="onInputBlur(pr.id,pr.quantity)">
                                                         <div class="input-group-append">
-                                                            <button class="quantity-button border-1" type="button">
+                                                            <button class="quantity-button border-1" type="button" ng-click="increaseQuantity(pr)">
                                                                 <i class="bi bi-plus"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            
                                             <div class="icon row mt-1 ">
                                                 <div class="col-lg-1  me-3">
                                                     <a href="#favourite">
@@ -62,94 +67,21 @@
                                                     </a>
                                                 </div>
                                                 <div class="col-lg-1 ">
-                                                    <a href="#delete">
+                                                    <button ng-click="confirmDelete(pr.productDetail.id,pr.cart.id)" class="border-0 bg-light">
                                                         <i class="bi bi-trash3 text-dark fs-4" title="Delete 🗑️"></i>
-                                                    </a>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </span>
                                     </div>
 
-                                    <p class="card-text col-lg-3 text-end"> 1,400.000đ</p>
+                                    <p class="card-text col-lg-3 text-end"> {{pr.productDetail.price | vndCurrency }}</p>
                                 </div>
                             </div>
                         </div>
                         <hr>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="card  border border-0 ">
-                        <div class="row mt-3 ">
-                            <div class="col-lg-1 text-start">
-                                <input type="checkbox" ng-model="item.checked">
-                            </div>
-                            <div class="col-lg-4">
-                                <img src="./assets/img/dep1.jpg"
-                                    class="card-img-center   border border-4 rounded-4 w-100 p-2 h-75" alt="Ảnh demo">
-                            </div>
-                            <div class="col-lg">
-                                <div class="card-body row">
-                                    <div class="card-text col-lg-9">
-                                        <p class="fw-bold mb-0">ClownZ Slipper Full box</p>
-                                        <p class="mb-0">Man's Shoes</p>
-                                        <p class="mb-0">Color: Black/White</p>
-                                        <span class="span_item row ">
-                                            <p class="mb-0  row col-lg ">
-                                                <label for="" class="col-lg mt-1">Size</label>
-                                                <select name="size" id="" class=" col-lg me-5  ">
-                                                    <option value="S"> 38</option>
-                                                    <option value="S"> 39</option>
-                                                    <option value="S"> 40</option>
-                                                    <option value="S"> 41</option>
-                                                    <option value="S"> 42</option>
-                                                </select>
-                                            </p>
-                                            <p class="col-lg-1 mt-1"> |</p>
-                                            <p class="row col-lg ">
-                                                <label for="" class="col-lg mt-1">Quantity</label>
-                                                <select name="size" id="" class=" col-lg me-5">
-                                                    <option value="S"> 1</option>
-                                                    <option value="S"> 2</option>
-                                                    <option value="S"> 3</option>
-                                                    <option value="S"> 4</option>
-                                                    <option value="S"> 5</option>
-                                                </select>
-                                            </p>
-                                        </span>
-                                        <div class="icon row mt-1 ">
-                                            <div class="col-lg-1  me-3">
-                                                <a href="#favourite">
-                                                    <i class="bi bi-heart text-dark fs-4 " title="Favourite ❤️"></i>
-                                                </a>
-                                            </div>
-                                            <div class="col-lg-1 ">
-                                                <a href="#delete">
-                                                    <i class="bi bi-trash3 text-dark fs-4" title="Delete 🗑️"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <p class="card-text col-lg-3 text-end"> 1,400.000đ</p>
-                                </div>
-                            </div>
-
-                            
-                        </div>
-                        <hr class="w-75">
-                        <div class="Favourite ms-4 mt-2 ">
-                            <h4> Danh sách yêu thích </h4>
-                            <h4 class="text-secondary">Bạn có muốn xem danh sách yêu thích của bạn ? </h4>
-                            <h4 class="text-secondary"> <a href="#login"
-                                    class="text-dark text-decoration-underline">Sign-in</a> or <a href="#signup"
-                                    class="text-dark text-decoration-underline"> Sign-up</a> </i>
-                                </h4>
-                        </div>
-                    </div>
-
-                </div>
-                
-
             </div>
         </div>
 
@@ -177,11 +109,11 @@
             <div class="bill mt-1">
                 <div class="row"> 
                     <h5 class="col-lg">Tổng tiền </h5>
-                    <h5 class="col-lg text-end  ">3,000,000đ</h5>
+                    <h5 class="col-lg text-end  ">{{ totalPrice==0 ?"0đ":totalPrice | vndCurrency  }}</h5>
                 </div>
                 <div class="row"> 
                     <h5 class="col-lg">Phí giao hàng </h5>
-                    <h5 class="col-lg text-end  ">30,000đ</h5>
+                    <h5 class="col-lg text-end  ">{{randomValue==0 ?"0đ":randomValue | vndCurrency}}</h5>
                 </div>
                 <div class="row"> 
                     <h5 class="col-lg">Giảm giá  </h5>
@@ -190,11 +122,11 @@
                 <hr>
                 <div class="row"> 
                     <h5 class="col-lg">Tổng thanh toán </h5>
-                    <h5 class="col-lg text-end ">2,730,000đ</h5>
+                    <h5 class="col-lg text-end ">{{totalPay==0 ?"0đ": totalPay | vndCurrency}}</h5>
                 </div>
                 <hr>
                 <div class="pay text-center">
-                    <a href="#pay" class="btn btn-dark rounded-3 col-lg-8"> Thanh toán</a>
+                    <a  ng-click="pay(idCart)" href="#payment" class="btn btn-dark rounded-3 col-lg-8"> Thanh toán</a>
                 </div>
             </div>
         </div>

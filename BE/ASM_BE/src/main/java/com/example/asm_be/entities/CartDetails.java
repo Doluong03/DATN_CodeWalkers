@@ -13,9 +13,17 @@ import lombok.Setter;
 @Setter
 @Table(name = "GioHangChiTiet")
 public class CartDetails {
-    @EmbeddedId
-    private CartDetailsId id; // Đây là khóa chính kết hợp
+    @Id
+    @Column(name = "id_gio_hang_chi_tiet")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id; // Đây là khóa chính kết hợp
 
+    @ManyToOne
+    @JoinColumn(name = "gio_hang_id")
+    private Cart cart;
+    @ManyToOne
+    @JoinColumn(name = "chi_tiet_san_pham_id")
+    private ProductDetail productDetail;
     @Column(name = "so_luong")
     private int quantity;
 

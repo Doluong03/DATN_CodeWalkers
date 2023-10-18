@@ -1,4 +1,4 @@
-create database DATN_V2
+--create database DATN_V2
 
 CREATE TABLE TrangThai (
   id_trang_thai int PRIMARY KEY Identity(1,1),
@@ -14,6 +14,8 @@ CREATE TABLE SanPham (
   phan_loai_id int DEFAULT NULL,
   thuong_hieu_id int DEFAULT NULL,
   danh_gia_id int DEFAULT NULL,
+  ngay_tao DATE DEFAULT NULL,
+  ngay_sua DATE DEFAULT NULL,
   trang_thai_id int DEFAULT NULL
 );
 CREATE TABLE SanXuat (
@@ -95,8 +97,11 @@ CREATE TABLE ChiTietSanPham (
   san_pham_id int DEFAULT NULL,
   kich_co_id int DEFAULT NULL,
   mau_sac_id int DEFAULT NULL,
+  san_xuat_id int DEFAULT NULL,
   chat_lieu_id int DEFAULT NULL,
   trang_thai_id int DEFAULT NULL,
+  ngay_tao DATE DEFAULT NULL,
+  ngay_sua DATE DEFAULT NULL,
   khuyen_mai_id int DEFAULT NULL
 );
 
@@ -107,27 +112,7 @@ CREATE TABLE DiaChi (
   quan_huyen_id int DEFAULT NULL,
   thanh_pho_id int DEFAULT NULL,
   trang_thai_id int DEFAULT NULL,
-);
-
-CREATE TABLE ThanhPho (
-  id_thanh_pho int PRIMARY KEY Identity(1,1) NOT NULL,
-  ma_thanh_pho NVARCHAR(20) DEFAULT NULL,
-  ten_thanh_pho NVARCHAR(100) DEFAULT NULL
-);
-
-CREATE TABLE QuanHuyen (
-  id_quan_huyen int PRIMARY KEY Identity(1,1) NOT NULL,
-  ma_quan_huyen NVARCHAR(20)DEFAULT NULL,
-  ten_quan_huyen NVARCHAR(100)DEFAULT NULL,
-  thanh_pho_id int DEFAULT NULL
-);
-
-CREATE TABLE PhuongXa (
-  id_phuong_xa int PRIMARY KEY Identity(1,1),
-  ma_phuong_xa NVARCHAR(20)DEFAULT NULL,
-  ten_phuong_xa NVARCHAR(100)DEFAULT NULL,
-  thanh_pho_id int DEFAULT NULL,
-  quan_huyen_id int DEFAULT NULL
+  khach_hang_id int DEFAULT NULL
 );
 
 CREATE TABLE KhachHang (
@@ -142,16 +127,23 @@ CREATE TABLE KhachHang (
   hang_id int DEFAULT NULL,
   trang_thai_id int DEFAULT NULL,
   id_tai_khoan INT DEFAULT NULL,
-   hinh_anh   NVARCHAR(max) DEFAULT NULL
+  hinh_anh   NVARCHAR(max) DEFAULT NULL
+  dia_chi   NVARCHAR(max) default null
 );
-
-
 
 CREATE TABLE HoaDon (
   id_hoa_don int PRIMARY KEY Identity(1,1) NOT NULL,
   ma_hoa_don NVARCHAR(20)DEFAULT NULL,
   ngay_lap  DATE DEFAULT NULL,
+  dia_chi_chi_tiet NVARCHAR(255)DEFAULT NULL,
+  phuong_xa_id int DEFAULT NULL,
+  quan_huyen_id int DEFAULT NULL,
+  thanh_pho_id int DEFAULT NULL,
+  ngay_giao date DEFAULT NULL,
+  phi_giao_hang float DEFAULT NULL,
   ghi_chu NVARCHAR(255) DEFAULT NULL,
+  tong_tien float DEFAULT NULL,
+  phuong_thuc int DEFAULT NULL,
   khach_hang_id int DEFAULT NULL,
   nguoi_lap_id int DEFAULT NULL,
   trang_thai_id int DEFAULT NULL
@@ -165,21 +157,6 @@ CREATE TABLE HoaDonChiTiet (
   trang_thai_id int DEFAULT NULL,
   hoa_don_id int DEFAULT NULL,
   chi_tiet_san_pham_id int DEFAULT NULL,
-);
-
-CREATE TABLE PhieuGiaoHang (
-  id_phieu_giao int PRIMARY KEY Identity(1,1),
-  nguoi_nhan NVARCHAR(255)DEFAULT NULL,
-  sdt_nguoi_nhan NVARCHAR(10)DEFAULT NULL,
-  nguoi_giao NVARCHAR(255)DEFAULT NULL,
-  sdt_nguoi_giao NVARCHAR(10)DEFAULT NULL,
-  ngay_giao date DEFAULT NULL,
-  ngay_nhan date DEFAULT NULL,
-  phi_giao_hang float DEFAULT NULL,
-  mo_ta NVARCHAR(255)DEFAULT NULL,
-  hoa_don_id int DEFAULT NULL,
-  dia_chi_id int DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL
 );
 
 CREATE TABLE HangKhachHang (
@@ -216,6 +193,7 @@ CREATE TABLE GioHang(
 )
 
 CREATE TABLE GioHangChiTiet(
+	id_gio_hang_chi_tiet int PRIMARY KEY Identity(1,1),
 	gio_hang_id	int
 		REFERENCES GioHang(id_gio_hang),
 	chi_tiet_san_pham_id	int
@@ -223,7 +201,6 @@ CREATE TABLE GioHangChiTiet(
 	so_luong		INT,
 	ghi_chu		NVARCHAR(MAX),
 	trang_thai	INT,
-	PRIMARY KEY (gio_hang_id, chi_tiet_san_pham_id)
 )
 
 CREATE TABLE DanhSachYeuThich(	
@@ -233,13 +210,13 @@ CREATE TABLE DanhSachYeuThich(
 
 	khach_hang_id	int 
 		REFERENCES KhachHang(id_khach_hang),
-	
 	ghi_chu		NVARCHAR(MAX),
 	trang_thai	INT,
 )
 GO
 
 CREATE TABLE YeuThichChiTiet(
+id_yeu_thich int PRIMARY KEY Identity(1,1),
 	danh_sach_id	int
 		REFERENCES DanhSachYeuThich(id_danh_sach),
 	chi_tiet_san_pham_id	int
@@ -247,8 +224,6 @@ CREATE TABLE YeuThichChiTiet(
 
 	ghi_chu		NVARCHAR(MAX),
 	trang_thai	INT,
-
-	PRIMARY KEY (danh_sach_id, chi_tiet_san_pham_id)
 )
 
 CREATE TABLE VaiTro (
@@ -280,6 +255,8 @@ CREATE TABLE CaLam (
 
 -----Chi tiet san pham-----
 ALTER TABLE ChiTietSanPham ADD FOREIGN KEY (san_pham_id) REFERENCES SanPham (id_san_pham);
+
+ALTER TABLE ChiTietSanPham ADD FOREIGN KEY (san_xuat_id) REFERENCES SanXuat (id_san_xuat);
 
 ALTER TABLE ChiTietSanPham ADD FOREIGN KEY (kich_co_id) REFERENCES KichCo (id_kich_co);
 
@@ -354,26 +331,9 @@ ALTER TABLE HoaDonChiTiet ADD FOREIGN KEY (chi_tiet_san_pham_id) REFERENCES ChiT
 
 ALTER TABLE HoaDonChiTiet ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
 
------Phieu giao hang-----
-ALTER TABLE PhieuGiaoHang ADD FOREIGN KEY (hoa_don_id) REFERENCES HoaDon (id_hoa_don);
-
-ALTER TABLE PhieuGiaoHang ADD FOREIGN KEY (dia_chi_id) REFERENCES DiaChi (id_dia_chi);
-
-ALTER TABLE PhieuGiaoHang ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
-
-
 -----Dia chi-----
-ALTER TABLE DiaChi ADD FOREIGN KEY (phuong_xa_id) REFERENCES PhuongXa (id_phuong_xa);
+ALTER TABLE DiaChi ADD FOREIGN KEY (khach_hang_id) REFERENCES KhachHang (id_khach_hang);
 
-ALTER TABLE DiaChi ADD FOREIGN KEY (thanh_pho_id) REFERENCES ThanhPho (id_thanh_pho);
-
-ALTER TABLE DiaChi ADD FOREIGN KEY (quan_huyen_id) REFERENCES QuanHuyen (id_quan_huyen);
-
-ALTER TABLE QuanHuyen ADD FOREIGN KEY (thanh_pho_id) REFERENCES ThanhPho (id_thanh_pho);
-
-ALTER TABLE PhuongXa ADD FOREIGN KEY (thanh_pho_id) REFERENCES ThanhPho (id_thanh_pho);
-
-ALTER TABLE PhuongXa ADD FOREIGN KEY (quan_huyen_id) REFERENCES QuanHuyen (id_quan_huyen);
 -- Tai Khoan
 ALTER TABLE TaiKhoan ADD FOREIGN KEY (vai_tro_id) REFERENCES VaiTro (id);
 

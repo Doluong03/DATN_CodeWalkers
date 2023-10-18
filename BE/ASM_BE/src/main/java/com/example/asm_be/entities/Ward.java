@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "PhuongXa")
-public class Commune {
+public class Ward {
     @Id
     @Column(name = "id_phuong_xa")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

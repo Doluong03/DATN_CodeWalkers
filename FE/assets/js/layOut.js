@@ -17,7 +17,7 @@ app.config(function ($routeProvider, $locationProvider) {
         })
         .when("/payment", {
             templateUrl: "page/payment.html",
-            controller: "LayOutController"
+            controller: "PaymentController"
         })
         .when("/product", {
             templateUrl: "page/product.html",
@@ -29,20 +29,36 @@ app.controller("LayOutController", function ($scope, $http, $routeParams, $locat
     $anchorScroll("pageContent");
     $scope.items = [];
     $scope.itemsBs = [];
+    $scope.currentImageSource= "";
     $scope.loadAllPrBs = function () {
         var url = `${host}/api/product_bs`;
         $http.get(url).then(res => {
             $scope.itemsBs = res.data;
-            console.log(res.data);
+            console.log($scope.currentImageSource);
             console.log("Success", res);
             // Gọi loadDetail sau khi tải dữ liệu thành công
-            $scope.loadDetail();
+            //  $scope.loadDetail();
             $scope.numVisibleItems = 4;
         }).catch(error => {
             console.log("Error", error);
         });
     }
+    $scope.loadAllPrCart = function () {
+        var url = `${host}/api/cart`;
+        $http.get(url).then(function (res) {
+            $scope.items = res.data;
+            var badge = document.querySelector(".badge");
+            // Thay đổi số trên biểu tượng
+            console.log("------>ád", $scope.items.length)
+            badge.textContent = $scope.items.length;
+        }).catch(function (error) {
+            console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
+        })}
+    $scope.loadAllPrCart();
+    // Lấy phần tử span có class "badge"
+ // Đặt số muốn hiển thị
     $scope.loadAllPrBs();
+
 });
 app.filter('vndCurrency', function () {
     return function (input) {
@@ -50,3 +66,4 @@ app.filter('vndCurrency', function () {
         return input.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
     };
 });
+
