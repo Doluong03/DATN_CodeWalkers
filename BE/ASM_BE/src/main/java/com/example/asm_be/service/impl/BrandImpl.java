@@ -22,7 +22,7 @@ public class BrandImpl implements BrandService {
     }
 
     @Override
-    public Brands getOne(UUID id) {
+    public Brands getOne(int id) {
         return brandRepository.findById(id).get();
     }
 

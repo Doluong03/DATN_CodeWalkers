@@ -16,10 +16,9 @@ import java.util.UUID;
 @Table(name = "ThanhPho")
 public class Province {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
-
+    @Column(name = "id_thanh_pho")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int Id;
     @Column(name = "ma_thanh_pho")
     private String code;
 

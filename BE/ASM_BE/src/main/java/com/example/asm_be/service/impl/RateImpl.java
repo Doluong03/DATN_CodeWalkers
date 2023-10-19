@@ -22,7 +22,7 @@ public class RateImpl implements RateService {
     }
 
     @Override
-    public Rate getOne(UUID id) {
+    public Rate getOne(int id) {
         return rateRepository.findById(id).get();
     }
 

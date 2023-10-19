@@ -11,7 +11,7 @@
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="assets/img/logo.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link
@@ -25,7 +25,7 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
@@ -36,11 +36,11 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
-
-</style>
 </head>
 
-<body ng-app="app">
+<body ng-app="app" ng-controller="LayOutController" id="pageContent">
+  <!-- Nội dung của trang -->
+  
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top">
@@ -49,11 +49,10 @@
       <a href="#home" class="logo d-flex align-items-center" style="margin-top: -30px;margin-left: -29px;">
         <img src="assets/img/logo.png" alt="">
       </a>
-  
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li class="dropdown scrollto active"><a href="#"><span class="text-decoration-none text-dark">News &
+          <li class="dropdown scrollto active"><a href="#product"><span class="text-decoration-none text-dark">News &
                 Featured</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
@@ -85,60 +84,71 @@
           </li>
 
           <li><a class="nav-link scrollto text-decoration-none text-dark " href="#contact">Contact</a></li>
-          <form class="d-flex align-items-left ms-4 col-lg-4  "><input placeholder="Search" type="search"
+          <form class="d-flex align-items-left ms-4 col-lg-4 "><input placeholder="Search"  type="search" name="name"
+              ng-model="name" class="form-control rounded-4" ng-keypress="onKeyPress($event)"
               class="form-control rounded-4 "></form>
-
-          <li><a class="text-decoration-none text-dark" href="#about"><i class="bi bi-person fs-3"></i></a></li>
-          <li><a class="text-decoration-none text-dark" href="#about"><i class="bi bi-heart fs-5"></i></a></li>
-          <li><a class="text-decoration-none text-dark" href="#about"><i class="bi bi-cart3 fs-5"></i></a></li>
+          <li class="dropdown text-dark"><a class="text-decoration-none text-dark" href="#about"
+              data-title="Tài khoản"><i class="bi bi-person fs-4"></i></a>
+            <ul class="userDropdown">
+              <li><a href="#" class="d-block "> <i class=" me-2 fs-5 text-end bi bi-person-fill"></i> Trang cá nhân </a>
+              </li>
+              <li>
+                <hr>
+              </li>
+              <li><a href="login.html" class="d-block "> <i class=" me-2 fs-5 text-end bi bi-box-arrow-right"></i>Đăng
+                  xuất</a></li>
+            </ul>
+          </li>
+          <li><a class="text-decoration-none text-dark" href="#about" data-title="Yêu thích"><i
+                class="bi bi-heart fs-5"></i></a></li>
+          <li><a class="text-decoration-none text-dark" href="#cart" data-title="Giỏ hàng"><i
+                class="bi bi-cart3 fs-5"></i> <span class="badge border border-success"></span></a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
 
     </div>
-  </header><!-- End Header -->
+  </header>
+  <!-- End Header -->
 
   <!-- banner  -->
   <!-- ======= Hero Section ======= -->
-  <section id="hero" class="hero d-flex align-items-center" style="margin-top: 70px; margin-bottom: 20px;">
-    <div class="container">
-        <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active" data-bs-interval="10000">
-                    <img src="assets/img/bn.jpg" class="d-block w-100 img-fluid" alt="...">
-                </div>
-                <div class="carousel-item" data-bs-interval="2000">
-                    <img src="assets/img/banner2.png" class="d-block w-100 img-fluid" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="..." class="d-block w-100 img-fluid" alt="...">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+  <section id="hero" class="hero d-flex align-items-center ">
+    <div id="carouselExampleInterval" class="carousel slide offset-1 ps-5 pt-5 " data-bs-ride="carousel">
+      <div class="carousel-inner ">
+        <div class="carousel-item active " data-bs-interval="10000">
+          <img src="assets/img/bn.jpg" class="d-block " alt="...">
         </div>
+        <div class="carousel-item" data-bs-interval="2000">
+          <img src="assets/img/banner2.png" class="d-block   " alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="..." class="d-block" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-</section>
-
-  
-  <!-- End Hero -->
+    </div>
+  </section><!-- End Hero -->
 
   <!-- Main -->
   <main id="main">
-    <div ng-view></div>
+    <div ng-view ></div>
+    <!-- Test -->
+
+    <!-- End Test  -->
     <!-- ======= Services Section ======= -->
     <section id="services" class="services">
-
       <div class="container" data-aos="fade-up">
-
         <header class="section-header">
           <h2>Services</h2>
           <p>Veritatis et dolores facere numquam et praesentium</p>
@@ -155,7 +165,6 @@
               <a href="#" class="read-more"><span>Read More</span> <i class="bi bi-arrow-right"></i></a>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
             <div class="service-box orange">
               <i class="ri-discuss-line icon"></i>
@@ -214,7 +223,6 @@
 
     <!-- ======= Pricing Section ======= -->
     <section id="pricing" class="pricing">
-
       <div class="container" data-aos="fade-up">
 
         <header class="section-header">
@@ -1059,16 +1067,20 @@
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
-
-
-
   <script src="js/jquery.min.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/angular.min.js"></script>
   <script src="js/angular-route.js"></script>
-  <!-- Template Main JS File -->
 
-  <script src="assets/js/main.js"></script>
+
+
+  <!-- Template Main JS File -->
   <script src="assets/js/layOut.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/product.js"></script>
+  <script src="assets/js/detail.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/payment.js"></script>
 </body>
+
 </html>
