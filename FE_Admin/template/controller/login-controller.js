@@ -17,14 +17,13 @@ app.controller('loginController', ['$scope', '$http', function ($scope, $http) {
           if (result.data.roles.length === 0) {
             alert("You don't have access");
           } else {
-            result.data.roles.forEach(element => {
              //  // Lưu thông tin đăng nhập vào localStorage
              alert("login successful")
              localStorage.setItem('userData', JSON.stringify(result.data));
              console.log(result.data);
              // Use regular JavaScript for navigation to another app or page
              window.location.href = "http://127.0.0.1:5500/template/index.html#/trang-chu";
-            });
+                
           }
         })
         .catch((err) => {
