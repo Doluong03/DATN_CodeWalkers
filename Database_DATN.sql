@@ -251,7 +251,16 @@ CREATE TABLE CaLam (
   doanh_thu money
 );
 
-
+alter table KhachHang add vai_tro nvarchar(20)
+  alter table KhachHang add user_name nvarchar(20) 
+  alter table KhachHang add password nvarchar(max)
+  create table VaiTroNhanVien(
+     nhan_vien_id int ,
+	 vai_tro_id int ,
+)
+alter table NhanVien add user_name nvarchar(20) 
+alter table NhanVien add password nvarchar(max) 
+alter table NhanVien add trang_thai bit default 1
 
 -----Chi tiet san pham-----
 ALTER TABLE ChiTietSanPham ADD FOREIGN KEY (san_pham_id) REFERENCES SanPham (id_san_pham);
