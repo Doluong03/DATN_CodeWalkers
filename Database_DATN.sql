@@ -1,9 +1,3 @@
---create database DATN_V2
-
-CREATE TABLE TrangThai (
-  id_trang_thai int PRIMARY KEY Identity(1,1),
-  ten_trang_thai NVARCHAR(100)
-);
 
 CREATE TABLE SanPham (
   id_san_pham int PRIMARY KEY Identity(1,1) NOT NULL,
@@ -16,33 +10,33 @@ CREATE TABLE SanPham (
   danh_gia_id int DEFAULT NULL,
   ngay_tao DATE DEFAULT NULL,
   ngay_sua DATE DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL
+  trang_thai bit  DEFAULT NULL
 );
 CREATE TABLE SanXuat (
   id_san_xuat int PRIMARY KEY Identity(1,1) NOT NULL,
   ten_san_xuat NVARCHAR(100)DEFAULT NULL,
   mo_ta NVARCHAR(255)DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL
+  trang_thai bit  DEFAULT NULL
 );
 
 CREATE TABLE KichCo (
   id_kich_co int PRIMARY KEY Identity(1,1) NOT NULL,
   ten_kich_co NVARCHAR(100)DEFAULT NULL,
   mo_ta NVARCHAR(255)DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL
+  trang_thai bit  DEFAULT NULL
 );
 
 CREATE TABLE MauSac (
   id_mau_sac int PRIMARY KEY Identity(1,1) NOT NULL,
   ten_mau_sac NVARCHAR(100)DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL,
+  trang_thai bit  DEFAULT NULL,
 );
 
 CREATE TABLE ThuongHieu (
   id_thuong_hieu int PRIMARY KEY Identity(1,1) NOT NULL,
   ten_thuong_hieu NVARCHAR(100)DEFAULT NULL,
   mo_ta NVARCHAR(255)DEFAULT NULL,
-  trang_thai_id int,
+  trang_thai bit ,
 );
 
 CREATE TABLE DanhGia (
@@ -53,20 +47,20 @@ CREATE TABLE DanhGia (
   ngay_sua DATE DEFAULT NULL,
   chi_tiet_san_pham_id int DEFAULT NULL,
   khach_hang_id int DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL
+  trang_thai bit  DEFAULT NULL
 );
 
 CREATE TABLE PhanLoai (
   id_phan_loai int PRIMARY KEY Identity(1,1) NOT NULL,
   ten_phan_loai NVARCHAR(100)DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL
+  trang_thai bit  DEFAULT NULL
 );
 
 CREATE TABLE ChatLieu (
   id_chat_lieu int PRIMARY KEY Identity(1,1) NOT NULL,
   ten_chat_lieu NVARCHAR(100)DEFAULT NULL ,
   mo_ta NVARCHAR(50) DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL,
+  trang_thai bit  DEFAULT NULL,
 );
 
 CREATE TABLE HinhAnh (
@@ -85,7 +79,7 @@ CREATE TABLE KhuyenMai (
   gia_tri float DEFAULT NULL,
   ngay_bat_dau DATE DEFAULT NULL,
   ngay_ket_thuc DATE DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL,
+  trang_thai bit  DEFAULT NULL,
 );
 
 
@@ -99,7 +93,7 @@ CREATE TABLE ChiTietSanPham (
   mau_sac_id int DEFAULT NULL,
   san_xuat_id int DEFAULT NULL,
   chat_lieu_id int DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL,
+  trang_thai bit  DEFAULT NULL,
   ngay_tao DATE DEFAULT NULL,
   ngay_sua DATE DEFAULT NULL,
   khuyen_mai_id int DEFAULT NULL
@@ -111,7 +105,7 @@ CREATE TABLE DiaChi (
   phuong_xa_id int DEFAULT NULL,
   quan_huyen_id int DEFAULT NULL,
   thanh_pho_id int DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL,
+  trang_thai bit  DEFAULT NULL,
   khach_hang_id int DEFAULT NULL
 );
 
@@ -125,8 +119,10 @@ CREATE TABLE KhachHang (
   ngay_tao DATE DEFAULT NULL,
   ngay_sua DATE DEFAULT NULL,
   hang_id int DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL,
-  id_tai_khoan INT DEFAULT NULL,
+  trang_thai bit  DEFAULT NULL,
+  user_name NVARCHAR(20),
+  password NVARCHAR(max),
+  vai_tro nvarchar(20),
   hinh_anh   NVARCHAR(max) DEFAULT NULL
   dia_chi   NVARCHAR(max) default null
 );
@@ -146,7 +142,7 @@ CREATE TABLE HoaDon (
   phuong_thuc int DEFAULT NULL,
   khach_hang_id int DEFAULT NULL,
   nguoi_lap_id int DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL
+  trang_thai bit  DEFAULT NULL
 );
 
 CREATE TABLE HoaDonChiTiet (
@@ -154,7 +150,7 @@ CREATE TABLE HoaDonChiTiet (
   so_luong int DEFAULT NULL,
   don_gia float DEFAULT NULL,
   mo_ta NVARCHAR(255) DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL,
+  trang_thai bit  DEFAULT NULL,
   hoa_don_id int DEFAULT NULL,
   chi_tiet_san_pham_id int DEFAULT NULL,
 );
@@ -163,7 +159,7 @@ CREATE TABLE HangKhachHang (
   id_hang int PRIMARY KEY Identity(1,1) NOT NULL,
   ten_hang NVARCHAR(255) DEFAULT NULL,
   mo_ta NVARCHAR(255)DEFAULT NULL,
-  trang_thai_id int DEFAULT NULL
+  trang_thai bit  DEFAULT NULL
 );
 
 CREATE TABLE NhanVien (
@@ -176,11 +172,16 @@ CREATE TABLE NhanVien (
   email NVARCHAR(50),
   so_dien_thoai NVARCHAR(50),
   can_cuoc NVARCHAR(50),
-  mat_khau NVARCHAR(50),
-  trang_thai_id int,
-  id_tai_khoan INT DEFAULT NULL,
+  user_name NVARCHAR(20),
+  password NVARCHAR(max),
+  trang_thai bit ,
   hinh_anh NVARCHAR(max) DEFAULT NULL
 );
+
+  create table VaiTroNhanVien(
+     nhan_vien_id int ,
+	 vai_tro_id int ,
+)
 
 CREATE TABLE GioHang(
 	id_gio_hang	int PRIMARY KEY Identity(1,1),
@@ -189,7 +190,7 @@ CREATE TABLE GioHang(
 	khach_hang_id	int 
 		REFERENCES KhachHang(id_khach_hang),
 	ghi_chu		NVARCHAR(MAX),
-	trang_thai	INT,
+	trang_thai bit ,
 )
 
 CREATE TABLE GioHangChiTiet(
@@ -200,7 +201,7 @@ CREATE TABLE GioHangChiTiet(
 		REFERENCES ChiTietSanPham(id_chi_tiet_san_pham),
 	so_luong		INT,
 	ghi_chu		NVARCHAR(MAX),
-	trang_thai	INT,
+	trang_thai bit ,
 )
 
 CREATE TABLE DanhSachYeuThich(	
@@ -233,14 +234,6 @@ CREATE TABLE VaiTro (
 
 
 
-create table TaiKhoan (
- id int PRIMARY KEY Identity(1,1),
- user_name nvarchar(12),
- password nvarchar(12),
- vai_tro_id int,
- trang_thai_id int
-)
-
 
 CREATE TABLE CaLam (
   id int PRIMARY KEY Identity(1,1),
@@ -251,16 +244,7 @@ CREATE TABLE CaLam (
   doanh_thu money
 );
 
-alter table KhachHang add vai_tro nvarchar(20)
-  alter table KhachHang add user_name nvarchar(20) 
-  alter table KhachHang add password nvarchar(max)
-  create table VaiTroNhanVien(
-     nhan_vien_id int ,
-	 vai_tro_id int ,
-)
-alter table NhanVien add user_name nvarchar(20) 
-alter table NhanVien add password nvarchar(max) 
-alter table NhanVien add trang_thai bit default 1
+
 
 -----Chi tiet san pham-----
 ALTER TABLE ChiTietSanPham ADD FOREIGN KEY (san_pham_id) REFERENCES SanPham (id_san_pham);
@@ -273,8 +257,6 @@ ALTER TABLE ChiTietSanPham ADD FOREIGN KEY (mau_sac_id) REFERENCES MauSac (id_ma
 
 ALTER TABLE ChiTietSanPham ADD FOREIGN KEY (chat_lieu_id) REFERENCES ChatLieu (id_chat_lieu);
 
-ALTER TABLE ChiTietSanPham ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
-
 ALTER TABLE ChiTietSanPham ADD FOREIGN KEY (khuyen_mai_id) REFERENCES KhuyenMai (id_khuyen_mai);
 
 -----san pham-----
@@ -286,23 +268,8 @@ ALTER TABLE SanPham ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_tra
 
 ALTER TABLE HinhAnh ADD FOREIGN KEY (san_pham_id) REFERENCES SanPham (id_san_pham);
 
------Trang thai-----
-ALTER TABLE ChatLieu ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
-
-ALTER TABLE MauSac ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
-
-ALTER TABLE ThuongHieu ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
-
-ALTER TABLE PhanLoai ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
-
-ALTER TABLE KichCo ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
-
-ALTER TABLE KhuyenMai ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
-
-ALTER TABLE HangKhachHang ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
 
 -- Nhan Vien
-ALTER TABLE NhanVien ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
 
 ALTER TABLE NhanVien ADD FOREIGN KEY (id_tai_khoan) REFERENCES TaiKhoan (id);
 
@@ -314,12 +281,10 @@ ALTER TABLE DanhGia ADD FOREIGN KEY (chi_tiet_san_pham_id) REFERENCES ChiTietSan
 
 ALTER TABLE DanhGia ADD FOREIGN KEY (khach_hang_id) REFERENCES KhachHang (id_khach_hang);
 
-ALTER TABLE DanhGia ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
 
 -----Khach hang-----
 ALTER TABLE KhachHang ADD FOREIGN KEY (hang_id) REFERENCES HangKhachHang (id_hang);
 
-ALTER TABLE KhachHang ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
 
 ALTER TABLE khachhang ADD FOREIGN KEY (id_tai_khoan) REFERENCES TaiKhoan (id);
 
@@ -329,7 +294,6 @@ ALTER TABLE khachhang ADD FOREIGN KEY (id_tai_khoan) REFERENCES TaiKhoan (id);
 -----Hoa don-----
 ALTER TABLE HoaDon ADD FOREIGN KEY (khach_hang_id) REFERENCES KhachHang (id_khach_hang);
 
-ALTER TABLE HoaDon ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
 
 ALTER TABLE HoaDon ADD FOREIGN KEY (nguoi_lap_id) REFERENCES NhanVien (id_nhan_vien);
 
@@ -338,13 +302,9 @@ ALTER TABLE HoaDonChiTiet ADD FOREIGN KEY (hoa_don_id) REFERENCES HoaDon (id_hoa
 
 ALTER TABLE HoaDonChiTiet ADD FOREIGN KEY (chi_tiet_san_pham_id) REFERENCES ChiTietSanPham (id_chi_tiet_san_pham);
 
-ALTER TABLE HoaDonChiTiet ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
 
 -----Dia chi-----
 ALTER TABLE DiaChi ADD FOREIGN KEY (khach_hang_id) REFERENCES KhachHang (id_khach_hang);
 
 -- Tai Khoan
 ALTER TABLE TaiKhoan ADD FOREIGN KEY (vai_tro_id) REFERENCES VaiTro (id);
-
-ALTER TABLE TaiKhoan ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
-
