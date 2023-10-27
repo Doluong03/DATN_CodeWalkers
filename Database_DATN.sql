@@ -1,3 +1,5 @@
+--create database DATN_V2
+
 
 CREATE TABLE SanPham (
   id_san_pham int PRIMARY KEY Identity(1,1) NOT NULL,
@@ -123,7 +125,7 @@ CREATE TABLE KhachHang (
   user_name NVARCHAR(20),
   password NVARCHAR(max),
   vai_tro nvarchar(20),
-  hinh_anh   NVARCHAR(max) DEFAULT NULL
+  hinh_anh   NVARCHAR(max) DEFAULT NULL,
   dia_chi   NVARCHAR(max) default null
 );
 
@@ -264,17 +266,7 @@ ALTER TABLE SanPham ADD FOREIGN KEY (thuong_hieu_id) REFERENCES ThuongHieu (id_t
 
 ALTER TABLE SanPham ADD FOREIGN KEY (phan_loai_id) REFERENCES PhanLoai (id_phan_loai);
 
-ALTER TABLE SanPham ADD FOREIGN KEY (trang_thai_id) REFERENCES TrangThai (id_trang_thai);
-
 ALTER TABLE HinhAnh ADD FOREIGN KEY (san_pham_id) REFERENCES SanPham (id_san_pham);
-
-
--- Nhan Vien
-
-ALTER TABLE NhanVien ADD FOREIGN KEY (id_tai_khoan) REFERENCES TaiKhoan (id);
-
-
-
 
 -----Danh gia-----
 ALTER TABLE DanhGia ADD FOREIGN KEY (chi_tiet_san_pham_id) REFERENCES ChiTietSanPham (id_chi_tiet_san_pham);
@@ -284,12 +276,6 @@ ALTER TABLE DanhGia ADD FOREIGN KEY (khach_hang_id) REFERENCES KhachHang (id_kha
 
 -----Khach hang-----
 ALTER TABLE KhachHang ADD FOREIGN KEY (hang_id) REFERENCES HangKhachHang (id_hang);
-
-
-ALTER TABLE khachhang ADD FOREIGN KEY (id_tai_khoan) REFERENCES TaiKhoan (id);
-
-
-
 
 -----Hoa don-----
 ALTER TABLE HoaDon ADD FOREIGN KEY (khach_hang_id) REFERENCES KhachHang (id_khach_hang);
@@ -306,5 +292,5 @@ ALTER TABLE HoaDonChiTiet ADD FOREIGN KEY (chi_tiet_san_pham_id) REFERENCES ChiT
 -----Dia chi-----
 ALTER TABLE DiaChi ADD FOREIGN KEY (khach_hang_id) REFERENCES KhachHang (id_khach_hang);
 
--- Tai Khoan
-ALTER TABLE TaiKhoan ADD FOREIGN KEY (vai_tro_id) REFERENCES VaiTro (id);
+
+
