@@ -23,6 +23,7 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: "page/product.html",
             controller: "ProductController"
         })
+        
 })
 app.controller("LayOutController", function ($scope, $http, $routeParams, $location, $anchorScroll) {
     // Logic của controller ở đây

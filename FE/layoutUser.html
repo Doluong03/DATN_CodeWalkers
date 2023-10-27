@@ -1081,6 +1081,72 @@
   <script src="assets/js/detail.js"></script>
   <script src="assets/js/cart.js"></script>
   <script src="assets/js/payment.js"></script>
+  <script src="assets/js/login.js"></script>
+
+
+
+  <script>
+
+    var data =  localStorage.getItem('userData');
+    var accessToken = JSON.parse(data);
+
+  function logout() {
+      // Call the server-side logout endpoint
+      fetch('http://localhost:8080/api/auth/logout', {
+          method: 'POST',
+          headers: {
+              'Authorization': 'Bearer ' + getAccessToken(),
+              'Content-Type': 'application/json'
+          },
+      })
+      .then(response => {
+          if (response.ok) {
+              // Clear the JWT from local storage or cookies
+              clearToken();
+              // Redirect or perform other actions after successful logout
+              window.location.href = "/template/login.html";
+          } else {
+              console.error('Logout failed:', response.statusText);
+          }
+      })
+      .catch(error => {
+          console.error('Error during logout:', error);
+      });
+  }
+
+  function getAccessToken() {       
+      return accessToken.token;
+  }
+
+  function clearToken() {
+      // Implement this function to clear the JWT from local storage or cookies
+      // For example, if stored in local storage:
+      localStorage.removeItem('userData');
+  }
+
+  async function fetchData() {
+try {
+const response = await fetch('http://localhost:8080/CodeWalkers/profile/'+accessToken.username);
+
+if (!response.ok) throw new Error('Network response was not ok');
+
+ const data = await response.json();
+
+  // Giả sử data là chuỗi Base64 bạn đã lấy được
+  const imageData = "/FE/assets/img"+data.image;
+  // Thay đổi src của thẻ img
+  document.getElementById('profileImage').src = imageData;
+
+    console.log(data);
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+    }
+ }
+  fetchData();
+
+</script>
+
+
 </body>
 
 </html>
