@@ -1,85 +1,85 @@
-window.StaffController = function ($scope,$http) {
+window.StaffController = function ($scope, $http) {
 
-    $scope.listStaff = [];
-    $scope.viTriUpdate = -1;
-    
-    $scope.currentIndex = 1;
-    
-    $scope.pageNo = 0;
-    
-      $scope.hienThi = function (pageNo) {
-        let apiUrl = apiAdmin +"Staff" + "?pageNo=" + pageNo;
-        $http.get(apiUrl).then(
-          function (response) {
-            // Kiểm tra dữ liệu có được in ra không
-            $scope.listStaff = response.data;
-            console.log(response.data);
-          },
-          function (error) {
-            console.log(error);
-          }
-        );
-      };
-    
-      $scope.PageNo = function (pageNo) {
-        $scope.pageNo = pageNo;
-        $scope.hienThi(pageNo); // Truyền giá trị pageNo vào hàm hienThi
-      };
-    
-      // Gọi hàm hienThi() để lấy dữ liệu ban đầu
-      $scope.hienThi($scope.pageNo);
-    
-  
-  
-    //delete data 
-  
-    $scope.removeStaff = function(event,index){
-      event.preventDefault();
-  
-      let staff = $scope.listUSers[index];
-      let staffId = staff.id;
-      let api = apiAdmin + "Staff/delete/"+ staffId;
-      $http.delete(api).then(function(){
-       $scope.listStaff.splice(index, 1);
-       alert("xoa thanh cong");    
-      }).catch(function(error){
-              console.log(error);
-      });
-   };
-  
-  
-     $scope.showForm = false; // Mặc định ẩn form
-     $scope.toggleForm = function() {
-       $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form
-     };
-  
-  
-  
-  
-  
-  
-   // thu vien jQuery không đụng vào
-   (function($) {
+  $scope.listStaff = [];
+  $scope.viTriUpdate = -1;
+
+  $scope.currentIndex = 1;
+
+  $scope.pageNo = 0;
+
+  $scope.hienThi = function (pageNo) {
+    let apiUrl = apiAdmin + "Staff" + "?pageNo=" + pageNo;
+    $http.get(apiUrl).then(
+      function (response) {
+        // Kiểm tra dữ liệu có được in ra không
+        $scope.listStaff = response.data;
+        console.log(response.data);
+      },
+      function (error) {
+        console.log(error);
+      }
+    );
+  };
+
+  $scope.PageNo = function (pageNo) {
+    $scope.pageNo = pageNo;
+    $scope.hienThi(pageNo); // Truyền giá trị pageNo vào hàm hienThi
+  };
+
+  // Gọi hàm hienThi() để lấy dữ liệu ban đầu
+  $scope.hienThi($scope.pageNo);
+
+
+
+  //delete data 
+
+  $scope.removeStaff = function (event, index) {
+    event.preventDefault();
+
+    let staff = $scope.listUSers[index];
+    let staffId = staff.id;
+    let api = apiAdmin + "Staff/delete/" + staffId;
+    $http.delete(api).then(function () {
+      $scope.listStaff.splice(index, 1);
+      alert("xoa thanh cong");
+    }).catch(function (error) {
+      console.log(error);
+    });
+  };
+
+
+  $scope.showForm = false; // Mặc định ẩn form
+  $scope.toggleForm = function () {
+    $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form
+  };
+
+
+
+
+
+
+  // thu vien jQuery không đụng vào
+  (function ($) {
     'use strict';
-    $(function() {
-      $('[data-toggle="offcanvas"]').on("click", function() {
+    $(function () {
+      $('[data-toggle="offcanvas"]').on("click", function () {
         $('.sidebar-offcanvas').toggleClass('active')
       });
     });
   })(jQuery);
-  
-   (function($) {
+
+  (function ($) {
     'use strict';
-    $(function() {
+    $(function () {
       var body = $('body');
       var contentWrapper = $('.content-wrapper');
       var scroller = $('.container-scroller');
       var footer = $('.footer');
       var sidebar = $('.sidebar');
-  
+
       //Add active class to nav-link based on url dynamically
       //Active class can be hard coded directly in html file also as required
-  
+
       function addActiveClass(element) {
         if (current === "") {
           //for root url
@@ -104,24 +104,24 @@ window.StaffController = function ($scope,$http) {
           }
         }
       }
-  
-    
-  
-      $('.horizontal-menu .nav li a').each(function() {
+
+
+
+      $('.horizontal-menu .nav li a').each(function () {
         var $this = $(this);
         addActiveClass($this);
       })
-  
+
       //Close other submenu in sidebar on opening any
-  
-      sidebar.on('show.bs.collapse', '.collapse', function() {
+
+      sidebar.on('show.bs.collapse', '.collapse', function () {
         sidebar.find('.collapse.show').collapse('hide');
       });
-  
-  
+
+
       //Change sidebar and content-wrapper height
       applyStyles();
-  
+
       function applyStyles() {
         //Applying perfect scrollbar
         if (!body.hasClass("rtl")) {
@@ -132,41 +132,41 @@ window.StaffController = function ($scope,$http) {
             const chatsScroll = new PerfectScrollbar('.chats');
           }
           if (body.hasClass("sidebar-fixed")) {
-            if($('#sidebar').length) {
+            if ($('#sidebar').length) {
               var fixedSidebarScroll = new PerfectScrollbar('#sidebar .nav');
             }
           }
         }
       }
-  
-      $('[data-toggle="minimize"]').on("click", function() {
+
+      $('[data-toggle="minimize"]').on("click", function () {
         if ((body.hasClass('sidebar-toggle-display')) || (body.hasClass('sidebar-absolute'))) {
           body.toggleClass('sidebar-hidden');
         } else {
           body.toggleClass('sidebar-icon-only');
         }
       });
-  
+
       //checkbox and radios
       $(".form-check label,.form-radio label").append('<i class="input-helper"></i>');
-  
+
       //Horizontal menu in mobile
-      $('[data-toggle="horizontal-menu-toggle"]').on("click", function() {
+      $('[data-toggle="horizontal-menu-toggle"]').on("click", function () {
         $(".horizontal-menu .bottom-navbar").toggleClass("header-toggled");
       });
       // Horizontal menu navigation in mobile menu on click
       var navItemClicked = $('.horizontal-menu .page-navigation >.nav-item');
-      navItemClicked.on("click", function(event) {
-        if(window.matchMedia('(max-width: 991px)').matches) {
-          if(!($(this).hasClass('show-submenu'))) {
+      navItemClicked.on("click", function (event) {
+        if (window.matchMedia('(max-width: 991px)').matches) {
+          if (!($(this).hasClass('show-submenu'))) {
             navItemClicked.removeClass('show-submenu');
           }
           $(this).toggleClass('show-submenu');
-        }        
+        }
       })
-  
-      $(window).scroll(function() {
-        if(window.matchMedia('(min-width: 992px)').matches) {
+
+      $(window).scroll(function () {
+        if (window.matchMedia('(min-width: 992px)').matches) {
           var header = $('.horizontal-menu');
           if ($(window).scrollTop() >= 70) {
             $(header).addClass('fixed-on-scroll');
@@ -176,104 +176,104 @@ window.StaffController = function ($scope,$http) {
         }
       });
     });
-  
+
     // focus input when clicking on search icon
-    $('#navbar-search-icon').click(function() {
+    $('#navbar-search-icon').click(function () {
       $("#navbar-search-input").focus();
     });
-    
+
   })(jQuery);
-  
-  (function($) {
+
+  (function ($) {
     'use strict';
-    $(function() {
-      $(".nav-settings").on("click", function() {
+    $(function () {
+      $(".nav-settings").on("click", function () {
         $("#right-sidebar").toggleClass("open");
       });
-      $(".settings-close").on("click", function() {
+      $(".settings-close").on("click", function () {
         $("#right-sidebar,#theme-settings").removeClass("open");
       });
-  
-      $("#settings-trigger").on("click" , function(){
+
+      $("#settings-trigger").on("click", function () {
         $("#theme-settings").toggleClass("open");
       });
-  
-  
+
+
       //background constants
       var navbar_classes = "navbar-danger navbar-success navbar-warning navbar-dark navbar-light navbar-primary navbar-info navbar-pink";
       var sidebar_classes = "sidebar-light sidebar-dark";
       var $body = $("body");
-  
+
       //sidebar backgrounds
-      $("#sidebar-light-theme").on("click" , function(){
+      $("#sidebar-light-theme").on("click", function () {
         $body.removeClass(sidebar_classes);
         $body.addClass("sidebar-light");
         $(".sidebar-bg-options").removeClass("selected");
         $(this).addClass("selected");
       });
-      $("#sidebar-dark-theme").on("click" , function(){
+      $("#sidebar-dark-theme").on("click", function () {
         $body.removeClass(sidebar_classes);
         $body.addClass("sidebar-dark");
         $(".sidebar-bg-options").removeClass("selected");
         $(this).addClass("selected");
       });
-  
-  
+
+
       //Navbar Backgrounds
-      $(".tiles.primary").on("click" , function(){
+      $(".tiles.primary").on("click", function () {
         $(".navbar").removeClass(navbar_classes);
         $(".navbar").addClass("navbar-primary");
         $(".tiles").removeClass("selected");
         $(this).addClass("selected");
       });
-      $(".tiles.success").on("click" , function(){
+      $(".tiles.success").on("click", function () {
         $(".navbar").removeClass(navbar_classes);
         $(".navbar").addClass("navbar-success");
         $(".tiles").removeClass("selected");
         $(this).addClass("selected");
       });
-      $(".tiles.warning").on("click" , function(){
+      $(".tiles.warning").on("click", function () {
         $(".navbar").removeClass(navbar_classes);
         $(".navbar").addClass("navbar-warning");
         $(".tiles").removeClass("selected");
         $(this).addClass("selected");
       });
-      $(".tiles.danger").on("click" , function(){
+      $(".tiles.danger").on("click", function () {
         $(".navbar").removeClass(navbar_classes);
         $(".navbar").addClass("navbar-danger");
         $(".tiles").removeClass("selected");
         $(this).addClass("selected");
       });
-      $(".tiles.light").on("click" , function(){
+      $(".tiles.light").on("click", function () {
         $(".navbar").removeClass(navbar_classes);
         $(".navbar").addClass("navbar-light");
         $(".tiles").removeClass("selected");
         $(this).addClass("selected");
       });
-      $(".tiles.info").on("click" , function(){
+      $(".tiles.info").on("click", function () {
         $(".navbar").removeClass(navbar_classes);
         $(".navbar").addClass("navbar-info");
         $(".tiles").removeClass("selected");
         $(this).addClass("selected");
       });
-      $(".tiles.dark").on("click" , function(){
+      $(".tiles.dark").on("click", function () {
         $(".navbar").removeClass(navbar_classes);
         $(".navbar").addClass("navbar-dark");
         $(".tiles").removeClass("selected");
         $(this).addClass("selected");
       });
-      $(".tiles.default").on("click" , function(){
+      $(".tiles.default").on("click", function () {
         $(".navbar").removeClass(navbar_classes);
         $(".tiles").removeClass("selected");
         $(this).addClass("selected");
       });
     });
   })(jQuery);
-  
-  (function($) {
+
+  (function ($) {
     'use strict';
     //Open submenu on hover in compact sidebar mode and horizontal menu mode
-    $(document).on('mouseenter mouseleave', '.sidebar .nav-item', function(ev) {
+    $(document).on('mouseenter mouseleave', '.sidebar .nav-item', function (ev) {
       var body = $('body');
       var sidebarIconOnly = body.hasClass("sidebar-icon-only");
       var sidebarFixed = body.hasClass("sidebar-fixed");
@@ -295,10 +295,10 @@ window.StaffController = function ($scope,$http) {
       }
     });
   })(jQuery);
-    
-  
-  (function($) {
-    showSwal = function(type) {
+
+
+  (function ($) {
+    showSwal = function (type) {
       'use strict';
       if (type === 'basic') {
         swal({
@@ -310,7 +310,7 @@ window.StaffController = function ($scope,$http) {
             className: "btn btn-primary"
           }
         })
-  
+
       } else if (type === 'title-and-text') {
         swal({
           title: 'Read the alert!',
@@ -322,7 +322,7 @@ window.StaffController = function ($scope,$http) {
             className: "btn btn-primary"
           }
         })
-  
+
       } else if (type === 'success-message') {
         swal({
           title: 'Congratulations!',
@@ -335,7 +335,7 @@ window.StaffController = function ($scope,$http) {
             className: "btn btn-primary"
           }
         })
-  
+
       } else if (type === 'auto-close') {
         swal({
           title: 'Auto close alert!',
@@ -343,9 +343,9 @@ window.StaffController = function ($scope,$http) {
           timer: 2000,
           button: false
         }).then(
-          function() {},
+          function () { },
           // handling the promise rejection
-          function(dismiss) {
+          function (dismiss) {
             if (dismiss === 'timer') {
               console.log('I was closed by the timer')
             }
@@ -377,7 +377,7 @@ window.StaffController = function ($scope,$http) {
             }
           }
         })
-  
+
       } else if (type === 'custom-html') {
         swal({
           content: {
@@ -397,12 +397,12 @@ window.StaffController = function ($scope,$http) {
         })
       }
     }
-  
+
   })(jQuery);
-  
-  
-  
-  (function($) {
+
+
+
+  (function ($) {
     'use strict';
     if ($('.grid').length) {
       var colcade = new Colcade('.grid', {
@@ -411,8 +411,8 @@ window.StaffController = function ($scope,$http) {
       });
     }
   })(jQuery);
-  
-  $(function() {
+
+  $(function () {
     /* ChartJS
      * -------
      * Data and config for chartjs
@@ -446,32 +446,32 @@ window.StaffController = function ($scope,$http) {
     var multiLineData = {
       labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
       datasets: [{
-          label: 'Dataset 1',
-          data: [12, 19, 3, 5, 2, 3],
-          borderColor: [
-            '#587ce4'
-          ],
-          borderWidth: 2,
-          fill: false
-        },
-        {
-          label: 'Dataset 2',
-          data: [5, 23, 7, 12, 42, 23],
-          borderColor: [
-            '#ede190'
-          ],
-          borderWidth: 2,
-          fill: false
-        },
-        {
-          label: 'Dataset 3',
-          data: [15, 10, 21, 32, 12, 33],
-          borderColor: [
-            '#f44252'
-          ],
-          borderWidth: 2,
-          fill: false
-        }
+        label: 'Dataset 1',
+        data: [12, 19, 3, 5, 2, 3],
+        borderColor: [
+          '#587ce4'
+        ],
+        borderWidth: 2,
+        fill: false
+      },
+      {
+        label: 'Dataset 2',
+        data: [5, 23, 7, 12, 42, 23],
+        borderColor: [
+          '#ede190'
+        ],
+        borderWidth: 2,
+        fill: false
+      },
+      {
+        label: 'Dataset 3',
+        data: [15, 10, 21, 32, 12, 33],
+        borderColor: [
+          '#f44252'
+        ],
+        borderWidth: 2,
+        fill: false
+      }
       ]
     };
     var options = {
@@ -490,9 +490,9 @@ window.StaffController = function ($scope,$http) {
           radius: 0
         }
       }
-  
+
     };
-  
+
     // Get context with jQuery - using jQuery's .get() method.
     if ($("#barChart").length) {
       var barChartCanvas = $("#barChart").get(0).getContext("2d");
@@ -503,14 +503,14 @@ window.StaffController = function ($scope,$http) {
         options: options
       });
     }
-  
-   
+
+
   });
-  
-  (function($) {
+
+  (function ($) {
     'use strict';
     //Open submenu on hover in compact sidebar mode and horizontal menu mode
-    $(document).on('mouseenter mouseleave', '.sidebar .nav-item', function(ev) {
+    $(document).on('mouseenter mouseleave', '.sidebar .nav-item', function (ev) {
       var body = $('body');
       var sidebarIconOnly = body.hasClass("sidebar-icon-only");
       var sidebarFixed = body.hasClass("sidebar-fixed");
@@ -532,11 +532,11 @@ window.StaffController = function ($scope,$http) {
       }
     });
   })(jQuery)
-  
-  
-  
-  
-  
-  
-  
-  }
+
+
+
+
+
+
+
+}

@@ -6,8 +6,27 @@
   <component name="ChangeListManager">
     <list default="true" id="d71f0bcd-3842-4ca2-8ea3-67831a91f29e" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/chart.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/chart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/chart-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/chart-controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/login-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/login-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/manufacture-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/manufacture-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/product-detail-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/product-detail-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/staff-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/staff-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/user-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/user-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/css/css-layout/user.css" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/css/css-layout/user.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/css/vertical-layout-light/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/css/vertical-layout-light/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/forgot-password.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/forgot-password.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/manufacture.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/manufacture.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/nhan-vien.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/nhan-vien.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/partials/_settings-panel.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/partials/_settings-panel.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/product-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/product-details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/trang-chu.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/trang-chu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/user.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +97,17 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AsmBeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="ASM_BE" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.asm_be.AsmBeApplication" />
@@ -130,6 +160,15 @@
       <workItem from="1697615787855" duration="9316000" />
       <workItem from="1697650841380" duration="658000" />
       <workItem from="1697709583895" duration="327000" />
+      <workItem from="1697713901930" duration="29000" />
+      <workItem from="1697819892379" duration="4000" />
+      <workItem from="1697874959928" duration="590000" />
+      <workItem from="1697878341515" duration="1247000" />
+      <workItem from="1698080549243" duration="659000" />
+      <workItem from="1698135356366" duration="5000" />
+      <workItem from="1698159414543" duration="501000" />
+      <workItem from="1698160389731" duration="730000" />
+      <workItem from="1698225833265" duration="3579000" />
     </task>
     <servers />
   </component>
