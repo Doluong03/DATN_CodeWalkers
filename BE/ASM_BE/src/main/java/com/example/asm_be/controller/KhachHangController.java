@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
@@ -40,10 +41,10 @@ public class KhachHangController {
     @GetMapping({"/User"})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public UserRespone getAllUser(
-            @RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo,
-            @RequestParam(value = "sizePage",defaultValue = "5") Integer  sizePage) {
+            @RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
+            @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         UserRespone userRespone = new UserRespone();
-        Page<Users> usersPage = userService.getAll(pageNo,sizePage);
+        Page<Users> usersPage = userService.getAll(pageNo, sizePage);
 
         userRespone.setUsersList(usersPage.getContent());
         userRespone.setTotalPages(usersPage.getTotalPages());
@@ -98,5 +99,8 @@ public class KhachHangController {
                 .body(new ResponeObject("success", "Delete thanh cong", this.userService.delete(idUsers)));
     }
 
-
+    @GetMapping("/user/getAll")
+    public ResponseEntity<Collection<Users>> getAllUser(){
+        return ResponseEntity.ok(userService.getAllUser());
+    }
 }

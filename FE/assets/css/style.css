@@ -12,6 +12,7 @@
 :root {
   scroll-behavior: smooth;
 }
+
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:wght@400;700&display=swap');
 
@@ -39,6 +40,7 @@ h5,
 h6 {
   font-family: 'Noto Sans', sans-serif;
 }
+
 /*--------------------------------------------------------------
 # Title
 --------------------------------------------------------------*/
@@ -59,65 +61,73 @@ a[data-title]:hover:after {
 /*--------------------------------------------------------------
 # Login
 --------------------------------------------------------------*/
-    .form{
-        margin-top: 100px;
-        margin-left: 100px;
-    }
-    .form-group {
-        margin-bottom: 1rem;
-    }
+.form {
+  margin-top: 100px;
+  margin-left: 100px;
+}
 
-    .form-control-user {
-        border-radius: 50px;
-        height: 50px;
-        font-size: 12px;
-        background-color: rgb(255, 255, 255);
-    }
+.form-group {
+  margin-bottom: 1rem;
+}
 
-    .custom-control-label {
-        color: gray;
-    }
+.form-control-user {
+  border-radius: 50px;
+  height: 50px;
+  font-size: 12px;
+  background-color: rgb(255, 255, 255);
+}
 
-    .btn-user {
-        border-radius: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 8px;
-        height: 44px;
-        font-size: 14px;
-    }
-    .btn-login{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 14px;
-        height: 44px;
-    }
-    .bg-primary-gradient {
-        background-color: rgb(78, 89, 233);
-        color: aliceblue;
-    }
-    .bg-primary-gradient:hover {
-      background-color: rgb(78, 78, 209);
-      color: aliceblue;
-  }
-    .btn-primary-fb {
-        background-color: rgb(9, 38, 202);
-        color: aliceblue;
-    }
-    .btn-primary-fb:hover {
-      background-color: rgb(9, 35, 180);
-      color: aliceblue;
-  }
-    .small{
-        text-decoration-line: none;
-        font-size: 12px;
-    }
-    .btn-user >i{
-        margin-right: 5px;
-    }
-   
+.custom-control-label {
+  color: gray;
+}
+
+.btn-user {
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  height: 44px;
+  font-size: 14px;
+}
+
+.btn-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  height: 44px;
+}
+
+.bg-primary-gradient {
+  background-color: rgb(78, 89, 233);
+  color: aliceblue;
+}
+
+.bg-primary-gradient:hover {
+  background-color: rgb(78, 78, 209);
+  color: aliceblue;
+}
+
+.btn-primary-fb {
+  background-color: rgb(9, 38, 202);
+  color: aliceblue;
+}
+
+.btn-primary-fb:hover {
+  background-color: rgb(9, 35, 180);
+  color: aliceblue;
+}
+
+.small {
+  text-decoration-line: none;
+  font-size: 12px;
+}
+
+.btn-user>i {
+  margin-right: 5px;
+}
+
 
 /*--------------------------------------------------------------
 # Sections
@@ -282,7 +292,7 @@ section {
   letter-spacing: 1px;
   color: #012970;
   font-family: 'Raleway', sans-serif;
-    margin-top: 3px;
+  margin-top: 3px;
 }
 
 /*--------------------------------------------------------------
@@ -314,7 +324,7 @@ section {
   justify-content: space-between;
   padding: 10px 0 10px 30px;
   font-family: 'Raleway', sans-serif;
-    font-size: 16px;
+  font-size: 16px;
   font-weight: 700;
   color: #013289;
   white-space: nowrap;
@@ -659,29 +669,35 @@ section {
   height: auto;
   border-radius: 5%;
 }
+
 .box img {
   height: 350px;
   margin-top: 10px;
   margin-bottom: 30px;
 }
+
 .img-fluid {
-height: 510px;
-width: 500px;
+  height: 510px;
+  width: 500px;
 }
-.css-68j8pv img{
-background-color: #af1616;
-height: 110px;
+
+.css-68j8pv img {
+  background-color: #af1616;
+  height: 110px;
 }
-.modal-content{
+
+.modal-content {
   margin-left: -200px;
   width: 1000px;
   height: 900px;
 }
+
 .detailPrWatch img {
   width: 966px;
   height: 800px;
   background-color: #ffffff;
 }
+
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
@@ -862,6 +878,7 @@ height: 110px;
   background-color: #aaaaaa;
   border-radius: 5%;
 }
+
 .prImg img {
   background-color: #aaaaaa;
   border-radius: 5%;
@@ -1045,6 +1062,7 @@ height: 110px;
 .carousel-control-next-icon {
   color: #111;
 }
+
 .size-container {
   display: flex;
   flex-wrap: wrap;
@@ -1069,10 +1087,14 @@ height: 110px;
   margin: 3px;
   cursor: pointer;
 }
+
 .size:hover {
-  background-color: lightblue; /* Màu nền khi hover */
-  color: white; /* Màu chữ khi hover */
+  background-color: lightblue;
+  /* Màu nền khi hover */
+  color: white;
+  /* Màu chữ khi hover */
 }
+
 .size input[type="radio"] {
   cursor: pointer;
   /* CSS cho radio button */
@@ -1084,6 +1106,63 @@ height: 110px;
   /* CSS cho nhãn */
   /* Bạn có thể thêm các tùy chỉnh cho nhãn ở đây */
 }
+
+.color-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* Cho phép tự động xuống dòng khi không đủ không gian */
+  justify-content: start;
+  /* Căn giữa các phần tử trên cùng một hàng */
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.color {
+  border-radius: 5px;
+  height: 30px;
+  border-radius: 55%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: calc(10%);
+  /* Để hiển thị tối đa 4 phần tử trên cùng một hàng */
+  margin: 3px;
+  cursor: pointer;
+}
+
+.color:hover {
+  background-color: lightblue;
+  /* Màu nền khi hover */
+  color: white;
+  /* Màu chữ khi hover */
+}
+
+.color input[type="radio"] {
+  cursor: pointer;
+  /* CSS cho radio button */
+  /* Bạn có thể thêm các tùy chỉnh cho radio button ở đây */
+}
+
+.color label {
+  cursor: pointer;
+  font-size: 7px;
+  color: #eee4e4d5;
+
+  /* CSS cho nhãn */
+  /* Bạn có thể thêm các tùy chỉnh cho nhãn ở đây */
+}
+
+.custom-label {
+  display: inline-block;
+  padding-left: 10px;
+}
+
+.custom-label input {
+  opacity: 0;
+}
+
+
 .size2-container {
   display: flex;
   flex-wrap: wrap;
@@ -1095,6 +1174,7 @@ height: 110px;
   margin-right: 2px;
   margin-bottom: 10px;
 }
+
 /*--------------------------------------------------------------
 # Product
 --------------------------------------------------------------*/
@@ -1112,17 +1192,22 @@ height: 110px;
   /* Để hiển thị tối đa 4 phần tử trên cùng một hàng */
   margin: 3px;
   cursor: pointer;
- 
+
 }
+
 .size2:hover {
-  background-color: lightblue; /* Màu nền khi hover */
-  color: white; /* Màu chữ khi hover */
+  background-color: lightblue;
+  /* Màu nền khi hover */
+  color: white;
+  /* Màu chữ khi hover */
 }
+
 .size2 input[type="radio"] {
   cursor: pointer;
   /* CSS cho radio button */
   /* Bạn có thể thêm các tùy chỉnh cho radio button ở đây */
 }
+
 .size2 label {
   cursor: pointer;
   /* CSS cho nhãn */
@@ -1153,11 +1238,11 @@ height: 110px;
   font-size: 18px;
   color: black;
   font-weight: 500;
-   font-family: 'Noto Sans', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .box_product p {
-   font-family: 'Noto Sans', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   margin-bottom: 0;
   color: #878b8f;
 }
@@ -1172,8 +1257,9 @@ height: 110px;
 
 .no-results {
   margin-top: 100px;
-height: 500px;
+  height: 500px;
 }
+
 /*--------------------------------------------------------------
 # Cart_Items
 --------------------------------------------------------------*/
@@ -1187,6 +1273,7 @@ height: 500px;
   font-size: 12px;
   text-align: center;
 }
+
 .span_item p select {
   border: 0;
   height: 30px;
@@ -1212,7 +1299,8 @@ height: 500px;
   width: 15%;
   height: 30px;
   text-align: center;
-} 
+}
+
 /*--------------------------------------------------------------
 # Payment
 --------------------------------------------------------------*/
@@ -1220,19 +1308,26 @@ height: 500px;
   width: 10rem;
 }
 
+.custom-select select {
+  font-size: 14px;
+}
+
 .hr {
   height: 3px;
   width: 100%;
   background-position-x: -30px;
   background-size: 116px 3px;
-  background-image: repeating-linear-gradient(45deg,#6fa6d6,#6fa6d6 33px,transparent 0,transparent 41px,#f18d9b 0,#f18d9b 74px,transparent 0,transparent 82px);
+  background-image: repeating-linear-gradient(45deg, #6fa6d6, #6fa6d6 33px, transparent 0, transparent 41px, #f18d9b 0, #f18d9b 74px, transparent 0, transparent 82px);
 }
-.prPay img{
-background-color: #aaaaaa;
+
+.prPay img {
+  background-color: #aaaaaa;
 }
+
 .custom-row {
   max-height: 10px !important;
 }
+
 /*--------------------------------------------------------------
 # Services
 --------------------------------------------------------------*/

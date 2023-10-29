@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserImpl implements UserService {
@@ -22,9 +23,18 @@ public class UserImpl implements UserService {
         Pageable pageable = PageRequest.of(pageNo,sizePage);
         return userRepository.findAll(pageable);
     }
+    @Override
+    public List<Users> getAllUser() {
+        return userRepository.findAll();
+    }
 
     public Users getOne(Integer id) {
-        return null;
+        return userRepository.findById(id).get();
+    }
+
+    @Override
+    public Users findByCartId(Integer id) {
+        return userRepository.findByCartId(id);
     }
 
     public boolean save(Users users) {
@@ -56,5 +66,10 @@ public class UserImpl implements UserService {
             return false;
         }
 
+    }
+    @Override
+    public Optional<Users> findByNameandPhone(String name, String phone) {
+        Optional<Users> users = userRepository.findByNameAndPhoneNumber(name, phone);
+        return users;
     }
 }

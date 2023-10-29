@@ -1,8 +1,10 @@
 package com.example.asm_be.service.impl;
 
+import com.example.asm_be.entities.Product;
 import com.example.asm_be.entities.ProductDetail;
 import com.example.asm_be.entities.Size;
 import com.example.asm_be.repositories.ProductDetailRepository;
+import com.example.asm_be.repositories.ProductRepository;
 import com.example.asm_be.repositories.SizeRepository;
 import com.example.asm_be.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class ProductDetailImpl implements ProductDetailService {
     private ProductDetailRepository productDetailRepository;
     @Autowired
     private SizeRepository sizeRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     public List<ProductDetail> getAll() {
@@ -72,27 +76,27 @@ public class ProductDetailImpl implements ProductDetailService {
     }
 
     @Override
-    public List<ProductDetail> getPrBetsSl() {
-        // List<ProductDetail> detailList = productDetailRepository.getAll();
-        List<ProductDetail> detailList = productDetailRepository.findAll();
-        Iterator<ProductDetail> iterator = detailList.iterator();
+    public List<Product> getPrBetsSl() {
+        // List<Product> detailList = productDetailRepository.getAll();
+        List<Product> detailList = productRepository.findAll();
+        Iterator<Product> iterator = detailList.iterator();
         while (iterator.hasNext()) {
-            ProductDetail x = iterator.next();
-            if (x.getPrice() < 85) {
-                iterator.remove(); // Loại bỏ phần tử không cần thiết
-            }
+            Product x = iterator.next();
+//            if (x.getListProduct().get(0).getPrice() < 85) {
+//                iterator.remove(); // Loại bỏ phần tử không cần thiết
+//            }
         }
         return detailList;
     }
 
     @Override
-    public List<ProductDetail> findByName(String keyWord) {
-        List<ProductDetail> allProductDetails = productDetailRepository.findAll();
-        List<ProductDetail> matchingProductDetails = new ArrayList<>();
+    public List<Product> findByName(String keyWord) {
+        List<Product> allProducts = productRepository.findAll();
+        List<Product> matchingProducts = new ArrayList<>();
 
-        for (ProductDetail productDetail : allProductDetails) {
+        for (Product productDetail : allProducts) {
             String[] keywords = keyWord.split(""); // Tách từng ký tự của từ khoá
-            String productName = productDetail.getProduct().getName().toLowerCase();
+            String productName = productDetail.getName().toLowerCase();
 
             boolean isMatch = true;
             int keywordIndex = 0;
@@ -102,10 +106,10 @@ public class ProductDetailImpl implements ProductDetailService {
                 }
             }
             if (keywordIndex == keywords.length) {
-                matchingProductDetails.add(productDetail);
+                matchingProducts.add(productDetail);
             }
         }
-        return matchingProductDetails;
+        return matchingProducts;
     }
 
     public List<ProductDetail> getSortedProducts() {
@@ -121,6 +125,7 @@ public class ProductDetailImpl implements ProductDetailService {
     public List<ProductDetail> getSortedProducts_priceDesc() {
         return productDetailRepository.findAllByOrderByPriceDesc();
     }
+
 
     @Override
     public void updateProductSize(int productId, String newSize) {
@@ -139,7 +144,17 @@ public class ProductDetailImpl implements ProductDetailService {
     }
 
     @Override
-    public ProductDetail findBySize(int proId, int sizeId) {
-        return productDetailRepository.findBySize(proId, sizeId);
+    public ProductDetail findBySize(int proId, int sizeId, int idCl) {
+        return productDetailRepository.findBySize(proId, sizeId,idCl);
+    }
+
+    @Override
+    public List<ProductDetail> findByPrId(int proId) {
+        return productDetailRepository.findByProductId(proId);
+    }
+
+    @Override
+    public List<ProductDetail> getPrByColor(int idPr, int idColor) {
+        return productDetailRepository.findByProductIdAndColorId(idPr, idColor);
     }
 }
