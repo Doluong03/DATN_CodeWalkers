@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface CartDetailsRepository extends JpaRepository<CartDetails, Integer> {
     @Query("select c from GioHangChiTiet c where c.cart.id =?1 and c.productDetail.id=?2")
     Optional<CartDetails> findBy2Id(int prId, int cartId);
-    CartDetails findByProductDetailId(int id);
+    CartDetails findByProductDetailIdAndCartId(int id , int idcart);
     List<CartDetails> findByCartId(int id);
+    Boolean deleteByCartId(int id);
 }

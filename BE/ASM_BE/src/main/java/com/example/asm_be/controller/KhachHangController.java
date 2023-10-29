@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
@@ -104,5 +105,8 @@ public class KhachHangController {
           return optionalUsers.get();
     }
 
-
+    @GetMapping("/user/getAll")
+    public ResponseEntity<Collection<Users>> getAllUser(){
+        return ResponseEntity.ok(userService.getAllUser());
+    }
 }

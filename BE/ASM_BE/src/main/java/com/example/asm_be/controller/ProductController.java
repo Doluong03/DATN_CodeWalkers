@@ -23,10 +23,12 @@ public class ProductController {
     MaterialService materialService;
     @Autowired
     ColorService colorService;
+    @Autowired
+    ProductService productService;
 
     @GetMapping("/api/product")
-    public ResponseEntity<Collection<ProductDetail>> getAllProduct() {
-        return ResponseEntity.ok(productDetailService.getAll());
+    public ResponseEntity<Collection<Product>> getAllProduct() {
+        return ResponseEntity.ok(productService.getAll());
     }
 
     @GetMapping("/api/product/brand")
@@ -50,7 +52,7 @@ public class ProductController {
     }
 
     @GetMapping("/api/search/{name}")
-    public ResponseEntity<Collection<ProductDetail>> findByName(@PathVariable("name") String keyword) {
+    public ResponseEntity<Collection<Product>> findByName(@PathVariable("name") String keyword) {
         return ResponseEntity.ok(productDetailService.findByName(keyword));
     }
 

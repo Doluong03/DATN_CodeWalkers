@@ -3,6 +3,9 @@ package com.example.asm_be.service;
 import com.example.asm_be.entities.Address;
 import com.example.asm_be.entities.District;
 import com.example.asm_be.entities.Province;
+import com.example.asm_be.response.DistrictResponse;
+import com.example.asm_be.response.ProvineResponse;
+import com.example.asm_be.response.WardResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -16,8 +19,8 @@ public interface AddressService {
     public Address save( Address address);
     public Address update( Address address);
     public void delete( Address address);
-    public HashMap<Integer, String> fetchProvinces();
-    public HashMap<Integer, String> fetchDistrict(int provinceId);
-    public HashMap<String, String> fetchWard(int districtId);
+    public List<ProvineResponse> fetchProvinces();
+    public List<DistrictResponse> fetchDistrict(int provinceId);
+    public List<WardResponse> fetchWard(int districtId);
 
 }

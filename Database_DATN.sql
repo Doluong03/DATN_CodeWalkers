@@ -1,4 +1,4 @@
---create database DATN_V2
+--create database DATN_V2_test
 
 
 CREATE TABLE SanPham (
