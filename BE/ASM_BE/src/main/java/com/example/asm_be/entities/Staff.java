@@ -1,10 +1,12 @@
 package com.example.asm_be.entities;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -21,8 +23,10 @@ public class Staff implements Serializable {
     @Column(name = "id_nhan_vien")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name = "ten_nhan_vien")
     private String name;
+
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "ngay_sinh")
     private Date dateOfBirth;
@@ -57,5 +61,4 @@ public class Staff implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "vai_tro_id", referencedColumnName = "id")
     )
     private Set<Role> roles = new HashSet<>();
-
 }

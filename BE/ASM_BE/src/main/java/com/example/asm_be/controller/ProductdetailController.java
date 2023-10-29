@@ -38,7 +38,7 @@ public class ProductdetailController {
             ,@RequestParam(value = "sizePage",defaultValue = "5") Integer sizePage)
     {
         ProductDetailsRespone productDetailsRespone =  new ProductDetailsRespone();
-        Page<ProductDetail> productDetailPage = productDetailService.getAll(pageNo,sizePage);
+        Page<ProductDetail> productDetailPage = productDetailService.getAllPage(pageNo,sizePage);
 
         productDetailsRespone.setProductDetailList(productDetailPage.getContent());
         productDetailsRespone.setTotalPages(productDetailPage.getTotalPages());

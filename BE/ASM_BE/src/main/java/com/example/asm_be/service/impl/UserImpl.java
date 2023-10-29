@@ -9,7 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserImpl implements UserService {
@@ -56,5 +56,10 @@ public class UserImpl implements UserService {
             return false;
         }
 
+    }
+
+    @Override
+    public Optional<Users> findByUserName(String userName) {
+        return userRepository.findByUserName(userName);
     }
 }

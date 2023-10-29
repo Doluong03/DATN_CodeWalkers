@@ -29,7 +29,13 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-
+  <!-- =======================================================
+  * Template Name: FlexStart
+  * Updated: Jul 27 2023 with Bootstrap v5.3.1
+  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body ng-app="app" ng-controller="LayOutController" id="pageContent">
@@ -43,7 +49,6 @@
       <a href="#home" class="logo d-flex align-items-center" style="margin-top: -30px;margin-left: -29px;">
         <img src="assets/img/logo.png" alt="">
       </a>
-
 
       <nav id="navbar" class="navbar">
         <ul>
@@ -108,34 +113,32 @@
 
   <!-- banner  -->
   <!-- ======= Hero Section ======= -->
-  <section id="hero" class="hero d-flex align-items-center" style="margin-top: 70px; margin-bottom: 20px;">
-    <div class="container">
-      <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active" data-bs-interval="10000">
-            <img src="assets/img/bn.jpg" class="d-block w-100 img-fluid" alt="...">
-          </div>
-          <div class="carousel-item" data-bs-interval="2000">
-            <img src="assets/img/banner2.png" class="d-block w-100 img-fluid" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/img/banner2.png" class="d-block w-100 img-fluid" alt="...">
-          </div>
+  <section id="hero" class="hero d-flex align-items-center ">
+    <div id="carouselExampleInterval" class="carousel slide offset-1 ps-5 pt-5 " data-bs-ride="carousel">
+      <div class="carousel-inner ">
+        <div class="carousel-item active " data-bs-interval="10000">
+          <img src="assets/img/bn.jpg" class="d-block " alt="...">
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-          data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-          data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+        <div class="carousel-item" data-bs-interval="2000">
+          <img src="assets/img/banner2.png" class="d-block   " alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="..." class="d-block" alt="...">
+        </div>
       </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-  </section>
-  <!-- End Hero -->
+    </div>
+  </section><!-- End Hero -->
 
   <!-- Main -->
   <main id="main">
@@ -1078,6 +1081,72 @@
   <script src="assets/js/detail.js"></script>
   <script src="assets/js/cart.js"></script>
   <script src="assets/js/payment.js"></script>
+  <script src="assets/js/login.js"></script>
+
+
+
+  <script>
+
+    var data =  localStorage.getItem('userData');
+    var accessToken = JSON.parse(data);
+
+  function logout() {
+      // Call the server-side logout endpoint
+      fetch('http://localhost:8080/api/auth/logout', {
+          method: 'POST',
+          headers: {
+              'Authorization': 'Bearer ' + getAccessToken(),
+              'Content-Type': 'application/json'
+          },
+      })
+      .then(response => {
+          if (response.ok) {
+              // Clear the JWT from local storage or cookies
+              clearToken();
+              // Redirect or perform other actions after successful logout
+              window.location.href = "/template/login.html";
+          } else {
+              console.error('Logout failed:', response.statusText);
+          }
+      })
+      .catch(error => {
+          console.error('Error during logout:', error);
+      });
+  }
+
+  function getAccessToken() {       
+      return accessToken.token;
+  }
+
+  function clearToken() {
+      // Implement this function to clear the JWT from local storage or cookies
+      // For example, if stored in local storage:
+      localStorage.removeItem('userData');
+  }
+
+  async function fetchData() {
+try {
+const response = await fetch('http://localhost:8080/CodeWalkers/profile/'+accessToken.username);
+
+if (!response.ok) throw new Error('Network response was not ok');
+
+ const data = await response.json();
+
+  // Giả sử data là chuỗi Base64 bạn đã lấy được
+  const imageData = "/FE/assets/img"+data.image;
+  // Thay đổi src của thẻ img
+  document.getElementById('profileImage').src = imageData;
+
+    console.log(data);
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+    }
+ }
+  fetchData();
+
+</script>
+
+
 </body>
 
 </html>

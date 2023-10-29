@@ -25,6 +25,7 @@ public class Users {
 
     @Column(name = "ten_khach_hang")
     private String name;
+
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "ngay_sinh")
     private Date dateOfBirth;
@@ -40,6 +41,7 @@ public class Users {
 
     @Column(name = "gioi_tinh")
     private Boolean gender;
+
 
     @Column(name = "email")
     private String email;
@@ -62,5 +64,9 @@ public class Users {
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;
+
+
+
+
 
 }
