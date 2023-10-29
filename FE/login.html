@@ -17,7 +17,7 @@
 </head>
 
 
-<body class="">
+<body ng-app="login" ng-controller="loginController">
     <div class="container ">
         <!-- Outer Row -->
         <div class="row justify-content-center ">
@@ -36,13 +36,13 @@
                                     </div>
                                     <form class="user">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
+                                            <input type="text" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                                placeholder="Enter Email Address..." ng-model="loginRequest.userName" >
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                                id="exampleInputPassword" placeholder="Password" ng-model="loginRequest.password" >
                                         </div>
                                         <div class="form-group ms-2">
                                             <div class="custom-control custom-checkbox small">
@@ -51,7 +51,7 @@
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <a href="layoutUser.html#/home"
+                                        <a ng-click="login($event)"
                                             class="btn btn-login  rounded-5 bg-primary-gradient">
                                             Login
                                         </a>
@@ -91,6 +91,10 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.js"></script>
+
+    <script src="assets/js/login.js"></script>
 
 </body>
 

@@ -26,6 +26,7 @@ public class Users {
 
     @Column(name = "ten_khach_hang")
     private String name;
+
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "ngay_sinh")
     private Date dateOfBirth;
@@ -42,9 +43,12 @@ public class Users {
     @Column(name = "gioi_tinh")
     private Boolean gender;
 
+
     @Column(name = "email")
     private String email;
 
+    @Column(name = "dia_chi")
+    private String address;
 
     @Column(name = "hinh_anh")
     private String image;
@@ -65,3 +69,4 @@ public class Users {
     @JsonManagedReference
     private Cart cart;
 }
+

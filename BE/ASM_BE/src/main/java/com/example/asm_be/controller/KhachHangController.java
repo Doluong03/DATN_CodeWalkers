@@ -1,12 +1,9 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
 
 package com.example.asm_be.controller;
 
 import com.example.asm_be.dto.UserRespone;
 import com.example.asm_be.entities.ResponeObject;
+import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Status;
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.service.StatusService;
@@ -23,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 
 @CrossOrigin({"*"})
 @RestController
@@ -97,6 +95,14 @@ public class KhachHangController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Delete thanh cong", this.userService.delete(idUsers)));
+
+    }
+
+
+    @GetMapping({"/profile/{username}"})
+    public Users getProfile(@PathVariable("username") String  username) {
+          Optional<Users> optionalUsers = userService.findByUserName(username);
+          return optionalUsers.get();
     }
 
     @GetMapping("/user/getAll")
