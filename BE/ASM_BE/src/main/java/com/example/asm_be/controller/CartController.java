@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+@CrossOrigin({"*"})
 
-@CrossOrigin("*")
 @RestController()
 @RequestMapping("/CodeWalkers")
 public class CartController {

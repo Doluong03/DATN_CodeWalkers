@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
-@CrossOrigin("*")
+@CrossOrigin({"*"})
 @RestController()
-@RequestMapping({"/CodeWalkers/admin"})
+@RequestMapping({"/CodeWalkers"})
 public class BillController {
     @Autowired
     CartDetailService cartDetailService;
@@ -54,7 +54,7 @@ public class BillController {
     public List<Users> getUser() {
         return userService.getList();
     }
-    @GetMapping({"/Bill/select"})
+    @GetMapping({"/admin/Bill/select"})
     public BillRespone getAllBill(@RequestParam(value = "pageNo",defaultValue = "0")Integer pageNo,
                                       @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         BillRespone billRespone = new BillRespone();

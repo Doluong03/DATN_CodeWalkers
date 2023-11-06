@@ -294,7 +294,7 @@ function calculateBrightness(rgb) {
   $scope.addCart = function () {
     var cartId = $cookies.get('cartId');
     console.log("cook->",cartId)
-    if (cartId == 0) {
+    if (!cartId) {
       $scope.createCart();
     } else {
       var url = `${host}/api/detailAdd/`;
