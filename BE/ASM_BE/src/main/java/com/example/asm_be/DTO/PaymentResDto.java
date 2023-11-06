@@ -1,4 +1,4 @@
-package com.example.asm_be.DTO;
+package com.example.asm_be.dto;
 
 import lombok.Getter;
 import lombok.Setter;
