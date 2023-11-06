@@ -56,16 +56,12 @@ public class KhachHangController {
     public ResponseEntity<ResponeObject> insertStaff(@RequestBody Users users) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
         Date current = new Date();
-        Integer id = 2;
-        Status status = statusService.getOne(id);
-
-
         Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
         Date createdDate = dateFormat.parse(current.toString());
 
         users.setDateOfBirth(BirthDayFormat);
         users.setCreatedDate(createdDate);
-        users.setStatus(status);
+        users.setStatus(true);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", userService.save(users)));
@@ -76,14 +72,12 @@ public class KhachHangController {
     public ResponseEntity<ResponeObject> UpdateStaff(@RequestBody Users users) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
         Date current = new Date();
-        Integer id = 2;
-        Status status = statusService.getOne(id);
         Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
         Date Modified = dateFormat.parse(current.toString());
 
         users.setDateOfBirth(BirthDayFormat);
         users.setModified(Modified);
-        users.setStatus(status);
+        users.setStatus(true);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.userService.update(users)));

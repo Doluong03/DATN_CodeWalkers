@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Entity(name="ChatLieu")
+@Entity(name = "ChatLieu")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -23,8 +23,8 @@ public class Material {
     @Column(name = "ten_chat_lieu")
     private String name;
 
-@Column(name="mo_ta")
-private String moTa;
+    @Column(name = "mo_ta")
+    private String moTa;
     @Column(name = "trang_thai")
     private boolean status;
 }

@@ -10,7 +10,8 @@ import java.util.UUID;
 @Service
 public interface MaterialService {
 
-    Page<Material> getAll(Integer pageNo,Integer sizePage);
+    Page<Material> getAllPage(Integer pageNo,Integer sizePage);
+    List<Material> getAll();
     public Material getOne(int id);
     boolean  save(Material material);
 

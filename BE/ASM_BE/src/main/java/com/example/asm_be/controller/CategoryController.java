@@ -37,7 +37,7 @@ public class CategoryController {
 public CategoryRespone getAllCategory(@RequestParam(value = "pageNo",defaultValue = "0")Integer pageNo,
                                       @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
     CategoryRespone categoryRespone = new CategoryRespone();
-    Page<Category> categoryPage = categoryService.getAll(pageNo,sizePage);
+    Page<Category> categoryPage = categoryService.getAllPage(pageNo,sizePage);
 
     categoryRespone.setCategoryList(categoryPage.getContent());
     categoryRespone.setCategoryPages(categoryPage.getTotalPages());

@@ -30,7 +30,7 @@ public class MaterialController {
 public MaterialRespone getAllMaterial(@RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo,
                                       @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
     MaterialRespone  materialRespone=new MaterialRespone();
-    Page<Material> materialPage = materialService.getAll(pageNo, sizePage);
+    Page<Material> materialPage = materialService.getAllPage(pageNo, sizePage);
     materialRespone.setMaterialList(materialPage.getContent());
     materialRespone.setTotalPages(materialPage.getTotalPages());
 

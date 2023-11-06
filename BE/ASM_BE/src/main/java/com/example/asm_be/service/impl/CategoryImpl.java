@@ -1,6 +1,7 @@
 package com.example.asm_be.service.impl;
 
 import com.example.asm_be.entities.Category;
+import com.example.asm_be.entities.Color;
 import com.example.asm_be.repositories.CategoryRepository;
 
 import com.example.asm_be.service.CategoryService;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class CategoryImpl implements CategoryService {
@@ -20,9 +23,14 @@ public class CategoryImpl implements CategoryService {
         return categoryRepository.findById(id).get();
     }
 
-    public Page<Category> getAll(Integer pageNo, Integer sizePage) {
+    @Override
+    public Page<Category> getAllPage(Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo, sizePage);
         return categoryRepository.findAll(pageable);
+    }
+    @Override
+    public List<Category> getAll() {
+        return categoryRepository.findAll();
     }
 
     @Override

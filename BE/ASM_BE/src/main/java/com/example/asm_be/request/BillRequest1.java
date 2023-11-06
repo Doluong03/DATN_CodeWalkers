@@ -17,7 +17,7 @@ public class BillRequest1 {
     private String code;
     private String moTa;
     private String diaChiChiTiet;
-    private Integer phuongXa;
+    private String phuongXa;
     private Integer thanhPho;
     private Integer quanHuyen;
     private Date ngayLap;
@@ -28,48 +28,6 @@ public class BillRequest1 {
     private Integer users;
     private Integer staff;
     private boolean status;
-    public Bill map1(Bill bill){
-        bill.setCode(this.code);
-        bill.setMoTa(this.moTa);
-        bill.setNgayLap(this.ngayLap);
-        bill.setDiaChiChiTiet(this.diaChiChiTiet);
-        bill.setPhuongXa(this.phuongXa);
-        bill.setQuanHuyen(this.quanHuyen);
-        bill.setThanhPho(this.thanhPho);
-        bill.setNgayGiao(this.ngayGiao);
-        bill.setPhiGiaoHang(this.phiGiaoHang);
-        bill.setTongTien(this.tongTien);
-        bill.setPhuongThuc(this.phuongThuc);
-        bill.setStatus(this.status);
-        Users users1=new Users();
-        users1.setId(this.users);
-        bill.setUsers(users1);
-        Staff staff =new Staff();
-        staff.setId(this.staff);
-        bill.setStaff(staff);
-        return bill;
-    }
-    public Bill map(Bill bill){
-        bill.setId(this.id);
-        bill.setCode(this.code);
-        bill.setMoTa(this.moTa);
-        bill.setNgayLap(this.ngayLap);
-        bill.setDiaChiChiTiet(this.diaChiChiTiet);
-        bill.setPhuongXa(this.phuongXa);
-        bill.setQuanHuyen(this.quanHuyen);
-        bill.setThanhPho(this.thanhPho);
-        bill.setNgayGiao(this.ngayGiao);
-        bill.setPhiGiaoHang(this.phiGiaoHang);
-        bill.setTongTien(this.tongTien);
-        bill.setPhuongThuc(this.phuongThuc);
-        bill.setStatus(this.status);
-        Users users1=new Users();
-        users1.setId(this.users);
-        bill.setUsers(users1);
-        Staff staff =new Staff();
-        staff.setId(this.staff);
-        bill.setStaff(staff);
-        return bill;
-    }
+
 
 }
