@@ -228,7 +228,7 @@ window.ProductController = function ($scope, $http, $window, $rootScope) {
 
   $scope.addProduct = function (event) {
     event.preventDefault();
-    console.log($scope.formproduct);
+    console.log($scope.formproduct,"here");
 
     Swal.fire({
       title: 'Xác nhận',

@@ -29,9 +29,6 @@ public class Product {
     @Column(name = "ten_san_pham")
     private String name;
 
-    @Column(name = "created_at")
-    private Date createdAt;
-
 
     @Column(name = "anh_chinh")
     private String mainImg;

@@ -3,20 +3,11 @@ package com.example.asm_be.controller;
 
 import com.example.asm_be.dto.UserRespone;
 import com.example.asm_be.entities.ResponeObject;
-import com.example.asm_be.entities.Staff;
-import com.example.asm_be.entities.Status;
-import com.example.asm_be.entities.Users;
-import com.example.asm_be.service.StatusService;
 import com.example.asm_be.entities.Users;
 //
 // Source code recreated from a .class file by IntelliJ IDEA
 // (powered by FernFlower decompiler)
 //
-
-import com.example.asm_be.DTO.UserRespone;
-import com.example.asm_be.entities.ResponeObject;
-
-import com.example.asm_be.entities.Users;
 
 import com.example.asm_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +23,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 @CrossOrigin({"*"})
 @RestController
@@ -77,7 +63,7 @@ public class KhachHangController {
         users.setCreatedDate(createdDate);
         users.setStatus(true);
         users.setPhoneNumber("0"+users.getPhoneNumber());
-        users.setStatus(status);
+        users.setStatus(true);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", userService.save(users)));

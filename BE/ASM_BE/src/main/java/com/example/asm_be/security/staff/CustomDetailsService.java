@@ -1,9 +1,7 @@
 package com.example.asm_be.security.staff;
 
 import com.example.asm_be.entities.Staff;
-import com.example.asm_be.entities.Users;
 import com.example.asm_be.repositories.StaffRepository;
-import com.example.asm_be.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+
 @Component
 public class CustomDetailsService implements UserDetailsService {
     @Autowired

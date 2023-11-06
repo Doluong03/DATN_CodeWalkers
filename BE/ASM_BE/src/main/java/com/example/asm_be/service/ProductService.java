@@ -11,6 +11,7 @@ import java.util.UUID;
 @Service
 public interface ProductService {
     public List<Product> getAll();
+
     Page<Product> getAllPage(Integer pageNo, Integer sizePage);
 
     Product getOne(Integer id);
