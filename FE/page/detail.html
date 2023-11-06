@@ -1,0 +1,241 @@
+<!-- Feature Tabs -->
+
+<div class="row feture-tabs offset-2" data-aos="fade-up">
+  <div class="col-lg-1">
+    <div data-testid="ThumbnailListContainer" class="css-r3as8n" ng-repeat="item in img">
+      <div data-testid="Thumbnail-0" class="d-sm-flx flx-jc-sm-fs flx-ai-sm-fe css-1mhv7vq">
+        <input type="radio" id="09f5ea76-8d13-45d5-90c0-2e6138bf4822" name="Thumbnails" class="css-1glxj2a"
+          value="{{item.link}}">
+        <label for="09f5ea76-8d13-45d5-90c0-2e6138bf4822" class="css-68j8pv">
+          <img data-testid="Thumbnail-Img-0" ng-src="assets/img/product/sp1/{{item.link}}" alt="Ảnh phụ nhưng ko có "
+            ng-click="changeImage(item.link)">
+        </label>
+        <div class="css-kk6bdz" style="visibility: hidden;"></div>
+      </div>
+      <div class="css-9ubti4">
+        <div class="css-17xce2z" style="bottom: 0px;">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 prImg" >
+    <img ng-src="{{ currentImageSource }}" class="img-fluid " alt="{{currentImageSource}}" data-bs-toggle="modal"
+      data-bs-target="#exampleModal">
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div id="carouselExample2" class="carousel slide">
+            <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item detailPrWatch" ng-repeat="item in img" ng-class="{ 'active': $index === 0 }">
+                  <img src="assets/img/product/sp1/{{item.link}}" class="d-block" alt="...">
+                </div>
+              </div>
+              <button class="carousel-control-prev " type="button" data-bs-target="#carouselExample2"
+                data-bs-slide="prev" style="margin-left: -50px;">
+                <i class="bi bi-caret-left-fill fs-1 text-dark ms-0"></i>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2"
+                data-bs-slide="next">
+                <i class="bi bi-caret-right-fill fs-1 text-dark ms-5"></i>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <h3>{{itemDetail.product.name}}</h3>
+    <h5>{{itemDetail.category.name}}</h5>
+    <br>
+    <h5>{{itemDetail.price | vndCurrency}}</h5>
+    <h5>Màu sắc</h5>
+    <div id="ColorwayDiv" class="css-3gbow5">
+      <div class="colorways  pt2-lg prl0-sm prl2-lg mb4-sm css-ptp8gj">
+        <div class="colorway-images-wrapper">
+          <fieldset class="colorway-images ta-sm-c d-lg-t row">
+            <legend class="visually-hidden">Choose a Style Color</legend>
+            <div class="css-7aigzk col-lg-1 colorway-container d-sm-ib d-lg-tc pr1-sm pb1-sm">
+              <div class="css-b8rwz8 tooltip-component-container"><input id="nr-pdp-colorway-DV1307-014"
+                  name="pdp-colorpicker" class="visually-hidden" type="radio" data-style-color="DV1307-014"
+                  value="DV1307-014"><label for="nr-pdp-colorway-DV1307-014" data-colorway-id="Colorway-1"
+                  data-style-color-for-colorway-1="DV1307-014"><img alt="Cement Grey/University Blue/White"
+                    src="https://static.nike.com/a/images/t_PDP_144_v1/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/2fd7f3e8-b092-421b-9ca1-fbe92a586aa5/air-jordan-1-zoom-cmft-2-mens-shoes-Tw02qw.png"></label>
+              </div>
+            </div>
+            <div class="css-7aigzk col-lg-1 colorway-container d-sm-ib d-lg-tc pr1-sm pb1-sm">
+              <div class="css-b8rwz8 tooltip-component-container"><input id="nr-pdp-colorway-DV1307-103"
+                  name="pdp-colorpicker" class="visually-hidden" type="radio" data-style-color="DV1307-103"
+                  value="DV1307-103" checked=""><label for="nr-pdp-colorway-DV1307-103" data-colorway-id="Colorway-2"
+                  data-style-color-for-colorway-2="DV1307-103"><img alt="White/Black/Honeydew/Vapor Green"
+                    src="https://static.nike.com/a/images/t_PDP_144_v1/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/4e9138d9-278f-48b1-851c-f4e51dbb4ee9/air-jordan-1-zoom-cmft-2-mens-shoes-Tw02qw.png"></label>
+              </div>
+            </div>
+            <div class="css-7aigzk col-lg-1 colorway-container d-sm-ib d-lg-tc pr1-sm pb1-sm">
+              <div class="css-b8rwz8 tooltip-component-container"><input id="nr-pdp-colorway-DV1307-180"
+                  name="pdp-colorpicker" class="visually-hidden" type="radio" data-style-color="DV1307-180"
+                  value="DV1307-180"><label for="nr-pdp-colorway-DV1307-180" data-colorway-id="Colorway-3"
+                  data-style-color-for-colorway-3="DV1307-180"><img
+                    alt="Light Orewood Brown/Sail/Celestial Gold/Bright Citrus"
+                    src="https://static.nike.com/a/images/t_PDP_144_v1/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/c3dead19-8a8f-42b7-8de7-d56cc9d8550f/air-jordan-1-zoom-cmft-2-mens-shoes-Tw02qw.png"></label>
+              </div>
+            </div>
+            <div class="css-7aigzk col-lg-1 colorway-container d-sm-ib d-lg-tc pr1-sm pb1-sm">
+              <div class="css-b8rwz8 tooltip-component-container"><input id="nr-pdp-colorway-DV1307-408"
+                  name="pdp-colorpicker" class="visually-hidden" type="radio" data-style-color="DV1307-408"
+                  value="DV1307-408"><label for="nr-pdp-colorway-DV1307-408" data-colorway-id="Colorway-4"
+                  data-style-color-for-colorway-4="DV1307-408"><img alt="Bleached Aqua/Black/White/Bright Citrus"
+                    src="https://static.nike.com/a/images/t_PDP_144_v1/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/390e7aea-a6e4-45f4-9ce2-ee186c3d236a/air-jordan-1-zoom-cmft-2-mens-shoes-Tw02qw.png"></label>
+              </div>
+            </div>
+            <div class="css-7aigzk col-lg-1 colorway-container d-sm-ib d-lg-tc pr1-sm pb1-sm">
+              <div class="css-b8rwz8 tooltip-component-container"><input id="nr-pdp-colorway-DV1307-205"
+                  name="pdp-colorpicker" class="visually-hidden" type="radio" data-style-color="DV1307-205"
+                  value="DV1307-205"><label for="nr-pdp-colorway-DV1307-205" data-colorway-id="Colorway-5"
+                  data-style-color-for-colorway-5="DV1307-205"><img alt="Palomino/Wild Berry/Desert/Melon Tint"
+                    src="https://static.nike.com/a/images/t_PDP_144_v1/f_auto,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/2e317d2d-d164-46a8-b0dc-ea3e5a43e490/air-jordan-1-zoom-cmft-2-mens-shoes-Tw02qw.png"></label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <h5 class="col-lg-1">Size</h5>
+      <h5 class="col-lg-8 text-end text-secondary">Size guide</h5>
+    </div>
+    <!-- Tabs -->
+  <div class="size-container">
+      <div class="size" ng-repeat="sz in sizes" ng-style="{'background-color': selectedValue === sz.name ? 'lightblue' : ''}">
+          <input type="radio" name="size" id="{{sz.description}}" ng-model="selectedValue" ng-value="sz.name" class="visually-hidden" ng-click="selectSize(sz.id)">
+          <label for="{{sz.description}}" tabindex="-1" class="fs-5">{{sz.name}}</label>
+      </div>
+      <p>{{selectedValue}}</p>
+    </div>
+    <!-- End Tabs -->
+
+    <!-- button  -->
+    <a  type="button" class="btn btn-dark  rounded-3 w-50 offset-2 mb-2 " ng-click="addCart()"> Thêm vào giỏ hàng </a>
+    <a type="button" class="btn btn-light border border-5 rounded-3 w-50 offset-2"> Yêu thích ❤️ </a>
+    <hr>
+    <!-- End button  -->
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="tab1">
+        <p>Consequuntur inventore voluptates consequatur aut vel et. Eos doloribus expedita. Sapiente atque
+          consequatur minima nihil quae aspernatur quo suscipit voluptatem.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Repudiandae rerum velit modi et officia quasi facilis</h4>
+        </div>
+        <p>Laborum omnis voluptates voluptas qui sit aliquam blanditiis. Sapiente minima commodi dolorum non
+          eveniet magni quaerat nemo et.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Incidunt non veritatis illum ea ut nisi</h4>
+        </div>
+        <p>Non quod totam minus repellendus autem sint velit. Rerum debitis facere soluta tenetur. Iure molestiae
+          assumenda sunt qui inventore eligendi voluptates nisi at. Dolorem quo tempora. Quia et perferendis.</p>
+      </div><!-- End Tab 1 Content -->
+
+      <div class="tab-pane fade show" id="tab2">
+        <p>Consequuntur inventore voluptates consequatur aut vel et. Eos doloribus expedita. Sapiente atque
+          consequatur minima nihil quae aspernatur quo suscipit voluptatem.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Repudiandae rerum velit modi et officia quasi facilis</h4>
+        </div>
+        <p>Laborum omnis voluptates voluptas qui sit aliquam blanditiis. Sapiente minima commodi dolorum non
+          eveniet magni quaerat nemo et.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Incidunt non veritatis illum ea ut nisi</h4>
+        </div>
+        <p>Non quod totam minus repellendus autem sint velit. Rerum debitis facere soluta tenetur. Iure molestiae
+          assumenda sunt qui inventore eligendi voluptates nisi at. Dolorem quo tempora. Quia et perferendis.</p>
+      </div><!-- End Tab 2 Content -->
+
+      <div class="tab-pane fade show" id="tab3">
+        <p>Consequuntur inventore voluptates consequatur aut vel et. Eos doloribus expedita. Sapiente atque
+          consequatur minima nihil quae aspernatur quo suscipit voluptatem.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Repudiandae rerum velit modi et officia quasi facilis</h4>
+        </div>
+        <p>Laborum omnis voluptates voluptas qui sit aliquam blanditiis. Sapiente minima commodi dolorum non
+          eveniet magni quaerat nemo et.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Incidunt non veritatis illum ea ut nisi</h4>
+        </div>
+        <p>Non quod totam minus repellendus autem sint velit. Rerum debitis facere soluta tenetur. Iure molestiae
+          assumenda sunt qui inventore eligendi voluptates nisi at. Dolorem quo tempora. Quia et perferendis.</p>
+      </div><!-- End Tab 3 Content -->
+
+    </div>
+
+  </div>
+</div>
+<!-- Modal -->
+<div class="custom-modal row">
+<div class="modal fade col-lg-1" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog col-lg-1">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- Modal -->
+
+<style>
+ /* Lớp CSS tùy chỉnh cho modal */
+
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- End Feature Tabs -->
+<div class="like container mb-5">
+  <div class="row">
+    <div class="col-lg">You Might Also Like</div>
+    <div class="col-lg text-end">
+      <button class="btn btn-secondary" type="button" ng-click="prevSlide()" data-bs-target="#carouselExample">
+        <i class="bi bi-chevron-left"></i> <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="btn btn-secondary" type="button" ng-click="nextSlide()">
+        <i class="bi bi-chevron-right"></i> <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel ">
+    <div class="carousel-inner">
+      <div class="carousel-item like " ng-repeat="slide in slides" ng-class="{ 'active': $index === activeSlideIndex }">
+        <div class="row">
+          <div class="col-lg-3 carousel-slide" ng-repeat="pr in slide"
+            ng-class="{ 'd-none': $index >= numVisibleItems }">
+            <img ng-src="{{ 'assets/img/product/sp1/' + pr.product.listImage[0].link }}" style="height: 200px;"
+              alt="{{ pr.product.name }}">
+            <h4 class="ms-5">{{ pr.product.name }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- End PROMOTIONAL Section -->

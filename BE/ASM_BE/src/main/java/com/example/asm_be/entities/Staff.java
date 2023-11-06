@@ -1,83 +1,67 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.example.asm_be.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(
-        name = "nhanvien"
-)
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Staff {
+@AllArgsConstructor
+@Getter
+@Setter
+@Table(name = "NhanVien")
+public class Staff implements Serializable {
+
     @Id
-    @Column(
-            name = "id"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.UUID)
-    private UUID id;
-    @Column(
-            name = "ma_nhan_vien"
-    )
-    private String code;
-    @Column(
-            name = "ten_nhan_vien"
-    )
+    @Column(name = "id_nhan_vien")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(name = "ho_nhan_vien")
+    private String ho;
+    @Column(name = "ten_nhan_vien")
     private String name;
-    @Column(
-            name = "ten_dem_nhan_vien"
-    )
-    private String middleName;
-    @Column(
-            name = "ho_nhan_vien"
-    )
-    private String fName;
-    @Column(
-            name = "ngay_sinh"
-    )
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @Column(name = "ngay_sinh")
     private Date dateOfBirth;
-    @Column(
-            name = "so_dien_thoai"
-    )
+
+    @Column(name = "so_dien_thoai")
     private String phoneNumber;
-    @Column(
-            name = "gioi_tinh"
-    )
+
+    @Column(name = "gioi_tinh")
     private Boolean gender;
-    @Column(
-            name = "dia_chi"
-    )
+
+    @Column(name = "dia_chi")
     private String address;
-    @Column(
-            name = "email"
-    )
+
+    @Column(name = "email")
     private String email;
-    @Column(name = "can_cuoc")
-    private String idCard;
-    @Column(name = "mat_khau")
-    private String password;
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
 
+    @Column(name = "password")
+    private String password; // xoa sau
 
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "trang_thai")
+    private boolean status;
+
+    @Column(name = "hinh_anh")
+    private String image;
+
+    @ManyToMany(fetch =  FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(name = "VaiTroNhanVien",
+            joinColumns = @JoinColumn(name = "nhan_vien_id", referencedColumnName = "id_nhan_vien"),
+            inverseJoinColumns = @JoinColumn(name = "vai_tro_id", referencedColumnName = "id")
+    )
+
+    private Set<Role> roles = new HashSet<>();
 }

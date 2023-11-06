@@ -16,16 +16,16 @@ import java.util.UUID;
 @Table(name = "ChatLieu")
 public class Material {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
-
-    @Column(name = "ma_chat_lieu")
-    private String code;
+    @Column(name = "id_chat_lieu")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "ten_chat_lieu")
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+
+    @Column(name = "mo_ta")
+    private String description;
+
+    @Column(name = "trang_thai")
+    private boolean status;
 }

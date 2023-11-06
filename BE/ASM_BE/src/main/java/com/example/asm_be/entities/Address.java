@@ -1,13 +1,11 @@
 package com.example.asm_be.entities;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
-
 @Entity(name = "DiaChi")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,20 +14,18 @@ import java.util.UUID;
 @Table(name = "DiaChi")
 public class Address {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
-
+    @Column(name = "id_dia_chi")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column(name = "dia_chi_chi_tiet")
     private String name;
-
+    @Column(name = "phuong_xa_id")
+    private int ward;
+    @Column(name = "thanh_pho_id")
+    private int province;
+    @Column(name = "quan_huyen_id")
+    private int district;
     @ManyToOne
-    @JoinColumn(name = "phuong_xa_id")
-    private Commune commune;
-    @ManyToOne
-    @JoinColumn(name = "thanh_pho_id")
-    private Province province;
-    @ManyToOne
-    @JoinColumn(name = "quan_huyen_id")
-    private District district;
+    @JoinColumn(name = "khach_hang_id")
+    private Users users;
 }

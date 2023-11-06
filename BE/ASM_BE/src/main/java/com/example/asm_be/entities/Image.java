@@ -1,5 +1,6 @@
 package com.example.asm_be.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,17 +17,19 @@ import java.util.UUID;
 @Table(name = "HinhAnh")
 public class Image {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @Column(name = "id_hinh_anh")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int Id;
 
-    @Column(name = "ma_hinh_anh")
-    private String code;
+    @Column(name = "ten_hinh_anh")
+    private String name;
 
-    @Column(name = "anh_chinh")
-    private String main;
-    @Column(name = "anh_phu")
-    private String cover;
+    @Column(name = "link_hinh_anh")
+    private String link;
+//    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "san_pham_id")
+    private Product product;
 
 
 }
