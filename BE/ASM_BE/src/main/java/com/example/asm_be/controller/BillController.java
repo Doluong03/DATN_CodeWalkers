@@ -3,7 +3,6 @@ import com.example.asm_be.entities.*;
 import com.example.asm_be.request.CreateOrder;
 import com.example.asm_be.request.FeeRequest;
 import com.example.asm_be.request.AddBillRequest;
-import com.example.asm_be.request.Invariable;
 import com.example.asm_be.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,24 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import com.example.asm_be.dto.BillRespone;
-import com.example.asm_be.dto.CategoryRespone;
-import com.example.asm_be.entities.*;
-import com.example.asm_be.request.*;
-import com.example.asm_be.response.BillResponse;
-import com.example.asm_be.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.asm_be.dto.BillResponeAdmin;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
-@CrossOrigin("*")
+@CrossOrigin({"*"})
 @RestController()
-@RequestMapping({"/CodeWalkers/admin"})
+@RequestMapping({"/CodeWalkers"})
 public class BillController {
     @Autowired
     CartDetailService cartDetailService;
@@ -54,16 +43,16 @@ public class BillController {
     public List<Users> getUser() {
         return userService.getList();
     }
-    @GetMapping({"/Bill/select"})
-    public BillRespone getAllBill(@RequestParam(value = "pageNo",defaultValue = "0")Integer pageNo,
-                                      @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
-        BillRespone billRespone = new BillRespone();
+    @GetMapping({"/admin/Bill/select"})
+    public BillResponeAdmin getAllBill(@RequestParam(value = "pageNo",defaultValue = "0")Integer pageNo,
+                                       @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
+        BillResponeAdmin billResponeAdmin = new BillResponeAdmin();
         Page<Bill> billPage = billService.getAll(pageNo,sizePage);
 
-        billRespone.setBillList(billPage.getContent());
-        billRespone.setTotalPages(billPage.getTotalPages());
+        billResponeAdmin.setBillList(billPage.getContent());
+        billResponeAdmin.setTotalPages(billPage.getTotalPages());
 
-        return billRespone;
+        return billResponeAdmin;
     }
 
     @PostMapping({"/Bill/insert"})

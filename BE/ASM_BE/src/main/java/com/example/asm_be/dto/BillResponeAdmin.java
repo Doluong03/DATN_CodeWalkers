@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BillRespone {
+public class BillResponeAdmin {
     private List<Bill> billList;
     private long totalPages;
 }
