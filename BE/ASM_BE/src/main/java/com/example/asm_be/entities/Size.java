@@ -13,20 +13,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "KichThuoc")
+@Table(name = "KichCo")
 public class Size {
     @Id
-    @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @Column(name = "id_kich_co")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Column(name = "ma_kich_thuoc")
-    private String code;
-
-    @Column(name = "ten_kich_thuoc")
+    @Column(name = "ten_kich_co")
     private String name;
+    @Column(name = "mo_ta")
+    private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+    @Column(name = "trang_thai")
+    private boolean status;
 }

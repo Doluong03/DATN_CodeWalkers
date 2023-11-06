@@ -22,7 +22,7 @@ public class ImageImpl implements ImageService {
     }
 
     @Override
-    public Image getOne(UUID id) {
+    public Image getOne(int id) {
         return imageRepository.findById(id).get();
     }
 

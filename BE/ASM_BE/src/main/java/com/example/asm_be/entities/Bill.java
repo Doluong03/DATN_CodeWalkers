@@ -17,26 +17,42 @@ import java.util.UUID;
 @Table(name = "HoaDon")
 public class Bill {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @Column(name = "id_hoa_don")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "ma_hoa_don")
     private String code;
 
-    @Column(name = "phuong_thuc_thanh_toan")
-    private String payment;
+    @Column(name = "ghi_chu")
+    private String moTa;
+    @Column(name = "dia_chi_chi_tiet")
+    private String diaChiChiTiet;
+    @Column(name = "phuong_xa_id")
+    private int phuongXa;
+    @Column(name = "thanh_pho_id")
+    private int thanhPho;
+    @Column(name = "quan_huyen_id")
+    private int quanHuyen;
+    @Column(name = "ngay_giao")
+    private Date ngayGiao;
+    @Column(name = "phi_giao_hang")
+    private Double phiGiaoHang;
+    @Column(name = "tong_tien")
+    private Double tongTien;
+    @Column(name = "phuong_thuc")
+    private int phuongThuc;
 
-    @Column(name = "mo_ta")
-    private String description;
-
-    @Column(name = "created_at")
-    private Date createdAt;
+    @Column(name = "ngay_lap")
+    private Date ngayLap;
 
     @ManyToOne
     @JoinColumn(name = "khach_hang_id")
     private Users users;
+
+    @Column(name = "trang_thai")
+    private boolean status;
     @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+    @JoinColumn(name = "nguoi_lap_id")
+    private Staff staff;
 }

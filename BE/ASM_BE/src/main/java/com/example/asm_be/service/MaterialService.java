@@ -1,20 +1,21 @@
 package com.example.asm_be.service;
 
 import com.example.asm_be.entities.Material;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
+@Service
 public interface MaterialService {
 
-    public List<Material> getAll();
+    Page<Material> getAll(Integer pageNo,Integer sizePage);
 
-    public Material getOne(UUID id);
+    Material getOne(Integer id);
 
-    public Material save(Material material);
+    boolean  save(Material material);
 
-    public Material update(Material material);
+    boolean  update(Material material);
 
-    public void delete(Material material);
-
+    boolean delete(Integer idMaterial);
 }

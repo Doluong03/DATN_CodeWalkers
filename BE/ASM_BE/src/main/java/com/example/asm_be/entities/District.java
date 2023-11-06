@@ -17,8 +17,8 @@ import java.util.UUID;
 public class District {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "ma_quan_huyen")
     private String code;

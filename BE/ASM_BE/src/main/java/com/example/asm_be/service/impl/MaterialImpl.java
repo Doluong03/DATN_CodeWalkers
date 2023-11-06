@@ -1,43 +1,60 @@
 package com.example.asm_be.service.impl;
 
-import com.example.asm_be.entities.Address;
 import com.example.asm_be.entities.Material;
-import com.example.asm_be.repositories.AddressRepository;
 import com.example.asm_be.repositories.MaterialRepository;
-import com.example.asm_be.service.AddressService;
 import com.example.asm_be.service.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.UUID;
 
 @Component
 public class MaterialImpl implements MaterialService {
-    @Autowired
-    private MaterialRepository materialRepository;
+@Autowired
+private MaterialRepository materialRepository;
+
     @Override
-    public List<Material> getAll() {
-        return materialRepository.findAll();
+    public Page<Material> getAll(Integer pageNo,Integer sizePage) {
+        Pageable pageable = PageRequest.of(pageNo,sizePage);
+        return materialRepository.findAll(pageable);
     }
 
     @Override
-    public Material getOne(UUID id) {
+    public Material getOne(Integer id) {
         return materialRepository.findById(id).get();
     }
 
     @Override
-    public Material save(Material material) {
-        return materialRepository.save(material);
+    public boolean save(Material material) {
+        try {
+            materialRepository.save(material);
+            return true;
+        } catch (Exception var3) {
+            var3.getMessage();
+            return false;
+        }
     }
 
     @Override
-    public Material update(Material material) {
-        return materialRepository.save(material);
+    public boolean update(Material material) {
+        try {
+            this.materialRepository.save(material);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
     }
 
     @Override
-    public void delete(Material material) {
-        materialRepository.delete(material);
+    public boolean delete(Integer idMaterial) {
+        try {
+            this.materialRepository.deleteById(idMaterial);
+            return true;
+        } catch (Exception var3) {
+            var3.getMessage();
+            return false;
+        }
     }
 }

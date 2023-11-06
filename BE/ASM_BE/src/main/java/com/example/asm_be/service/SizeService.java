@@ -1,15 +1,16 @@
 package com.example.asm_be.service;
 
 import com.example.asm_be.entities.Size;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
+@Service
 public interface SizeService {
 
     public List<Size> getAll();
 
-    public Size getOne(UUID id);
+    public Size getOne(int id);
 
     public Size save(Size size);
 
@@ -17,4 +18,5 @@ public interface SizeService {
 
     public void delete(Size size);
 
+    public Size findByName(String name);
 }
