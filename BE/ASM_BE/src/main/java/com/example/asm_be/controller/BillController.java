@@ -39,13 +39,21 @@ public class BillController {
     @GetMapping("/api/getBill")
     public ResponseEntity<Collection<Bill>> getBill(@RequestParam int idCart) {
         Users users = userService.findByCartId(idCart);
-        return ResponseEntity.ok(billService.getAll(users.getId()));
+        return ResponseEntity.ok(billService.getByUser(users.getId()));
     }
 
 
-    @PostMapping("/api/addBill")
-    public ResponseEntity<?> CreateCart() {
-        return ResponseEntity.ok(billService.save(new Bill()));
+    @PostMapping("/api/addBill/{idUser}")
+    public ResponseEntity<?> CreateBill(@PathVariable("idUser") int idUser) {
+        if(idUser==0){
+            Users usersNew = new Users();
+            userService.save(usersNew);
+            return ResponseEntity.ok(billService.save(new Bill(),usersNew));
+        }else{
+            Users users = userService.getOne(idUser);
+
+            return ResponseEntity.ok(billService.save(new Bill(),users));
+        }
     }
 
     @PostMapping("/api/addBillDt/{idBill}/{idCart}")

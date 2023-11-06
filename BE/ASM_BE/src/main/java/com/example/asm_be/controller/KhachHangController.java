@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin({"*"})
 @RestController
@@ -102,6 +99,12 @@ public class KhachHangController {
     @GetMapping({"/profile/{username}"})
     public Users getProfile(@PathVariable("username") String  username) {
           Optional<Users> optionalUsers = userService.findByUserName(username);
+          return optionalUsers.get();
+    }
+    @PostMapping({"/getdata/{username}"})
+    public Users getdata(@PathVariable("username") String  username , @RequestBody Map<String, String>  response) {
+          String passwordRes = response.get("password");
+          Optional<Users> optionalUsers = userService.findByAcc(username,passwordRes);
           return optionalUsers.get();
     }
 

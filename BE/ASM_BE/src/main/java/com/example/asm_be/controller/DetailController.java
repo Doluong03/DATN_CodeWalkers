@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Map;
 
 @CrossOrigin("*")
 @RestController()
@@ -27,10 +28,12 @@ public class DetailController {
     SizeService sizeService;
     @Autowired
     ColorService colorService;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/api/detail")
     public ResponseEntity<Collection<CartDetails>> getAllProduct(HttpSession session, HttpServletRequest request, @RequestParam int idCart) {
-        return ResponseEntity.ok(cartDetailService.getAll(idCart));
+        return ResponseEntity.ok(cartDetailService.findByCart(idCart));
     }
 
     @GetMapping("/api/detail/size")
@@ -72,23 +75,34 @@ public class DetailController {
         return ResponseEntity.ok(cart);
     }
 
+    @PostMapping("/api/UpdateCartByUser/{idUser}")
+    public ResponseEntity<Cart> UpdateCartByUser(@PathVariable("idUser") int idUser) {
+        Users users = userService.getOne(idUser);
+        Cart cart = new Cart();
+        cart.setUsers(users);
+        cartService.save(cart); // Lưu giỏ hàng vào cơ sở dữ liệu nếu cần
+        return ResponseEntity.ok(cart);
+    }
+
     @PostMapping("/api/detailAdd/{id_gh}/{id_sp}/{id_size}/{id_Cl}")
     public ResponseEntity<CartDetails> addPr(
             @PathVariable("id_gh") int id_gh,
             @PathVariable("id_sp") int id_sp,
             @PathVariable("id_size") int id_size,
             @PathVariable("id_Cl") int id_Cl,
+            @RequestBody Map<String, Integer> quantity,
             CartDetails cartDetails,
             HttpSession session
     ) {
         Cart cart = cartService.getOne(id_gh); // Lấy thông tin giỏ hàng từ cơ sở dữ liệu
 
         // Tìm sản phẩm
-        System.out.println(id_sp +"@@@@@@@@@@"+ id_size +"aaaaaaaaaaaaaaaaaaaa");
-        ProductDetail productDetailCheck = productDetailService.findBySize(id_sp, id_size,id_Cl);
+        System.out.println(id_sp + "@@@@@@@@@@" + id_size + "aaaaaaaaaaaaaaaaaaaa");
+        ProductDetail productDetailCheck = productDetailService.findBySize(id_sp, id_size, id_Cl);
+        Integer newQuantity = quantity.get("quantity");
 
         // Gọi phương thức dịch vụ để thêm sản phẩm vào giỏ hàng
-        cartDetailService.addOrUpdateCartItem(cart, productDetailCheck);
+        cartDetailService.addOrUpdateCartItem(cart, productDetailCheck, newQuantity);
 
         return ResponseEntity.ok().build();
     }

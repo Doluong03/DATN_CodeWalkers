@@ -10,7 +10,11 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
     $scope.cartId = null;
     $scope.idCart = null;
     $scope.bill = {};
-    $scope.productSizes = {}; 
+    $scope.productSizes = {};
+    var dataUser = localStorage.getItem('userData');
+    var dataUserJson = JSON.parse(dataUser);
+    var dataUserCart = localStorage.getItem('userCartData');
+    $scope.showNotice = true;
     // Hàm để tải danh sách kích thước
     $scope.loadSize = function (productId, clId) {
         var url = `${host}/api/getSizeBycolor`;
@@ -20,24 +24,24 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
                 idColor: clId,
             }
         };
-        
+
         // Sử dụng $http.get trả về một promise
         return $http.get(url, config).then(function (res) {
             $scope.list = res.data;
             console.log(url, config);
-    
+
             // Lưu trữ danh sách kích thước vào productSizes
             if (!$scope.productSizes[productId]) {
                 $scope.productSizes[productId] = {};
             }
             $scope.productSizes[productId][clId] = $scope.list.map(item => item.size);
-    
+
             console.log("Danh sách kích thước", $scope.productSizes);
         }).catch(function (error) {
             console.log("Lỗi khi tải danh sách kích thước", error);
         });
     };
-    
+
     $scope.quantity = 1; // Số lượng sản phẩm mặc định
     // Hàm để tải danh sách sản phẩm trong giỏ hàng
     $scope.totalPrice = 0;
@@ -60,7 +64,33 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
     $scope.promotinalValue = 300000;
     var cartId = $cookies.get('cartId');
     console.log("cook", cartId)
-    $scope.loadAllPr = function () {
+    $scope.idCartFinal = null;
+    $scope.idUserFinal = 0;
+    $scope.getDataUser2 = function (callback) {
+        var url = `${host}/getdata/`;
+        if (!dataUserJson) {
+            var cartIdCall = $cookies.get('cartId');
+            $scope.idCartFinal = cartIdCall;
+            $scope.showIcon = false;
+            callback(cartIdCall);
+        } else {
+            $scope.showNotice = false;
+            $scope.showIcon = false;
+            var username = dataUserJson.username;
+            var password = dataUserJson.password;
+            var updateData = { password: password };
+            console.log(url + username, updateData)
+            $http.post(url + username, updateData).then(function (res) {
+                var cartIdCall = res.data.cart.id
+                $scope.idCartFinal = cartIdCall;
+                $scope.idUserFinal = res.data.id;
+                callback(cartIdCall);
+            }).catch(function (error) {
+                console.log("Lỗi khi tải data user", error);
+            })
+        }
+    }
+    $scope.loadAllPr = function (cartId) {
         var url = `${host}/api/detail`;
         var config = {
             params: { idCart: cartId }
@@ -94,6 +124,12 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
             console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
         });
     }
+    $scope.getDataUser2(function (cartIdCall) {
+        console.log(cartIdCall, "here");
+        $scope.loadAllPr(cartIdCall);
+        // $scope.loadAllPrCart(cartIdCall);
+    })
+
 
 
     $scope.updateProductId = function (newProductId, id) {
@@ -101,18 +137,25 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
         $scope.id = id;
     }
     // Hàm gửi yêu cầu cập nhật đến máy chủ thông qua API
-    $scope.updateProductSize = function (newSize,idColor) {
+    $scope.updateProductSize = function (newSize, idColor) {
         var url = `${host}/api/updateSize/`;
         var productId = $scope.productId; // Thay thế bằng ID của sản phẩm cần cập nhật
         var id = $scope.id;
-        var updateData = { size: newSize, idCart: cartId  };
-        console.log(url + id + "/" + productId +"/"+idColor, updateData, ":::::")
+        if(!dataUserCart){
+            $scope.cartIdFinal = cartId;
+            console.log("Using existing Cart ID:", cartId);
+          }else{
+            $scope.cartIdFinal = dataUserCart;
+            console.log("Using existing Cart ID:", dataUserCart);
+          }
+        var updateData = { size: newSize, idCart:  $scope.cartIdFinal };
+        console.log(url + id + "/" + productId + "/" + idColor, updateData, ":::::")
         // Sử dụng $http.put để gửi yêu cầu cập nhật đến API
-        $http.put(url + id + "/" + productId+"/"+idColor, updateData)
+        $http.put(url + id + "/" + productId + "/" + idColor, updateData)
             .then(function () {
                 // Xử lý khi cập nhật thành công
                 console.log('Suaw thành công');
-                $scope.loadAllPr();
+                $scope.loadAllPr($scope.idCartFinal);
             })
             .catch(function (error) {
                 // Xử lý khi cập nhật thất bại
@@ -147,7 +190,7 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
         $http.put(url + idPr, updateData)
             .then(function (response) {
                 // Xử lý khi cập nhật thành công
-                $scope.loadAllPr();
+                $scope.loadAllPr($scope.idCartFinal);
                 console.log('Cập nhật số lượng thành công');
             })
             .catch(function (error) {
@@ -159,12 +202,18 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
 
     $scope.onInputKeyPress = function (event, idPr, quantity) {
         if (event.keyCode === 13) { // Kiểm tra nếu phím Enter (keyCode=13)
+            if (quantity <= 0) {
+                quantity = 1;
+            }
             $scope.updateProductQuantity(idPr, quantity);
         }
     };
 
     // Xử lý sự kiện khi trường input mất đi焦点 (người dùng click vào chỗ khác)
     $scope.onInputBlur = function (idPr, quantity) {
+        if (quantity <= 0) {
+            quantity = 1;
+        }
         $scope.updateProductQuantity(idPr, quantity);
     };
 
@@ -201,9 +250,12 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
                 $http.delete(url + productId + "/" + cartId)
                     .then(function () {
                         // Xử lý khi Delete thành công
-                        $scope.loadAllPr();
-                        $scope.loadAllPrCart();
                         $anchorScroll("pageContent");
+                        $scope.getDataUser(function (cartIdCall) {
+                            console.log(cartIdCall);
+                            $scope.loadAllPr(cartIdCall);
+                            // $scope.loadAllPrCart(cartIdCall);
+                        })
                         toastr.success('Xóa sản phẩm thành công!', 'Thông báo')
                     })
                     .catch(function (error) {
@@ -218,35 +270,28 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
     };
 
     $scope.idBill = 0;
+    $scope.billJson = {};
     $scope.addBill = function () {
-        var url = `${host}/api/addBill`;
+        var url = `${host}/api/addBill/${$scope.idUserFinal}`;
+        console.log(url,"url") ; 
         return $http.post(url).then(function (res) {
             $scope.bill = res.data; // Gán dữ liệu từ API vào $scope.bill
-            console.log("ID: " + $scope.bill.id);
-            $scope.idBill = $scope.bill.id;
-            CookieService.set('billId', $scope.idBill, 1);
+            $scope.billJson = JSON.stringify($scope.bill);
+            console.log("ID: " + $scope.billJson); // Loại bỏ dấu chấm thừa
+            // Kiểm tra nếu $scope.billJson là một chuỗi JSON hợp lệ
+            if ($scope.billJson) {
+                const billData = JSON.parse($scope.billJson);
+                console.log("here", billData)
+                CookieService.set('billId', billData.id, 1);
+                CookieService.set('idUser', billData.users.id, 1);
+            }
             return true; // Trả về true để biểu thị rằng việc thêm hóa đơn đã thành công
         }).catch(function (error) {
             console.error('ADD thất bại', error);
             return false; // Trả về false để biểu thị rằng việc thêm hóa đơn đã thất bại
         });
     }
-
-    $scope.pay = function (idCart) {
-        $scope.addBill().then(function (success) {
-            if (success) {
-                var url = `${host}/api/addBillDt/`;
-                var idBill = $scope.idBill;
-                $http.post(url + idBill + "/" + idCart).then(function () {
-                    console.log('ADD thành công');
-                }).catch(function (error) {
-                    console.error('ADD thất bại', error);
-                });
-            }
-        });
-    }
     // Gọi hàm để tải danh sách kích thước và danh sách sản phẩm trong giỏ hàng
-    $scope.loadAllPr();
 });
 
 

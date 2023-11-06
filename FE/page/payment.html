@@ -1,4 +1,4 @@
-<div class="payment container">
+<div class="payment container" ng-class="{ 'blur-background': showLoading }">
     <div class="row">
         <div class="logo col-lg-1 me-3"> <img src="/FE/assets/img/logo.png" class=" border-dark " alt=""> </div>
         <h3 class="fw-bold col-lg-3 mt-4 ms-4  text-success">| Thanh toán</h3>
@@ -6,15 +6,29 @@
     <div class="hr mt-4"></div>
     <div class="row mt-3 ms-3">
         <h4 class="fw-bold text-danger ">Địa chỉ nhận hàng</h4>
-        <div class="address row">
+        <div class=" row" ng-show="!showOption">
             <div class="col-lg-4 fw-bold" ng-Show="showAddress == true"> {{formAddress.userName}} | (+84)
                 {{formAddress.phoneNumber}}</div>
             <div class="col-lg" ng-Show="showAddress == true">{{formAddress.addressDetail +","}}
                 {{formAddress.ward.WardName +", "}}{{formAddress.district.DistrictName +","
                 }}{{"Tỉnh "+formAddress.province.ProvinceName}}</div>
             <a class="col-lg-1 text-end me-4" ng-click="resetModalContent()" data-bs-toggle="modal"
-                data-bs-target="#exampleModal"> Thay đổi </a>
+                data-bs-target="#exampleModal"> Thêm mới </a>
         </div>
+        <div class=" row" ng-show="showOption">
+            <div class="address-info-show d-flex " ng-show="selectedAddress">
+                <strong>{{selectedAddress.UserName}}</strong> | <span>{{selectedAddress.PhoneNumber}}</span>
+                <div class="offset-2">{{selectedAddress.AddressDetail}},</div>
+                <div class="ms-3">{{wardsByProvince[selectedAddress.DistrictID] | findWardNameById:selectedAddress.WardCode}},
+                    {{districtsByProvince[selectedAddress.ProvinceID] | findDistrictNameById:selectedAddress.DistrictID}},
+                    Tỉnh {{provinces | findProvinceNameById:selectedAddress.ProvinceID}}
+                </div>
+            </div>
+            
+            <a class="col-lg-1 text-end me-4" ng-click="" data-bs-toggle="modal" data-bs-target="#exampleAddress"> Thay
+                đổi </a>
+        </div>
+
     </div>
     <!-- Modal -->
     <div class="modal fade offset-4 " style="width: 30%;" id="exampleModal" tabindex="-1"
@@ -56,7 +70,7 @@
                                             {{district.DistrictName}}</option>
                                     </select>
                                     <select id="select3" class="form-select col" ng-model="formAddress.ward"
-                                        ng-show="showSelect" ng-change="getIdAddress(formAddress.province.ProvinceID,formAddress.district.DistrictID,formAddress.ward.WardCode)">
+                                        ng-show="showSelect">
                                         <option value="" ng-selected="formAddress.ward === ''">Phường/Xã</option>
                                         <option ng-repeat="ward in wards" ng-value="ward">{{ward.WardName}}</option>
                                     </select>
@@ -75,7 +89,7 @@
                 </div>
                 <div class="modal-footer w-50">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" ng-click="saveAddress(idResUser)" ng-model="checkAddress">Save
+                    <button type="button" class="btn btn-primary" ng-click="saveAddress()" ng-model="checkAddress">Save
                         changes</button>
                 </div>
             </div>
@@ -85,6 +99,67 @@
 
     </style>
     <!-- Modal -->
+    <!-- Modal-user -->
+    <div class="modal fade offset-4 modalUser" style="width: 50%;" id="exampleAddress" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog " style="height: 100px;">
+            <div class="modal-content offset-3 " style="max-height: 600px; width: 600px;">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5  " id="exampleModalLabel">Địa Chỉ </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body scrollable-modal-body">
+                    <div class="address-item row" ng-repeat="add in addressUser">
+                        <div ng-init="loadDistrictUser(add.ProvinceID)"></div>
+                        <div ng-init="loadWardUser(add.DistrictID)"></div>
+                        <label for="{{add.id}}" class="address-radio d-flex ">
+                            <input type="radio" id="{{add.id}}" name="address" value="Địa Chỉ 1" class="mb-5" ng-checked="$first" ng-click="selectAddress(add)">
+                            <div class="address-info ms-3">
+                                <strong>{{add.UserName}}</strong> | <span>{{add.PhoneNumber}}</span>
+                                <div >{{add.AddressDetail}}</div>
+                                <div>{{ wardsByProvince[add.DistrictID]| findWardNameById:add.WardCode }},{{
+                                    districtsByProvince[add.ProvinceID]| findDistrictNameById:add.DistrictID }},{{ provinces
+                                    | findProvinceNameById:add.ProvinceID }}</div>
+                            </div>
+                            <div class="d-flex col align-items-end  mb-5">
+                                <button class="btn btn-outline-primary"> Cập nhật</button>
+                            </div>
+                        </label>
+                        <hr>
+                    </div>
+                    <a class="col-lg-1 text-end me-4" ng-click="resetModalContent()" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"> Thêm mới </a>
+                </div>
+                <div class="modal-footer w-100">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="getFeeUser()" data-bs-dismiss="modal">Save
+                        changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .modalUser {
+            top: 10%;
+            left: 3%;
+        }
+
+        .scrollable-modal-body {
+            max-height: 500px;
+            /* Điều chỉnh chiều cao tối đa theo ý muốn */
+            overflow-y: auto;
+            /* Tạo thanh cuộn dọc */
+        }
+
+        .address-info {
+            width: 75%;
+        }
+        
+        .address-info-show {
+            width: 85%;
+        }
+    </style>
+    <!-- Modal-user -->
     <div class="ms-4 mt-5">
         <table class="table table-hover prPay">
             <thead>
@@ -114,7 +189,7 @@
                     </td>
                     <td class="align-middle text-center">{{bill.productDetail.price | vndCurrency }}</td>
                     <td id="totalPrice" class="ps-4 align-middle text-center ">{{bill.quantity}}</td>
-                    <td id="totalPrice" class="ps-4 align-middle text-center "> {{totalPrices[$index] | vndCurrency}}
+                    <td id="totalPrice" class="ps-4 align-middle text-center "> {{bill.productDetail.price *  bill.quantity | vndCurrency}}
                     </td>
                 </tr>
             </tbody>
@@ -137,7 +212,7 @@
         </div>
         <div class=" offset-3 col-lg-3 text-end ms-5">
             <select id="select1" class="form-select col" ng-model="CreateOrder.optionPay">
-                <option value="0" ng-selected="CreateOrder.optionPay == '0'" >Thanh toán khi nhận hàng </option>
+                <option value="0" ng-selected="CreateOrder.optionPay == '0'">Thanh toán khi nhận hàng </option>
                 <option value="1">Thanh toán qua VNPay </option>
             </select>
         </div>
@@ -156,7 +231,7 @@
             <h4 class="col-lg-3 text-end text-danger  ">{{totalPay | vndCurrency}}</h4>
         </div>
         <div class="text-end col-lg-8 offset-3 mt-1">
-            <a class="btn btn-danger w-50 me-5" ng-click="createOrder()" >Đặt hàng</a>
+            <a class="btn btn-danger w-50 me-5" ng-click="createOrder()">Đặt hàng</a>
         </div>
     </div>
     <hr>

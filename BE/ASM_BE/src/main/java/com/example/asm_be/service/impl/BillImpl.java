@@ -2,6 +2,7 @@ package com.example.asm_be.service.impl;
 
 import com.example.asm_be.configuration.VNpayConfig;
 import com.example.asm_be.entities.Bill;
+import com.example.asm_be.entities.ProductDetail;
 import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.repositories.BillRepository;
@@ -14,8 +15,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -43,27 +49,37 @@ public class BillImpl implements BillService {
     private RestTemplate restTemplate;
 
     @Override
-    public List<Bill> getAll(int id) {
+    public List<Bill> getByUser(int id) {
         return billRepository.findByUsersId(id);
     }
 
+    @Override
+    public Page<Bill> getAllPage(Integer pageNo, Integer sizePage) {
+        Pageable pageable = PageRequest.of(pageNo, sizePage);
+        return billRepository.findAllByStatusNot(0,pageable);
+    }
+    @Override
+    public Page<Bill> getAllPageByStatsus(Integer pageNo, Integer sizePage , int status) {
+        Pageable pageable = PageRequest.of(pageNo, sizePage);
+        return billRepository.findAllByStatus(status,pageable);
+    }
     @Override
     public Bill getOne(int id) {
         return billRepository.findById(id).get();
     }
 
     @Override
-    public Bill save(Bill bill) {
+    public Bill save(Bill bill, Users user) {
         bill.setCreatedAt(new Date());
         String invoiceCode = generateInvoiceCode();
         bill.setCode("HD" + invoiceCode);
         bill.setDescription("Khách lẻ");
         Staff staff = staffRepository.findById(1).get();
         bill.setStaff(staff);
-        Users usersRes = new Users();
-        usersRes.setName("Khách lẻ");
-        userRepository.save(usersRes);
-        bill.setUsers(usersRes);
+//        Users usersRes = new Users();
+//        usersRes.setName("Khách lẻ");
+//        userRepository.save(usersRes);
+        bill.setUsers(user);
         return billRepository.save(bill);
     }
 
@@ -92,7 +108,7 @@ public class BillImpl implements BillService {
                         // Xử lý ngoại lệ một cách thích hợp ở đây
                         e.printStackTrace(); // Hoặc ghi log, hoặc trả về thông báo lỗi
                     }
-                }else{
+                } else {
                     Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
                     String jsonString = gson.toJson("http://127.0.0.1:5500/FE/layoutUser.html#/orderOverview");
                     System.out.println(jsonString);
@@ -109,14 +125,21 @@ public class BillImpl implements BillService {
         billRepository.delete(bill);
     }
 
+    private String generateInvoiceCode() {
+        // Kiểm tra xem có hóa đơn nào trong cơ sở dữ liệu hay không
+        long nextUniqueNumber = 1000; // Giá trị mặc định khi không có hóa đơn
 
-    //Hàm tạo mã random
-    private static AtomicLong uniqueInvoiceCounter = new AtomicLong(1000); // Bắt đầu từ số 1000
+        Optional<Bill> lastBill = billRepository.findTopByOrderByIdDesc();
+        if (lastBill.isPresent()) {
+            // Nếu có hóa đơn trong cơ sở dữ liệu, sử dụng số cuối cùng trong mã hóa đơn
+            String lastBillCode = lastBill.get().getCode();
+            int lastInvoiceNumber = Integer.parseInt(lastBillCode.substring(5));
+            nextUniqueNumber = lastInvoiceNumber + 1;
+        }
 
-    public static String generateInvoiceCode() {
-        long nextUniqueNumber = uniqueInvoiceCounter.getAndIncrement();
         return "INV" + nextUniqueNumber;
     }
+
 
     @Override
     public Integer getFee(FeeRequest feeRequest) {
@@ -183,7 +206,7 @@ public class BillImpl implements BillService {
                 JsonObject covertJO = new JsonObject();
                 covertJO.addProperty("name", item.getName());
                 covertJO.addProperty("quantity", item.getQuantity());
-                covertJO.addProperty("price",  item.getPrice().intValue());
+                covertJO.addProperty("price", item.getPrice().intValue());
                 covertJO.addProperty("id", item.getProductDetail().getId());
                 items.add(covertJO);
             });
@@ -196,16 +219,17 @@ public class BillImpl implements BillService {
                     CreateOrderAPI, HttpMethod.POST, entity, new ParameterizedTypeReference<Map>() {
                     });
             Map<String, Object> responseMap = response.getBody();
-            return responseMap.get("data") ;
+            return responseMap.get("data");
         } catch (Exception var10) {
             var10.printStackTrace();
             System.out.println(var10);
         }
         return null;
     }
-    public String paymentVnPay( int totalPay) throws UnsupportedEncodingException {
+
+    public String paymentVnPay(int totalPay) throws UnsupportedEncodingException {
         String orderType = "other";
-        totalPay=totalPay*100;
+        totalPay = totalPay * 100;
         String vnp_TxnRef = VNpayConfig.getRandomNumber(8);
         String vnp_IpAddr = ("127.0.0.1");
         String vnp_TmnCode = VNpayConfig.vnp_TmnCode;
@@ -213,7 +237,7 @@ public class BillImpl implements BillService {
         vnp_Params.put("vnp_Version", VNpayConfig.vnp_Version);
         vnp_Params.put("vnp_Command", VNpayConfig.vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        vnp_Params.put("vnp_Amount",String.valueOf(totalPay));
+        vnp_Params.put("vnp_Amount", String.valueOf(totalPay));
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_BankCode", "NCB");
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);

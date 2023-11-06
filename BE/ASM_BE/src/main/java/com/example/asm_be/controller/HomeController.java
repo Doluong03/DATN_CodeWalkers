@@ -41,8 +41,8 @@ public class HomeController {
     }
 
     @GetMapping("/api/product_bs")
-    public ResponseEntity<Collection<Product>> getAllProduct() {
-        return ResponseEntity.ok(productService.getAll());
+    public ResponseEntity<Collection<ProductDetail>> getAllProduct() {
+        return ResponseEntity.ok(productDetailService.getAll());
     }
 
 

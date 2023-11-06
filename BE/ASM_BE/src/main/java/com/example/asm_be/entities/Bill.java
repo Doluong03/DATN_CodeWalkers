@@ -53,9 +53,9 @@ public class Bill {
     @JoinColumn(name = "khach_hang_id")
     private Users users;
 
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+    @Column(name = "trang_thai_id")
+    private int status;
+
     @ManyToOne
     @JoinColumn(name = "nguoi_lap_id")
     private Staff staff;
@@ -63,5 +63,6 @@ public class Bill {
     @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<BillDetails> listBillDetail;
+
 
 }

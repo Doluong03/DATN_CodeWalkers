@@ -7,6 +7,7 @@ import com.example.asm_be.entities.Province;
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.request.AddressRequest;
 import com.example.asm_be.request.FeeRequest;
+import com.example.asm_be.response.AddressResponse;
 import com.example.asm_be.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +57,7 @@ public class AdressController {
             throw new RuntimeException(var3);
         }
     }
+
     public ResponseEntity<?> getPhiVanChuyen(FeeRequest phiVanChuyenRequest) {
         try {
             Integer fee = billService.getFee(phiVanChuyenRequest);
@@ -63,16 +66,17 @@ public class AdressController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(var3.getMessage());
         }
     }
+
     @PostMapping("/save-address")
-    public ResponseEntity<?> saveAddress( @RequestBody  @Valid AddressRequest addressRequest ,@RequestParam int idUser,@RequestParam int idCart, BindingResult result) {
+    public ResponseEntity<?> saveAddress(@RequestBody @Valid AddressRequest addressRequest, @RequestParam int idUser, @RequestParam int idCart, BindingResult result) {
         Address address = new Address();
         Optional<Users> users = userService.findByNameandPhone(addressRequest.getUserName(), addressRequest.getPhoneNumber());
         Cart cart = cartService.getOne(idCart);
         try {
-            if(result.hasErrors()){
+            if (result.hasErrors()) {
                 List<ObjectError> objectError = result.getAllErrors();
                 return ResponseEntity.ok(objectError);
-            }else{
+            } else {
                 if (users.isPresent()) {
                     addressRequest.map(address, users.get());
                     addressService.save(address);
@@ -95,5 +99,17 @@ public class AdressController {
             var.printStackTrace();
         }
         return ResponseEntity.ok(address);
+    }
+
+    @GetMapping({"/get-address/{idUser}"})
+    public ResponseEntity<?> getAddressByUser(@PathVariable("idUser") int idUser) {
+        List<Address> listOut = addressService.getAllByUser(idUser);
+        List<AddressResponse> listRes =new ArrayList<>();
+        for (Address x : listOut) {
+            AddressResponse addressResponse = new AddressResponse();
+            x.map(addressResponse);
+            listRes.add(addressResponse);
+        }
+        return ResponseEntity.ok(listRes);
     }
 }

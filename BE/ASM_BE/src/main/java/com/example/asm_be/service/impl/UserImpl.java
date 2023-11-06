@@ -77,4 +77,8 @@ public class UserImpl implements UserService {
     public Optional<Users> findByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
+    @Override
+    public Optional<Users> findByAcc(String userName, String password) {
+        return userRepository.findByUserNameAndPassword(userName,password);
+    }
 }

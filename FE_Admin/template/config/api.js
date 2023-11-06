@@ -4,7 +4,7 @@ window.apiAdmin = apiURL +"admin/";
 window.apiUser = apiURL + "User";
 window.apiManufacture = apiURL + "admin/Manufacture";
 window.apiProductDetails = apiURL + "admin/ProductDetails";
-  
+window.apiOrder = apiURL + "admin/Bill";
 
 
 
