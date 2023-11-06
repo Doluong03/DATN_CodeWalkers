@@ -140,4 +140,9 @@ public class AdressImpl implements AddressService {
         }
         return responseList;
     }
+
+    @Override
+    public List<Address> getAllByUser(int idUser) {
+        return addressRepository.findByUsersId(idUser);
+    }
 }

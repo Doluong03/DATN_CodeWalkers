@@ -26,8 +26,8 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/api/product")
-    public ResponseEntity<Collection<Product>> getAllProduct() {
-        return ResponseEntity.ok(productService.getAll());
+    public ResponseEntity<Collection<ProductDetail>> getAllProduct() {
+        return ResponseEntity.ok(productDetailService.getAll());
     }
 
     @GetMapping("/api/product/brand")

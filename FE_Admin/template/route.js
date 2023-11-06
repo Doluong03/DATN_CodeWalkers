@@ -46,7 +46,7 @@ myApp.factory('DataService', function($location, $q) {
         } else {
           console.log('Token is not available. Redirecting to login.');
           // If token is not available, redirect to the login page
-          window.location.href = "/template/login.html";
+          window.location.href = "/FE_Admin/template/login.html";
         }
 
         // Resolve the promise after processing
@@ -64,7 +64,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
   // $routeProvider : chuyen trang
   $routeProvider
     .when("/trang-chu", {
-      templateUrl: "/template/trang-chu.html",
+      templateUrl: "/FE_Admin/template/trang-chu.html",
       controller: UserController,
       resolve: {
         checkData: function(DataService) {
@@ -73,7 +73,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })
      .when("/bieu-do", {
-      templateUrl: "/template/chart.html",
+      templateUrl: "/FE_Admin/template/chart.html",
       controller : ChartController,
       resolve: {
         checkData: function(DataService) {
@@ -82,7 +82,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })   
     .when("/nhan-vien", {
-      templateUrl: "/template/nhan-vien.html",
+      templateUrl: "/FE_Admin/template/nhan-vien.html",
       controller : StaffController,
       resolve: {
         checkData: function(DataService) {
@@ -91,7 +91,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })
       .when("/khach-hang", {
-      templateUrl: "/template/user.html",
+      templateUrl: "/FE_Admin/template/user.html",
       controller : UserController,
       resolve: {
         checkData: function(DataService) {
@@ -100,7 +100,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })    
      .when("/nsx", {
-      templateUrl: "/template/manufacture.html",
+      templateUrl: "/FE_Admin/template/manufacture.html",
       controller : ManufactureController,
       resolve: {
         checkData: function(DataService) {
@@ -109,7 +109,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })  
     .when("/product-detail", {
-      templateUrl: "/template/product-details.html",
+      templateUrl: "/FE_Admin/template/product-details.html",
       controller : productDetailController,
       resolve: {
         checkData: function(DataService) {
@@ -171,8 +171,43 @@ myApp.config(function ($routeProvider, $locationProvider) {
         }
       }
     }) 
+    .when("/order", {
+      templateUrl: "/FE_Admin/template/order_manage.html",
+      controller : orderManage,
+      resolve: {
+        checkData: function(DataService) {
+          return DataService.fetchData();
+        }
+      }
+    }) 
     .otherwise({
       redirectTo: "/trang-chu",
     });
 });
+myApp.filter('vndCurrency', function () {
+  return function (input) {
+      if (!input) return '';
+      return input.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+  };
+});
+myApp.filter('dateformat', function() {
+  return function(input) {
+    if (input) {
+      var date = new Date(input);
+      var day = date.getDate();
+      var month = date.getMonth() + 1; // Lưu ý: Tháng bắt đầu từ 0
+      var year = date.getFullYear();
 
+      // Hàm để thêm số 0 ở đầu nếu cần
+      function pad(number) {
+        if (number < 10) {
+          return "0" + number;
+        }
+        return number;
+      }
+
+      return pad(day) + '/' + pad(month) + '/' + year;
+    }
+    return "";
+  };
+});

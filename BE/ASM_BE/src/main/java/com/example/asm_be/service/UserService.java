@@ -31,6 +31,5 @@ public interface UserService {
     Optional<Users> findByNameandPhone(String name, String phone);
 
     Optional<Users> findByUserName(String userName);
-
-
+    Optional<Users> findByAcc(String userName, String password);
 }

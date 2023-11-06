@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 @CrossOrigin({"*"})
@@ -29,9 +30,10 @@ public class CartController {
 
 
     @GetMapping("/api/cart")
-    public ResponseEntity<Collection<CartDetails>> getAllProduct(@RequestParam int id) {
-        return ResponseEntity.ok(cartDetailService.getAll(id));
+    public ResponseEntity<Collection<CartDetails>> getAllProduct(@RequestParam int idCart) {
+        return ResponseEntity.ok(cartDetailService.findByCart(idCart));
     }
+
     @GetMapping("/api/getSizeBycolor")
     public ResponseEntity<Collection<ProductDetail>> getAllProduct(@RequestParam int idPr ,@RequestParam int idColor ) {
         return ResponseEntity.ok(productDetailService.getPrByColor(idPr, idColor));
@@ -71,5 +73,9 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi xóa sản phẩm");
         }
     }
-
+    @PutMapping("/api/updateCart")
+    public ResponseEntity<?> updateCart(@RequestBody List<CartDetails> listCartDt, @RequestParam int idCart) {
+        cartDetailService.updateCart(listCartDt,idCart);
+        return ResponseEntity.ok().build();
+    }
 }

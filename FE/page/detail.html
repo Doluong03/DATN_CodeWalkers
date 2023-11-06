@@ -1,6 +1,6 @@
 <!-- Feature Tabs -->
 
-<div class="row feture-tabs offset-2" data-aos="fade-up">
+<div class="row feture-tabs offset-2 mt-5" data-aos="fade-up">
   <div class="col-lg-1">
     <div data-testid="ThumbnailListContainer" class="css-r3as8n" ng-repeat="item in img">
       <div data-testid="Thumbnail-0" class="d-sm-flx flx-jc-sm-fs flx-ai-sm-fe css-1mhv7vq">
@@ -48,7 +48,7 @@
       </div>
     </div>
   </div>
-  <div class="col-lg-5">
+  <div class="col-lg-5 mt-2">
     <h3>{{itemDetail[0].product.name}}</h3>
     <!-- <h5>{{itemDetail.category.name}}</h5> -->
     <br>
@@ -79,17 +79,63 @@
     <div class="size-container">
       <div class="size" ng-repeat="sz in sizes | orderBy:'name'" ng-style="getSizeStyle(sz)">
         <input type="radio" name="size" id="{{sz.name}}" ng-model="selectedValue" ng-value="sz.id"
-          class="visually-hidden" ng-click="selectSize(sz.id)">
-        <label for="{{sz.name}}" tabindex="-1" class="fs-5">{{sz.name}}</label>
+          class="visually-hidden" ng-click="selectSize(sz.id)"  >
+        <label for="{{sz.name}}" tabindex="-1" class="fs-5"  ng-style="checkCl(sz)">{{sz.name}}</label>
       </div>
     </div>
+
     <!-- End Tabs -->
     <div>
-      <p>Số lượng: {{totalQuantity}}</p>
+        <div class="row mt-4 mb-3">
+          <label class="col-lg-2 ms-0 fs-5">Quantity</label>
+          <div class="col-lg-6 d-flex align-items-center">
+              <div class="input-group quantity-input">
+                  <div class="input-group-prepend">
+                      <button class="quantity-button border-1" type="button"
+                          ng-click="decreaseQuantity(pr)">
+                          <i class="bi bi-dash"></i>
+                      </button>
+                  </div>
+                  <!-- Sử dụng ng-model để liên kết quantity với productInfoList.quantity -->
+                  <input type="number" class="quantity-value border-1"
+                      aria-label="Quantity" ng-model="quantity"
+                      ng-keypress="onInputKeyPress($event,quantity)"
+                      ng-blur="onInputBlur(quantity)">
+                  <div class="input-group-append">
+                      <button class="quantity-button border-1" type="button"
+                          ng-click="increaseQuantity(pr)">
+                          <i class="bi bi-plus"></i>
+                      </button>
+                  </div>
+                  <p class="col-lg ms-2 mt-1 text-start text-secondary">{{totalQuantity}} sản phẩm có sẵn</p>
+              </div>
+          </div>
+      </div>
     </div>
     <!-- button  -->
-    <a type="button" class="btn btn-dark  rounded-3 w-50 offset-2 mb-2 " ng-click="addCart()"> Thêm vào giỏ hàng </a>
-    <a type="button" class="btn btn-light border border-5 rounded-3 w-50 offset-2"> Yêu thích ❤️ </a>
+    <div class="">
+      <a type="button" class=" glow-on-hover btn btn-dark w-50 offset-2 mb-2"  ng-click="addCart(quantity)"> Thêm vào giỏ hàng </a>
+    </div>
+    <div>
+        <div id="intro-content" class="center-content w-50 offset-2 mb-2">
+            <div class="center-content-inner">
+                <div class="content-section content-section-margin">
+                    <div class="content-section-grid clearfix">
+                       <a href="#" class="button-main nav-link w-100 h-50">
+                            <div class="bottom"></div>
+                            <div class="top">
+                                <div class="label text-dark">Yêu thích ❤️</div>
+                                <div class="button-border button-border-left"></div>
+                                <div class="button-border button-border-top"></div>
+                                <div class="button-border button-border-right"></div>
+                                <div class="button-border button-border-bottom"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <hr>
     <!-- End button  -->
     <!-- Tab Content -->
@@ -194,8 +240,8 @@
         <div class="row">
           <div class="col-lg-3 carousel-slide" ng-repeat="pr in slide"
             ng-class="{ 'd-none': $index >= numVisibleItems }">
-            <img ng-src="{{ 'assets/img/product/sp1/' + pr.listImage[0].link }}" style="height: 200px;"
-              alt="{{ pr.name }}">
+            <img ng-src="{{ 'assets/img/product/sp1/' + pr.product.listImage[0].link }}" style="height: 200px;"
+              alt="{{ pr.product.name }}">
             <h4 class="ms-5">{{ pr.name }}</h4>
           </div>
         </div>
