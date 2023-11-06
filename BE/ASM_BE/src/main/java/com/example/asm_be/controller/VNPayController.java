@@ -1,6 +1,5 @@
 package com.example.asm_be.controller;
 
-import com.example.asm_be.DTO.PaymentResDto;
 import com.example.asm_be.configuration.VNpayConfig;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
-@RequestMapping("api/payment")
+@RequestMapping("/CodeWalkers")
 public class VNPayController {
     @GetMapping("createPay")
     public ResponseEntity<?> createPay() throws UnsupportedEncodingException {

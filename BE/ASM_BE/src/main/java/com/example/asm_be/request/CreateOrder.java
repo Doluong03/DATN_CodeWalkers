@@ -30,7 +30,6 @@ public class CreateOrder {
     public Integer getAvgEdge(){
         Double Vol = Math.pow((double) Invariable.EDGE_LENGTH, 3.0) * (double)this.quantity;
         return  (int)Math.cbrt(Vol);
-
     }
     public String getStringWard(){
         return String.valueOf(this.wardId);

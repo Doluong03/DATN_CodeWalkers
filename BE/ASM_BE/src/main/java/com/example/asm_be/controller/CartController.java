@@ -29,14 +29,19 @@ public class CartController {
 
 
     @GetMapping("/api/cart")
-    public ResponseEntity<Collection<CartDetails>> getAllProduct() {
-        return ResponseEntity.ok(cartDetailService.getAll());
+    public ResponseEntity<Collection<CartDetails>> getAllProduct(@RequestParam int id) {
+        return ResponseEntity.ok(cartDetailService.getAll(id));
+    }
+    @GetMapping("/api/getSizeBycolor")
+    public ResponseEntity<Collection<ProductDetail>> getAllProduct(@RequestParam int idPr ,@RequestParam int idColor ) {
+        return ResponseEntity.ok(productDetailService.getPrByColor(idPr, idColor));
     }
 
-    @PutMapping("/api/updateSize/{id}/{idPr}")
-    public ResponseEntity<?> updateProductSize(@PathVariable("id") int id,@PathVariable("idPr") int idPr,@RequestBody Map<String, String> updateData) {
+    @PutMapping("/api/updateSize/{id}/{idPr}/{idCl}")
+    public ResponseEntity<?> updateProductSize(@PathVariable("id") int id,@PathVariable("idPr") int idPr,@PathVariable("idCl") int idCl,@RequestBody Map<String, String> updateData) {
         String newSize = updateData.get("size");
-        cartDetailService.updateProductSize(id, idPr, newSize);
+        String cart = updateData.get("idCart");
+        cartDetailService.updateProductSize(id, idPr,idCl,newSize,cart);
         return ResponseEntity.ok().build();
     }
     @PutMapping("/api/updateQuantity/{productId}")
@@ -58,4 +63,13 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi xóa sản phẩm");
         }
     }
+    @DeleteMapping("/api/cart/deleteCart/{cartId}")
+    public ResponseEntity<?> delete(@PathVariable("cartId") int cartId){
+        if(cartDetailService.deleteByCart( cartId)){
+            return ResponseEntity.ok().build();
+        }else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi xóa sản phẩm");
+        }
+    }
+
 }

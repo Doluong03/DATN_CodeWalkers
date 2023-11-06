@@ -37,8 +37,9 @@ public class BillController {
     }
 
     @GetMapping("/api/getBill")
-    public ResponseEntity<Collection<Bill>> test() {
-        return ResponseEntity.ok(billService.getAll());
+    public ResponseEntity<Collection<Bill>> getBill(@RequestParam int idCart) {
+        Users users = userService.findByCartId(idCart);
+        return ResponseEntity.ok(billService.getAll(users.getId()));
     }
 
 
@@ -52,8 +53,8 @@ public class BillController {
         return ResponseEntity.ok(billDetailService.save( idBill, idCart));
     }
 
-    @PostMapping({"/tinh-phi-van-chuyen"})
-    public ResponseEntity<?> getPhiVanChuyen(@RequestBody FeeRequest phiVanChuyenRequest) {
+    @PostMapping({"/calculateFee"})
+    public ResponseEntity<?> getFeeShip(@RequestBody FeeRequest phiVanChuyenRequest) {
         try {
             Integer fee = billService.getFee(phiVanChuyenRequest);
             return ResponseEntity.status(HttpStatus.OK).body(fee);
@@ -62,14 +63,25 @@ public class BillController {
         }
     }
 
-    @PostMapping("createOrder")
+    @PostMapping("/bill/createOrder")
     public ResponseEntity<?> createOrder(@RequestBody CreateOrder createOrder) {
         try {
-          billService.createOrder(createOrder);
+         Object obj = billService.createOrder(createOrder);
+            return ResponseEntity.ok(obj);
+        } catch (Exception var) {
+            var.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(var.getMessage());
+        }
+    }
+    @PutMapping("/bill/updateBill")
+    public ResponseEntity<?> updateBill(@RequestBody AddBillRequest billRequest) {
+        try {
+            System.out.println(billRequest + "<---");
+          String url =  billService.update(billRequest);
+          return ResponseEntity.ok(url);
         } catch (Exception var) {
             var.printStackTrace();
         }
         return null;
     }
-
 }

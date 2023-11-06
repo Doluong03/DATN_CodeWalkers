@@ -20,7 +20,7 @@ public class Address {
     @Column(name = "dia_chi_chi_tiet")
     private String name;
     @Column(name = "phuong_xa_id")
-    private int ward;
+    private String ward;
     @Column(name = "thanh_pho_id")
     private int province;
     @Column(name = "quan_huyen_id")
