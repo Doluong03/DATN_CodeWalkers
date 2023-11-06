@@ -69,14 +69,14 @@ public class BillController {
     @PostMapping({"/Bill/insert"})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponObject> insertBill(@RequestBody Bill bill) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Add thanh cong", this.billService.save(bill)));
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Add thanh cong", this.billService.saveAdmin(bill)));
     }
 
-    @PutMapping({"/Bill/update"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponObject> updateBill(@RequestBody BillRequest1 billRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Update thanh cong", this.billService.update(billRequest)));
-    }
+//    @PutMapping({"/Bill/update"})
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public ResponseEntity<ResponObject> updateBill(@RequestBody BillRequest1 billRequest) {
+//        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Update thanh cong", this.billService.updateAdmin(billRequest)));
+//    }
 
     @DeleteMapping({"/Bill/delete/{id}"})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
