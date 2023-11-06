@@ -5,14 +5,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
 @Service
 public interface CategoryService {
 
-    public List<Category> getAll();
+    Page<Category> getAll(Integer pageNo,Integer sizePage);
 
     public Category getOne(int id);
-    public Category save( Category category);
-    public Category update( Category category);
+    // public Category save( Category category);
+    // public Category update( Category category);
     public void delete( Category category);
+
+    Category getOne(Integer id);
+    boolean save( Category categoryRequest);
+    boolean update( Category categoryRequest);
+    boolean delete( Integer idCategory);
 
 }

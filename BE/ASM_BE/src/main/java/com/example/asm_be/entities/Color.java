@@ -21,8 +21,6 @@ public class Color {
     @Column(name = "ten_mau_sac")
     private String name;
 
-
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+    @Column(name = "trang_thai")
+    private boolean status;
 }

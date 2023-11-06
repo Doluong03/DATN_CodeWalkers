@@ -7,6 +7,7 @@ import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Status;
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.service.StatusService;
+import com.example.asm_be.entities.Users;
 import com.example.asm_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
-
 @CrossOrigin({"*"})
 @RestController
 @RequestMapping({"/CodeWalkers"})
@@ -32,6 +32,7 @@ public class KhachHangController {
 
     @Autowired
     private StatusService statusService;
+
 
     public KhachHangController() {
     }
@@ -58,6 +59,7 @@ public class KhachHangController {
         Integer id = 2;
         Status status = statusService.getOne(id);
 
+
         Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
         Date createdDate = dateFormat.parse(current.toString());
 
@@ -76,14 +78,12 @@ public class KhachHangController {
         Date current = new Date();
         Integer id = 2;
         Status status = statusService.getOne(id);
-
         Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
         Date Modified = dateFormat.parse(current.toString());
 
         users.setDateOfBirth(BirthDayFormat);
         users.setModified(Modified);
         users.setStatus(status);
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.userService.update(users)));
@@ -97,7 +97,6 @@ public class KhachHangController {
                 .body(new ResponeObject("success", "Delete thanh cong", this.userService.delete(idUsers)));
 
     }
-
 
     @GetMapping({"/profile/{username}"})
     public Users getProfile(@PathVariable("username") String  username) {
