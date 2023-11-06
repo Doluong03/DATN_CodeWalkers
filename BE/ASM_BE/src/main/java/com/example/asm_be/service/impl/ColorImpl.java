@@ -1,39 +1,37 @@
 package com.example.asm_be.service.impl;
 
-import com.example.asm_be.entities.Brands;
-import com.example.asm_be.entities.Users;
-import com.example.asm_be.repositories.BrandRepository;
-import com.example.asm_be.service.BrandService;
+import com.example.asm_be.entities.Color;
+import com.example.asm_be.repositories.ColorRepository;
+import com.example.asm_be.service.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 
 @Component
-public class BrandImpl implements BrandService {
+public class ColorImpl implements ColorService {
     @Autowired
-    private BrandRepository brandRepository;
+    private ColorRepository colorRepository;
+
 
     @Override
-<<<<<<< Updated upstream
-    public Brands getOne(UUID id) {
-        return brandRepository.findById(id).get();
-=======
-    public Page<Brands> getAll(Integer pageNo, Integer sizePage) {
+    public Page<Color> getAll(Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo,sizePage);
-        return brandRepository.findAll(pageable);
->>>>>>> Stashed changes
+        return colorRepository.findAll(pageable);
     }
 
-    public Brands getOne(Integer id) {
+    @Override
+    public Color getOne(Integer id) {
         return null;
     }
 
-    public boolean save(Brands brands) {
+    @Override
+    public boolean save(Color color) {
         try {
-            this.brandRepository.save(brands);
+            this.colorRepository.save(color);
             return true;
         } catch (Exception var3) {
             var3.getMessage();
@@ -41,9 +39,10 @@ public class BrandImpl implements BrandService {
         }
     }
 
-    public boolean update( Brands brands) {
+    @Override
+    public boolean update(Color color) {
         try {
-            this.brandRepository.save(brands);
+            this.colorRepository.save(color);
             return true;
         } catch (Exception var4) {
             var4.getMessage();
@@ -51,14 +50,14 @@ public class BrandImpl implements BrandService {
         }
     }
 
-    public boolean delete(Integer idBrands) {
+    @Override
+    public boolean delete(Integer idColor) {
         try {
-            this.brandRepository.deleteById(idBrands);
+            this.colorRepository.deleteById(idColor);
             return true;
         } catch (Exception var3) {
             var3.getMessage();
             return false;
         }
-
     }
 }

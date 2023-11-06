@@ -4,6 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="d71f0bcd-3842-4ca2-8ea3-67831a91f29e" name="Changes" comment="Changes">
       <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/Auth/SecurityConfig.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/DTO/BrandRespone.java" afterDir="false" />
@@ -21,6 +22,74 @@
       <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/StaffService.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/StaffIplm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+    <list default="true" id="89fb8e46-4ef5-470f-91b8-dd71389cb16c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/MauSacController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/SanPhamController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ThuongHieuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/BrandRespone.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/ColorRespone.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/ProductRespone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/DTO/PaymentResDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/PaymentResDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/KhachHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/KhachHangController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ProductController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ProductdetailController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/VNPayController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/VNPayController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/ProductDetailsRespone.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/ProductDetailsRespone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Bill.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Bill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Brands.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Brands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Cart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/CartDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/CartDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Color.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/DeliveryNote.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/DeliveryNote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/FavouriteDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/FavouriteDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/FavouriteList.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/FavouriteList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Manufacture.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Manufacture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Material.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Material.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Size.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Size.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Staff.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Staff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Status.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Users.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/StatusRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/BrandService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/BrandService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ColorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ColorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/StatusService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BrandImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BrandImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/CartDetailsImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/CartDetailsImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/CartImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/CartImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ColorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ColorImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/StatusImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/KhachHangController.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/KhachHangController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Bill.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Bill.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Brands.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Brands.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Category.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Material.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Material.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/ProductDetail.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/ProductDetail.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Size.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Size.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Staff.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Staff.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Status.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Users.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Users.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/StatusRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/BrandService.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/BrandService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/ProductService.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/ProductService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/StatusService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BrandImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BrandImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ProductImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ProductImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/StatusImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Database_DATN.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../Database_DATN.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/config/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/config/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/route.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../insertData.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../insertData.sql" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +110,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< Updated upstream
+=======
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.example.asm_be.entities" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Hp\Downloads\DATN\DATN_CodeWalkers\BE\ASM_BE\src\main\java\com\example\asm_be\entities" />
+      <recent name="C:\Users\Hp\Downloads\DATN\DATN_CodeWalkers\BE\ASM_BE\src\main\java\com\example\asm_be\service\impl" />
+      <recent name="C:\Users\Hp\Downloads\DATN\DATN_CodeWalkers\BE\ASM_BE\src\main\java\com\example\asm_be\service" />
+      <recent name="C:\Users\Hp\Downloads\DATN\DATN_CodeWalkers\BE\ASM_BE\src\main\java\com\example\asm_be\repositories" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.asm_be.controller" />
+      <recent name="com.example.asm_be.dto" />
+      <recent name="com.example.asm_be.service.impl" />
+      <recent name="com.example.asm_be.service" />
+      <recent name="com.example.asm_be.response" />
+      <recent name="com.example.asm_be.repositories" />
+      <recent name="com.example.asm_be.security.user" />
+      <recent name="com.example.asm_be.DTO" />
+    </key>
+  </component>
+>>>>>>> Stashed changes
   <component name="RunManager">
     <configuration name="AsmBeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="ASM_BE" />
@@ -61,6 +165,55 @@
       <workItem from="1692776850905" duration="717000" />
       <workItem from="1692777765241" duration="12000" />
       <workItem from="1692779531389" duration="263000" />
+<<<<<<< Updated upstream
+=======
+      <workItem from="1695729517205" duration="4433000" />
+      <workItem from="1695736433156" duration="8617000" />
+      <workItem from="1695793036454" duration="789000" />
+      <workItem from="1695794211187" duration="3239000" />
+      <workItem from="1695821228622" duration="75000" />
+      <workItem from="1695826766127" duration="2319000" />
+      <workItem from="1695891565482" duration="28260000" />
+      <workItem from="1696055139005" duration="1592000" />
+      <workItem from="1696080109666" duration="1807000" />
+      <workItem from="1696174834817" duration="3586000" />
+      <workItem from="1696239618212" duration="5189000" />
+      <workItem from="1696430453795" duration="4345000" />
+      <workItem from="1696520121634" duration="2868000" />
+      <workItem from="1696583783906" duration="25000" />
+      <workItem from="1696610104065" duration="1831000" />
+      <workItem from="1696674047114" duration="8515000" />
+      <workItem from="1696748216763" duration="3813000" />
+      <workItem from="1696764108716" duration="8821000" />
+      <workItem from="1696868612625" duration="2455000" />
+      <workItem from="1696949475642" duration="307000" />
+      <workItem from="1697000606785" duration="18784000" />
+      <workItem from="1697053500135" duration="674000" />
+      <workItem from="1697101329860" duration="13280000" />
+      <workItem from="1697130389709" duration="975000" />
+      <workItem from="1697176003258" duration="1072000" />
+      <workItem from="1697177120880" duration="6439000" />
+      <workItem from="1697216190609" duration="251000" />
+      <workItem from="1697248303649" duration="62086000" />
+      <workItem from="1697476545104" duration="9826000" />
+      <workItem from="1697554477003" duration="2237000" />
+      <workItem from="1697615787855" duration="9227000" />
+      <workItem from="1697613470943" duration="6853000" />
+      <workItem from="1697653245270" duration="39000" />
+      <workItem from="1697655291409" duration="616000" />
+      <workItem from="1698419696680" duration="95000" />
+      <workItem from="1698419810290" duration="3358000" />
+      <workItem from="1698465116218" duration="1128000" />
+      <workItem from="1698505313394" duration="644000" />
+      <workItem from="1698758968505" duration="4354000" />
+      <workItem from="1698815242790" duration="4819000" />
+      <workItem from="1698846774590" duration="4124000" />
+      <workItem from="1699002883585" duration="733000" />
+      <workItem from="1699029042128" duration="363000" />
+      <workItem from="1699106225863" duration="1854000" />
+      <workItem from="1699199700904" duration="459000" />
+      <workItem from="1699257601882" duration="10593000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>

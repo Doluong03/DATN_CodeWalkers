@@ -25,7 +25,16 @@ public class Material {
 
     @Column(name = "ten_chat_lieu")
     private String name;
+<<<<<<< Updated upstream
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;
+=======
+
+    @Column(name = "mo_ta")
+    private String description;
+
+    @Column(name = "trang_thai")
+    private boolean status;
+>>>>>>> Stashed changes
 }

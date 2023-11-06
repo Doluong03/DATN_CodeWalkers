@@ -54,7 +54,13 @@ public class DeliveryNote {
     @ManyToOne
     @JoinColumn(name = "dia_chi_id")
     private Address address;
+<<<<<<< Updated upstream
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;
+=======
+
+    @Column(name = "trang_thai")
+    private boolean status;
+>>>>>>> Stashed changes
 }

@@ -6,24 +6,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
-@Entity(name = "KichThuoc")
+@Entity(name = "MauSac")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "KichThuoc")
-public class Size {
+@Table(name = "MauSac")
+public class Color {
     @Id
-    @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @Column(name = "id_mau_sac")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Column(name = "ma_kich_thuoc")
-    private String code;
-
-    @Column(name = "ten_kich_thuoc")
+    @Column(name = "ten_mau_sac")
     private String name;
 
     @Column(name = "trang_thai")

@@ -30,4 +30,9 @@ public class Account implements Serializable {
     private Role role;
 
 
+<<<<<<< Updated upstream:BE/ASM_BE/src/main/java/com/example/asm_be/entities/Account.java
+=======
+    @Column(name = "trang_thai")
+    private boolean status;
+>>>>>>> Stashed changes:BE/ASM_BE/src/main/java/com/example/asm_be/entities/Manufacture.java
 }

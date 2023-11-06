@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream:BE/ASM_BE/src/main/java/com/example/asm_be/DTO/BrandRespone.java
 package com.example.asm_be.DTO;
+=======
+package com.example.asm_be.dto;
+>>>>>>> Stashed changes:BE/ASM_BE/src/main/java/com/example/asm_be/dto/BrandRespone.java
 
 import com.example.asm_be.entities.Brands;
 import lombok.AllArgsConstructor;

@@ -1,13 +1,19 @@
 package com.example.asm_be.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Entity(name = "HoaDon")
 @NoArgsConstructor
@@ -36,7 +42,17 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "khach_hang_id")
     private Users users;
+<<<<<<< Updated upstream
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;
+=======
+
+    @Column(name = "trang_thai")
+    private Boolean status;
+
+    @ManyToOne
+    @JoinColumn(name = "nguoi_lap_id")
+    private Staff staff;
+>>>>>>> Stashed changes
 }

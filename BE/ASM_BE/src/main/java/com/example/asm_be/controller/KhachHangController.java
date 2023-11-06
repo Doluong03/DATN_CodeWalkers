@@ -7,9 +7,9 @@ package com.example.asm_be.controller;
 
 import com.example.asm_be.DTO.UserRespone;
 import com.example.asm_be.entities.ResponeObject;
-import com.example.asm_be.entities.Status;
+
 import com.example.asm_be.entities.Users;
-import com.example.asm_be.service.StatusService;
+
 import com.example.asm_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,8 +33,8 @@ public class KhachHangController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private StatusService statusService;
+
+
 
     public KhachHangController() {
     }
@@ -55,15 +55,19 @@ public class KhachHangController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
         Date current = new Date();
         Integer id = 2;
-        Status status = statusService.getOne(id);
+
 
         Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
         Date createdDate = dateFormat.parse(current.toString());
 
         users.setDateOfBirth(BirthDayFormat);
         users.setCreatedDate(createdDate);
+<<<<<<< Updated upstream
         users.setPhoneNumber("0"+users.getPhoneNumber());
         users.setStatus(status);
+=======
+
+>>>>>>> Stashed changes
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", userService.save(users)));
@@ -74,14 +78,14 @@ public class KhachHangController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
         Date current = new Date();
         Integer id = 2;
-        Status status = statusService.getOne(id);
+
 
         Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
         Date Modified = dateFormat.parse(current.toString());
 
         users.setDateOfBirth(BirthDayFormat);
         users.setModified(Modified);
-        users.setStatus(status);
+
 
         return ResponseEntity
                 .status(HttpStatus.OK)

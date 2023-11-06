@@ -50,7 +50,21 @@ public class Users {
     @Column(name = "mat_khau")
     private String password;
 
+<<<<<<< Updated upstream
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;
 }
+=======
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "trang_thai")
+    private boolean status;
+
+
+
+
+
+}
+>>>>>>> Stashed changes
