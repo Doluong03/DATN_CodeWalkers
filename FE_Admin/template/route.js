@@ -144,6 +144,33 @@ myApp.config(function ($routeProvider, $locationProvider) {
         }
       }
     })  
+    .when("/color", {
+      templateUrl: "/template/color.html",
+      controller :ColorController,
+      resolve: {
+        checkData: function(DataService) {
+          return DataService.fetchData();
+        }
+      }
+    }) 
+    .when("/brand", {
+      templateUrl: "/template/brands.html",
+      controller :BrandsController,
+      resolve: {
+        checkData: function(DataService) {
+          return DataService.fetchData();
+        }
+      }
+    }) 
+    .when("/product", {
+      templateUrl: "/template/product.html",
+      controller :ProductController,
+      resolve: {
+        checkData: function(DataService) {
+          return DataService.fetchData();
+        }
+      }
+    }) 
     .otherwise({
       redirectTo: "/trang-chu",
     });

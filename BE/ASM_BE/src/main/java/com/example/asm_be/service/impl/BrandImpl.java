@@ -10,11 +10,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 @Component
 public class BrandImpl implements BrandService {
     @Autowired
     private BrandRepository brandRepository;
+
+    @Override
+    public List<Brands> getAll() {
+        return brandRepository.findAll();
+    }
 
     @Override
     public Page<Brands> getAllPage(Integer pageNo, Integer sizePage) {

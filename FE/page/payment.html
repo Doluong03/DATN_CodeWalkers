@@ -56,7 +56,8 @@
                                             {{district.DistrictName}}</option>
                                     </select>
                                     <select id="select3" class="form-select col" ng-model="formAddress.ward"
-                                        ng-show="showSelect" ng-change="getIdAddress(formAddress.province.ProvinceID,formAddress.district.DistrictID,formAddress.ward.WardCode)">
+                                        ng-show="showSelect"
+                                        ng-change="getIdAddress(formAddress.province.ProvinceID,formAddress.district.DistrictID,formAddress.ward.WardCode)">
                                         <option value="" ng-selected="formAddress.ward === ''">Phường/Xã</option>
                                         <option ng-repeat="ward in wards" ng-value="ward">{{ward.WardName}}</option>
                                     </select>
@@ -75,7 +76,8 @@
                 </div>
                 <div class="modal-footer w-50">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" ng-click="saveAddress(idResUser)" ng-model="checkAddress">Save
+                    <button type="button" class="btn btn-primary" ng-click="saveAddress(idResUser)"
+                        ng-model="checkAddress">Save
                         changes</button>
                 </div>
             </div>
@@ -137,7 +139,7 @@
         </div>
         <div class=" offset-3 col-lg-3 text-end ms-5">
             <select id="select1" class="form-select col" ng-model="CreateOrder.optionPay">
-                <option value="0" ng-selected="CreateOrder.optionPay == '0'" >Thanh toán khi nhận hàng </option>
+                <option value="0" ng-selected="CreateOrder.optionPay == '0'">Thanh toán khi nhận hàng </option>
                 <option value="1">Thanh toán qua VNPay </option>
             </select>
         </div>
@@ -156,7 +158,7 @@
             <h4 class="col-lg-3 text-end text-danger  ">{{totalPay | vndCurrency}}</h4>
         </div>
         <div class="text-end col-lg-8 offset-3 mt-1">
-            <a class="btn btn-danger w-50 me-5" ng-click="createOrder()" >Đặt hàng</a>
+            <a class="btn btn-danger w-50 me-5" ng-click="createOrder()">Đặt hàng</a>
         </div>
     </div>
     <hr>

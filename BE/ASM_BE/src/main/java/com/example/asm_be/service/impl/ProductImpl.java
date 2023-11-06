@@ -20,15 +20,21 @@ public class ProductImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
+    public List<Product> getAll() {
+        return productRepository.findAll();
+    }
+
+    @Override
     public Page<Product> getAllPage(Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo,sizePage);
         return productRepository.findAll(pageable);
     }
 
     @Override
-    public Product getOne(int id) {
+    public Product getOne(Integer id) {
         return productRepository.findById(id).get();
     }
+
 
     @Override
     public boolean save(Product product) {
@@ -36,7 +42,7 @@ public class ProductImpl implements ProductService {
             this.productRepository.save(product);
             return true;
         } catch (Exception var3) {
-            var3.getMessage();
+            var3.printStackTrace();
             return false;
         }
     }
