@@ -26,7 +26,6 @@ public class Brands {
     @Column(name = "mo_ta")
     private String description;
 
-
     @Column(name = "trang_thai")
     private boolean status;
 }

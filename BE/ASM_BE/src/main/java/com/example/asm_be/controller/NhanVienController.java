@@ -1,3 +1,4 @@
+
 package com.example.asm_be.controller;
 
 import com.example.asm_be.entities.ResponeObject;
@@ -10,10 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
+@RestController
+@CrossOrigin({"*"})
+@RequestMapping({"/CodeWalkers"})
 public class NhanVienController {
-    @Autowired
+
+
     private StaffService staffService;
 
     public NhanVienController() {

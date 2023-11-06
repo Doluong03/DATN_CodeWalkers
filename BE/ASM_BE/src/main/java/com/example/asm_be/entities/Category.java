@@ -22,6 +22,8 @@ public class Category {
 
     @Column(name = "ten_phan_loai")
     private String name;
+
     @Column(name = "trang_thai")
     private boolean status;
+
 }

@@ -69,4 +69,3 @@ public class Users {
     @JsonManagedReference
     private Cart cart;
 }
-

@@ -35,7 +35,11 @@ public class ProductDetail {
     @JoinColumn(name = "kich_co_id")
     private Size size;
 
-    @ManyToOne()
+    @Column(name = "so_luong_ton")
+    private int quantity;
+    @Column(name = "gia_Ban")
+    private float price;
+
     @JoinColumn(name = "mau_sac_id")
     private Color color;
     @ManyToOne()
