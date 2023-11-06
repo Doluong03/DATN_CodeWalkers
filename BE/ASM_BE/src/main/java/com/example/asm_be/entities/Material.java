@@ -23,10 +23,8 @@ public class Material {
     @Column(name = "ten_chat_lieu")
     private String name;
 
-    @Column(name = "mo_ta")
-    private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+@Column(name="mo_ta")
+private String moTa;
+    @Column(name = "trang_thai")
+    private boolean status;
 }

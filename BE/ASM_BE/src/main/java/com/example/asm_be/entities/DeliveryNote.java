@@ -53,7 +53,6 @@ public class DeliveryNote {
     @JoinColumn(name = "dia_chi_id")
     private Address address;
 
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+    @Column(name = "trang_thai")
+    private boolean status;
 }

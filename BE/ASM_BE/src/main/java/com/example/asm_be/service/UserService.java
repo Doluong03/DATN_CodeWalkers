@@ -6,11 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public interface UserService {
 
     Page<Users> getAll(Integer pageNo,Integer sizePage);
+
+    List<Users> getList();
 
     Users getOne(Integer id);
 
@@ -21,5 +24,6 @@ public interface UserService {
     boolean delete(Integer idUsers);
 
     Optional<Users> findByUserName(String userName);
+
 
 }

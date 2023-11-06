@@ -35,4 +35,5 @@ public class FavouriteList {
 
     @Column(name = "trang_thai")
     private int   status;
+
 }

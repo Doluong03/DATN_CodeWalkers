@@ -1,6 +1,15 @@
 var myApp = angular.module("myApp",["ngRoute"]);
-// chuyen trang
 
+myApp.filter('dateFormat', function($filter) {
+  return function(input, format) {
+      if (input) {
+          var date = new Date(input);
+          return $filter('date')(date, format);
+      }
+      return '';
+  };
+})
+// chuyen trang
 myApp.factory('DataService', function($location, $q) {
   var dataAvailable = false;
 
@@ -108,7 +117,33 @@ myApp.config(function ($routeProvider, $locationProvider) {
         }
       }
     }) 
-   
+    .when("/material", {
+      templateUrl: "/template/material.html",
+      controller :MaterialController,
+      resolve: {
+        checkData: function(DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })  
+    .when("/category", {
+      templateUrl: "/template/category.html",
+      controller :CategoryController,
+      resolve: {
+        checkData: function(DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })  
+    .when("/bill", {
+      templateUrl: "/template/bill.html",
+      controller :BillController,
+      resolve: {
+        checkData: function(DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })  
     .otherwise({
       redirectTo: "/trang-chu",
     });

@@ -26,4 +26,5 @@ public class FavouriteDetails {
     private String description;
     @Column(name = "trang_thai")
     private int   status;
+
 }
