@@ -8,6 +8,16 @@ import com.example.asm_be.entities.Status;
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.service.StatusService;
 import com.example.asm_be.entities.Users;
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
+import com.example.asm_be.DTO.UserRespone;
+import com.example.asm_be.entities.ResponeObject;
+
+import com.example.asm_be.entities.Users;
+
 import com.example.asm_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +32,12 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 @CrossOrigin({"*"})
 @RestController
 @RequestMapping({"/CodeWalkers"})
@@ -30,8 +46,6 @@ public class KhachHangController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private StatusService statusService;
 
 
     public KhachHangController() {
@@ -62,6 +76,8 @@ public class KhachHangController {
         users.setDateOfBirth(BirthDayFormat);
         users.setCreatedDate(createdDate);
         users.setStatus(true);
+        users.setPhoneNumber("0"+users.getPhoneNumber());
+        users.setStatus(status);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", userService.save(users)));
