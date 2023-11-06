@@ -19,10 +19,12 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
             "    GROUP BY c2.product.id\n" +
             ")\n")
     List<ProductDetail> getAll();
+    List<ProductDetail> findByProductId(int id);
     List<ProductDetail> findByProduct_NameContaining(String keyword);
     List<ProductDetail> findAllByOrderByProduct_NameAsc();
     List<ProductDetail> findAllByOrderByPriceAsc();
     List<ProductDetail> findAllByOrderByPriceDesc();
-    @Query("select p from ChiTietSanPham p where p.product.id=?1 and p.size.id =?2")
-    ProductDetail findBySize(int prId,int sizeId);
+    @Query("select p from ChiTietSanPham p where p.product.id=?1 and p.size.id =?2 and  p.color.id = ?3")
+    ProductDetail findBySize(int prId,int sizeId, int colorId);
+    List<ProductDetail> findByProductIdAndColorId(int idPr,int idColor);
 }

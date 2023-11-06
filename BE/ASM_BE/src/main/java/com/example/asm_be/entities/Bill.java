@@ -1,5 +1,7 @@
 package com.example.asm_be.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "HoaDon")
@@ -29,7 +32,7 @@ public class Bill {
     @Column(name = "dia_chi_chi_tiet")
     private String address;
     @Column(name = "phuong_xa_id")
-    private int ward;
+    private String ward;
     @Column(name = "thanh_pho_id")
     private int province;
     @Column(name = "quan_huyen_id")
@@ -57,4 +60,9 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "nguoi_lap_id")
     private Staff staff;
+
+    @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<BillDetails> listBillDetail;
+
 }

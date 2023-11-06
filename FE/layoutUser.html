@@ -29,18 +29,18 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: FlexStart
-  * Updated: Jul 27 2023 with Bootstrap v5.3.1
-  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  <!-- <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css"> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-cookies.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
 </head>
 
 <body ng-app="app" ng-controller="LayOutController" id="pageContent">
   <!-- Nội dung của trang -->
-  
+
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top">
@@ -84,7 +84,7 @@
           </li>
 
           <li><a class="nav-link scrollto text-decoration-none text-dark " href="#contact">Contact</a></li>
-          <form class="d-flex align-items-left ms-4 col-lg-4 "><input placeholder="Search"  type="search" name="name"
+          <form class="d-flex align-items-left ms-4 col-lg-4 "><input placeholder="Search" type="search" name="name"
               ng-model="name" class="form-control rounded-4" ng-keypress="onKeyPress($event)"
               class="form-control rounded-4 "></form>
           <li class="dropdown text-dark"><a class="text-decoration-none text-dark" href="#about"
@@ -142,7 +142,7 @@
 
   <!-- Main -->
   <main id="main">
-    <div ng-view ></div>
+    <div ng-view></div>
     <!-- Test -->
 
     <!-- End Test  -->
@@ -1081,10 +1081,8 @@
   <script src="assets/js/detail.js"></script>
   <script src="assets/js/cart.js"></script>
   <script src="assets/js/payment.js"></script>
+  <script src="assets/js/order.js"></script>
   <script src="assets/js/login.js"></script>
-
-
-
   <script>
 
     var data =  localStorage.getItem('userData');
@@ -1145,8 +1143,6 @@ if (!response.ok) throw new Error('Network response was not ok');
   fetchData();
 
 </script>
-
-
 </body>
 
 </html>

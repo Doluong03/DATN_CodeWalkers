@@ -38,11 +38,11 @@
           <div class="col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in itemsBs">
             <div class="box ">
               <a ng-href="#/product-detail/{{pr.id}}">
-                <img ng-src="{{ 'assets/img/product/sp1/' + pr.product.listImage[0].link }}" class="img-fluid w-100 " alt="{{pr.product.listImage[0].link}}">
-                    <h5 class="align-items-left">{{pr.product.name}}</h5> 
+                <img ng-src="{{ 'assets/img/product/sp1/' + pr.listImage[0].link }}" class="img-fluid w-100 " alt="{{pr.listImage[0].link}}">
+                    <h5 class="align-items-left">{{pr.name}}</h5> 
                 <p>{{pr.category.name}}</p>
-                <p>{{pr.quantity}}</p>
-                <p class="col text-dark">{{pr.price | vndCurrency }}</p>
+                <p>{{pr.listProduct[0].quantity}}</p>
+                <p class="col text-dark">{{pr.listProduct[0].price | vndCurrency }}</p>
               </a>
             </div>
         </div>

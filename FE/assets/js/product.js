@@ -133,7 +133,20 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
             console.log("Error", error);
         });
     };
-    
+    $scope.loadAllPrBs = function () {
+        var url = `${host}/api/product_bs`;
+        $http.get(url).then(res => {
+            $scope.itemsBs = res.data;
+            console.log($scope.currentImageSource);
+            console.log("Success", res);
+            // Gọi loadDetail sau khi tải dữ liệu thành công
+            //  $scope.loadDetail();
+            $scope.numVisibleItems = 4;
+        }).catch(error => {
+            console.log("Error", error);
+        });
+    }
+    $scope.loadAllPrBs()
     $scope.loadSize();
     $scope.loadColor();
     $scope.loadCategory();
