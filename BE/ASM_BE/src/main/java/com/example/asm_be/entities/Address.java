@@ -1,6 +1,7 @@
 package com.example.asm_be.entities;
 
 
+import com.example.asm_be.response.AddressResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,4 +29,16 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "khach_hang_id")
     private Users users;
+
+    public AddressResponse map (AddressResponse addressResponse){
+        addressResponse.setId(this.id);
+        addressResponse.setAddressDetail(this.name);
+        addressResponse.setEmail(this.users.getEmail());
+        addressResponse.setDistrictID(this.district);
+        addressResponse.setPhoneNumber(this.users.getPhoneNumber());
+        addressResponse.setProvinceID(this.province);
+        addressResponse.setWardCode(this.ward);
+        addressResponse.setUserName(this.users.getName());
+        return addressResponse;
+    }
 }

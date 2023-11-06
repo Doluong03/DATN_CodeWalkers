@@ -22,5 +22,5 @@ public interface AddressService {
     public List<ProvineResponse> fetchProvinces();
     public List<DistrictResponse> fetchDistrict(int provinceId);
     public List<WardResponse> fetchWard(int districtId);
-
+    public List<Address> getAllByUser(int idUser);
 }

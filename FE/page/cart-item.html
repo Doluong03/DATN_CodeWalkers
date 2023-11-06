@@ -1,12 +1,12 @@
-<div class="container ">
+<div class="container mt-5">
     <div class="row ms-1 mb-5">
         <div class="col-lg-8 ">
-            <div class="notice">
+            <div class="notice" ng-show="showNotice">
                 <h4 class="text-danger">Các thành viên được giao hàng miễn phí cho các đơn đặt hàng trên 500.000đ</h5>
                     <div></div>
                     <h4 class="text-secondary col-lg-10">Trở thành Thành viên CW để được giao hàng miễn phí nhanh chóng
                         cho đơn đặt hàng trên 500.000đ
-                        <i class="bi bi-arrow-right ms-2"> <a href="#login"
+                        <i class="bi bi-arrow-right ms-2"> <a href="/FE/login.html"
                                 class="text-dark text-decoration-underline">Sign-in</a> or <a href="#signup"
                                 class="text-dark text-decoration-underline"> Sign-up</a> </i>
                     </h4>
@@ -59,7 +59,7 @@
                                                             </button>
                                                         </div>
                                                         <!-- Sử dụng ng-model để liên kết quantity với productInfoList.quantity -->
-                                                        <input type="text" class="quantity-value border-1"
+                                                        <input type="number" class="quantity-value border-1"
                                                             aria-label="Quantity" ng-model="pr.quantity"
                                                             ng-keypress="onInputKeyPress($event,pr.id,pr.quantity)"
                                                             ng-blur="onInputBlur(pr.id,pr.quantity)">
@@ -144,7 +144,7 @@
                 </div>
                 <hr>
                 <div class="pay text-center">
-                    <a ng-click="pay(idCart)" href="#payment" class="btn btn-dark rounded-3 col-lg-8"> Thanh toán</a>
+                    <a ng-click="addBill()" href="#payment" class="btn btn-dark rounded-3 col-lg-8"> Thanh toán</a>
                 </div>
             </div>
         </div>

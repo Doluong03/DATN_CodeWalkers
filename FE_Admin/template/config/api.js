@@ -8,6 +8,7 @@ window.apiCategory  = apiURL + "api/product/category";
 window.apiBrands = apiURL + "Brands";
 window.apiColor = apiURL + "Color";
 window.apiProduct = apiURL +"Product";
+window.apiOrder = apiURL + "admin/Bill";
 
 
 

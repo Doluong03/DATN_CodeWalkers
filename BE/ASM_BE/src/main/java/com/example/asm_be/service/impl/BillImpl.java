@@ -2,6 +2,7 @@ package com.example.asm_be.service.impl;
 
 import com.example.asm_be.configuration.VNpayConfig;
 import com.example.asm_be.entities.Bill;
+import com.example.asm_be.entities.ProductDetail;
 import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.repositories.BillRepository;
@@ -14,15 +15,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -35,7 +37,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component
-public class BillImpl implements BillService  {
+public class BillImpl implements BillService {
     @Autowired
     private BillRepository billRepository;
     @Autowired
@@ -56,8 +58,22 @@ public class BillImpl implements BillService  {
         return billRepository.findAll(pageable);
     }
 
-    public List<Bill> getAll(int id) {
+
+    @Override
+    public List<Bill> getByUser(int id) {
         return billRepository.findByUsersId(id);
+    }
+
+    @Override
+    public Page<Bill> getAllPage(Integer pageNo, Integer sizePage) {
+        Pageable pageable = PageRequest.of(pageNo, sizePage);
+        return billRepository.findAllByStatusNot(0, pageable);
+    }
+
+    @Override
+    public Page<Bill> getAllPageByStatsus(Integer pageNo, Integer sizePage, int status) {
+        Pageable pageable = PageRequest.of(pageNo, sizePage);
+        return billRepository.findAllByStatus(status, pageable);
     }
 
     @Override
@@ -66,17 +82,17 @@ public class BillImpl implements BillService  {
     }
 
     @Override
-    public Bill save(Bill bill) {
+    public Bill save(Bill bill, Users user) {
         bill.setCreatedAt(new Date());
         String invoiceCode = generateInvoiceCode();
         bill.setCode("HD" + invoiceCode);
         bill.setDescription("Khách lẻ");
         Staff staff = staffRepository.findById(1).get();
         bill.setStaff(staff);
-        Users usersRes = new Users();
-        usersRes.setName("Khách lẻ");
-        userRepository.save(usersRes);
-        bill.setUsers(usersRes);
+        // Users usersRes = new Users();
+        // usersRes.setName("Khách lẻ");
+        // userRepository.save(usersRes);
+        bill.setUsers(user);
         return billRepository.save(bill);
     }
 
@@ -93,7 +109,7 @@ public class BillImpl implements BillService  {
     }
 
     @Override
-    public String update(AddBillRequest billRequest){
+    public String update(AddBillRequest billRequest) {
         Optional<Bill> bill = billRepository.findById(billRequest.getIdBill());
         if (bill.isPresent()) {
             Optional<Users> users = userRepository.findByNameAndPhoneNumber(billRequest.getUserName(),
@@ -134,12 +150,18 @@ public class BillImpl implements BillService  {
         }
     }
 
+    private String generateInvoiceCode() {
+        // Kiểm tra xem có hóa đơn nào trong cơ sở dữ liệu hay không
+        long nextUniqueNumber = 1000; // Giá trị mặc định khi không có hóa đơn
 
-    // Hàm tạo mã random
-    private static AtomicLong uniqueInvoiceCounter = new AtomicLong(1000); // Bắt đầu từ số 1000
+        Optional<Bill> lastBill = billRepository.findTopByOrderByIdDesc();
+        if (lastBill.isPresent()) {
+            // Nếu có hóa đơn trong cơ sở dữ liệu, sử dụng số cuối cùng trong mã hóa đơn
+            String lastBillCode = lastBill.get().getCode();
+            int lastInvoiceNumber = Integer.parseInt(lastBillCode.substring(5));
+            nextUniqueNumber = lastInvoiceNumber + 1;
+        }
 
-    public static String generateInvoiceCode() {
-        long nextUniqueNumber = uniqueInvoiceCounter.getAndIncrement();
         return "INV" + nextUniqueNumber;
     }
 
@@ -208,7 +230,7 @@ public class BillImpl implements BillService  {
                 JsonObject covertJO = new JsonObject();
                 covertJO.addProperty("name", item.getName());
                 covertJO.addProperty("quantity", item.getQuantity());
-                covertJO.addProperty("price",  item.getPrice().intValue());
+                covertJO.addProperty("price", item.getPrice().intValue());
                 covertJO.addProperty("id", item.getProductDetail().getId());
                 items.add(covertJO);
             });
@@ -221,7 +243,7 @@ public class BillImpl implements BillService  {
                     CreateOrderAPI, HttpMethod.POST, entity, new ParameterizedTypeReference<Map>() {
                     });
             Map<String, Object> responseMap = response.getBody();
-            return responseMap.get("data") ;
+            return responseMap.get("data");
         } catch (Exception var10) {
             var10.printStackTrace();
             System.out.println(var10);

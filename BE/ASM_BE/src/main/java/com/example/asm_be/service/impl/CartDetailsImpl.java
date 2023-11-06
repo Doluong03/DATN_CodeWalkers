@@ -26,13 +26,8 @@ public class CartDetailsImpl implements CartDetailService {
     private SizeRepository sizeRepository;
 
     @Override
-    public List<CartDetails> getAll(int id) {
+    public List<CartDetails> findByCart(int id) {
         return cartDetailsRepository.findByCartId(id);
-    }
-
-    @Override
-    public Optional<CartDetails> finByID(int id) {
-        return cartDetailsRepository.findById(id);
     }
 
 
@@ -45,30 +40,39 @@ public class CartDetailsImpl implements CartDetailService {
 
 
     @Override
-    public void addOrUpdateCartItem(Cart cart, ProductDetail productDetail) {
+    public void addOrUpdateCartItem(Cart cart, ProductDetail productDetail, int quantity) {
         Optional<CartDetails> cartDetailExist = cartDetailsRepository.findBy2Id(cart.getId(), productDetail.getId());
         if (cartDetailExist.isEmpty()) {
             CartDetails cartDetails = new CartDetails();
             cartDetails.setProductDetail(productDetail);
             cartDetails.setCart(cart);
-            cartDetails.setQuantity(1);
+            cartDetails.setQuantity(quantity);
             cartDetailsRepository.save(cartDetails);
         } else {
-            cartDetailExist.get().setQuantity(cartDetailExist.get().getQuantity() + 1);
+            cartDetailExist.get().setQuantity(cartDetailExist.get().getQuantity() + quantity);
             cartDetailsRepository.save(cartDetailExist.get());
         }
     }
 
     @Override
-    public void updateProductSize(int cartDetailsId, int idProduct,int colorId, String newSize ,String idCart) {
+    public void updateCart(List<CartDetails> list, int cartId) {
+        Optional<Cart> cart = cartRepository.findById(cartId);
+        for (CartDetails x : list) {
+            x.setCart(cart.get());
+            cartDetailsRepository.save(x);
+        }
+    }
+
+    @Override
+    public void updateProductSize(int cartDetailsId, int idProduct, int colorId, String newSize, String idCart) {
         try {
             // Tìm thông tin kích thước
             Size size = sizeRepository.findByName(newSize);
 
             if (size != null) {
                 // Tìm thông tin sản phẩm
-                System.out.println(idProduct+":::"+size.getId());
-                ProductDetail productDetail = productDetailRepository.findBySize(idProduct, size.getId(),colorId);
+                System.out.println(idProduct + ":::" + size.getId());
+                ProductDetail productDetail = productDetailRepository.findBySize(idProduct, size.getId(), colorId);
 
                 if (productDetail != null) {
                     // Tìm chi tiết giỏ hàng theo ID
@@ -77,7 +81,7 @@ public class CartDetailsImpl implements CartDetailService {
                     if (optionalCartDetails.isPresent()) {
                         CartDetails cartDetails = optionalCartDetails.get();
                         // Kiểm tra xem sản phẩm có trong giỏ hàng chưa
-                        CartDetails cartDetailsExist = cartDetailsRepository.findByProductDetailIdAndCartId( productDetail.getId(),Integer.valueOf(idCart));
+                        CartDetails cartDetailsExist = cartDetailsRepository.findByProductDetailIdAndCartId(productDetail.getId(), Integer.valueOf(idCart));
                         if (cartDetailsExist != null) {
                             // Nếu đã tồn tại, tăng số lượng lên 1
                             cartDetailsExist.setQuantity(cartDetailsExist.getQuantity() + cartDetails.getQuantity());
