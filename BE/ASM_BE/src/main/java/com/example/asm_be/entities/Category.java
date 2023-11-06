@@ -23,8 +23,7 @@ public class Category {
     @Column(name = "ten_phan_loai")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+    @Column(name = "trang_thai")
+    private boolean status;
 
 }

@@ -1,10 +1,8 @@
 package com.example.asm_be.controller;
-
 import com.example.asm_be.entities.*;
 import com.example.asm_be.request.CreateOrder;
 import com.example.asm_be.request.FeeRequest;
 import com.example.asm_be.request.AddBillRequest;
-import com.example.asm_be.request.Invariable;
 import com.example.asm_be.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,10 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import com.example.asm_be.dto.BillResponeAdmin;
+import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 
-@CrossOrigin("*")
+import java.util.List;
+@CrossOrigin({"*"})
 @RestController()
-@RequestMapping("/CodeWalkers")
+@RequestMapping({"/CodeWalkers"})
 public class BillController {
     @Autowired
     CartDetailService cartDetailService;
@@ -30,6 +32,46 @@ public class BillController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    StaffService staffService;
+
+    @GetMapping("/get/Staff")
+    public List<Staff> getStaff() {
+        return staffService.getList();
+    }
+    @GetMapping("/get/User")
+    public List<Users> getUser() {
+        return userService.getList();
+    }
+    @GetMapping({"/admin/Bill/select"})
+    public BillResponeAdmin getAllBill(@RequestParam(value = "pageNo",defaultValue = "0")Integer pageNo,
+                                       @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
+        BillResponeAdmin billResponeAdmin = new BillResponeAdmin();
+        Page<Bill> billPage = billService.getAll(pageNo,sizePage);
+
+        billResponeAdmin.setBillList(billPage.getContent());
+        billResponeAdmin.setTotalPages(billPage.getTotalPages());
+
+        return billResponeAdmin;
+    }
+
+    @PostMapping({"/Bill/insert"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ResponObject> insertBill(@RequestBody Bill bill) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Add thanh cong", this.billService.saveAdmin(bill)));
+    }
+
+//    @PutMapping({"/Bill/update"})
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public ResponseEntity<ResponObject> updateBill(@RequestBody BillRequest1 billRequest) {
+//        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Update thanh cong", this.billService.updateAdmin(billRequest)));
+//    }
+
+    @DeleteMapping({"/Bill/delete/{id}"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ResponObject> deleteBill(@PathVariable("id") Integer idBill) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Delete thanh cong", this.billService.delete(idBill)));
+    }
 
     @GetMapping("/api/billDt")
     public ResponseEntity<Collection<BillDetails>> getAllBillDt(@RequestParam int idBill) {

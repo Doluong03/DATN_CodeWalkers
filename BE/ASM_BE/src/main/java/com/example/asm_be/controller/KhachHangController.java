@@ -3,10 +3,12 @@ package com.example.asm_be.controller;
 
 import com.example.asm_be.dto.UserRespone;
 import com.example.asm_be.entities.ResponeObject;
-import com.example.asm_be.entities.Staff;
-import com.example.asm_be.entities.Status;
 import com.example.asm_be.entities.Users;
-import com.example.asm_be.service.StatusService;
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 import com.example.asm_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +29,7 @@ public class KhachHangController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private StatusService statusService;
+
 
     public KhachHangController() {
     }
@@ -52,15 +53,14 @@ public class KhachHangController {
     public ResponseEntity<ResponeObject> insertStaff(@RequestBody Users users) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
         Date current = new Date();
-        Integer id = 2;
-        Status status = statusService.getOne(id);
-
         Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
         Date createdDate = dateFormat.parse(current.toString());
 
         users.setDateOfBirth(BirthDayFormat);
         users.setCreatedDate(createdDate);
-        users.setStatus(status);
+        users.setStatus(true);
+        users.setPhoneNumber("0"+users.getPhoneNumber());
+        users.setStatus(true);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", userService.save(users)));
@@ -71,16 +71,12 @@ public class KhachHangController {
     public ResponseEntity<ResponeObject> UpdateStaff(@RequestBody Users users) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
         Date current = new Date();
-        Integer id = 2;
-        Status status = statusService.getOne(id);
-
         Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
         Date Modified = dateFormat.parse(current.toString());
 
         users.setDateOfBirth(BirthDayFormat);
         users.setModified(Modified);
-        users.setStatus(status);
-
+        users.setStatus(true);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.userService.update(users)));
@@ -94,7 +90,6 @@ public class KhachHangController {
                 .body(new ResponeObject("success", "Delete thanh cong", this.userService.delete(idUsers)));
 
     }
-
 
     @GetMapping({"/profile/{username}"})
     public Users getProfile(@PathVariable("username") String  username) {

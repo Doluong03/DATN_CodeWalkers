@@ -27,6 +27,7 @@ public class ProductdetailController {
     private MaterialService materialService;
     @Autowired
     private StatusService statusService;
+
     @Autowired
     private ColorService colorService;
     @Autowired
@@ -47,8 +48,6 @@ public class ProductdetailController {
         productDetailsRespone.setMaterialList(materialService.getAll());
         productDetailsRespone.setSizeList(sizeService.getAll());
         productDetailsRespone.setPromotionalList(promotionalService.getAll());
-        productDetailsRespone.setStatusList(statusService.getAll());
-
         return productDetailsRespone;
     }
 

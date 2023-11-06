@@ -49,11 +49,12 @@ public class Bill {
     @Column(name = "ngay_lap")
     private Date createdAt;
 
+
     @ManyToOne
     @JoinColumn(name = "khach_hang_id")
     private Users users;
 
-    @Column(name = "trang_thai_id")
+    @Column(name = "trang_thai")
     private int status;
 
     @ManyToOne

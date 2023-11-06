@@ -5,6 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89fb8e46-4ef5-470f-91b8-dd71389cb16c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/DTO/BrandRespone.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/BrandRespone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/DTO/ColorRespone.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/ColorRespone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/DTO/PaymentResDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/PaymentResDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/DTO/ProductDetailsRespone.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/DTO/ProductRespone.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/ProductRespone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/DTO/UserRespone.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/KhachHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/KhachHangController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/MauSacController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/MauSacController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/NhanVienController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/NhanVienController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ProductdetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ProductdetailController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/SanPhamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/SanPhamController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ThuongHieuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ThuongHieuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/UserRespone.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/UserRespone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Account.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ColorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ColorRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/security/staff/CustomDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/security/staff/CustomDetailsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BrandImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BrandImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductImpl.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/admin/BillManageController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/BillRespone.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/response/AddressResponse.java" afterDir="false" />
@@ -97,6 +119,8 @@
       <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/StatusImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/StatusImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/UserImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/UserImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/target/test-classes/com/example/asm_be/AsmBeApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/test-classes/com/example/asm_be/AsmBeApplicationTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/config/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/config/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE/assets/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE/assets/js/cart.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/cart.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE/assets/js/detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/detail.js" afterDir="false" />
@@ -147,7 +171,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2UNP1WXGWsltH9g29KKxWVVzTkk" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -155,6 +179,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ExpandSpringBootJavaOptionsPanel" value="true" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
@@ -163,6 +188,13 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../backup/DATN_CodeWalkers/BE" />
   </component>
   <component name="RecentsManager">
@@ -176,6 +208,17 @@
       <recent name="C:\Users\Hp\Downloads\DATN\DATN_CodeWalkers\BE\ASM_BE\src\main\java\com\example\asm_be\repositories" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.asm_be.request" />
+      <recent name="com.example.asm_be.dto" />
+      <recent name="com.example.asm_be.service.impl" />
+      <recent name="com.example.asm_be.service" />
+      <recent name="com.example.asm_be.controller" />
+      <recent name="com.example.asm_be.controller" />
+      <recent name="com.example.asm_be.dto" />
+      <recent name="com.example.asm_be.service.impl" />
+      <recent name="com.example.asm_be.service" />
+      <recent name="com.example.asm_be.response" />
+      <recent name="com.example.asm_be.repositories" />
       <recent name="com.example.asm_be.dto" />
       <recent name="com.example.asm_be.response" />
       <recent name="com.example.asm_be.repositories" />
@@ -304,6 +347,34 @@
       <workItem from="1698502855970" duration="2753000" />
       <workItem from="1698561497762" duration="3998000" />
       <workItem from="1698422832718" duration="2149000" />
+      <workItem from="1698201549246" duration="378000" />
+      <workItem from="1698201947173" duration="6448000" />
+      <workItem from="1698416879397" duration="17284000" />
+      <workItem from="1698629359209" duration="5530000" />
+      <workItem from="1698755288479" duration="116000" />
+      <workItem from="1698755420048" duration="2830000" />
+      <workItem from="1698758386987" duration="31533000" />
+      <workItem from="1699047954752" duration="438000" />
+      <workItem from="1699086142528" duration="2036000" />
+      <workItem from="1699088599194" duration="2447000" />
+      <workItem from="1699273164365" duration="11675000" />
+      <workItem from="1699300532873" duration="437000" />
+      <workItem from="1699300998623" duration="98000" />
+      <workItem from="1699301113665" duration="2417000" />
+      <workItem from="1698419696680" duration="95000" />
+      <workItem from="1698419810290" duration="3358000" />
+      <workItem from="1698465116218" duration="1128000" />
+      <workItem from="1698505313394" duration="644000" />
+      <workItem from="1698758968505" duration="4354000" />
+      <workItem from="1698815242790" duration="4819000" />
+      <workItem from="1698846774590" duration="4124000" />
+      <workItem from="1699002883585" duration="733000" />
+      <workItem from="1699029042128" duration="363000" />
+      <workItem from="1699106225863" duration="1854000" />
+      <workItem from="1699199700904" duration="459000" />
+      <workItem from="1699257601882" duration="10593000" />
+      <workItem from="1699303759238" duration="1909000" />
+      <workItem from="1699306223739" duration="1905000" />
       <workItem from="1698622022621" duration="5087000" />
       <workItem from="1698673260772" duration="6759000" />
       <workItem from="1698746720486" duration="2537000" />
@@ -334,6 +405,14 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException" package="org.hibernate.type.descriptor.java.spi" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="org.springframework.security.web.FilterChainProxy$VirtualFilterChain" memberName="originalChain" />

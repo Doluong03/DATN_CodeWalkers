@@ -29,6 +29,7 @@ public class Product {
     @Column(name = "ten_san_pham")
     private String name;
 
+
     @Column(name = "anh_chinh")
     private String mainImg;
 
@@ -47,9 +48,9 @@ public class Product {
     @JoinColumn(name = "danh_gia_id")
     private Rate rate;
 
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+
+    @Column(name = "trang_thai")
+    private boolean status;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Image> listImage;

@@ -36,7 +36,7 @@ window.productDetailController = function ($scope, $http, $window) {
       size:  {id:""},
       color:  {id:""},
       promotional : {id:""},
-      status :  {id:""},
+      status :  "",
     }
     // phân trang start
     $scope.totalPage = 0;
@@ -259,7 +259,7 @@ window.productDetailController = function ($scope, $http, $window) {
         size:  {id:item.size.id},
         color:  {id:item.color.id},
         promotional : {id:item.promotional.id},
-        status :  {id:item.status.id},
+        status :  item.status,
     };
     console.log($scope.formPdDetailUpdate)
     } else {

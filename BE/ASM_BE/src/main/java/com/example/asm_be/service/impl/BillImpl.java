@@ -21,6 +21,9 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -39,14 +42,22 @@ public class BillImpl implements BillService {
     private BillRepository billRepository;
     @Autowired
     private StaffRepository staffRepository;
+    // API
     @Autowired
     private UserRepository userRepository;
-    //API
+    // API
     private static final String FeeAPI = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee";
     private static final String CreateOrderAPI = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create";
     //
     @Autowired
     private RestTemplate restTemplate;
+
+    @Override
+    public Page<Bill> getAll(Integer pageNo, Integer sizePage) {
+        Pageable pageable = PageRequest.of(pageNo, sizePage);
+        return billRepository.findAll(pageable);
+    }
+
 
     @Override
     public List<Bill> getByUser(int id) {
@@ -56,13 +67,15 @@ public class BillImpl implements BillService {
     @Override
     public Page<Bill> getAllPage(Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo, sizePage);
-        return billRepository.findAllByStatusNot(0,pageable);
+        return billRepository.findAllByStatusNot(0, pageable);
     }
+
     @Override
-    public Page<Bill> getAllPageByStatsus(Integer pageNo, Integer sizePage , int status) {
+    public Page<Bill> getAllPageByStatsus(Integer pageNo, Integer sizePage, int status) {
         Pageable pageable = PageRequest.of(pageNo, sizePage);
-        return billRepository.findAllByStatus(status,pageable);
+        return billRepository.findAllByStatus(status, pageable);
     }
+
     @Override
     public Bill getOne(int id) {
         return billRepository.findById(id).get();
@@ -76,24 +89,31 @@ public class BillImpl implements BillService {
         bill.setDescription("Khách lẻ");
         Staff staff = staffRepository.findById(1).get();
         bill.setStaff(staff);
-//        Users usersRes = new Users();
-//        usersRes.setName("Khách lẻ");
-//        userRepository.save(usersRes);
+        // Users usersRes = new Users();
+        // usersRes.setName("Khách lẻ");
+        // userRepository.save(usersRes);
         bill.setUsers(user);
         return billRepository.save(bill);
     }
 
-    //    @Override
-//    public Bill createOrder(AddBillRequest billRequest, Users users){
-//        Bill bill = new Bill();
-//        billRequest.map(bill,users);
-//        return bill;
-//    }
+    public boolean saveAdmin(Bill bill) {
+        try {
+            // Bill bill=new Bill();
+            // billRequest.map1(bill);
+            billRepository.save(bill);
+            return true;
+        } catch (Exception var3) {
+            var3.printStackTrace();
+            return false;
+        }
+    }
+
     @Override
     public String update(AddBillRequest billRequest) {
         Optional<Bill> bill = billRepository.findById(billRequest.getIdBill());
         if (bill.isPresent()) {
-            Optional<Users> users = userRepository.findByNameAndPhoneNumber(billRequest.getUserName(), billRequest.getPhone());
+            Optional<Users> users = userRepository.findByNameAndPhoneNumber(billRequest.getUserName(),
+                    billRequest.getPhone());
             if (users.isPresent()) {
                 billRequest.map(bill.get(), users.get());
                 billRepository.save(bill.get());
@@ -119,10 +139,15 @@ public class BillImpl implements BillService {
         return null;
     }
 
-
     @Override
-    public void delete(Bill bill) {
-        billRepository.delete(bill);
+    public boolean delete(Integer idBill) {
+        try {
+            this.billRepository.deleteById(idBill);
+            return true;
+        } catch (Exception var3) {
+            var3.getMessage();
+            return false;
+        }
     }
 
     private String generateInvoiceCode() {
@@ -139,7 +164,6 @@ public class BillImpl implements BillService {
 
         return "INV" + nextUniqueNumber;
     }
-
 
     @Override
     public Integer getFee(FeeRequest feeRequest) {
@@ -187,7 +211,7 @@ public class BillImpl implements BillService {
             body.addProperty("required_note", Invariable.REQUIRED_NOTE);
             body.addProperty("to_name", createOrder.getToName());
             body.addProperty("to_phone", createOrder.getToPhone());
-//            body.addProperty("from_ward_code", String.valueOf(Invariable.WARD_SHOP));
+            // body.addProperty("from_ward_code", String.valueOf(Invariable.WARD_SHOP));
             body.addProperty("service_type_id", 2);
             body.addProperty("height", createOrder.getAvgEdge());
             body.addProperty("length", createOrder.getAvgEdge());
@@ -264,11 +288,11 @@ public class BillImpl implements BillService {
             String fieldName = (String) itr.next();
             String fieldValue = (String) vnp_Params.get(fieldName);
             if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                //Build hash data
+                // Build hash data
                 hashData.append(fieldName);
                 hashData.append('=');
                 hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-                //Build query
+                // Build query
                 query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
                 query.append('=');
                 query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));

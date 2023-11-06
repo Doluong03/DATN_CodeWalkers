@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Entity(name="ChatLieu")
+@Entity(name = "ChatLieu")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -24,9 +24,8 @@ public class Material {
     private String name;
 
     @Column(name = "mo_ta")
-    private String description;
+    private String moTa;
+    @Column(name = "trang_thai")
+    private boolean status;
 
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
 }
