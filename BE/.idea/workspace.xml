@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89fb8e46-4ef5-470f-91b8-dd71389cb16c" name="Default Changelist" comment="">
-<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/DTO/BrandRespone.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/BrandRespone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/DTO/ColorRespone.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/ColorRespone.java" afterDir="false" />
@@ -143,9 +142,8 @@
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/partials/_navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/partials/_navbar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/route.js" afterDir="false" />
-=======
+
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
->>>>>>> b647008 (..)
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
