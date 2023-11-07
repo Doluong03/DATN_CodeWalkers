@@ -36,10 +36,10 @@ public class BillController {
     @Autowired
     StaffService staffService;
 
-    @GetMapping("/get/Staff")
-    public List<Staff> getStaff() {
-        return staffService.getList();
-    }
+//    @GetMapping("/get/Staff")
+//    public List<Staff> getStaff() {
+//        return staffService.getList();
+//    }
     @GetMapping("/get/User")
     public List<Users> getUser() {
         return userService.getList();

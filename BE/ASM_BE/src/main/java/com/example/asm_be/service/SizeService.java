@@ -10,7 +10,8 @@ import java.util.UUID;
 @Service
 public interface SizeService {
 
-    Page<Size> getAll(Integer pageNo, Integer sizePage);
+    Page<Size> getAllPage(Integer pageNo, Integer sizePage);
+    List<Size> getAll();
 
     Size getOne(Integer idSize);
 

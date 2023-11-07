@@ -6,7 +6,6 @@ app.config(function ($routeProvider, $locationProvider) {
         .when("/home", {
             templateUrl: "page/home.html",
             controller: "LayOutController"
-<<<<<<< HEAD
         })
         .when("/product-detail/:productId", {
             templateUrl: "page/detail.html",
@@ -112,46 +111,8 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
             console.log("------>ád", $scope.items.length)
         }).catch(function (error) {
             console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
-=======
->>>>>>> origin/thaovpph27640
         })
-        .when("/product-detail/:productId", {
-            templateUrl: "page/detail.html",
-            controller: "DetailController"
-        })
-        .when("/cart", {
-            templateUrl: "page/cart-item.html",
-            controller: "CartController"
-        })
-        .when("/payment", {
-            templateUrl: "page/payment.html",
-            controller: "PaymentController"
-        })
-        .when("/product", {
-            templateUrl: "page/product.html",
-            controller: "ProductController"
-        })
-})
-app.controller("LayOutController", function ($scope, $http, $routeParams, $location, $anchorScroll) {
-    // Logic của controller ở đây
-    $anchorScroll("pageContent");
-    $scope.items = [];
-    $scope.itemsBs = [];
-    $scope.currentImageSource= "";
-    $scope.loadAllPrBs = function () {
-        var url = `${host}/api/product_bs`;
-        $http.get(url).then(res => {
-            $scope.itemsBs = res.data;
-            console.log($scope.currentImageSource);
-            console.log("Success", res);
-            // Gọi loadDetail sau khi tải dữ liệu thành công
-            //  $scope.loadDetail();
-            $scope.numVisibleItems = 4;
-        }).catch(error => {
-            console.log("Error", error);
-        });
     }
-<<<<<<< HEAD
     $scope.sendDetailUpdateRequest = function (list, idCart) {
         var data = list; // Sử dụng danh sách trực tiếp
         var url = `${host}/api/updateCart`;
@@ -270,22 +231,6 @@ app.controller("LayOutController", function ($scope, $http, $routeParams, $locat
     $scope.getInfoPayment();
     // Lấy phần tử span có class "badge"
     // Đặt số muốn hiển thị
-=======
-    $scope.loadAllPrCart = function () {
-        var url = `${host}/api/cart`;
-        $http.get(url).then(function (res) {
-            $scope.items = res.data;
-            var badge = document.querySelector(".badge");
-            // Thay đổi số trên biểu tượng
-            console.log("------>ád", $scope.items.length)
-            badge.textContent = $scope.items.length;
-        }).catch(function (error) {
-            console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
-        })}
-    $scope.loadAllPrCart();
-    // Lấy phần tử span có class "badge"
- // Đặt số muốn hiển thị
->>>>>>> origin/thaovpph27640
     $scope.loadAllPrBs();
 
 });
@@ -295,7 +240,6 @@ app.filter('vndCurrency', function () {
         return input.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
     };
 });
-<<<<<<< HEAD
 app.factory('CookieService', function () {
     return {
         set: function (name, value, days) {
@@ -402,6 +346,4 @@ app.filter('findWardNameById', function () {
         return matchedProvince ? matchedProvince.WardName : 'Không tìm thấy';
     };
 });
-=======
->>>>>>> origin/thaovpph27640
 

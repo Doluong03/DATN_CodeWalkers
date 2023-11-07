@@ -30,7 +30,7 @@ import java.util.*;
 @RequestMapping({"/CodeWalkers"})
 public class NhanVienController {
 
-
+    @Autowired
     private StaffService staffService;
 
     @Autowired

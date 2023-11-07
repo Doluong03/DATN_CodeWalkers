@@ -21,7 +21,7 @@ public class SizeController {
             @RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo
             , @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         SizeRespone sizeReponse = new SizeRespone();
-        Page<Size> sizePage1 = sizeService.getAll(pageNo, sizePage);
+        Page<Size> sizePage1 = sizeService.getAllPage(pageNo, sizePage);
         sizeReponse.setSizeList(sizePage1.getContent());
         sizeReponse.setTotalPages(sizePage1.getTotalPages());
 

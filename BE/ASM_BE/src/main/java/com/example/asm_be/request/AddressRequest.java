@@ -23,13 +23,12 @@ public class AddressRequest {
     private String ward;
     @NotNull(message = "Vui lòng nhập chọn Tỉnh/Thành phố")
     private int province;
-    @NotBlank(message = "Vui lòng nhập chọn Quận/Huyện")
+    @NotNull(message = "Vui lòng nhập chọn Quận/Huyện")
     private int district;
     @NotBlank(message = "Vui lòng nhập họ tên")
     private String userName;
     @NotBlank(message = "Vui lòng nhập số điện thoại")
     private String phoneNumber;
-    @NotBlank(message = "Vui lòng nhập số điện thoại")
     private String email;
     private Integer quantity;
     public Address map(Address address, Users users ) {

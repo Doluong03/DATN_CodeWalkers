@@ -133,7 +133,6 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
             console.log("Error", error);
         });
     };
-<<<<<<< HEAD
     $scope.loadAllPrBs = function () {
         var url = `${host}/api/product_bs`;
         $http.get(url).then(res => {
@@ -148,9 +147,6 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
         });
     }
     $scope.loadAllPrBs()
-=======
-    
->>>>>>> origin/thaovpph27640
     $scope.loadSize();
     $scope.loadColor();
     $scope.loadCategory();
