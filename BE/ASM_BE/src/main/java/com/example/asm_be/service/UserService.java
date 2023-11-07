@@ -14,12 +14,14 @@ import java.util.List;
 @Service
 public interface UserService {
 
-    Page<Users> getAll(Integer pageNo,Integer sizePage);
+    Page<Users> getAll(Integer pageNo, Integer sizePage);
 
     List<Users> getList();
 
     List<Users> getAllUser();
+
     Users getOne(Integer id);
+
     Users findByCartId(Integer id);
 
     boolean save(Users users);
@@ -31,5 +33,6 @@ public interface UserService {
     Optional<Users> findByNameandPhone(String name, String phone);
 
     Optional<Users> findByUserName(String userName);
+
     Optional<Users> findByAcc(String userName, String password);
 }

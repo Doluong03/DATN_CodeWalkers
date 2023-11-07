@@ -98,6 +98,7 @@
         </div>
       </div>
 
+<<<<<<< HEAD
       <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="600">
         <div class="box">
           <img src="assets/img/sepKid.jpg" class="img-fluid" alt="">
@@ -108,6 +109,53 @@
           <div class="row">
             <P class="col text-danger ">1,099,000đ</P>
             <P class="col text-decoration-line-through">1,499,000đ</P>
+=======
+    </section><!-- End About Section -->
+    <!-- Product -->
+    <!-- ======= Values Section ======= -->
+    <section id="values" class="values" >
+      <div class="container" data-aos="fade-up">
+        <header class="section-header">
+          <p class="text-dark">BEST SELLER</p>
+        </header>
+        <div class="row ms-5 ">
+          <div class="col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in itemsBs">
+            <div class="box ">
+              <a ng-href="#/product-detail/{{pr.id}}">
+                <img ng-src="{{ 'assets/img/product/sp1/' + pr.product.listImage[0].link }}" class="img-fluid w-100 " alt="{{pr.product.listImage[0].link}}">
+                    <h5 class="align-items-left">{{pr.product.name}}</h5> 
+                <p>{{pr.category.name}}</p>
+                <p>{{pr.quantity}}</p>
+                <p class="col text-dark">{{pr.price | vndCurrency }}</p>
+              </a>
+            </div>
+        </div>
+        </div>
+        
+        </div>
+
+    </section>
+
+    <!-- ======= PROMOTIONAL Section ======= -->
+    <section id="features" class="features">
+      <div class="container" data-aos="fade-up">
+        <header class="section-header">
+          <p class="text-dark">PROMOTIONAL PRODUCTS</p>
+        </header>
+        <div class="row ms-5">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="box">
+              <img src="assets/img/dep1.jpg" class="img-fluid" alt="">
+              <h5 class="align-items-left">ClownZ Slipper Full box</h5>
+              <p>Man’s Shoes</p>
+              <p>1 colours<p>
+                <div class="row">
+                  <P class="col text-danger ">1,099,000đ</P>
+                  <P class="col text-decoration-line-through">1,499,000đ</P>
+                </div>
+             
+            </div>
+>>>>>>> origin/thaovpph27640
           </div>
         </div>
       </div>
@@ -115,4 +163,9 @@
     </div>
 
 
+<<<<<<< HEAD
 </section><!-- End PROMOTIONAL Section -->
+=======
+    </section><!-- End PROMOTIONAL Section -->
+
+>>>>>>> origin/thaovpph27640

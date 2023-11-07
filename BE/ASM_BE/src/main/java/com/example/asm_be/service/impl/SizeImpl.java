@@ -7,38 +7,70 @@ import com.example.asm_be.repositories.SizeRepository;
 import com.example.asm_be.service.AddressService;
 import com.example.asm_be.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
 public class SizeImpl implements SizeService {
     @Autowired
     private SizeRepository sizeRepository;
+
     @Override
-    public List<Size> getAll() {
-        return sizeRepository.findAll();
+    public Page<Size> getAll(Integer pageNo, Integer sizePage) {
+        Pageable sizePageable = PageRequest.of(pageNo, sizePage);
+        return sizeRepository.findAll(sizePageable);
     }
 
     @Override
-    public Size getOne(int id) {
+    public Size getOne2(int id) {
         return sizeRepository.findById(id).get();
     }
-
     @Override
-    public Size save(Size size) {
-        return sizeRepository.save(size);
+    public Size getOne(Integer idStaff) {
+        return sizeRepository.getOne(idStaff);
     }
 
     @Override
-    public Size update(Size size) {
-        return sizeRepository.save(size);
+    public boolean save(Size size) {
+        try {
+            sizeRepository.save(size);
+            return true;
+        } catch (Exception var3) {
+            var3.getMessage();
+            return false;
+        }
     }
 
     @Override
-    public void delete(Size size) {
-        sizeRepository.delete(size);
+    public boolean update(Size size) {
+        try {
+            this.sizeRepository.save(size);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean delete(Integer idSize) {
+        try {
+            this.sizeRepository.deleteById(idSize);
+            return true;
+        } catch (Exception var3) {
+            var3.getMessage();
+            return false;
+        }
+    }
+    @Override
+    public Optional<Size> findbyId(Integer idSize) {
+        return Optional.empty();
     }
 
     @Override

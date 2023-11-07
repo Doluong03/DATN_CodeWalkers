@@ -1,22 +1,25 @@
 package com.example.asm_be.service;
 
 import com.example.asm_be.entities.Size;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 @Service
 public interface SizeService {
 
-    public List<Size> getAll();
+    Page<Size> getAll(Integer pageNo, Integer sizePage);
 
-    public Size getOne(int id);
+    Size getOne(Integer idSize);
 
-    public Size save(Size size);
+    boolean save(Size size);
 
-    public Size update(Size size);
+    boolean update(Size size);
 
-    public void delete(Size size);
+    boolean delete(Integer idSize);
 
     public Size findByName(String name);
+    Optional<Size> findbyId(Integer idSize);
 }

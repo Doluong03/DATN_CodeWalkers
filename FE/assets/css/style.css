@@ -12,6 +12,9 @@
 :root {
   scroll-behavior: smooth;
 }
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans:wght@400;700&display=swap');
+
 
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:wght@400;700&display=swap');
@@ -145,6 +148,85 @@ a[data-title]:hover:after {
   padding: 20px;
   text-align: center;
 }
+/*--------------------------------------------------------------
+# Title
+--------------------------------------------------------------*/
+a[data-title]:hover:after {
+  content: attr(data-title);
+  background: #000;
+  color: #fff;
+  padding: 4px 8px;
+  position: absolute;
+  z-index: 999;
+  top: -70%;
+  left: 80%;
+  transform: translateX(-50%);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/*--------------------------------------------------------------
+# Login
+--------------------------------------------------------------*/
+    .form{
+        margin-top: 100px;
+        margin-left: 100px;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-control-user {
+        border-radius: 50px;
+        height: 50px;
+        font-size: 12px;
+        background-color: rgb(255, 255, 255);
+    }
+
+    .custom-control-label {
+        color: gray;
+    }
+
+    .btn-user {
+        border-radius: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 8px;
+        height: 44px;
+        font-size: 14px;
+    }
+    .btn-login{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        height: 44px;
+    }
+    .bg-primary-gradient {
+        background-color: rgb(78, 89, 233);
+        color: aliceblue;
+    }
+    .bg-primary-gradient:hover {
+      background-color: rgb(78, 78, 209);
+      color: aliceblue;
+  }
+    .btn-primary-fb {
+        background-color: rgb(9, 38, 202);
+        color: aliceblue;
+    }
+    .btn-primary-fb:hover {
+      background-color: rgb(9, 35, 180);
+      color: aliceblue;
+  }
+    .small{
+        text-decoration-line: none;
+        font-size: 12px;
+    }
+    .btn-user >i{
+        margin-right: 5px;
+    }
+   
 
 /*--------------------------------------------------------------
 # Sections
@@ -686,7 +768,6 @@ section {
   height: auto;
   border-radius: 5%;
 }
-
 .box img {
   height: 350px;
   margin-top: 10px;
@@ -708,13 +789,11 @@ section {
   width: 1000px;
   height: 900px;
 }
-
 .detailPrWatch img {
   width: 966px;
   height: 800px;
   background-color: #ffffff;
 }
-
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
@@ -1122,7 +1201,6 @@ b span {
   background-color: #aaaaaa;
   border-radius: 5%;
 }
-
 .prImg img {
   background-color: #aaaaaa;
   border-radius: 5%;
@@ -1306,7 +1384,6 @@ b span {
 .carousel-control-next-icon {
   color: #111;
 }
-
 .size-container {
   display: flex;
   flex-wrap: wrap;
@@ -1413,7 +1490,6 @@ b span {
   margin-right: 2px;
   margin-bottom: 10px;
 }
-
 /*--------------------------------------------------------------
 # Product
 --------------------------------------------------------------*/
@@ -1446,7 +1522,6 @@ b span {
   /* CSS cho radio button */
   /* Bạn có thể thêm các tùy chỉnh cho radio button ở đây */
 }
-
 .size2 label {
   cursor: pointer;
   /* CSS cho nhãn */
@@ -1512,7 +1587,6 @@ b span {
   font-size: 12px;
   text-align: center;
 }
-
 .span_item p select {
   border: 0;
   height: 30px;

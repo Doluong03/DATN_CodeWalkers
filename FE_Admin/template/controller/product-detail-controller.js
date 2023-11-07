@@ -36,7 +36,11 @@ window.productDetailController = function ($scope, $http, $window) {
       size:  {id:""},
       color:  {id:""},
       promotional : {id:""},
+<<<<<<< HEAD
       status :  "",
+=======
+      status :  {id:""},
+>>>>>>> origin/thaovpph27640
     }
     // phân trang start
     $scope.totalPage = 0;
@@ -259,7 +263,11 @@ window.productDetailController = function ($scope, $http, $window) {
         size:  {id:item.size.id},
         color:  {id:item.color.id},
         promotional : {id:item.promotional.id},
+<<<<<<< HEAD
         status :  item.status,
+=======
+        status :  {id:item.status.id},
+>>>>>>> origin/thaovpph27640
     };
     console.log($scope.formPdDetailUpdate)
     } else {

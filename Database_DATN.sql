@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 --create database DATN_V2_test
 =======
 create database DATN_V2
 >>>>>>> origin/hiepbhph27531
+=======
+--create database DATN_V2
+>>>>>>> origin/thaovpph27640
 
 
 CREATE TABLE SanPham (
@@ -252,10 +256,13 @@ CREATE TABLE CaLam (
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 alter table VaiTroNhanVien add FOREIGN KEY(nhan_vien_id) references nhanvien(id_nhan_vien) 
 alter table VaiTroNhanVien add FOREIGN KEY(vai_tro_id) references VaiTro(id)
 >>>>>>> origin/hiepbhph27531
+=======
+>>>>>>> origin/thaovpph27640
 
 -----Chi tiet san pham-----
 ALTER TABLE ChiTietSanPham ADD FOREIGN KEY (san_pham_id) REFERENCES SanPham (id_san_pham);
@@ -303,6 +310,10 @@ ALTER TABLE DiaChi ADD FOREIGN KEY (khach_hang_id) REFERENCES KhachHang (id_khac
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/hiepbhph27531
+=======
+
+>>>>>>> origin/thaovpph27640

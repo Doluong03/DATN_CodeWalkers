@@ -26,9 +26,12 @@
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<<<<<<< HEAD
   <link href="assets/scss/loadingCss.css" rel="stylesheet">
   <link href="assets/scss/button.css" rel="stylesheet">
 
+=======
+>>>>>>> origin/thaovpph27640
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
@@ -51,6 +54,7 @@
   <script src="assets/js/login.js"></script>
 </head>
 
+<<<<<<< HEAD
 <body ng-app="app" ng-controller="LayOutController" id="pageContent" ng-class="{ 'blur-background': showLoading }">
   <!-- Nội dung của trang -->
 
@@ -58,6 +62,15 @@
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top">
     <div class=" container-fluid container-xxl w-100 d-flex align-items-center ">
+=======
+<body ng-app="app" ng-controller="LayOutController" id="pageContent">
+  <!-- Nội dung của trang -->
+  
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center ">
+>>>>>>> origin/thaovpph27640
 
       <a href="#home" class="logo d-flex align-items-center" style="margin-top: -30px;margin-left: -29px;">
         <img src="assets/img/logo.png" alt="">
@@ -97,6 +110,7 @@
           </li>
 
           <li><a class="nav-link scrollto text-decoration-none text-dark " href="#contact">Contact</a></li>
+<<<<<<< HEAD
           <form class="d-flex align-items-left ms-4 col-lg-3 "><input placeholder="Search" type="search" name="name"
               ng-model="name" class="form-control rounded-4" ng-keypress="onKeyPress($event)"
               class="form-control rounded-4 "></form>
@@ -105,6 +119,12 @@
           <li><a class="text-decoration-none text-dark" href="#cart" data-title="Giỏ hàng"><i
                 class="bi bi-cart3 fs-5"></i> <span class="badge border border-success"></span></a></li>
           <li class="dropdown text-dark" ng-show="showIcon"><a class="text-decoration-none text-dark" href="#about"
+=======
+          <form class="d-flex align-items-left ms-4 col-lg-4 "><input placeholder="Search"  type="search" name="name"
+              ng-model="name" class="form-control rounded-4" ng-keypress="onKeyPress($event)"
+              class="form-control rounded-4 "></form>
+          <li class="dropdown text-dark"><a class="text-decoration-none text-dark" href="#about"
+>>>>>>> origin/thaovpph27640
               data-title="Tài khoản"><i class="bi bi-person fs-4"></i></a>
             <ul class="userDropdown">
               <li><a href="#" class="d-block "> <i class=" me-2 fs-5 text-end bi bi-person-fill"></i> Trang cá nhân </a>
@@ -112,6 +132,7 @@
               <li>
                 <hr>
               </li>
+<<<<<<< HEAD
               <li><button ng-click="logOut()" class="d-block btn btn ms-3 "> <i
                     class=" me-2 fs-5 text-end bi bi-box-arrow-right"></i>Đăng
                   xuất</button></li>
@@ -120,6 +141,16 @@
           <li class=" col-3 ms-2 row w-25" ng-show="!showIcon">
             <a href="/FE/login.html" class=" btn btn ms-3 col  border-end">Đăng nhập</a> 
             <button ng-click="logOut()" class=" btn btn ms-0 col ">Đăng ký</button></li>
+=======
+              <li><a href="login.html" class="d-block "> <i class=" me-2 fs-5 text-end bi bi-box-arrow-right"></i>Đăng
+                  xuất</a></li>
+            </ul>
+          </li>
+          <li><a class="text-decoration-none text-dark" href="#about" data-title="Yêu thích"><i
+                class="bi bi-heart fs-5"></i></a></li>
+          <li><a class="text-decoration-none text-dark" href="#cart" data-title="Giỏ hàng"><i
+                class="bi bi-cart3 fs-5"></i> <span class="badge border border-success"></span></a></li>
+>>>>>>> origin/thaovpph27640
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -162,7 +193,11 @@
 
   <!-- Main -->
   <main id="main">
+<<<<<<< HEAD
     <div ng-view ng-class="{ 'blur-background': showLoading }"></div>
+=======
+    <div ng-view ></div>
+>>>>>>> origin/thaovpph27640
     <!-- Test -->
 
     <!-- End Test  -->
@@ -1101,6 +1136,7 @@
   <script src="assets/js/detail.js"></script>
   <script src="assets/js/cart.js"></script>
   <script src="assets/js/payment.js"></script>
+<<<<<<< HEAD
   <script src="assets/js/order.js"></script>
   <script src="assets/js/login.js"></script>
   <script>
@@ -1165,6 +1201,8 @@
   <div class="loading-container" ng-show="showLoading">
     <div class="spinner"></div>
   </div>
+=======
+>>>>>>> origin/thaovpph27640
 </body>
 
 </html>

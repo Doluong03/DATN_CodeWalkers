@@ -144,6 +144,17 @@
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/route.js" afterDir="false" />
 
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Size.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Size.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Size.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Size.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/image-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/image-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/size-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/size-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/user-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/user-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/image.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/image.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/nhan-vien.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/size.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/size.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/staff.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/staff.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/user.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,6 +202,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../SUM2023/SOF3021/De4_KhachHang" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -200,6 +212,15 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../backup/DATN_CodeWalkers/BE" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.asm_be.response" />
+      <recent name="com.example.asm_be.repositories" />
+      <recent name="com.example.asm_be.controller" />
+      <recent name="com.example.asm_be.service.impl" />
+      <recent name="com.example.asm_be.service" />
+      <recent name="com.example.asm_be.security.user" />
+      <recent name="com.example.asm_be.DTO" />
+    </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.example.asm_be.entities" />
     </key>
@@ -389,6 +410,22 @@
       <workItem from="1699256750029" duration="4052000" />
       <workItem from="1699301098561" duration="12000" />
       <workItem from="1699313098849" duration="647000" />
+      <workItem from="1698420021660" duration="52000" />
+      <workItem from="1698420094528" duration="3915000" />
+      <workItem from="1698485399206" duration="190000" />
+      <workItem from="1698485651096" duration="11123000" />
+      <workItem from="1698645301727" duration="3271000" />
+      <workItem from="1698730614467" duration="17027000" />
+      <workItem from="1698932594708" duration="1972000" />
+      <workItem from="1698978050696" duration="625000" />
+      <workItem from="1698992528905" duration="20000" />
+      <workItem from="1698994955017" duration="1379000" />
+      <workItem from="1699021612031" duration="2432000" />
+      <workItem from="1699066012011" duration="2367000" />
+      <workItem from="1699143747685" duration="592000" />
+      <workItem from="1699170258440" duration="3309000" />
+      <workItem from="1699248450557" duration="624000" />
+      <workItem from="1699277333383" duration="1216000" />
     </task>
     <servers />
   </component>
