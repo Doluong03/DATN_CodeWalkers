@@ -34,28 +34,18 @@
         <header class="section-header">
           <p class="text-dark">BEST SELLER</p>
         </header>
-        <div class="row ms-5" ng-controller="LayOutController">
-          <div class="card text-center col-3 px-5 border-0" ng-repeat="product in listPr | filter: {name:searchText}">
-            <a href="#detail" class="prod-img bg-secondary bg-opacity-25   h-100">
-                <img onclick="changeImage(this) "src="Image/{{product.image.main}}.jpg" alt="" class=" img-fluid  mt-3  h-75  "></a>
-
-            <div class="mt-2 mb-2">
-                <a href="#detail" class="text-decoration-none text-dark">{{product.name}}</a>
-
-            </div>
-            <div class="fw-bold mb-3">
-                {{product.price | currency}}
-            </div>
-        </div>
-
-          <!-- <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in listPr">
-            <div class="box">
-                <img ng-src="assets/img/product/{{pr.image.main}}.jpg" class="img-fluid" alt="">
-                <h5 class="align-items-left">{{pr.product.name}}</h5> 
+        <div class="row ms-5 ">
+          <div class="col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in itemsBs">
+            <div class="box ">
+              <a ng-href="#/product-detail/{{pr.id}}">
+                <img ng-src="{{ 'assets/img/product/sp1/' + pr.product.listImage[0].link }}" class="img-fluid w-100 " alt="{{pr.product.listImage[0].link}}">
+                    <h5 class="align-items-left">{{pr.product.name}}</h5> 
                 <p>{{pr.category.name}}</p>
                 <p>{{pr.quantity}}</p>
-                <p class="col text-dark">{{pr.price}}</p>
-            </div> -->
+                <p class="col text-dark">{{pr.price | vndCurrency }}</p>
+              </a>
+            </div>
+        </div>
         </div>
         
         </div>
@@ -113,3 +103,4 @@
 
 
     </section><!-- End PROMOTIONAL Section -->
+

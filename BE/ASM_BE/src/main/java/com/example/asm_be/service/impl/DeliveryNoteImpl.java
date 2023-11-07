@@ -22,7 +22,7 @@ public class DeliveryNoteImpl implements DeliveryNoteService {
     }
 
     @Override
-    public DeliveryNote getOne(UUID id) {
+    public DeliveryNote getOne(int id) {
         return deliveryNoteRepository.findById(id).get();
     }
 

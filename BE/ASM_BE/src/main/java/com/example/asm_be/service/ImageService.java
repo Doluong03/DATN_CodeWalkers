@@ -1,20 +1,22 @@
 package com.example.asm_be.service;
 
 import com.example.asm_be.entities.Image;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
+@Service
 public interface ImageService {
 
-    public List<Image> getAll();
+    Page<Image> getAll(Integer pageNo, Integer sizePage);
 
-    public Image getOne(UUID id);
+    Image getOne(Integer idImage);
 
-    public Image save(Image image);
+    boolean save(Image image);
 
-    public Image update(Image image);
+    boolean update(Image image);
 
-    public void delete(Image image);
+    boolean delete(Integer idImage);
 
 }

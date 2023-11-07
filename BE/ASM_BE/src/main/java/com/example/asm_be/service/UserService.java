@@ -1,20 +1,19 @@
 package com.example.asm_be.service;
 
 import com.example.asm_be.entities.Users;
-
-import java.util.List;
-import java.util.UUID;
-
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+@Service
 public interface UserService {
 
-    List<Users> getAll();
+    Page<Users> getAll(Integer pageNo,Integer sizePage);
 
-    Users getOne(UUID id);
+    Users getOne(Integer id);
 
     boolean save(Users users);
 
-    boolean update(UUID idUsers, Users users);
+    boolean update(Users users);
 
-    boolean delete(UUID idUsers);
+    boolean delete(Integer idUsers);
 
 }
