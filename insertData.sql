@@ -20,10 +20,14 @@ VALUES
  INSERT INTO VaiTro(ten_vai_tro)
  VALUES
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/thaovpph27640
  (N'Admin'),(N'User');
 
  --Thêm bản ghi bảng "TaiKhoan"
  INSERT INTO TaiKhoan(user_name,password,vai_tro_id,trang_thai_id)
+<<<<<<< HEAD
 =======
  (N'ROLE_ADMIN'),(N'ROLE_EMPLOYEE');
 
@@ -33,6 +37,8 @@ VALUES
  --Thêm bản ghi bảng "TaiKhoan"
  INSERT INTO TaiKhoan(user_name,password,vai_tro_id,trang_thai )
 >>>>>>> origin/hiepbhph27531
+=======
+>>>>>>> origin/thaovpph27640
  VALUES
   ('admin',N'1',1,1),
   ('user1',N'1',2,1),
@@ -47,10 +53,14 @@ VALUES
 
 -- Thêm bản ghi liên quan đến sản phẩm giày vào bảng "PhanLoai"
 <<<<<<< HEAD
+<<<<<<< HEAD
 INSERT INTO PhanLoai (ten_phan_loai, trang_thai_id)
 =======
 INSERT INTO PhanLoai (ten_phan_loai, trang_thai )
 >>>>>>> origin/hiepbhph27531
+=======
+INSERT INTO PhanLoai (ten_phan_loai, trang_thai_id)
+>>>>>>> origin/thaovpph27640
 VALUES
   (N'Giày thể thao', 1),
   (N'Giày chạy', 1),
@@ -64,6 +74,7 @@ VALUES
   (N'Giày trẻ em', 1);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 -- Thêm bản ghi về các thương hiệu giày vào bảng "ThuongHieu"
 INSERT INTO ThuongHieu (ten_thuong_hieu, mo_ta, trang_thai_id)
@@ -72,6 +83,11 @@ INSERT INTO ThuongHieu (ten_thuong_hieu, mo_ta, trang_thai_id)
 -- Thêm bản ghi về các thương hiệu giày vào bảng "ThuongHieu"
 INSERT INTO ThuongHieu (ten_thuong_hieu, mo_ta, trang_thai )
 >>>>>>> origin/hiepbhph27531
+=======
+
+-- Thêm bản ghi về các thương hiệu giày vào bảng "ThuongHieu"
+INSERT INTO ThuongHieu (ten_thuong_hieu, mo_ta, trang_thai_id)
+>>>>>>> origin/thaovpph27640
 VALUES
   (N'Adidas', N'Thương hiệu giày thể thao Adidas', 1),
   (N'Nike', N'Thương hiệu giày thể thao Nike', 1),
@@ -87,6 +103,9 @@ VALUES
 
   -- Thêm bản ghi liên quan đến khách hàng vào bảng "KhachHang"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/thaovpph27640
 INSERT INTO KhachHang ( ten_khach_hang, email, so_dien_thoai, ngay_sinh, gioi_tinh, ngay_tao, ngay_sua, trang_thai_id, id_tai_khoan)
 VALUES
   ( N'Nguyễn Văn A', N'nguyenvana@example.com', N'0123456789',   N'1990-01-15', 1, N'2023-09-20', N'2023-09-21', 1,1),
@@ -103,6 +122,7 @@ VALUES
 
   -- Thêm bản ghi liên quan đến sản phẩm giày vào bảng "DanhGia"
 INSERT INTO DanhGia (danh_gia, noi_dung, ngay_tao, ngay_sua, chi_tiet_san_pham_id, khach_hang_id, trang_thai_id)
+<<<<<<< HEAD
 =======
 INSERT INTO KhachHang ( ten_khach_hang, email, so_dien_thoai, ngay_sinh, gioi_tinh, ngay_tao, ngay_sua, trang_thai )
 VALUES
@@ -121,6 +141,8 @@ VALUES
   -- Thêm bản ghi liên quan đến sản phẩm giày vào bảng "DanhGia"
 INSERT INTO DanhGia (danh_gia, noi_dung, ngay_tao, ngay_sua, chi_tiet_san_pham_id, khach_hang_id, trang_thai )
 >>>>>>> origin/hiepbhph27531
+=======
+>>>>>>> origin/thaovpph27640
 VALUES
   (5, N'Sản phẩm rất tốt', N'2023-09-20', N'2023-09-21', 1, 1, 1),
   (4, N'Giày chạy rất êm', N'2023-09-19', N'2023-09-20', 2, 2, 1),
@@ -134,6 +156,7 @@ VALUES
   (4, N'Giày đội mưa chất lượng', N'2023-09-11', N'2023-09-12', 10, 10, 1);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 -- Thêm bản ghi giày vào bảng "SanPham"
 INSERT INTO SanPham (ma_san_pham, ten_san_pham, anh_chinh, mo_ta, phan_loai_id, thuong_hieu_id, trang_thai_id)
@@ -144,6 +167,11 @@ INSERT INTO SanPham (ma_san_pham, ten_san_pham, anh_chinh, mo_ta, phan_loai_id, 
 -- Thêm bản ghi giày vào bảng "SanPham"
 INSERT INTO SanPham (ma_san_pham, ten_san_pham, anh_chinh, mo_ta, phan_loai_id, thuong_hieu_id, trang_thai )
 >>>>>>> origin/hiepbhph27531
+=======
+
+-- Thêm bản ghi giày vào bảng "SanPham"
+INSERT INTO SanPham (ma_san_pham, ten_san_pham, anh_chinh, mo_ta, phan_loai_id, thuong_hieu_id, trang_thai_id)
+>>>>>>> origin/thaovpph27640
 VALUES
   (N'SP001', N'Giày thể thao Adidas', N'adidas.jpg', N'Đôi giày thể thao Adidas chất lượng cao', 1, 1, 1),
   (N'SP002', N'Giày thể thao Nike', N'nike.jpg', N'Đôi giày thể thao Nike phong cách', 1, 2,  1),
@@ -155,16 +183,22 @@ VALUES
   (N'SP008', N'Giày thể thao Asics', N'asics.jpg', N'Giày thể thao Asics cho thể thao', 1, 8,  1),
   (N'SP009', N'Giày đội mưa Hunter', N'hunter.jpg', N'Giày đội mưa Hunter chất lượng', 6, 9,  1),
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/thaovpph27640
   (N'SP010', N'Giày công sở Timberland', N'timberland.jpg', N'Giày công sở Timberland đẳng cấp', 7, 10, 1);
 
   -- Thêm bản ghi về chất liệu sản phẩm giày vào bảng "ChatLieu"
 INSERT INTO ChatLieu (ten_chat_lieu, mo_ta, trang_thai_id)
+<<<<<<< HEAD
 =======
   (N'SP010', N'Giày công sở Timberland', N'timberland.jpg', N'Giày công sở Timberland đẳng cấp', 7, 13, 1);
 
   -- Thêm bản ghi về chất liệu sản phẩm giày vào bảng "ChatLieu"
 INSERT INTO ChatLieu (ten_chat_lieu, mo_ta, trang_thai )
 >>>>>>> origin/hiepbhph27531
+=======
+>>>>>>> origin/thaovpph27640
 VALUES
   (N'Vải', N'Chất liệu vải dùng cho giày', 1),
   (N'Da tổng hợp', N'Chất liệu da tổng hợp cho giày', 1),
@@ -179,10 +213,14 @@ VALUES
 
   -- Thêm bản ghi về màu sắc sản phẩm giày vào bảng "MauSac"
 <<<<<<< HEAD
+<<<<<<< HEAD
 INSERT INTO MauSac (ten_mau_sac, trang_thai_id)
 =======
 INSERT INTO MauSac (ten_mau_sac, trang_thai )
 >>>>>>> origin/hiepbhph27531
+=======
+INSERT INTO MauSac (ten_mau_sac, trang_thai_id)
+>>>>>>> origin/thaovpph27640
 VALUES
   (N'Đen', 1),
   (N'Trắng', 1),
@@ -195,6 +233,7 @@ VALUES
   (N'Nâu', 1),
   (N'Vàng', 1);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   -- Thêm bản ghi về kích cỡ sản phẩm giày vào bảng "KichCo"
 INSERT INTO KichCo (ten_kich_co, mo_ta, trang_thai_id)
@@ -203,6 +242,11 @@ INSERT INTO KichCo (ten_kich_co, mo_ta, trang_thai_id)
   -- Thêm bản ghi về kích cỡ sản phẩm giày vào bảng "KichCo"
 INSERT INTO KichCo (ten_kich_co, mo_ta, trang_thai )
 >>>>>>> origin/hiepbhph27531
+=======
+
+  -- Thêm bản ghi về kích cỡ sản phẩm giày vào bảng "KichCo"
+INSERT INTO KichCo (ten_kich_co, mo_ta, trang_thai_id)
+>>>>>>> origin/thaovpph27640
 VALUES
   (N'Size 36', N'Kích cỡ 36', 1),
   (N'Size 37', N'Kích cỡ 37', 1),
@@ -232,10 +276,14 @@ VALUES
 
   -- Thêm bản ghi về khuyến mãi sản phẩm giày vào bảng "KhuyenMai"
 <<<<<<< HEAD
+<<<<<<< HEAD
 INSERT INTO KhuyenMai (ma_khuyen_mai, ten_khuyen_mai, mo_ta_khuyen_mai, gia_tri, ngay_bat_dau, ngay_ket_thuc, trang_thai_id)
 =======
 INSERT INTO KhuyenMai (ma_khuyen_mai, ten_khuyen_mai, mo_ta_khuyen_mai, gia_tri, ngay_bat_dau, ngay_ket_thuc, trang_thai )
 >>>>>>> origin/hiepbhph27531
+=======
+INSERT INTO KhuyenMai (ma_khuyen_mai, ten_khuyen_mai, mo_ta_khuyen_mai, gia_tri, ngay_bat_dau, ngay_ket_thuc, trang_thai_id)
+>>>>>>> origin/thaovpph27640
 VALUES
   (N'KM001', N'Khuyến mãi 1', N'Giảm giá 10%', 10, N'2023-09-10', N'2023-09-20', 1),
   (N'KM002', N'Khuyến mãi 2', N'Giảm giá 20%', 20, N'2023-09-15', N'2023-09-25', 1),
@@ -250,10 +298,14 @@ VALUES
 
   -- Thêm bản ghi về chi tiết sản phẩm giày vào bảng "ChiTietSanPham"
 <<<<<<< HEAD
+<<<<<<< HEAD
 INSERT INTO ChiTietSanPham (ma_chi_tiet_san_pham, don_gia, so_luong_ton, san_pham_id, kich_co_id, mau_sac_id, chat_lieu_id, trang_thai_id, khuyen_mai_id)
 =======
 INSERT INTO ChiTietSanPham (ma_chi_tiet_san_pham, don_gia, so_luong_ton, san_pham_id, kich_co_id, mau_sac_id, chat_lieu_id, trang_thai , khuyen_mai_id)
 >>>>>>> origin/hiepbhph27531
+=======
+INSERT INTO ChiTietSanPham (ma_chi_tiet_san_pham, don_gia, so_luong_ton, san_pham_id, kich_co_id, mau_sac_id, chat_lieu_id, trang_thai_id, khuyen_mai_id)
+>>>>>>> origin/thaovpph27640
 VALUES
   (N'SP001-001', 100, 50, 1, 1, 1, 1, 1, 1),
   (N'SP001-002', 120, 45, 1, 2, 2, 2, 1, 2),
@@ -268,6 +320,9 @@ VALUES
 
   -- Thêm bản ghi về nhân viên vào bảng "NhanVien"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/thaovpph27640
 INSERT INTO NhanVien (ho_nhan_vien, ten_nhan_vien, ngay_sinh, gioi_tinh, dia_chi, email, so_dien_thoai, can_cuoc, mat_khau, trang_thai_id,id_tai_khoan)
 VALUES
   (N'Nguyễn', N'Văn A', N'1990-01-15', 1, N'123 Đường ABC, Quận 1, TP.HCM', N'nva@example.com', N'0901234567', N'123456789', N'password1', 1,1),
@@ -285,6 +340,7 @@ VALUES
 
   -- Thêm bản ghi về hóa đơn vào bảng "HoaDon"
 INSERT INTO HoaDon (ma_hoa_don, ngay_lap, ghi_chu, khach_hang_id, nguoi_lap_id, trang_thai_id)
+<<<<<<< HEAD
 =======
 INSERT INTO NhanVien (ho_nhan_vien, ten_nhan_vien, ngay_sinh, gioi_tinh, dia_chi, email, so_dien_thoai, can_cuoc, password, trang_thai )
 VALUES
@@ -308,6 +364,8 @@ VALUES
   -- Thêm bản ghi về hóa đơn vào bảng "HoaDon"
 INSERT INTO HoaDon (ma_hoa_don, ngay_lap, ghi_chu, khach_hang_id, nguoi_lap_id, trang_thai )
 >>>>>>> origin/hiepbhph27531
+=======
+>>>>>>> origin/thaovpph27640
 VALUES
   (N'HD001', N'2023-09-01', N'Ghi chú hóa đơn 1', 1, 1, 1),
   (N'HD002', N'2023-09-02', N'Ghi chú hóa đơn 2', 2, 2, 1),
@@ -322,10 +380,14 @@ VALUES
 
   -- Thêm bản ghi về chi tiết hóa đơn vào bảng "HoaDonChiTiet"
 <<<<<<< HEAD
+<<<<<<< HEAD
 INSERT INTO HoaDonChiTiet (so_luong, don_gia, mo_ta, trang_thai_id, hoa_don_id, chi_tiet_san_pham_id)
 =======
 INSERT INTO HoaDonChiTiet (so_luong, don_gia, mo_ta, trang_thai , hoa_don_id, chi_tiet_san_pham_id)
 >>>>>>> origin/hiepbhph27531
+=======
+INSERT INTO HoaDonChiTiet (so_luong, don_gia, mo_ta, trang_thai_id, hoa_don_id, chi_tiet_san_pham_id)
+>>>>>>> origin/thaovpph27640
 VALUES
   (5, 100, N'Mô tả chi tiết 1', 1, 1, 1),
   (3, 120, N'Mô tả chi tiết 2', 1, 2, 2),
@@ -340,10 +402,14 @@ VALUES
 
   -- Thêm bản ghi về địa chỉ vào bảng "DiaChi"
 <<<<<<< HEAD
+<<<<<<< HEAD
 INSERT INTO DiaChi (dia_chi_chi_tiet, phuong_xa_id, quan_huyen_id, thanh_pho_id, trang_thai_id)
 =======
 INSERT INTO DiaChi (dia_chi_chi_tiet, phuong_xa_id, quan_huyen_id, thanh_pho_id, trang_thai )
 >>>>>>> origin/hiepbhph27531
+=======
+INSERT INTO DiaChi (dia_chi_chi_tiet, phuong_xa_id, quan_huyen_id, thanh_pho_id, trang_thai_id)
+>>>>>>> origin/thaovpph27640
 VALUES
   (N'123 Đường ABC, Phường 1, Quận 1, TP.HCM', 1, 1, 1, 1),
   (N'456 Đường XYZ, Phường 2, Quận 2, TP.HCM', 2, 2, 1, 2),

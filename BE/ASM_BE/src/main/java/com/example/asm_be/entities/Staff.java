@@ -23,7 +23,8 @@ public class Staff implements Serializable {
     @Column(name = "id_nhan_vien")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @Column(name = "ho_nhan_vien")
+    private String ho;
     @Column(name = "ten_nhan_vien")
     private String name;
 

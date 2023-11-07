@@ -3,6 +3,7 @@ import com.example.asm_be.entities.*;
 import com.example.asm_be.request.CreateOrder;
 import com.example.asm_be.request.FeeRequest;
 import com.example.asm_be.request.AddBillRequest;
+import com.example.asm_be.request.Invariable;
 import com.example.asm_be.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,10 +36,10 @@ public class BillController {
     @Autowired
     StaffService staffService;
 
-    @GetMapping("/get/Staff")
-    public List<Staff> getStaff() {
-        return staffService.getList();
-    }
+//    @GetMapping("/get/Staff")
+//    public List<Staff> getStaff() {
+//        return staffService.getList();
+//    }
     @GetMapping("/get/User")
     public List<Users> getUser() {
         return userService.getList();

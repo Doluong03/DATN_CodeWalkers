@@ -1,6 +1,7 @@
 package com.example.asm_be.service;
 
 import com.example.asm_be.entities.Staff;
+import com.example.asm_be.payload.request.SignUpRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,8 @@ import java.util.Optional;
 @Service
 public interface StaffService {
 
-    Page<Staff> getAll(Integer pageNo);
+    Page<Staff> getAll(Integer pageNo, Integer sizePage);
 
-    List<Staff> getList();
     Staff getOne(Integer idStaff);
 
     boolean save(Staff staff);
@@ -26,4 +26,6 @@ public interface StaffService {
     boolean existsByUserName(String userName);
 
     boolean existsByEmail(String email);
+
+    boolean saveStaff(SignUpRequest signUpRequest);
 }

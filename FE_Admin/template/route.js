@@ -82,7 +82,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })   
     .when("/nhan-vien", {
-      templateUrl: "/FE_Admin/template/nhan-vien.html",
+      templateUrl: "/FE_Admin/template/staff.html",
       controller : StaffController,
       resolve: {
         checkData: function(DataService) {
@@ -145,8 +145,17 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })  
     .when("/color", {
-      templateUrl: "/template/color.html",
+      templateUrl: "/FE_Admin/template/color.html",
       controller :ColorController,
+      resolve: {
+        checkData: function(DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })  
+    .when("/kich-thuoc", {
+      templateUrl: "/FE_Admin/template/size.html",
+      controller : SizeController,
       resolve: {
         checkData: function(DataService) {
           return DataService.fetchData();
@@ -174,6 +183,15 @@ myApp.config(function ($routeProvider, $locationProvider) {
     .when("/order", {
       templateUrl: "/FE_Admin/template/order_manage.html",
       controller : orderManage,
+      resolve: {
+        checkData: function(DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })  
+    .when("/hinh-anh", {
+      templateUrl: "/FE_Admin/template/image.html",
+      controller : ImageController,
       resolve: {
         checkData: function(DataService) {
           return DataService.fetchData();
