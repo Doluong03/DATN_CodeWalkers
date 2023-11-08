@@ -31,6 +31,9 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: "page/order.html",
             controller: "OrderController"
         })
+        .otherwise({
+            redirectTo: "/home",
+          });
 
 })
 app.controller("LayOutController", function ($scope, $http, $window, $cookies, $anchorScroll) {

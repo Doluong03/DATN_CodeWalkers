@@ -147,11 +147,9 @@
       const data = await response.json();
 
       // Giả sử data là chuỗi Base64 bạn đã lấy được
-      const imageData = "/template/images/" + data.image;
+      const imageData = "/FE_Admin/template/images/staff/" + data.image;
       // Thay đổi src của thẻ img
       document.getElementById('profileImage').src = imageData;
-
-      console.log(data);
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
     }
