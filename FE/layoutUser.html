@@ -11,7 +11,7 @@
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="assets/img/logo.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link
@@ -25,33 +25,47 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <link href="assets/scss/loadingCss.css" rel="stylesheet">
+  <link href="assets/scss/button.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: FlexStart
-  * Updated: Jul 27 2023 with Bootstrap v5.3.1
-  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  <!-- <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css"> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-cookies.js"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+  <script src="assets/js/layOut.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/product.js"></script>
+  <script src="assets/js/detail.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/payment.js"></script>
+  <script src="assets/js/order.js"></script>
+  <script src="assets/js/login.js"></script>
 </head>
 
-<body ng-app="app">
+<body ng-app="app" ng-controller="LayOutController" id="pageContent" ng-class="{ 'blur-background': showLoading }">
+  <!-- Nội dung của trang -->
+
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top">
-    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+    <div class=" container-fluid container-xxl w-100 d-flex align-items-center ">
 
-      <a href="#home" class="logo d-flex align-items-center">
+      <a href="#home" class="logo d-flex align-items-center" style="margin-top: -30px;margin-left: -29px;">
         <img src="assets/img/logo.png" alt="">
-        <!-- <span>CodeWalkers</span> -->
       </a>
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li class="dropdown scrollto active"><a href="#"><span class="text-decoration-none text-dark">News &
+          <li class="dropdown scrollto active"><a href="#product"><span class="text-decoration-none text-dark">News &
                 Featured</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
@@ -69,12 +83,12 @@
               <li><a href="#">Drop Down 1</a></li>
             </ul>
           </li>
-          <li class="dropdown text-dark "><a href="#"><span class="text-decoration-none text-dark">Kids</span> <i
+          <!-- <li class="dropdown text-dark "><a href="#"><span class="text-decoration-none text-dark">Kids</span> <i
                 class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
             </ul>
-          </li>
+          </li> -->
           <li class="dropdown text-dark "><a href="#"><span class="text-decoration-none text-dark">Sale</span> <i
                 class="bi bi-chevron-down"></i></a>
             <ul>
@@ -83,18 +97,36 @@
           </li>
 
           <li><a class="nav-link scrollto text-decoration-none text-dark " href="#contact">Contact</a></li>
-          <form class="d-flex align-items-left ms-4 col-lg-4  "><input placeholder="Search" type="search"
+          <form class="d-flex align-items-left ms-4 col-lg-3 "><input placeholder="Search" type="search" name="name"
+              ng-model="name" class="form-control rounded-4" ng-keypress="onKeyPress($event)"
               class="form-control rounded-4 "></form>
-
-          <li><a class="text-decoration-none text-dark" href="#about"><i class="bi bi-person fs-3"></i></a></li>
-          <li><a class="text-decoration-none text-dark" href="#about"><i class="bi bi-heart fs-5"></i></a></li>
-          <li><a class="text-decoration-none text-dark" href="#about"><i class="bi bi-cart3 fs-5"></i></a></li>
+          <li><a class="text-decoration-none text-dark" href="#about" data-title="Yêu thích"><i
+                class="bi bi-heart fs-5"></i></a></li>
+          <li><a class="text-decoration-none text-dark" href="#cart" data-title="Giỏ hàng"><i
+                class="bi bi-cart3 fs-5"></i> <span class="badge border border-success"></span></a></li>
+          <li class="dropdown text-dark" ng-show="showIcon"><a class="text-decoration-none text-dark" href="#about"
+              data-title="Tài khoản"><i class="bi bi-person fs-4"></i></a>
+            <ul class="userDropdown">
+              <li><a href="#" class="d-block "> <i class=" me-2 fs-5 text-end bi bi-person-fill"></i> Trang cá nhân </a>
+              </li>
+              <li>
+                <hr>
+              </li>
+              <li><button ng-click="logOut()" class="d-block btn btn ms-3 "> <i
+                    class=" me-2 fs-5 text-end bi bi-box-arrow-right"></i>Đăng
+                  xuất</button></li>
+            </ul>
+          </li>
+          <li class=" col-3 ms-2 row w-25" ng-show="!showIcon">
+            <a href="/FE/login.html" class=" btn btn ms-3 col  border-end">Đăng nhập</a> 
+            <button ng-click="logOut()" class=" btn btn ms-0 col ">Đăng ký</button></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
 
     </div>
-  </header><!-- End Header -->
+  </header>
+  <!-- End Header -->
 
   <!-- banner  -->
   <!-- ======= Hero Section ======= -->
@@ -102,13 +134,16 @@
     <div id="carouselExampleInterval" class="carousel slide offset-1 ps-5 pt-5 " data-bs-ride="carousel">
       <div class="carousel-inner ">
         <div class="carousel-item active " data-bs-interval="10000">
-          <img src="assets/img/bn.jpg" class="d-block " alt="...">
+          <img src="assets/img/bn9.jpg" class="d-block " alt="...">
         </div>
         <div class="carousel-item" data-bs-interval="2000">
-          <img src="assets/img/banner2.png" class="d-block   " alt="...">
+          <img src="assets/img/bn5.jpg" class="d-block   " alt="...">
         </div>
         <div class="carousel-item">
-          <img src="..." class="d-block" alt="...">
+          <img src="assets/img/bn3.jpg" class="d-block" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/img/bn8.jpg" class="d-block" alt="...">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
@@ -127,12 +162,13 @@
 
   <!-- Main -->
   <main id="main">
-    <div ng-view></div>
+    <div ng-view ng-class="{ 'blur-background': showLoading }"></div>
+    <!-- Test -->
+
+    <!-- End Test  -->
     <!-- ======= Services Section ======= -->
     <section id="services" class="services">
-
       <div class="container" data-aos="fade-up">
-
         <header class="section-header">
           <h2>Services</h2>
           <p>Veritatis et dolores facere numquam et praesentium</p>
@@ -149,7 +185,6 @@
               <a href="#" class="read-more"><span>Read More</span> <i class="bi bi-arrow-right"></i></a>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
             <div class="service-box orange">
               <i class="ri-discuss-line icon"></i>
@@ -208,7 +243,6 @@
 
     <!-- ======= Pricing Section ======= -->
     <section id="pricing" class="pricing">
-
       <div class="container" data-aos="fade-up">
 
         <header class="section-header">
@@ -1053,16 +1087,84 @@
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
-
-
-
   <script src="js/jquery.min.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/angular.min.js"></script>
   <script src="js/angular-route.js"></script>
-  <!-- Template Main JS File -->
 
-  <script src="assets/js/main.js"></script>
+
+
+  <!-- Template Main JS File -->
   <script src="assets/js/layOut.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/product.js"></script>
+  <script src="assets/js/detail.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/payment.js"></script>
+  <script src="assets/js/order.js"></script>
+  <script src="assets/js/login.js"></script>
+  <script>
+
+    //   var data =  localStorage.getItem('userData');
+    //   var accessToken = JSON.parse(data);
+
+    // function logout() {
+    //     // Call the server-side logout endpoint
+    //     fetch('http://localhost:8080/api/auth/logout', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Authorization': 'Bearer ' + getAccessToken(),
+    //             'Content-Type': 'application/json'
+    //         },
+    //     })
+    //     .then(response => {
+    //         if (response.ok) {
+    //             // Clear the JWT from local storage or cookies
+    //             clearToken();
+    //             // Redirect or perform other actions after successful logout
+    //             window.location.href = "/template/login.html";
+    //         } else {
+    //             console.error('Logout failed:', response.statusText);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Error during logout:', error);
+    //     });
+    // }
+
+    // function getAccessToken() {
+    //     return accessToken.token;
+    // }
+
+    // function clearToken() {
+    //     // Implement this function to clear the JWT from local storage or cookies
+    //     // For example, if stored in local storage:
+    //     localStorage.removeItem('userData');
+    // }
+
+    //   async function fetchData() {
+    // try {
+    // const response = await fetch('http://localhost:8080/CodeWalkers/profile/'+accessToken.username);
+
+    // if (!response.ok) throw new Error('Network response was not ok');
+
+    //  const data = await response.json();
+
+    //   // Giả sử data là chuỗi Base64 bạn đã lấy được
+    //   const imageData = "assets/img/avt/"+data.image;
+    //   // Thay đổi src của thẻ img
+    //   // document.getElementById('profileImage').src = imageData;
+    //     console.log(data,"day");
+    //   } catch (error) {
+    //     console.error('There was a problem with the fetch operation:', error);
+    //     }
+    //  }
+    //   fetchData();
+
+  </script>
+  <div class="loading-container" ng-show="showLoading">
+    <div class="spinner"></div>
+  </div>
 </body>
+
 </html>

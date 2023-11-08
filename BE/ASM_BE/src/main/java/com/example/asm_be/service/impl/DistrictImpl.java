@@ -22,7 +22,7 @@ public class DistrictImpl implements DistrictService {
     }
 
     @Override
-    public District getOne(UUID id) {
+    public District getOne(int id) {
         return districtRepository.findById(id).get();
     }
 

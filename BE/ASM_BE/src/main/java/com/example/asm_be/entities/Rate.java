@@ -17,25 +17,24 @@ import java.util.UUID;
 @Table(name = "DanhGia")
 public class Rate {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
-
-    @Column(name = "ma_danh_gia")
-    private String code;
+    @Column(name = "id_danh_gia")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int Id;
 
     @Column(name = "noi_dung")
     private String description;
-    @Column(name = "diem_danh_gia")
-    private float point;
-    @Column(name = "created_at")
+    @Column(name = "danh_gia")
+    private double point;
+    @Column(name = "ngay_tao")
     private Date createdAt;
+    @Column(name = "ngay_sua")
+    private Date updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "san_pham_id")
-    private Product product;
+    @JoinColumn(name = "chi_tiet_san_pham_id")
+    private ProductDetail productDetail;
     @ManyToOne
-    @JoinColumn(name = "nguoi_dung_id")
+    @JoinColumn(name = "khach_hang_id")
     private Users users;
 
 }

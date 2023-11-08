@@ -1,19 +1,16 @@
 package com.example.asm_be.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Entity(name = "HoaDon")
 @NoArgsConstructor
@@ -23,36 +20,50 @@ import java.util.Date;
 @Table(name = "HoaDon")
 public class Bill {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @Column(name = "id_hoa_don")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "ma_hoa_don")
     private String code;
 
-    @Column(name = "phuong_thuc_thanh_toan")
-    private String payment;
-
-    @Column(name = "mo_ta")
+    @Column(name = "ghi_chu")
     private String description;
+    @Column(name = "dia_chi_chi_tiet")
+    private String address;
+    @Column(name = "phuong_xa_id")
+    private String ward;
+    @Column(name = "thanh_pho_id")
+    private int province;
+    @Column(name = "quan_huyen_id")
+    private int district;
+    @Column(name = "ngay_giao")
+    private Date shipDate;
+    @Column(name = "phi_giao_hang")
+    private Double fee;
+    @Column(name = "tong_tien")
+    private Double totalPay;
+    @Column(name = "phuong_thuc")
+    private int paymentOptions;
 
-    @Column(name = "created_at")
+    @Column(name = "ngay_lap")
     private Date createdAt;
+
 
     @ManyToOne
     @JoinColumn(name = "khach_hang_id")
     private Users users;
-<<<<<<< Updated upstream
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
-=======
 
     @Column(name = "trang_thai")
-    private Boolean status;
+    private int status;
 
     @ManyToOne
     @JoinColumn(name = "nguoi_lap_id")
     private Staff staff;
->>>>>>> Stashed changes
+
+    @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<BillDetails> listBillDetail;
+
+
 }

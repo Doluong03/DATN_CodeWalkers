@@ -34,5 +34,6 @@ public class FavouriteList {
     private Users users;
 
     @Column(name = "trang_thai")
-    private boolean status;
+    private int   status;
+
 }

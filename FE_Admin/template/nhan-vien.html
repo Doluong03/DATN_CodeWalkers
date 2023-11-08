@@ -1,0 +1,113 @@
+
+        
+<i style="float: right; margin-top: -10px; margin-right: -10px; cursor: pointer;" class="fa-solid fa-circle-plus fa-beat fa-lg" ng-click="toggleForm()"></i>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Staff Table</h4>
+                  <button style="width: 110px;border-radius: 5px;background-color: #3622d0;float: right;margin-top: -20px;color: #fffafa;">
+                    <i style="margin-right: 20px;" class="fa-sharp fa-solid fa-upload"></i>Upload</button>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>STT</th>
+                          <th>Họ và Tên</th>
+                          <th>Ngày Sinh</th>
+                          <th>Giới Tính</th>
+                          <th>Địa Chỉ</th>
+                          <th>Email</th>
+                          <th>Số Điện Thoại</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="item in listStaff | filter:searchText">
+                          <td>{{item.id}}</td>
+                          <td>{{item.fname}} {{item.middleName}} {{item.name}}</td>
+                          <td>{{ item.dateOfBirth.substring(0, 10) }}</td>
+                          <td>{{item.gender == true ? 'nam' : 'nu'}}</td>
+                          <td>{{item.address}}</td>
+                          <td>{{item.email}}</td>
+                          <td>{{item.phoneNumber}}</td>
+                          <td >
+                           <a  href="#"  style="text-decoration: none; color: #03ff70;"><i class="fa-solid fa-pen-to-square" ></i> </a>
+                           <a href="#" ng-click="removeStaff($event,$index)" style="text-decoration: none; color: #FC424A;">  <i class="fas fa-fw  fa-trash"></i> </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <nav aria-label="Page navigation example" style="margin-top: 34px; color: #ffffff;">
+                      <ul class="pagination justify-content-end">
+                        <li class="page-item ">
+                          <a class="page-link" ng-click="previousPage()">Previous</a>
+                        </li>
+                        <li class="page-item" ><a class="page-link"  ng-click="PageNo(0);">1</a></li>
+                        <li class="page-item"><a class="page-link"  ng-click="PageNo(1);">2</a></li>
+                        <li class="page-item"><a class="page-link"  ng-click="PageNo(2);">3</a></li>
+                        <li class="page-item">
+                          <a class="page-link" ng-click="nextPage()">Next</a>
+                        </li>
+                      </ul>
+                    </nav>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+    
+          <!-- form  -->
+          <div class="col-12 grid-margin stretch-card" ng-if="showForm">
+            <div class="card">
+              <div class="card-body">
+                <!-- <h4 class="card-title">Basic form elements</h4> -->
+                
+                <form class="forms-sample" >
+                  <div class="form-group">
+                    <label for="exampleInputName1">Name</label>
+                    <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail3">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword4">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleSelectGender">Gender</label>
+                      <select class="form-control" id="exampleSelectGender">
+                        <option>Male</option>
+                        <option>Female</option>
+                      </select>
+                    </div>
+                  <div class="form-group">
+                    <label>File upload</label>
+                    <input type="file" name="img[]" class="file-upload-default">
+                    <div class="input-group col-xs-12">
+                      <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                      <span class="input-group-append">
+                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputCity1">City</label>
+                    <input type="text" class="form-control" id="exampleInputCity1" placeholder="Location">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleTextarea1">Textarea</label>
+                    <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                  <button class="btn btn-light" ng-click="toggleForm()">Cancel</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+  

@@ -45,7 +45,7 @@ public class MauSacController {
             @RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
             @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         ColorRespone colorRespone = new ColorRespone();
-        Page<Color> colorPage = colorService.getAll(pageNo, sizePage);
+        Page<Color> colorPage = colorService.getAllPage(pageNo, sizePage);
 
         colorRespone.setColorList(colorPage.getContent());
         colorRespone.setTotalPages(colorPage.getTotalPages());

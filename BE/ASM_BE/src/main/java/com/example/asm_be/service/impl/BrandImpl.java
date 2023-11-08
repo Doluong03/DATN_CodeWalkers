@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 @Component
 public class BrandImpl implements BrandService {
@@ -17,14 +19,14 @@ public class BrandImpl implements BrandService {
     private BrandRepository brandRepository;
 
     @Override
-<<<<<<< Updated upstream
-    public Brands getOne(UUID id) {
-        return brandRepository.findById(id).get();
-=======
-    public Page<Brands> getAll(Integer pageNo, Integer sizePage) {
+    public List<Brands> getAll() {
+        return brandRepository.findAll();
+    }
+
+    @Override
+    public Page<Brands> getAllPage(Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo,sizePage);
         return brandRepository.findAll(pageable);
->>>>>>> Stashed changes
     }
 
     public Brands getOne(Integer id) {

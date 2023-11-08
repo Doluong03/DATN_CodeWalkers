@@ -1,0 +1,354 @@
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Staff table</h4>
+
+            <div class="search-container">
+                <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a Size">
+                <i class="fa-light fa-magnifying-glass"></i>
+              </div>
+        
+        
+              <button ng-click="deleteAll()" id="delete-all" class="btn btn-danger mt-3"><i class="fa-duotone fa-trash"></i> Xoá
+                Nhiều</button>
+        
+        
+              <div class="btn-group">
+        
+                 <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="toggleForm()">
+                  <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
+        
+                    <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
+                    <i class="fa-solid fa-arrows-rotate "></i>                                                                  
+                     </button>
+                       
+        
+        
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuIconButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa-solid fa-list"></i>
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton3">
+                            <label class="dropdown-item">
+                              <input type="checkbox" ng-model="selectAll" ng-change="toggleAll()"> Chọn Tất Cả
+                            </label>
+                            <hr>
+                            <label class="dropdown-item" ng-repeat="column in columns">
+                              <input type="checkbox" ng-model="column.selected" ng-change="toggleColumn(column)">
+                              {{ column.name }}
+                            </label>
+                          </div>
+                        </div>
+        
+        
+                <input type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)"
+                  style="display:none;">
+                <button type="button" id="btn-icon" class="btn btn-secondary " onclick="triggerFileInput()">
+                  <i class="fa-sharp fa-solid fa-file-import"></i>
+                </button>
+        
+                <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
+                        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button> -->
+        
+        
+                <div class="btn-group">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuIconButton1"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-down-to-line"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+                    <a class="dropdown-item" ng-click="exportToSVG()">SVG</a>
+                    <a class="dropdown-item" ng-click="exportToExcel()">Excel</a>
+                    <a class="dropdown-item" ng-click="exportToPDF();">PDF</a>
+                  </div>
+                </div>
+        
+              </div>
+
+
+            <!-- start table -->
+            <div class="table-responsive pt-3">
+                <table class="display expandable-table table-hover" style="width: 100%" id="StaffTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox" type="checkbox"> #
+                              </th>
+                            <th ng-show="columns[1].selected" ng-click="sortData('name')">Họ và Tên<span class="{{getSortClass('name')}}"></span></th>
+                            <th ng-show="columns[2].selected" ng-click="sortData('dateOfBirth')">Ngày Sinh<span
+                                    class="{{getSortClass('dateOfBirth')}}"></span></th>
+                            <th ng-show="columns[3].selected" ng-click="sortData('gender')">Giới Tính<span class="{{getSortClass('gender')}}"></span>
+                            </th>
+                            <th ng-show="columns[4].selected" style="text-align: center;" ng-click="sortData('address')">Địa Chỉ<span
+                                    class="{{getSortClass('address')}}"></span></th>
+                            <th ng-show="columns[5].selected" ng-click="sortData('email')">Email<span class="{{getSortClass('email')}}"></span></th>
+                            <th ng-show="columns[6].selected" ng-click="sortData('phoneNumber')">Số Điện Thoại<span
+                                    class="{{getSortClass('phoneNumber')}}"></span></th>
+                            <th ng-show="columns[7].selected" ng-click="sortData('userName')">Username<span
+                                    class="{{getSortClass('userName')}}"></span></th>
+                            <th ng-show="columns[8].selected" ng-click="sortData('password')">Password<span
+                                    class="{{getSortClass('password')}}"></span></th>
+                            <th ng-show="columns[9].selected" ng-click="sortData('status')">Trạng Thái<span class="{{getSortClass('status')}}"></span>
+                            </th>
+                            <th ng-show="columns[10].selected" ng-click="sortData('image')">Hình Ảnh<span class="{{getSortClass('image')}}"></span>
+                            </th>
+                            <th ng-show="columns[11].selected" ng-click="sortData('roles')">Vai trò<span class="{{getSortClass('roles')}}"></span></th>
+                            <th name="Action">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in listStaff | filter:searchText | orderBy:sortColumn:reverseSort">
+                            <td><input type="checkbox" ng-model="item.isSelected"></td>
+                            <td ng-show="columns[1].selected">{{item.name}}</td>
+                            <td ng-show="columns[2].selected">{{item.dateOfBirth| date : "dd/MM/yyyy"}}</td>
+                            <td ng-show="columns[3].selected" style="text-align: center;">{{item.gender == true ? 'nam' : 'nữ'}}</td>
+                            <td ng-show="columns[4].selected" style="text-align: center;">{{item.address}}</td>
+                            <td ng-show="columns[5].selected">{{item.email}}</td>
+                            <td ng-show="columns[6].selected">{{item.phoneNumber}}</td>
+                            <td ng-show="columns[7].selected">{{item.userName}}</td>
+                            <td ng-show="columns[8].selected">{{item.password}}</td>
+                            <td ng-show="columns[9].selected">
+                                <span ng-if="item.status == true" style="margin-left: -9px;">
+                                    <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i>
+                                    Active
+                                </span>
+                                <span ng-if="item.status != true">
+                                    <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Disable
+                                </span>
+                            </td>
+                            <td ng-show="columns[10].selected" style="text-align: center"><img style="border-radius: 15%; width: 135px; height: 120px;"
+                                    src="/FE_Admin/template/images/staff/{{item.image}}" alt="{{item.image}}"> </td>
+                            <!-- <td style="text-align: center">{{item.image}}</td> -->
+                            <td ng-show="columns[11].selected">{{item.roles.nameRole}}</td>
+                            <td>
+                                <a href="#" ng-click="toggleFormUpdate($event,item)"
+                                    style="text-decoration: none; color: #1545e1;"><i
+                                        class="fa-solid fa-pen-to-square "></i> </a>
+                                <a href="#" ng-click="removeStaff($event,item)"
+                                    style="text-decoration: none; color: #FC424A;"> <i class="fas fa-fw  fa-trash "></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- phân trang -->
+                <nav id="phantrang" aria-label="Page navigation example" style="color: #000000;">
+
+                    <p style="margin-top: 20px;">Đang xem {{listStaff[0].id}} đến {{lastIndex}} trong tổng số
+                        {{sizePage}} mục</p>
+                    <!-- Phân trang -->
+                    <ul class="pagination justify-content-end" style="margin-top: 20px;">
+                        <!-- Các nút phân trang ở đây -->
+                        <li class="page-item"
+                            ng-class="{ 'disabled': pageCurrent === 0, 'hovered': hoveredPage === 'previous' }">
+                            <a class="page-link" ng-click="previousPage()"
+                                ng-class="{ 'disabled-link': pageCurrent === 0 }" ng-mouseenter="onHover('previous')"
+                                ng-mouseleave="onLeave()"><span aria-hidden="true">&laquo;</span></a>
+                        </li>
+                        <li class="page-item" ng-repeat="page in pageRange()"
+                            ng-class="{ 'active': page === pageCurrent, 'hovered': hoveredPage === page }">
+                            <a class="page-link" ng-click="PageNo(page, sizePage)" ng-mouseenter="onHover(page)"
+                                ng-mouseleave="onLeave()">{{ page }}</a>
+                        </li>
+
+                        <li class="page-item"
+                            ng-class="{ 'disabled': pageCurrent === totalPage - 1, 'hovered': hoveredPage === 'next' }">
+                            <a class="page-link" ng-click="nextPage()"
+                                ng-class="{ 'disabled-link': pageCurrent === totalPage - 1 }"
+                                ng-mouseenter="onHover('next')" ng-mouseleave="onLeave()"> <span
+                                    aria-hidden="true">&raquo;</span></a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div id="sizePage">
+                    <label for="itemsPerPage">Xem:</label>
+                    <select id="itemsPerPage" ng-model="sizePage" ng-init="sizePage = '5'"
+                        ng-change="onSizePageChange()">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="100">100</option>
+                    </select>
+                    <label for="itemsPerPage">mục</label>
+                </div>
+                <!-- kết thúc phân trang -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end table -->
+
+<!-- form add -->
+<div class="col-12 grid-margin stretch-card" ng-if="showForm">
+    <div class="card">
+        <div class="card-body">
+            <form class="forms-sample">
+                <input type="hidden" class="form-control" ng-model="formStaff.id">
+                <div class="form-group">
+                    <label for="exampleInputMiddleName">Tên</label>
+                    <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Tên" required
+                        ng-model="formStaff.name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputDate">Ngày Sinh</label>
+                    <form name="myForm" ng-controller="DateController">
+                        <input type="text" class="form-control" id="exampleInputDate"  name="dateOfBirth"
+                        ng-model="formStaff.dateOfBirth">
+                    </form>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="exampleSelectGender">Giới Tính</label>
+                    <select class="form-control" id="exampleSelectGender" ng-model="formStaff.gender">
+                        <option value="" disabled>-- Chọn Giới Tính --</option>
+                        <option value="true" ng-selected="formUser.gender === 'true'">Nam</option>
+                        <option value="false" ng-selected="formUser.gender === 'false'">Nữ</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail">Email</label>
+                    <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email" required
+                        ng-model="formStaff.email">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputSDT">Số Điện Thoại</label>
+                    <input type="text" class="form-control" id="exampleInputSDT" placeholder="Phone Number"
+                        ng-model="formStaff.phoneNumber">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputAddress">Địa Chỉ</label>
+                    <input type="text" class="form-control" id="exampleInputAddress"
+                        placeholder="VD : 123 Đường ABC, Quận 1, TP.HCM" ng-model="formStaff.address">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputMiddleName">User name</label>
+                    <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="User name" required
+                        ng-model="formStaff.userName">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword4">Mật khẩu</label>
+                    <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password"
+                        ng-model="formStaff.password">
+                </div>
+                <div class="form-group">
+                    <label for="exampleSelectGender">Ảnh</label>
+                    <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <button ng-click="openFileInput()">Choose File</button>
+                            <input type="file" id="fileInput" style="display:none"
+                                onchange="angular.element(this).scope().fileChanged(this)" />
+                            <input type="text" style="border: none ;" ng-model="formStaff.image" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleSelectGender">Trạng Thái</label>
+                            <select class="form-control" ng-model="formSize.status">
+                                <option value=true>Đang hoạt động</option>
+                                <option value=false>Ngừng hoạt động</option>
+                            </select>
+                        </div>
+                        <button id="btn-action-add" ng-click="addStaff($event)">Submit</button>
+                        <button id="btn-action-cancel" ng-click="toggleForm()">Cancel</button>
+                    </form>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- form update -->
+<div class="col-12 grid-margin stretch-card" ng-show="showFormUpdate">
+    <div class="card">
+        <div class="card-body">
+            <form class="forms-sample">
+                <div class="form-group">
+                    <input type="hidden" class="form-control" ng-model="formStaffUpdate.id">
+                    <div class="form-group">
+                        <label for="exampleInputMiddleName">Tên</label>
+                        <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Tên" required
+                            ng-model="formStaffUpdate.name">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputDate">Ngày Sinh</label>
+                        <input type="text" class="form-control" id="exampleInputDate" placeholder="VD : 03/10/2003"
+                            ng-model="formStaffUpdate.dateOfBirth">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleSelectGender">Giới Tính</label>
+                        <select class="form-control" id="exampleSelectGender" ng-model="formStaffUpdate.gender"
+                            ng-options="gender as (gender ? 'Nam' : 'Nữ') for gender in [true, false]">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail">Email</label>
+                        <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email" required
+                            ng-model="formStaffUpdate.email">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputSDT">Số Điện Thoại</label>
+                        <input type="text" class="form-control" id="exampleInputSDT" placeholder="Phone Number"
+                            ng-model="formStaffUpdate.phoneNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputAddress">Địa Chỉ</label>
+                        <input type="text" class="form-control" id="exampleInputAddress"
+                            placeholder="VD : 123 Đường ABC, Quận 1, TP.HCM" ng-model="formStaffUpdate.address">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputMiddleName">User name</label>
+                        <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Username"
+                            required ng-model="formStaffUpdate.userName">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword4">Mật khẩu</label>
+                        <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password"
+                            ng-model="formStaffUpdate.password">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleSelectGender">Ảnh</label>
+                        <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <button ng-click="updateFileInput()">Choose File</button>
+                                <input type="file" id="updateInput" style="display:none"
+                                    onchange="angular.element(this).scope().fileChanged(this)" />
+                                <input type="text" style="border: none ;" ng-model="formStaffUpdate.image" readonly />
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleSelectGender">Trạng Thái</label>
+                                <select class="form-control" id="exampleSelectGender" ng-model="formStaffUpdate.status"
+                                    ng-options="status as (status ? 'Đang hoạt động' : 'Ngừng hoạt động') for status in [true, false]">
+                                </select>
+                            </div>
+                            <button id="btn-action-add" ng-click="UpdateStaff($event)">Submit</button>
+                            <button id="btn-action-cancel" ng-click="toggleFormUpdate($event, null)">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="import-container">
+    <div ng-show="importing" class="import-animation"></div>
+    <p ng-show="importing">Processing...</p>
+</div>
+
+<Script>
+    function triggerFileInput() {
+        // Kích hoạt sự kiện click trên input-file
+        document.getElementById('input-file').click();
+    }
+
+</Script>
+<script>
+    angular.module('myapp', [])
+        .controller('DateController', ['$scope', function($scope) {
+            $scope.formStaff.dateOfBirth = new Date();
+        }]);
+</script>
+

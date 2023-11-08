@@ -1,5 +1,6 @@
 package com.example.asm_be.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,10 +30,11 @@ public class Cart {
     @Column(name = "ghi_chu")
     private String description;
 
-    @ManyToOne()
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "khach_hang_id")
     private Users users;
 
     @Column(name = "trang_thai")
-    private boolean status;
+    private int   status;
 }

@@ -15,10 +15,13 @@ import java.util.List;
 public class ColorImpl implements ColorService {
     @Autowired
     private ColorRepository colorRepository;
-
+    @Override
+    public List<Color> getAll() {
+        return colorRepository.findAll();
+    }
 
     @Override
-    public Page<Color> getAll(Integer pageNo, Integer sizePage) {
+    public Page<Color> getAllPage(Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo,sizePage);
         return colorRepository.findAll(pageable);
     }

@@ -9,8 +9,9 @@ import java.util.List;
 
 @Service
 public interface ColorService {
+    public List<Color> getAll();
 
-    Page<Color> getAll(Integer pageNo, Integer sizePage);
+    Page<Color> getAllPage(Integer pageNo, Integer sizePage);
 
     Color getOne(Integer id);
 

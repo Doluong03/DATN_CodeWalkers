@@ -1,6 +1,8 @@
 package com.example.asm_be.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,19 +15,20 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "KichThuoc")
+@Table(name = "KichCo")
 public class Size {
     @Id
-    @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @Column(name = "id_kich_co")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Column(name = "ma_kich_thuoc")
-    private String code;
-
-    @Column(name = "ten_kich_thuoc")
+    @Column(name = "ten_kich_co")
+//    @NotBlank("Khong duoc de trong kich co")
     private String name;
+    @Column(name = "mo_ta")
+    private String description;
 
     @Column(name = "trang_thai")
+//    @NotNull("Khong duoc de trong trang thai")
     private boolean status;
 }

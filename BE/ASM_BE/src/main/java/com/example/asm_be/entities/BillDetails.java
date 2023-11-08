@@ -1,5 +1,6 @@
 package com.example.asm_be.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,26 +18,24 @@ import java.util.UUID;
 @Table(name = "HoaDonChiTiet")
 public class BillDetails {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    @Column(name = "id_hoa_don_chi_tiet")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Column(name = "ma_hoa_don")
-    private String code;
+    @Column(name = "so_luong")
+    private int quantity;
 
-    @Column(name = "phuong_thuc_thanh_toan")
-    private String payment;
+    @Column(name = "don_gia")
+    private double price;
 
     @Column(name = "mo_ta")
     private String description;
 
-    @Column(name = "created_at")
-    private Date createdAt;
-
     @ManyToOne
-    @JoinColumn(name = "khach_hang_id")
-    private Users users;
+    @JoinColumn(name = "hoa_don_id")
+    @JsonBackReference
+    private Bill bill;
     @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+    @JoinColumn(name = "chi_tiet_san_pham_id")
+    private ProductDetail productDetail;
 }

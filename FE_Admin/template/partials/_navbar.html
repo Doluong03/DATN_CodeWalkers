@@ -1,0 +1,159 @@
+<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+  <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+    <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="images/logo.svg" class="mr-2" alt="logo" /></a>
+    <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
+  </div>
+  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+    <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+      <span class="icon-menu"></span>
+    </button>
+    <ul class="navbar-nav mr-lg-2">
+      <li class="nav-item nav-search d-none d-lg-block">
+        <div class="input-group">
+          <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
+            <span class="input-group-text" id="search">
+              <i class="icon-search"></i>
+            </span>
+          </div>
+          <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search"
+            aria-describedby="search">
+        </div>
+      </li>
+    </ul>
+    <ul class="navbar-nav navbar-nav-right">
+      <li class="nav-item dropdown">
+        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+          <i class="icon-bell mx-0"></i>
+          <span class="count"></span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+          aria-labelledby="notificationDropdown">
+          <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+          <a class="dropdown-item preview-item">
+            <div class="preview-thumbnail">
+              <div class="preview-icon bg-success">
+                <i class="ti-info-alt mx-0"></i>
+              </div>
+            </div>
+            <div class="preview-item-content">
+              <h6 class="preview-subject font-weight-normal">Application Error</h6>
+              <p class="font-weight-light small-text mb-0 text-muted">
+                Just now
+              </p>
+            </div>
+          </a>
+          <a class="dropdown-item preview-item">
+            <div class="preview-thumbnail">
+              <div class="preview-icon bg-warning">
+                <i class="ti-settings mx-0"></i>
+              </div>
+            </div>
+            <div class="preview-item-content">
+              <h6 class="preview-subject font-weight-normal">Settings</h6>
+              <p class="font-weight-light small-text mb-0 text-muted">
+                Private message
+              </p>
+            </div>
+          </a>
+          <a class="dropdown-item preview-item">
+            <div class="preview-thumbnail">
+              <div class="preview-icon bg-info">
+                <i class="ti-user mx-0"></i>
+              </div>
+            </div>
+            <div class="preview-item-content">
+              <h6 class="preview-subject font-weight-normal">New user registration</h6>
+              <p class="font-weight-light small-text mb-0 text-muted">
+                2 days ago
+              </p>
+            </div>
+          </a>
+        </div>
+      </li>
+      <li class="nav-item nav-profile dropdown">
+        <a class="nav-link dropdown-toggle" ng-href="FE_Admin/template/login.html" data-toggle="dropdown" id="profileDropdown">
+          <img id="profileImage" alt="profile" />
+        </a>
+        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+          <a class="dropdown-item" ng-href="FE_Admin/template/login.html">
+            <i class="ti-settings text-primary"></i>
+            Settings
+          </a>
+          <a class="dropdown-item" onclick="logout()">
+            <i class="ti-power-off text-primary"></i>
+            Logout
+          </a>
+        </div>
+      </li>
+      <li class="nav-item nav-settings d-none d-lg-flex">
+        <a class="nav-link" href="#">
+          <i class="icon-ellipsis"></i>
+        </a>
+      </li>
+    </ul>
+    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+      data-toggle="offcanvas">
+      <span class="icon-menu"></span>
+    </button>
+  </div>
+</nav>
+
+
+<script>
+
+  var data = localStorage.getItem('userData');
+  var accessToken = JSON.parse(data);
+
+  function logout() {
+    // Call the server-side logout endpoint
+    fetch('http://localhost:8080/api/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + getAccessToken(),
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(response => {
+        if (response.ok) {
+          // Clear the JWT from local storage or cookies
+          clearToken();
+          // Redirect or perform other actions after successful logout
+          window.location.href = "/FE_Admin/template/login.html";
+        } else {
+          console.error('Logout failed:', response.statusText);
+        }
+      })
+      .catch(error => {
+        console.error('Error during logout:', error);
+      });
+  }
+
+  function getAccessToken() {
+    return accessToken.token;
+  }
+
+  function clearToken() {
+    // Implement this function to clear the JWT from local storage or cookies
+    // For example, if stored in local storage:
+    localStorage.removeItem('userData');
+  }
+
+  async function fetchData() {
+    try {
+      const response = await fetch('http://localhost:8080/CodeWalkers/admin/profile/' + accessToken.username);
+
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      const data = await response.json();
+
+      // Giả sử data là chuỗi Base64 bạn đã lấy được
+      const imageData = "/FE_Admin/template/images/staff/" + data.image;
+      // Thay đổi src của thẻ img
+      document.getElementById('profileImage').src = imageData;
+    } catch (error) {
+      console.error('There was a problem with the fetch operation:', error);
+    }
+  }
+  fetchData();
+
+</script>

@@ -1,0 +1,255 @@
+<!-- Feature Tabs -->
+
+<div class="row feture-tabs offset-2 mt-5" data-aos="fade-up">
+  <div class="col-lg-1">
+    <div data-testid="ThumbnailListContainer" class="css-r3as8n" ng-repeat="item in img">
+      <div data-testid="Thumbnail-0" class="d-sm-flx flx-jc-sm-fs flx-ai-sm-fe css-1mhv7vq">
+        <input type="radio" id="09f5ea76-8d13-45d5-90c0-2e6138bf4822" name="Thumbnails" class="css-1glxj2a"
+          value="{{item.link}}">
+        <label for="09f5ea76-8d13-45d5-90c0-2e6138bf4822" class="css-68j8pv">
+          <img data-testid="Thumbnail-Img-0" ng-src="assets/img/product/sp1/{{item.link}}" alt="Ảnh phụ nhưng ko có "
+            ng-click="changeImage(item.link)">
+        </label>
+        <div class="css-kk6bdz" style="visibility: hidden;"></div>
+      </div>
+      <div class="css-9ubti4">
+        <div class="css-17xce2z" style="bottom: 0px;">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 prImg">
+    <img ng-src="{{ currentImageSource }}" class="img-fluid " alt="{{currentImageSource}}" data-bs-toggle="modal"
+      data-bs-target="#exampleModal">
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div id="carouselExample2" class="carousel slide">
+            <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item detailPrWatch" ng-repeat="item in img" ng-class="{ 'active': $index === 0 }">
+                  <img src="assets/img/product/sp1/{{item.link}}" class="d-block" alt="...">
+                </div>
+              </div>
+              <button class="carousel-control-prev " type="button" data-bs-target="#carouselExample2"
+                data-bs-slide="prev" style="margin-left: -50px;">
+                <i class="bi bi-caret-left-fill fs-1 text-dark ms-0"></i>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2"
+                data-bs-slide="next">
+                <i class="bi bi-caret-right-fill fs-1 text-dark ms-5"></i>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5 mt-2">
+    <h3>{{itemDetail[0].product.name}}</h3>
+    <!-- <h5>{{itemDetail.category.name}}</h5> -->
+    <br>
+    <h5>
+      <span ng-show="!checkPrice"> {{ getPriceDisplay() | vndCurrency }}</span>
+      <span ng-show="checkPrice">{{price | vndCurrency}}</span>
+    </h5>
+    <br>
+    <h5>Màu sắc</h5>
+    <div class="color-container">
+      <!-- <div class="color" ng-repeat="cl in colors | orderBy:'name'" ng-style="{'background-color': colorMapping[cl.name]}">
+          <input type="radio" name="color" id="{{cl.name}}" ng-model="selectedColor" ng-value="cl.i" class="visually-hidden" ng-click="selectColor(cl.i)">
+          <label for="{{cl.name}}" tabindex="-1" class="">{{cl.name}}</label>
+      </div> -->
+      <div class="color" ng-repeat="cl in colors | orderBy:'name'" ng-style="getcolorStyle(cl)" ng-click="check(cl.id)">
+        <input type="radio" name="color" id="{{cl.name}}" ng-model="selectedColor" ng-value="cl.id"
+          class="visually-hidden">
+        <label for="{{cl.name}}" tabindex="-1" class="fs-5" ng-class="{ 'selected': selectedColor === cl.id }"
+          ng-show="selectedColor === cl.id" ng-style="{'color': getTextColor(cl.name)}"><i
+            class="bi bi-check"></i></label>
+      </div>
+    </div>
+    <div class="row">
+      <h5 class="col-lg-1">Size</h5>
+      <h5 class="col-lg-8 text-end text-secondary">Size guide</h5>
+    </div>
+    <!-- Tabs -->
+    <div class="size-container">
+      <div class="size" ng-repeat="sz in sizes | orderBy:'name'" ng-style="getSizeStyle(sz)">
+        <input type="radio" name="size" id="{{sz.name}}" ng-model="selectedValue" ng-value="sz.id"
+          class="visually-hidden" ng-click="selectSize(sz.id)"  >
+        <label for="{{sz.name}}" tabindex="-1" class="fs-5"  ng-style="checkCl(sz)">{{sz.name}}</label>
+      </div>
+    </div>
+
+    <!-- End Tabs -->
+    <div>
+        <div class="row mt-4 mb-3">
+          <label class="col-lg-2 ms-0 fs-5">Quantity</label>
+          <div class="col-lg-6 d-flex align-items-center">
+              <div class="input-group quantity-input">
+                  <div class="input-group-prepend">
+                      <button class="quantity-button border-1" type="button"
+                          ng-click="decreaseQuantity(pr)">
+                          <i class="bi bi-dash"></i>
+                      </button>
+                  </div>
+                  <!-- Sử dụng ng-model để liên kết quantity với productInfoList.quantity -->
+                  <input type="number" class="quantity-value border-1"
+                      aria-label="Quantity" ng-model="quantity"
+                      ng-keypress="onInputKeyPress($event,quantity)"
+                      ng-blur="onInputBlur(quantity)">
+                  <div class="input-group-append">
+                      <button class="quantity-button border-1" type="button"
+                          ng-click="increaseQuantity(pr)">
+                          <i class="bi bi-plus"></i>
+                      </button>
+                  </div>
+                  <p class="col-lg ms-2 mt-1 text-start text-secondary">{{totalQuantity}} sản phẩm có sẵn</p>
+              </div>
+          </div>
+      </div>
+    </div>
+    <!-- button  -->
+    <div class="">
+      <a type="button" class=" glow-on-hover btn btn-dark w-50 offset-2 mb-2"  ng-click="addCart(quantity)"> Thêm vào giỏ hàng </a>
+    </div>
+    <div>
+        <div id="intro-content" class="center-content w-50 offset-2 mb-2">
+            <div class="center-content-inner">
+                <div class="content-section content-section-margin">
+                    <div class="content-section-grid clearfix">
+                       <a href="#" class="button-main nav-link w-100 h-50">
+                            <div class="bottom"></div>
+                            <div class="top">
+                                <div class="label text-dark">Yêu thích ❤️</div>
+                                <div class="button-border button-border-left"></div>
+                                <div class="button-border button-border-top"></div>
+                                <div class="button-border button-border-right"></div>
+                                <div class="button-border button-border-bottom"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- End button  -->
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="tab1">
+        <p>Consequuntur inventore voluptates consequatur aut vel et. Eos doloribus expedita. Sapiente atque
+          consequatur minima nihil quae aspernatur quo suscipit voluptatem.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Repudiandae rerum velit modi et officia quasi facilis</h4>
+        </div>
+        <p>Laborum omnis voluptates voluptas qui sit aliquam blanditiis. Sapiente minima commodi dolorum non
+          eveniet magni quaerat nemo et.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Incidunt non veritatis illum ea ut nisi</h4>
+        </div>
+        <p>Non quod totam minus repellendus autem sint velit. Rerum debitis facere soluta tenetur. Iure molestiae
+          assumenda sunt qui inventore eligendi voluptates nisi at. Dolorem quo tempora. Quia et perferendis.</p>
+      </div><!-- End Tab 1 Content -->
+
+      <div class="tab-pane fade show" id="tab2">
+        <p>Consequuntur inventore voluptates consequatur aut vel et. Eos doloribus expedita. Sapiente atque
+          consequatur minima nihil quae aspernatur quo suscipit voluptatem.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Repudiandae rerum velit modi et officia quasi facilis</h4>
+        </div>
+        <p>Laborum omnis voluptates voluptas qui sit aliquam blanditiis. Sapiente minima commodi dolorum non
+          eveniet magni quaerat nemo et.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Incidunt non veritatis illum ea ut nisi</h4>
+        </div>
+        <p>Non quod totam minus repellendus autem sint velit. Rerum debitis facere soluta tenetur. Iure molestiae
+          assumenda sunt qui inventore eligendi voluptates nisi at. Dolorem quo tempora. Quia et perferendis.</p>
+      </div><!-- End Tab 2 Content -->
+
+      <div class="tab-pane fade show" id="tab3">
+        <p>Consequuntur inventore voluptates consequatur aut vel et. Eos doloribus expedita. Sapiente atque
+          consequatur minima nihil quae aspernatur quo suscipit voluptatem.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Repudiandae rerum velit modi et officia quasi facilis</h4>
+        </div>
+        <p>Laborum omnis voluptates voluptas qui sit aliquam blanditiis. Sapiente minima commodi dolorum non
+          eveniet magni quaerat nemo et.</p>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check2"></i>
+          <h4>Incidunt non veritatis illum ea ut nisi</h4>
+        </div>
+        <p>Non quod totam minus repellendus autem sint velit. Rerum debitis facere soluta tenetur. Iure molestiae
+          assumenda sunt qui inventore eligendi voluptates nisi at. Dolorem quo tempora. Quia et perferendis.</p>
+      </div><!-- End Tab 3 Content -->
+
+    </div>
+
+  </div>
+</div>
+<!-- Modal -->
+<div class="custom-modal row">
+  <div class="modal fade col-lg-1" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog col-lg-1">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<style>
+  /* Lớp CSS tùy chỉnh cho modal */
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- End Feature Tabs -->
+<div class="like container mb-5">
+  <div class="row">
+    <div class="col-lg">You Might Also Like</div>
+    <div class="col-lg text-end">
+      <button class="btn btn-secondary" type="button" ng-click="prevSlide()" data-bs-target="#carouselExample">
+        <i class="bi bi-chevron-left"></i> <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="btn btn-secondary" type="button" ng-click="nextSlide()">
+        <i class="bi bi-chevron-right"></i> <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel ">
+    <div class="carousel-inner">
+      <div class="carousel-item like " ng-repeat="slide in slides" ng-class="{ 'active': $index === activeSlideIndex }">
+        <div class="row">
+          <div class="col-lg-3 carousel-slide" ng-repeat="pr in slide"
+            ng-class="{ 'd-none': $index >= numVisibleItems }">
+            <img ng-src="{{ 'assets/img/product/sp1/' + pr.product.listImage[0].link }}" style="height: 200px;"
+              alt="{{ pr.product.name }}">
+            <h4 class="ms-5">{{ pr.name }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- End PROMOTIONAL Section -->

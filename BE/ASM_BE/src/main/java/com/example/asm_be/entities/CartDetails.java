@@ -31,7 +31,7 @@ public class CartDetails {
     private String description;
 
     @Column(name = "trang_thai")
-    private boolean status;
+    private int   status;
 
 
 }
