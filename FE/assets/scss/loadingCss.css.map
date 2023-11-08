@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "sourceRoot": "",
+    "sources": [
+        "loading.scss"
+    ],
+    "names": [],
+    "mappings": ";AAiBA;EACC;EACA;;;AAED;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAkBA;EACC;EACA;EACA;EACA;;AACA;EACC;EACA;EACA;EACA;;AACA;EACC;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;AAED;EACC,kBAjCU;EAkCV,qBAjCkB;EAkClB,iBAjCc;EAkCd;;AAED;EACC,kBAlCQ;EAmCR,qBAlCgB;EAmChB,iBAlCY;EAmCZ;;;AAKH;EACC;IACC;;EAED;IACC",
+    "file": "loadingCss.css"
+}

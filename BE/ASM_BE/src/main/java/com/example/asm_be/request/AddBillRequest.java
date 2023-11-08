@@ -15,24 +15,33 @@ import java.util.List;
 @Getter
 @Setter
 public class AddBillRequest {
-    private Integer userId;
-    private List<BillDetailsRequest> billDetailsList;
+    private String userName;
+    private String phone;
+    private Integer idBill;
     private Integer provinceId;
     private Integer districtId;
-    private Integer wardId;
+    private String wardId;
     private String address;
     private String note;
-    private Integer quantity;
     private Double fee;
+    private int optionPay;
+    private Double totalPay;
+    private Date shipDate;
 
     public Bill map(Bill bill, Users users){
-//        bill.setngay(new Date());
-//        bill.setAddress(this.address);
-//        bill.setDistrict(this.districtId);
-//        bill.setProvince(this.provinceId);
-//        bill.setWard(this.wardId);
-//        bill.setFee(this.fee);
-//        bill.setUsers(users);
+        bill.setCreatedAt(new Date());
+        bill.setAddress(this.address);
+        bill.setDistrict(this.districtId);
+        bill.setProvince(this.provinceId);
+        bill.setWard(this.wardId);
+        bill.setFee(this.fee);
+        bill.setPaymentOptions(this.optionPay);
+        bill.setTotalPay(this.totalPay);
+        bill.setDescription(this.note);
+        bill.setShipDate(this.shipDate);
+        bill.setUsers(users);
         return bill;
     }
+
+
 }

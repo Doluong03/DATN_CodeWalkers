@@ -13,6 +13,4 @@ public class userRequest {
 
     private String password;
 
-
-
 }

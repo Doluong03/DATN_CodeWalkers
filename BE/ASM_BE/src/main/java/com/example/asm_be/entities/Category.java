@@ -25,4 +25,5 @@ public class Category {
 
     @Column(name = "trang_thai")
     private boolean status;
+
 }

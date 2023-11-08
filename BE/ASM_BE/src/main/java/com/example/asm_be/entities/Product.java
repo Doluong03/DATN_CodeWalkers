@@ -1,5 +1,6 @@
 package com.example.asm_be.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class Product {
     @Column(name = "ten_san_pham")
     private String name;
 
+
     @Column(name = "anh_chinh")
     private String mainImg;
 
@@ -46,9 +48,14 @@ public class Product {
     @JoinColumn(name = "danh_gia_id")
     private Rate rate;
 
+
     @Column(name = "trang_thai")
     private boolean status;
 
-    @OneToMany(mappedBy = "product" ,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Image> listImage;
+
+//
+//    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+//    private List<ProductDetail> listProduct;
 }

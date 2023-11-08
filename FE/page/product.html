@@ -1,0 +1,169 @@
+<div class="container mt-5">
+    <div ng-show="products > 0">
+        <div class="row">
+            <div class="col-lg-10 fs-4">Men's Shoes & Sneakers(1010)</div>
+            <div class="col-lg-2 text-end">
+                <div class="btn-group">
+                    <button type="button border-0" class="btn btn dropdown-toggle" data-bs-toggle="dropdown"
+                        data-bs-display="static" aria-expanded="false">
+                        Sort by
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end text-end border-0">
+                        <li><button class="dropdown-item" type="button" ng-click="sortProducts('Name')" > Featured</button></li>
+                        <li><button class="dropdown-item" type="button"> Newest</button></li>
+                        <li><button class="dropdown-item" type="button" ng-click="sortProducts('PriceD')"> Price: High-Low</button></li>
+                        <li><button class="dropdown-item" type="button"  ng-click="sortProducts('PriceA')"> Price: Low-High</button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- menu -->
+            <div class="col-lg-2 scroll" style="width: 18%;">
+                <div class="content mt-3" style="max-height: 1000px; overflow-y: auto;">
+                    <p class="fs-5 fw-bold">Thương hiệu</p>
+                    <div class="brandList" ng-repeat="br in brands">
+                        <a href="" class="text-dark fw-bold">{{br.name}}</a>
+                    </div>
+                    <hr class="w-100">
+                    <div class="row align-items-center  w-100 ">
+                        <h5 class="col-lg-8 fw-bold">Size</h5>
+                        <button class="border-0  col-lg-1  " style="background-color: white;" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false"
+                            aria-controls="collapseWidthExample">
+                            <i class="bi bi-chevron-down w-25 text-dark"></i>
+                        </button>
+                    </div>
+                    <div style="min-height: 0px;">
+                        <div class="collapse" id="collapseWidthExample">
+                            <div class="size2-container row w-75">
+                                <div class="size2 col-lg-1 border" ng-repeat="sz in sizes"
+                                    ng-style="{'background-color': selectedValue == sz.name ? 'lightblue' : ''}">
+                                    <input type="radio" name="size" id="{{sz.description}}" ng-model="selectedValue"
+                                        ng-value="sz.name" class="visually-hidden" ng-click="selectSize(sz.name)">
+                                    <label for="{{sz.description}}" tabindex="-1" class="">{{sz.name}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="w-100">
+                    <div class="row align-items-left  w-100 ">
+                        <p class="col-lg-8 fw-bold">Khoảng giá</p>
+                        <button class="border-0  col-lg-1  " style="background-color: white;" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapsePrice" aria-expanded="false"
+                            aria-controls="collapsePrice">
+                            <i class="bi bi-chevron-down w-25 text-dark"></i>
+                        </button>
+                    </div>
+                    <div class="price">
+                        <div style="min-height: 0px;">
+                            <div class="collapse  align-items-center ms-0" id="collapsePrice">
+                                <input type="text" id="minPrice" name="minPrice" class="w-75" placeholder="Tối thiểu">
+                                <p style="height: 1px;" class="text-center w-75"><i class="bi bi-caret-down"></i></p>
+                                <input type="text" id="maxPrice" name="maxPrice" class="w-75 mt-1" placeholder="Tối đa">
+                                <button type="button" class="btn btn-outline-primary w-50 ms-4 mt-2 text-center"
+                                    onclick="addPriceRange()">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="w-100">
+                    <div class="row align-items-left  w-100 ">
+                        <p class="col-lg-8 fw-bold">Phân loại </p>
+                        <button class="border-0  col-lg-1  " style="background-color: white;" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseCategory" aria-expanded="false"
+                            aria-controls="collapseCategory">
+                            <i class="bi bi-chevron-down w-25 text-dark"></i>
+                        </button>
+                    </div>
+                    <div class="price">
+                        <div style="min-height: 0px;">
+                            <div class="collapse  align-items-center ms-0" id="collapseCategory"
+                                ng-repeat="ct in categories">
+                                <button class="border-0 btn">
+                                    <input type="checkbox" name="priceRange" value="{{ct.name}}" class="me-1">
+                                    {{ct.name}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="w-100">
+                    <div class="row align-items-left  w-100 ">
+                        <p class="col-lg-8 fw-bold">Chất liệu </p>
+                        <button class="border-0  col-lg-1  " style="background-color: white;" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseMaterial" aria-expanded="false"
+                            aria-controls="collapseMaterial">
+                            <i class="bi bi-chevron-down w-25 text-dark"></i>
+                        </button>
+                    </div>
+                    <div class="price">
+                        <div style="min-height: 0px;">
+                            <div class="collapse  align-items-center ms-0" id="collapseMaterial"
+                                ng-repeat="mt in materials">
+                                <button class="border-0 btn">
+                                    <input type="checkbox" name="priceRange" value="{{mt.name}}" class="me-1">
+                                    {{mt.name}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="w-100">
+                    <div class="row align-items-left  w-100 ">
+                        <p class="col-lg-8 fw-bold">Màu sắc </p>
+                        <button class="border-0  col-lg-1  " style="background-color: white;" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseColor" aria-expanded="false"
+                            aria-controls="collapseColor">
+                            <i class="bi bi-chevron-down w-25 text-dark"></i>
+                        </button>
+                    </div>
+                    <div class="price">
+                        <div style="min-height: 0px;">
+                            <div class="collapse  align-items-center ms-0" id="collapseColor" ng-repeat="cl in colors">
+                                <button class="border-0 btn">
+                                    <input type="checkbox" name="priceRange" value="{{cl.name}}" class="me-1">
+                                    {{cl.name}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="w-100">
+
+                </div>
+            </div>
+
+            <!-- Main -->
+            <div class="col-lg">
+                <div class="row ms-5 ">
+                    <div class="col-lg-4 mb-4 " data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in items">
+                        <div class="box_product ">
+                            <a ng-href="#/product-detail/{{pr.product.id}}" class="border-0">
+                                <img ng-src="assets/img/product/sp1/{{pr.product.listImage[0].link}}" class="img-fluid"
+                                    alt="{{pr.product.listImage[0].link}}">
+                                <h5 class="align-items-left">{{pr.product.name}}</h5>
+                                <p>{{pr.product.category.name}}</p>
+                                <p>Còn lại: {{pr.quantity}}</p>
+                                <p class="col text-dark">{{pr.price  | vndCurrency  }}
+                                </p>
+                            </a>
+                        </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="products === 0">
+        <div class="no-results">
+                <div class="css-rnfng4">
+                    <h1 class="css-mqo35 align-items-center d-flex justify-content-center"><span data-test="no-results-title" class="css-epqh4k">We could not find
+                            anything for "{{name}}".</span></h1>
+                </div>
+            <div role="complementary" class="css-1im24m8 d-flex justify-content-center">
+                <div class="nds-stack css-z31e8r ej3jrvm0 gap-xs-m">
+                    <button class="btn btn-outline-danger" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span role="status">Loading...</span>
+                      </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

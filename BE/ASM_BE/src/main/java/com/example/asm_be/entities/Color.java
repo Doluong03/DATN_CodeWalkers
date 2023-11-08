@@ -21,7 +21,6 @@ public class Color {
     @Column(name = "ten_mau_sac")
     private String name;
 
-
     @Column(name = "trang_thai")
     private boolean status;
 }

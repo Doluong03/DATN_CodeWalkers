@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -44,6 +45,9 @@ public class BillDetailImpl implements BillDetailService {
                 billDetail.setBill(bill);
                 billDetail.setProductDetail(cartDetails.getProductDetail());
                 billDetail.setQuantity(cartDetails.getQuantity());
+                Optional<ProductDetail> productDetail = productDetailRepository.findById(cartDetails.getProductDetail().getId());
+                ProductDetail prDtOut = productDetail.get();
+                prDtOut.setQuantity(prDtOut.getQuantity() - cartDetails.getQuantity());
                 billDetail.setPrice(cartDetails.getProductDetail().getPrice());
                 billDetailsRepository.save(billDetail);
                 billDetailsList.add(billDetail);

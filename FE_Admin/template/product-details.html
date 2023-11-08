@@ -236,8 +236,11 @@
 
                   <div class="form-group">
                       <label for="exampleInputStatus">Trạng Thái</label>
-                      <select class="form-control" id="exampleInputStatus" ng-model="formPdDetailUpdate.status.id" ng-options="status.id as status.name for status in statusProduct">
+                      <select class="form-control" id="exampleInputStatus" ng-model="formPdDetailUpdate.status" >
                           <option value="" disabled selected>-- Chọn Trạng Thái --</option>
+                          <option value=true ng-selected="formPdDetailUpdate.status==true ? 'selected' :''" >Đang hoạt động</option>
+                          <option value=false ng-selected="formPdDetailUpdate.status==false ? 'selected' :''" >Ngừng hoạt động</option>
+
                       </select>
                   </div>
                   

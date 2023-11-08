@@ -1,13 +1,22 @@
 package com.example.asm_be.service;
 
 import com.example.asm_be.entities.Category;
-import org.springframework.data.domain.Page;
+import com.example.asm_be.entities.Color;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+import org.springframework.data.domain.Page;
+@Service
 public interface CategoryService {
 
-    Page<Category> getAll(Integer pageNo,Integer sizePage);
+    Page<Category> getAllPage(Integer pageNo,Integer sizePage);
+    public List<Category> getAll();
 
-    Category getOne(Integer id);
+    public Category getOne(int id);
+    // public Category save( Category category);
+    // public Category update( Category category);
+
     boolean save( Category categoryRequest);
     boolean update( Category categoryRequest);
     boolean delete( Integer idCategory);

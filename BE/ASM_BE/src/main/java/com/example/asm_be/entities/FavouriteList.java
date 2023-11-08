@@ -33,5 +33,7 @@ public class FavouriteList {
     @JoinColumn(name = "khach_hang_id")
     private Users users;
 
+    @Column(name = "trang_thai")
+    private int   status;
 
 }

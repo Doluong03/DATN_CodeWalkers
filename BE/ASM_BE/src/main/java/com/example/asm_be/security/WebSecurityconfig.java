@@ -95,6 +95,7 @@ public class WebSecurityconfig {
                                 .requestMatchers("/admin/User/insert").authenticated()
                                 .requestMatchers("/admin/User/update").authenticated()
                                 .requestMatchers("/CodeWalkers/User").permitAll()
+
                                 .requestMatchers("/CodeWalkers/admin/Material/select").permitAll()
                                 .requestMatchers("/CodeWalkers/admin/Material/insert").authenticated()
                                 .requestMatchers("/CodeWalkers/admin/Material/update").authenticated()

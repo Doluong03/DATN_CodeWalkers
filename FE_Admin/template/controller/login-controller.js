@@ -23,7 +23,7 @@ app.controller('loginController', ['$scope', '$http', function ($scope, $http) {
             localStorage.setItem('userData', JSON.stringify(result.data));
             console.log(result.data);
             // Use regular JavaScript for navigation to another app or page
-            window.location.href = "http://127.0.0.1:5500/template/index.html#/trang-chu";
+            window.location.href = "http://127.0.0.1:5500/FE_Admin/template/index.html#/trang-chu";
           });
         }
       })

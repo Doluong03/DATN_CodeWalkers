@@ -1,3 +1,4 @@
+
 window.ChartController = function ($scope, $http) {
 
 
@@ -272,7 +273,6 @@ window.ChartController = function ($scope, $http) {
             className: "btn btn-primary"
           }
         })
-
       } else if (type === 'title-and-text') {
         swal({
           title: 'Read the alert!',
@@ -284,7 +284,6 @@ window.ChartController = function ($scope, $http) {
             className: "btn btn-primary"
           }
         })
-
       } else if (type === 'success-message') {
         swal({
           title: 'Congratulations!',
@@ -297,7 +296,6 @@ window.ChartController = function ($scope, $http) {
             className: "btn btn-primary"
           }
         })
-
       } else if (type === 'auto-close') {
         swal({
           title: 'Auto close alert!',
@@ -339,7 +337,6 @@ window.ChartController = function ($scope, $http) {
             }
           }
         })
-
       } else if (type === 'custom-html') {
         swal({
           content: {

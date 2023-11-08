@@ -1,4 +1,4 @@
-<nav class="sidebar sidebar-offcanvas" id="employeeMenu" >
+<nav class="sidebar sidebar-offcanvas" id="employeeMenu">
   <ul class="nav">
     <li class="nav-item">
       <a class="nav-link" href="index.html">
@@ -6,14 +6,8 @@
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
-    <li class="nav-item" >
-      <a
-        class="nav-link"
-        data-toggle="collapse"
-        href="#ui-basic"
-        aria-expanded="false"
-        aria-controls="ui-basic"
-      >
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
         <i class="icon-layout menu-icon"></i>
         <span class="menu-title">Sản Phẩm</span>
         <i class="menu-arrow"></i>
@@ -25,12 +19,19 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#material">Chất Liệu</a>
+            <a class="nav-link" href="#hinh-anh">Hình ảnh</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#category">Phân Loại</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#thuong-hieu">Thương Hiệu</a>
+            <a class="nav-link" href="#brand">Thương Hiệu</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#color">Màu sắc</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#product">Sản phẩm</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#product-detail">Product Details</a>
@@ -38,7 +39,7 @@
         </ul>
       </div>
     </li>
-    
+
 
     <!-- nhân viên -->
     <li class="nav-item">
@@ -74,7 +75,7 @@
 
     <!-- Đơn Hàng -->
     <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="#don-hang">
+      <a class="nav-link" data-toggle="collapse" href="#order">
         <i class="fa-regular fa-truck menu-icon"></i>
         <span class="menu-title">Đơn Hàng</span>
       </a>
@@ -98,6 +99,85 @@
       <a class="nav-link" data-toggle="collapse" href="/FE_Admin/template/register.html">
         <i class="fa-regular fa-toilet menu-icon"></i>
         <span class="menu-title">Nhà vệ xinh xấu ra ngoài </span>
+      </a>
+    </li>
+
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="/FE_Admin/template/forgot-password.html">
+        <i class="fa-solid fa-poo fa-beat menu-icon"></i>
+        <span class="menu-title">Sun sun </span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#nsx">
+        <i class="fa-solid fa-poo fa-beat menu-icon"></i>
+        <span class="menu-title">Nhà sản xuất </span>
+      </a>
+    </li>
+
+
+
+  </ul>
+</nav>
+
+<!-- nhan vien binh thuong -->
+<nav class="sidebar sidebar-offcanvas" id="adminMenu">
+  <ul class="nav">
+    <li class="nav-item">
+      <a class="nav-link" href="index.html">
+        <i class="icon-grid menu-icon"></i>
+        <span class="menu-title">Dashboard</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <i class="icon-layout menu-icon"></i>
+        <span class="menu-title">Sản Phẩm</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="ui-basic">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item">
+            <a class="nav-link" href="#kich-thuoc">Kích Thước</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#chat-lieu">Chất Liệu</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#phan-loai">Phân Loại</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#thuong-hieu">Thương Hiệu</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#product-detail">Product Details</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+
+
+    <!-- Đánh Giá -->
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#danh-gia">
+        <i class="fa-regular fa-thumbs-up menu-icon"></i>
+        <span class="menu-title">Đánh Giá</span>
+      </a>
+    </li>
+    <!-- Hóa Đơn -->
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#hoa-don">
+        <i class="fa-regular fa-scroll menu-icon"></i>
+        <span class="menu-title">Hóa Đơn</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#nsx">
+        <i class="fa-solid fa-poo fa-beat menu-icon"></i>
+        <span class="menu-title">Nhà sản xuất </span>
       </a>
     </li>
 
@@ -197,44 +277,43 @@
 
   var role_employee = false;
   var role_admin = false;
-  
+
   var data = localStorage.getItem('userData');
-    var role = JSON.parse(data);
+  var role = JSON.parse(data);
 
-    // Kiểm tra độ dài của mảng role
-    if (role.roles.length === 1) {
-        // Nếu độ dài là 1, sử dụng vai trò ở vị trí đầu tiên
-        if (role.roles[0] === "ROLE_ADMIN") {
-            role_admin = true;
-        } else if (role.roles[0] === "ROLE_EMPLOYEE") {
-            role_employee = true;
-        }
-    } else if (role.roles.length > 1) {
-        // Nếu độ dài lớn hơn 1, mặc định là admin
-        role_admin = true;
-        // Có thể xử lý các vai trò khác nếu cần
+  // Kiểm tra độ dài của mảng role
+  if (role.roles.length === 1) {
+    // Nếu độ dài là 1, sử dụng vai trò ở vị trí đầu tiên
+    if (role.roles[0] === "ROLE_ADMIN") {
+      role_admin = true;
+    } else if (role.roles[0] === "ROLE_EMPLOYEE") {
+      role_employee = true;
     }
+  } else if (role.roles.length > 1) {
+    // Nếu độ dài lớn hơn 1, mặc định là admin
+    role_admin = true;
+    // Có thể xử lý các vai trò khác nếu cần
+  }
 
-    // Kiểm tra và xử lý các vai trò
-    if (role_admin) {
-        console.log('Người dùng có vai trò ROLE_EMPLOYEE');
-        // Thực hiện các hành động hoặc hiển thị menu cho ROLE_EMPLOYEE
-        
-        document.getElementById('employeeMenu').style.display = 'block';
-        document.getElementById('adminMenu').style.display = 'none';
-    } else if (role_employee) {
-        console.log('Người dùng có vai trò ROLE_ADMIN');
-        // Thực hiện các hành động hoặc hiển thị menu cho ROLE_ADMIN
-        document.getElementById('employeeMenu').style.display = 'none';
-        document.getElementById('adminMenu').style.display = 'block';
-    } else {
-        console.log('Người dùng không có vai trò hoặc có vai trò khác');
-        // Thực hiện các hành động mặc định hoặc hiển thị menu mặc định
-        document.getElementById('employeeMenu').style.display = 'none';
-       document.getElementById('adminMenu').style.display = 'none'; 
-    }
+  // Kiểm tra và xử lý các vai trò
+  if (role_admin) {
+    console.log('Người dùng có vai trò ROLE_EMPLOYEE');
+    // Thực hiện các hành động hoặc hiển thị menu cho ROLE_EMPLOYEE
+
+    document.getElementById('employeeMenu').style.display = 'block';
+    document.getElementById('adminMenu').style.display = 'none';
+  } else if (role_employee) {
+    console.log('Người dùng có vai trò ROLE_ADMIN');
+    // Thực hiện các hành động hoặc hiển thị menu cho ROLE_ADMIN
+    document.getElementById('employeeMenu').style.display = 'none';
+    document.getElementById('adminMenu').style.display = 'block';
+  } else {
+    console.log('Người dùng không có vai trò hoặc có vai trò khác');
+    // Thực hiện các hành động mặc định hoặc hiển thị menu mặc định
+    document.getElementById('employeeMenu').style.display = 'none';
+    document.getElementById('adminMenu').style.display = 'none';
+  }
 
 
- 
+
 </script>
-

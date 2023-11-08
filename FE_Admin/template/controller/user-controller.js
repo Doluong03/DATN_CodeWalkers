@@ -1,40 +1,40 @@
 
-window.UserController = function ($scope, $http, $window, $rootScope) {
+window.UserController = function ($scope, $http, $window,$rootScope) {
 
   $scope.listUSers = [];
   $scope.pageNo = 0;
   $scope.sizePage = 5;
-  $scope.lastIndex = 0; // phần tử cuối của mảng
-
+  $scope.lastIndex =0; // phần tử cuối của mảng
+  
 
   //config headers
   var headers = {
     headers: {
-      'Authorization': 'Bearer ' + tokenAuthen(),
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-      // Các header khác nếu cần
+        'Authorization': 'Bearer ' + tokenAuthen(),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        // Các header khác nếu cần
     }
-  };
+};
 
-  //token authen
-  function tokenAuthen() {
-    // Lấy dữ liệu từ localStorage
-    var userDataString = localStorage.getItem('userData');
+ //token authen
+ function tokenAuthen() {
+  // Lấy dữ liệu từ localStorage
+  var userDataString = localStorage.getItem('userData');
 
-    // Kiểm tra xem dữ liệu có tồn tại không
-    if (userDataString) {
+  // Kiểm tra xem dữ liệu có tồn tại không
+  if (userDataString) {
       // Chuyển đổi dữ liệu từ chuỗi JSON sang đối tượng JavaScript
       var userData = JSON.parse(userDataString);
 
       // Bạn có thể sử dụng userData ở đây
       console.log(userData.token);
       return userData.token;
-    } else {
+  } else {
       // Trường hợp không có dữ liệu trong localStorage
       console.log('Không có dữ liệu đăng nhập trong localStorage.');
-    }
   }
+}
 
   $scope.formUser = {
     id: "",
@@ -44,9 +44,9 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
     gender: true,
     email: "",
     address: "",
-    createdDate: "",
-    modified: "",
-    image: "",
+    createdDate : "",
+    modified : "",
+    image : "",
   };
 
   $scope.formUserUpdate = {
@@ -57,60 +57,60 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
     gender: true,
     email: "",
     address: "",
-    createdDate: "",
-    modified: "",
-    image: "",
+    createdDate : "",
+    modified : "",
+    image : "",
   };
 
   // phân trang start
   $scope.totalPage = 0;
   $scope.pageCurrent = 0;
   $scope.itemsPerPage = 3; // Số lượng trang bạn muốn hiển thị
-
+  
   $scope.pageRange = function () {
     var startPage = Math.max(1, $scope.pageCurrent - Math.floor($scope.itemsPerPage / 2));
     var endPage = Math.min($scope.totalPage, startPage + $scope.itemsPerPage - 1);
     var pages = [];
-
+  
     if ($scope.pageCurrent + Math.floor($scope.itemsPerPage / 2) > $scope.totalPage) {
       startPage = Math.max(1, $scope.totalPage - $scope.itemsPerPage + 1);
       endPage = $scope.totalPage;
     }
-
+  
     // Bắt đầu từ trang đầu tiên nếu trang hiện tại là quá giữa danh sách
     if (startPage > 1) {
       startPage = Math.max(1, startPage - 1);
     }
-
+  
     for (var i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
-
+  
     return pages;
   };
-
-
-
+  
+  
+  
   $scope.nextPage = function () {
     if ($scope.pageCurrent < $scope.totalPage - 1) {
       $scope.pageCurrent++;
-      $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+      $scope.hienThi($scope.pageCurrent,$scope.sizePage);
     }
   };
-
+  
   $scope.previousPage = function () {
     if ($scope.pageCurrent > 0) {
       $scope.pageCurrent--;
     }
-    $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+      $scope.hienThi($scope.pageCurrent,$scope.sizePage);
   };
-
+  
   $scope.hoveredPage = null;
 
   $scope.onHover = function (index) {
     $scope.hoveredPage = index;
   };
-
+  
   $scope.onLeave = function () {
     $scope.hoveredPage = null;
   };
@@ -119,33 +119,32 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
   $scope.onSizePageChange = function () {
     // Làm cái gì đó với giá trị mới của sizePage
     console.log("New Size Page: " + $scope.sizePage);
-    $scope.hienThi($scope.pageNo, $scope.sizePage);
+    $scope.hienThi($scope.pageNo,$scope.sizePage);
     // Gọi các hàm khác cần thiết với giá trị mới của sizePage
-  };
+};
   // end phân trang
 
 
   $scope.hienThi = function (pageNo, sizePage) {
-
+    
 
     let apiUrl = apiUser + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
 
-    $http.get(apiUrl, headers).then(
-      function (response) {
-        // Xử lý phản hồi thành công
-        $scope.listUSers = response.data.usersList;
-        $scope.totalPage = response.data.totalPages;
-        $scope.lastIndex = $scope.listUSers[$scope.listUSers.length - 1].id;
-        console.log(response.data);
-        console.log("hien thi nao" + $scope.listUSers)
-        console.log(response.data.totalPages);
-      },
-      function (error) {
-        // Xử lý lỗi
-        console.log(error);
-      }
+    $http.get(apiUrl,headers).then(
+        function (response) {
+            // Xử lý phản hồi thành công
+            $scope.listUSers = response.data.usersList;
+            $scope.totalPage = response.data.totalPages;
+            $scope.lastIndex = $scope.listUSers[$scope.listUSers.length - 1].id;
+            console.log(response.data);
+            console.log(response.data.totalPages);
+        },
+        function (error) {
+            // Xử lý lỗi
+            console.log(error);
+        }
     );
-  };
+};
 
 
   $scope.PageNo = function (pageNo, sizePage) {
@@ -153,11 +152,11 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
     $scope.sizePage = sizePage; // Cập nhật sizePage
     $scope.hienThi(pageNo, sizePage);
     $scope.hoveredPage = pageNo; // Truyền giá trị pageNo vào hàm hienThi
-  };
+};
 
   // Gọi hàm hienThi() để lấy dữ liệu ban đầu
-  $scope.hienThi($scope.pageNo, $scope.sizePage);
-
+  $scope.hienThi($scope.pageNo,$scope.sizePage);
+  
 
   //delete data
 
@@ -166,7 +165,7 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
 
     console.log(item);
     let userId = item.id;
-    let api = apiURL + "admin/User/delete/" + userId;
+    let api = apiURL  + "admin/User/delete/" + userId;
 
     Swal.fire({
       title: 'Xác nhận',
@@ -178,20 +177,20 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
     }).then((result) => {
       if (result.isConfirmed) {
         // Hành động khi người dùng ấn "Có"
-        $http.delete(api, headers).then(function (response) {
+        $http.delete(api,headers).then(function (response) {
           Swal.fire('Xóa thành công!', '', 'success');
-          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+          $scope.hienThi($scope.pageCurrent,$scope.sizePage);
           console.log(response);
-        })
-          .catch(function (error) {
-            console.log(error);
-          });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hành động khi người dùng ấn "Không"
         Swal.fire('Hủy bỏ', '', 'error');
       }
     });
-
+    
   };
 
   // show form add
@@ -202,14 +201,14 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
       $scope.showFormUpdate = false;
     }
     $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
-    $scope.formUser = {};
+    $scope.formUser={};
   };
   // add one product
 
   $scope.addUser = function (event) {
     event.preventDefault();
     console.log($scope.formUser);
-
+  
     Swal.fire({
       title: 'Xác nhận',
       text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
@@ -219,7 +218,7 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        $http.post(apiAdmin + "User" + "/insert", JSON.stringify($scope.formUser), headers)
+        $http.post(apiAdmin+"User" + "/insert", JSON.stringify($scope.formUser),headers)
           .then(function (response) {
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
             Swal.fire({
@@ -243,56 +242,56 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
       }
     });
   };
+  
 
+// show form user and load detail
+$scope.showFormUpdate = false;
+$scope.activeItem = -1;
+$scope.formUserUpdate = {};
 
-  // show form user and load detail
-  $scope.showFormUpdate = false;
-  $scope.activeItem = -1;
-  $scope.formUserUpdate = {};
+$scope.toggleFormUpdate = function (event, item) {
+  event.preventDefault();
+ 
+  if ($scope.showForm) {
+    // Nếu form thêm mới đang mở, đóng nó trước khi mở form cập nhật
+    $scope.showForm = false;
+  }
 
-  $scope.toggleFormUpdate = function (event, item) {
-    event.preventDefault();
+  if (item && $scope.activeItem === item && $scope.showFormUpdate) {
+    // Trường hợp ấn lại dòng đã chọn và form đang hiển thị, đóng form và xóa dữ liệu
+    $scope.showFormUpdate = false;
+    $scope.activeItem = null;
+    $scope.formUserUpdate = {};
+  } else if (item) {
+    // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
+    $scope.showFormUpdate = true;
+    $scope.activeItem = item;
 
-    if ($scope.showForm) {
-      // Nếu form thêm mới đang mở, đóng nó trước khi mở form cập nhật
-      $scope.showForm = false;
-    }
-
-    if (item && $scope.activeItem === item && $scope.showFormUpdate) {
-      // Trường hợp ấn lại dòng đã chọn và form đang hiển thị, đóng form và xóa dữ liệu
-      $scope.showFormUpdate = false;
-      $scope.activeItem = null;
-      $scope.formUserUpdate = {};
-    } else if (item) {
-      // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
-      $scope.showFormUpdate = true;
-      $scope.activeItem = item;
-
-      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-      $scope.formUserUpdate = {
-        id: item.id,
-        name: item.name,
-        dateOfBirth: item.dateOfBirth,
-        phoneNumber: item.phoneNumber,
-        gender: item.gender,
-        email: item.email,
-        address: item.address,
-        createdDate: item.createdDate
-      };
-    } else {
-      // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
-      $scope.showFormUpdate = false;
-      $scope.activeItem = null;
-      $scope.formUserUpdate = {};
-    }
+    // Nạp dữ liệu của dòng được chọn vào biểu mẫu
+   // Nạp dữ liệu của dòng được chọn vào biểu mẫu
+   $scope.formUserUpdate = {
+    id: item.id,
+    name: item.name,
+    dateOfBirth: item.dateOfBirth,
+    phoneNumber: item.phoneNumber,
+    gender: item.gender,
+    email: item.email,
+    address: item.address,
+    createdDate: item.createdDate
   };
+  } else {
+    // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
+    $scope.showFormUpdate = false;
+    $scope.activeItem = null;
+    $scope.formUserUpdate = {};
+  }
+};
 
   // update
   $scope.UpdateUser = function (event) {
     event.preventDefault();
     console.log($scope.formUserUpdate);
-
+  
     Swal.fire({
       title: 'Xác nhận',
       text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
@@ -302,7 +301,7 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        $http.put(apiAdmin + "User/update", JSON.stringify($scope.formUserUpdate), headers)
+        $http.put(apiAdmin+"User/update" , JSON.stringify($scope.formUserUpdate),headers)
           .then(function (response) {
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
             Swal.fire({
@@ -326,196 +325,196 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
       }
     });
   };
+  
 
+// import exel
 
-  // import exel
+$scope.importing = false; // Biến để theo dõi trạng thái của animation
+$scope.importInProgress = false; // Flag để kiểm soát quá trình import
+$scope.errorShown = false; // Flag để kiểm soát việc hiển thị lỗi
 
-  $scope.importing = false; // Biến để theo dõi trạng thái của animation
-  $scope.importInProgress = false; // Flag để kiểm soát quá trình import
-  $scope.errorShown = false; // Flag để kiểm soát việc hiển thị lỗi
+$scope.import = function (files) {
+  // Check if an import is already in progress
+  if ($scope.importInProgress) {
+    return;
+  }
 
-  $scope.import = function (files) {
-    // Check if an import is already in progress
-    if ($scope.importInProgress) {
-      return;
-    }
+  $scope.importInProgress = true; // Set the flag to true
 
-    $scope.importInProgress = true; // Set the flag to true
+  $scope.importing = true; // Bắt đầu animation
+  $scope.errorShown = false; // Reset the error flag
 
-    $scope.importing = true; // Bắt đầu animation
-    $scope.errorShown = false; // Reset the error flag
-
-    var reader = new FileReader();
-    reader.onloadend = async () => {
-      try {
-        var workbook = new ExcelJS.Workbook();
-        await workbook.xlsx.load(reader.result);
-        const worksheet = workbook.getWorksheet('Sheet1');
-        worksheet.eachRow((row, index) => {
-          if (index > 1) {
-            let user = {
-              name: row.getCell(1).value,
-              dateOfBirth: formatDate(row.getCell(2).value),
-              phoneNumber: '0' + row.getCell(3).value,
-              gender: parseGender(row.getCell(4).value),
-              email: row.getCell(5).value,
-              address: row.getCell(6).value,
-              image: row.getCell(7).value
-            };
-            $http.post(apiAdmin + "User" + "/insert", JSON.stringify(user), headers)
-              .then(function (response) {
-                if (!$scope.errorShown) {
-                  Swal.fire({
-                    icon: "success",
-                    title: "Ok",
-                    text: "Đã import thành công",
-                  });
-                }
-              })
-              .catch(function (error) {
-                if (!$scope.errorShown) {
-                  Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Đã xảy ra lỗi!",
-                  });
-                  console.log(error);
-                  $scope.errorShown = true; // Set the error flag
-                }
-              });
-          }
-        });
-      } catch (error) {
-        if (!$scope.errorShown) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Đã xảy ra lỗi!",
-          });
-          console.error('Error reading file:', error);
-          $scope.errorShown = true; // Set the error flag
+  var reader = new FileReader();
+  reader.onloadend = async () => {
+    try {
+      var workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.load(reader.result);
+      const worksheet = workbook.getWorksheet('Sheet1');
+      worksheet.eachRow((row, index) => {
+        if (index > 1) {
+          let user = {
+            name: row.getCell(1).value,
+            dateOfBirth: formatDate(row.getCell(2).value),
+            phoneNumber: '0'+ row.getCell(3).value,
+            gender: parseGender(row.getCell(4).value),
+            email: row.getCell(5).value,
+            address: row.getCell(6).value,
+            image: row.getCell(7).value
+          };
+          $http.post(apiUser + "/insert", JSON.stringify(user))
+            .then(function (response) {
+              if (!$scope.errorShown) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Ok",
+                  text: "Đã import thành công",
+                });
+              }
+            })
+            .catch(function (error) {
+              if (!$scope.errorShown) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Đã xảy ra lỗi!",
+                });
+                console.log(error);
+                $scope.errorShown = true; // Set the error flag
+              }
+            });
         }
-      } finally {
-        $scope.importing = false; // Kết thúc animation
-        $scope.importInProgress = false; // Reset the flag
-        $scope.$apply(); // Cập nhật scope
-        // Xóa file sau khi đã xử lý xong
-        document.getElementById('input-file').value = '';
+      });
+    } catch (error) {
+      if (!$scope.errorShown) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Đã xảy ra lỗi!",
+        });
+        console.error('Error reading file:', error);
+        $scope.errorShown = true; // Set the error flag
       }
-    };
-    reader.readAsArrayBuffer(files[0]);
-    $scope.hienThi($scope.pageNo);
+    } finally {
+      $scope.importing = false; // Kết thúc animation
+      $scope.importInProgress = false; // Reset the flag
+      $scope.$apply(); // Cập nhật scope
+      // Xóa file sau khi đã xử lý xong
+      document.getElementById('input-file').value = '';
+    }
   };
+  reader.readAsArrayBuffer(files[0]);
+  $scope.hienThi($scope.pageNo);
+};
 
 
-  function formatDate(date) {
-    // Giả sử ngày đang trong định dạng ISO 8601
-    const isoDate = new Date(date);
-    const formattedDate = isoDate.toLocaleDateString("en-GB");
-    return formattedDate;
-  }
+function formatDate(date) {
+  // Giả sử ngày đang trong định dạng ISO 8601
+  const isoDate = new Date(date);
+  const formattedDate = isoDate.toLocaleDateString("en-GB");
+  return formattedDate;
+}
 
-  function parseGender(genderValue) {
-    // Giả sử giá trị của genderValue là một giá trị boolean trong Excel (đúng hoặc sai)
-    return genderValue === true;
-  }
+function parseGender(genderValue) {
+  // Giả sử giá trị của genderValue là một giá trị boolean trong Excel (đúng hoặc sai)
+  return genderValue === true;
+}
 
-  // sort column
-  $scope.sortColumn = '';
-  $scope.reverseSort = false;
+// sort column
+$scope.sortColumn = '';
+$scope.reverseSort = false;
 
-  $scope.sortData = function (column) {
+$scope.sortData = function (column) {
     $scope.reverseSort = ($scope.sortColumn === column) ? !$scope.reverseSort : false;
     $scope.sortColumn = column;
-  };
+};
 
-  $scope.getSortClass = function (column) {
+$scope.getSortClass = function (column) {
     if ($scope.sortColumn === column) {
-      return $scope.reverseSort ? 'sort-down' : 'sort-up';
+        return $scope.reverseSort ? 'sort-down' : 'sort-up';
     }
     return 'sort-none';
-  };
+};              
 
-  // export pdf
-  $scope.exportToPDF = function () {
-    const tableId = 'UserTable';
-    const fileName = 'exported_data';
+// export pdf
+$scope.exportToPDF = function () {
+  const tableId = 'UserTable';
+  const fileName = 'exported_data';
 
-    // Tạo đối tượng jsPDF
-    const pdf = new $window.jsPDF('p', 'pt', 'letter');
+  // Tạo đối tượng jsPDF
+  const pdf = new $window.jsPDF('p', 'pt', 'letter');
 
-    // Thêm bảng vào PDF
-    pdf.autoTable({ html: `#${tableId}` });
+  // Thêm bảng vào PDF
+  pdf.autoTable({ html: `#${tableId}` });
 
-    // Tải file PDF
-    pdf.save(`${fileName}.pdf`);
-  };
+  // Tải file PDF
+  pdf.save(`${fileName}.pdf`);
+};
 
-  $scope.exportToExcel = function () {
-    // Lấy bảng theo ID
-    var table = document.getElementById('UserTable'); // Thay id table bảng của bạn vào đây
+$scope.exportToExcel = function() {
+  // Lấy bảng theo ID
+  var table = document.getElementById('UserTable'); // Thay id table bảng của bạn vào đây
 
-    // Lấy dữ liệu từ bảng
-    var data = [];
-    for (var i = 0; i < table.rows.length; i++) {
-      var rowData = [];
-      for (var j = 0; j < table.rows[i].cells.length; j++) {
-        rowData.push(table.rows[i].cells[j].innerText);
-      }
-      data.push(rowData);
+  // Lấy dữ liệu từ bảng
+  var data = [];
+  for (var i = 0; i < table.rows.length; i++) {
+    var rowData = [];
+    for (var j = 0; j < table.rows[i].cells.length; j++) {
+      rowData.push(table.rows[i].cells[j].innerText);
     }
+    data.push(rowData);
+  }
 
-    // Tạo một workbook và một worksheet
-    var ws = XLSX.utils.aoa_to_sheet(data);
-    var wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  // Tạo một workbook và một worksheet
+  var ws = XLSX.utils.aoa_to_sheet(data);
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    // Xuất file Excel
-    XLSX.writeFile(wb, 'exported_data.xlsx');
-  };
+  // Xuất file Excel
+  XLSX.writeFile(wb, 'exported_data.xlsx');
+};
 
-  $scope.exportToSVG = function () {
-    // Lấy bảng theo ID
-    var table = document.getElementById('UserTable'); // Thay id table bảng của bạn vào đây
+$scope.exportToSVG = function() {
+  // Lấy bảng theo ID
+  var table = document.getElementById('UserTable'); // Thay id table bảng của bạn vào đây
 
-    // Tạo một đối tượng SVG
-    var svg = SVG().size(2000, 1500); // Kích thước SVG
+  // Tạo một đối tượng SVG
+  var svg = SVG().size(2000, 1500); // Kích thước SVG
 
-    // Lấy số cột của bảng
-    var numColumns = table.rows.length > 0 ? table.rows[0].cells.length : 0;
+  // Lấy số cột của bảng
+  var numColumns = table.rows.length > 0 ? table.rows[0].cells.length : 0;
 
-    // Xác định chiều rộng của cột rộng nhất
-    var maxWidth = 0;
-    for (var i = 0; i < table.rows.length; i++) {
-      var cellWidth = table.rows[i].cells[0].offsetWidth;
-      maxWidth = Math.max(maxWidth, cellWidth);
+  // Xác định chiều rộng của cột rộng nhất
+  var maxWidth = 0;
+  for (var i = 0; i < table.rows.length; i++) {
+    var cellWidth = table.rows[i].cells[0].offsetWidth;
+    maxWidth = Math.max(maxWidth, cellWidth);
+  }
+
+  // Thêm các đối tượng SVG từ các cột của bảng
+  for (var i = 0; i < table.rows.length; i++) {
+    for (var j = 0; j < table.rows[i].cells.length; j++) {
+      // Tính toán vị trí dựa trên chỉ số của cột
+      var xPosition = 10 + j * (maxWidth + 180); // 10 là khoảng cách giữa các cột
+      var yPosition = 30 * i + 40;
+
+      // Thêm văn bản từ cột của bảng vào SVG
+      svg.text(table.rows[i].cells[j].innerText).move(xPosition, yPosition);
     }
+  }
 
-    // Thêm các đối tượng SVG từ các cột của bảng
-    for (var i = 0; i < table.rows.length; i++) {
-      for (var j = 0; j < table.rows[i].cells.length; j++) {
-        // Tính toán vị trí dựa trên chỉ số của cột
-        var xPosition = 10 + j * (maxWidth + 180); // 10 là khoảng cách giữa các cột
-        var yPosition = 30 * i + 40;
+  // Xuất nội dung SVG dưới dạng chuỗi
+  var svgString = svg.svg();
 
-        // Thêm văn bản từ cột của bảng vào SVG
-        svg.text(table.rows[i].cells[j].innerText).move(xPosition, yPosition);
-      }
-    }
-
-    // Xuất nội dung SVG dưới dạng chuỗi
-    var svgString = svg.svg();
-
-    // Xuất file SVG
-    var blob = new Blob([svgString], { type: 'image/svg+xml' });
-    var url = window.URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'exported_svg.svg';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
+  // Xuất file SVG
+  var blob = new Blob([svgString], { type: 'image/svg+xml' });
+  var url = window.URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'exported_svg.svg';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
 
 
   // thu vien jQuery không đụng vào
@@ -807,7 +806,7 @@ window.UserController = function ($scope, $http, $window, $rootScope) {
           timer: 2000,
           button: false,
         }).then(
-          function () { },
+          function () {},
           // handling the promise rejection
           function (dismiss) {
             if (dismiss === "timer") {

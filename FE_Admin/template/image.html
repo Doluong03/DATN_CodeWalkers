@@ -1,0 +1,257 @@
+
+
+        <!-- start table -->
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Image table</h4>
+            
+            
+
+                <div class="search-container">
+                  <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a Size">
+                  <i class="fa-light fa-magnifying-glass"></i>
+                </div>
+          
+          
+                <button ng-click="deleteAll()" id="delete-all" class="btn btn-danger mt-3"><i class="fa-duotone fa-trash"></i> Xoá
+                  Nhiều</button>
+          
+          
+                <div class="btn-group">
+          
+                   <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="toggleForm()">
+                    <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
+          
+                      <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
+                      <i class="fa-solid fa-arrows-rotate "></i>                                                                  
+                       </button>
+                         
+          
+          
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuIconButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <i class="fa-solid fa-list"></i>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton3">
+                              <label class="dropdown-item">
+                                <input type="checkbox" ng-model="selectAll" ng-change="toggleAll()"> Chọn Tất Cả
+                              </label>
+                              <hr>
+                              <label class="dropdown-item" ng-repeat="column in columns">
+                                <input type="checkbox" ng-model="column.selected" ng-change="toggleColumn(column)">
+                                {{ column.name }}
+                              </label>
+                            </div>
+                          </div>
+          
+          
+                  <input type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)"
+                    style="display:none;">
+                  <button type="button" id="btn-icon" class="btn btn-secondary " onclick="triggerFileInput()">
+                    <i class="fa-sharp fa-solid fa-file-import"></i>
+                  </button>
+          
+                  <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
+                          <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button> -->
+          
+          
+                  <div class="btn-group">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuIconButton1"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fa-solid fa-down-to-line"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+                      <a class="dropdown-item" ng-click="exportToSVG()">SVG</a>
+                      <a class="dropdown-item" ng-click="exportToExcel()">Excel</a>
+                      <a class="dropdown-item" ng-click="exportToPDF();">PDF</a>
+                    </div>
+                  </div>
+          
+                </div>
+                
+             
+             
+         <!-- start table -->
+                <div class="table-responsive pt-3">
+                  <table class="table expandable-table table-hover" style="width: 100%" id="ImageTable">
+                    <thead>
+                      <tr>
+                        <th>
+                          <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox" type="checkbox"> #
+                        </th>
+                        <th ng-show="columns[1].selected" style="text-align: center; font-size: large; font-weight: 500;" ng-click="sortData('name')">Tên hình
+                          ảnh<span class="{{getSortClass('name')}}"></span></th>
+                        <th ng-show="columns[2].selected" style="text-align: center; font-size: large; font-weight: 500;" ng-click="sortData('link')">Link hình
+                          ảnh<span class="{{getSortClass('link')}}"></span></th>
+                        <th ng-show="columns[3].selected" style="text-align: center; font-size: large; font-weight: 500;" ng-click="sortData('product')">Sản
+                          phẩm<span class="{{getSortClass('product')}}"></span></th>
+                        <th name="Action" style="text-align: center; font-size: large; font-weight: 500;">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody >
+                      <tr ng-repeat="item in listImage | filter:searchText | orderBy:sortColumn:reverseSort">
+                        <td><input type="checkbox" ng-model="item.isSelected"></td>
+                        <td ng-show="columns[1].selected" style="text-align: center"> {{item.name}}</td>
+          
+                        <td ng-show="columns[2].selected" style="text-align: center"><img style="border-radius: 15%; width: 135px; height: 120px;"
+                            src="/FE/assets/img/product/sp1/{{item.link}}"> </td>
+                        <td ng-show="columns[3].selected" style="text-align: center">{{item.product.name}}</td>
+          
+                        <td style="text-align: center">
+                          <a href="#" ng-click="toggleFormUpdate($event,item)" style="text-decoration: none; color: #1545e1;"><i
+                              class="fa-solid fa-xl fa-pen-to-square"></i> </a>
+                          <a ng-click="removeImage($event,item)" style="text-decoration: none; color: #FC424A;"> <i
+                              class="fas fa-fw fa-xl  fa-trash"></i> </a>
+                      </tr>
+                    </tbody>
+                  </table>
+
+              <!-- phân trang -->
+              <nav id="phantrang" aria-label="Page navigation example" style="color: #000000;">
+
+                <p style="margin-top: 20px;">Đang xem {{listImage[0].id}} đến {{lastIndex}} trong tổng số {{sizePage}} mục</p>
+                <!-- Phân trang -->
+                <ul class="pagination justify-content-end" style="margin-top: 20px;">
+                    <!-- Các nút phân trang ở đây -->
+                    <li class="page-item" ng-class="{ 'disabled': pageCurrent === 0, 'hovered': hoveredPage === 'previous' }">
+                      <a class="page-link" ng-click="previousPage()" ng-class="{ 'disabled-link': pageCurrent === 0 }" ng-mouseenter="onHover('previous')" ng-mouseleave="onLeave()"><span aria-hidden="true">&laquo;</span></a>
+                    </li>
+                    <li class="page-item" ng-repeat="page in pageRange()" ng-class="{ 'active': page === pageCurrent, 'hovered': hoveredPage === page }">
+                      <a class="page-link" ng-click="PageNo(page, sizePage)" ng-mouseenter="onHover(page)" ng-mouseleave="onLeave()">{{ page }}</a>
+                  </li>
+                  
+                    <li class="page-item" ng-class="{ 'disabled': pageCurrent === totalPage - 1, 'hovered': hoveredPage === 'next' }">
+                      <a class="page-link" ng-click="nextPage()" ng-class="{ 'disabled-link': pageCurrent === totalPage - 1 }" ng-mouseenter="onHover('next')" ng-mouseleave="onLeave()"> <span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                </ul>
+                   </nav>  
+
+                <div id="sizePage">
+                    <label for="itemsPerPage">Xem:</label>
+                    <select id="itemsPerPage" ng-model="sizePage" ng-init="sizePage = '5'" ng-change="onSizePageChange()">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="100">100</option>
+                    </select>
+                    <label for="itemsPerPage">mục</label>
+                </div>
+                <!-- kết thúc phân trang -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end table -->
+    
+          <!-- form add -->
+          <div class="col-12 grid-margin stretch-card" ng-if="showForm">
+            <div class="card">
+              <div class="card-body">
+                <!-- <h4 class="card-title">Basic form elements</h4> -->
+                
+                <form class="forms-sample" >
+                    <div class="form-group">
+                        <label for="exampleSelectGender">Tên Hình Ảnh</label>
+                        <input type="text" class="form-control" ng-model="formImage.name">
+                      </div>
+              
+                      <div class="form-group">
+                        <label for="exampleSelectGender">Link ảnh</label>
+                        <!-- <form method="post" th:action="@{/upload}" enctype="multipart/form-data"> -->
+                        <div class="form-group">
+                          <button ng-click="openFileInput()">Choose File</button>
+                          <input type="file" id="fileInput" style="display:none"
+                            onchange="angular.element(this).scope().fileChanged(this)" />
+                          <input type="text" style="border: none ;" ng-model="formImage.link" readonly />
+                          <!-- <input type="file" name="link" accept="image/*" class="form-control-file" ng-model="formImage.link"
+                            id="imageInput"> -->
+                          <br>
+                          <!-- <img id="imagePreview" src="#" alt="Ảnh mô tả" style="display: none; max-width: 500px; max-height: 500px;"> -->
+                        </div>
+                        <!-- </form> -->
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleSelectGender">Sản phẩm</label>
+                        <select class="form-control" id="exampleInputMaterial" ng-model="formImage.product.id" ng-options="product.id as product.name for product in Product">
+                          <option value="" disabled selected>-- Chọn Sản Phẩm --</option>
+                      </select>
+                                  <!-- <select class="form-control" ng-model="formImage.product.id">
+                          <option value="" selected>Vui lòng chọn trạng thái</option>
+                          <option value="1">Giày thể thao Adidas</option>
+                          <option value="2">Giày thể thao Nike</option>
+                          <option value="3">Giày chạy New Balance</option>
+                          <option value="4">Giày đi học Puma</option>
+                          <option value="5">Giày lười Vans</option>
+                          <option value="6">Giày đế bằng Clarks</option>
+                          <option value="7">Giày thể thao Asics</option>
+                          <option value="8">Giày đội mưa Hunter</option>
+                          <option value="9">Giày lười Vans</option>
+                          <option value="10">Giày công sở Timberland</option>
+                        </select> -->
+                    </div>
+                  <button id="btn-action-add" type="submit"  ng-click="addImage($event)">Submit</button>
+                  <button id="btn-action-cancel"  ng-click="toggleForm()">Cancel</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          
+          <!-- form update -->
+          <div class="col-12 grid-margin stretch-card"  ng-show="showFormUpdate">
+            <div class="card">
+              <div class="card-body">
+                <!-- <h4 class="card-title">Basic form elements</h4> -->
+                
+                <form class="forms-sample">
+                  <input type="hidden" class="form-control" ng-model="formImageUpdate.id">
+                  <div class="form-group">
+                    <label for="exampleSelectGender">Tên Hình Ảnh</label>
+                    <input type="text" class="form-control" ng-model="formImageUpdate.name">
+                  </div>
+          
+                  <div class="form-group">
+                    <label for="exampleSelectGender">Link ảnh</label>
+                    <div class="form-group">
+                      <button ng-click="updateFileInput()">Choose File</button>
+                      <input type="file" id="updateInput" style="display:none"
+                        onchange="angular.element(this).scope().fileChanged(this)" />
+                      <input type="text" style="border: none ;" ng-model="formImageUpdate.link" readonly />
+                    </div>
+                  </div>
+          
+                  <div class="form-group">
+                    <label for="exampleSelectGender">Sản phẩm</label>
+                    <select class="form-control" id="exampleInputMaterial" ng-model="formImageUpdate.product.id" ng-options="product.id as product.name for product in Product">
+                      <option value="" disabled selected>-- Chọn Sản phẩm --</option>
+                  </select>
+                  </div>
+          
+                  <button id="btn-action-add" ng-click="UpdateImage($event)" ng-click="">Submit</button>
+                  <button id="btn-action-cancel" ng-click="toggleFormUpdate($event, null)">Cancel</button>
+          
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="import-container">
+            <div ng-show="importing" class="import-animation"></div>
+            <p ng-show="importing">Processing...</p>
+        </div>
+
+        <Script>
+          function triggerFileInput() {
+            // Kích hoạt sự kiện click trên input-file
+             document.getElementById('input-file').click();}
+  
+         </Script>
+
+        
+                <!-- <input  type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)"> -->
+                <!-- <button class=" btn-primary"  id="add-icon" ng-click="toggleForm()" >
+                  <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i>
+                  Add new User</button> -->  
+          

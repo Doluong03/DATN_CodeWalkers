@@ -26,6 +26,7 @@ public class Manufacture implements Serializable {
     @Column(name = "mo_ta")
     private String description;
 
+
     @Column(name = "trang_thai")
     private boolean status;
 }

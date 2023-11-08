@@ -12,10 +12,17 @@
 :root {
   scroll-behavior: smooth;
 }
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans:wght@400;700&display=swap');
+
+
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans:wght@400;700&display=swap');
+
 
 body {
-  font-family: 'Times New Roman', Times, serif;
-  color: #444444;
+  font-family: 'Noto Sans', sans-serif;
+  /* Sử dụng font chữ Notosans cho body hoặc các phần tử khác */
 }
 
 a {
@@ -34,8 +41,192 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Noto Sans', sans-serif;
 }
+
+/*--------------------------------------------------------------
+# Title
+--------------------------------------------------------------*/
+a[data-title]:hover:after {
+  content: attr(data-title);
+  background: #000;
+  color: #fff;
+  padding: 4px 8px;
+  position: absolute;
+  z-index: 999;
+  top: -70%;
+  left: 80%;
+  transform: translateX(-50%);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/*--------------------------------------------------------------
+# Login
+--------------------------------------------------------------*/
+.form {
+  margin-top: 100px;
+  margin-left: 100px;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control-user {
+  border-radius: 50px;
+  height: 50px;
+  font-size: 12px;
+  background-color: rgb(255, 255, 255);
+}
+
+.custom-control-label {
+  color: gray;
+}
+
+.btn-user {
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  height: 44px;
+  font-size: 14px;
+}
+
+.btn-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  height: 44px;
+}
+
+.bg-primary-gradient {
+  background-color: rgb(78, 89, 233);
+  color: aliceblue;
+}
+
+.bg-primary-gradient:hover {
+  background-color: rgb(78, 78, 209);
+  color: aliceblue;
+}
+
+.btn-primary-fb {
+  background-color: rgb(9, 38, 202);
+  color: aliceblue;
+}
+
+.btn-primary-fb:hover {
+  background-color: rgb(9, 35, 180);
+  color: aliceblue;
+}
+
+.small {
+  text-decoration-line: none;
+  font-size: 12px;
+}
+
+.btn-user>i {
+  margin-right: 5px;
+}
+
+.blur-background {
+  filter: blur(4px);
+  /* Áp dụng hiệu ứng mờ bằng cách làm mờ nền */
+  pointer-events: none;
+  /* Ngăn các tương tác với form */
+}
+
+.loading-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  /* Đảm bảo hiệu ứng loading hiển thị trên tất cả phần tử khác */
+  padding: 20px;
+  text-align: center;
+}
+/*--------------------------------------------------------------
+# Title
+--------------------------------------------------------------*/
+a[data-title]:hover:after {
+  content: attr(data-title);
+  background: #000;
+  color: #fff;
+  padding: 4px 8px;
+  position: absolute;
+  z-index: 999;
+  top: -70%;
+  left: 80%;
+  transform: translateX(-50%);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/*--------------------------------------------------------------
+# Login
+--------------------------------------------------------------*/
+    .form{
+        margin-top: 100px;
+        margin-left: 100px;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-control-user {
+        border-radius: 50px;
+        height: 50px;
+        font-size: 12px;
+        background-color: rgb(255, 255, 255);
+    }
+
+    .custom-control-label {
+        color: gray;
+    }
+
+    .btn-user {
+        border-radius: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 8px;
+        height: 44px;
+        font-size: 14px;
+    }
+    .btn-login{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        height: 44px;
+    }
+    .bg-primary-gradient {
+        background-color: rgb(78, 89, 233);
+        color: aliceblue;
+    }
+    .bg-primary-gradient:hover {
+      background-color: rgb(78, 78, 209);
+      color: aliceblue;
+  }
+    .btn-primary-fb {
+        background-color: rgb(9, 38, 202);
+        color: aliceblue;
+    }
+    .btn-primary-fb:hover {
+      background-color: rgb(9, 35, 180);
+      color: aliceblue;
+  }
+    .small{
+        text-decoration-line: none;
+        font-size: 12px;
+    }
+    .btn-user >i{
+        margin-right: 5px;
+    }
+   
 
 /*--------------------------------------------------------------
 # Sections
@@ -199,7 +390,7 @@ section {
   font-weight: 700;
   letter-spacing: 1px;
   color: #012970;
-  font-family: "Nunito", sans-serif;
+  font-family: 'Raleway', sans-serif;
   margin-top: 3px;
 }
 
@@ -231,7 +422,7 @@ section {
   align-items: center;
   justify-content: space-between;
   padding: 10px 0 10px 30px;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Raleway', sans-serif;
   font-size: 16px;
   font-weight: 700;
   color: #013289;
@@ -504,7 +695,7 @@ section {
 }
 
 .hero .btn-get-started span {
-  font-family: "Nunito", sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-weight: 600;
   font-size: 16px;
   letter-spacing: 1px;
@@ -523,6 +714,7 @@ section {
 .hero .hero-img {
   text-align: right;
 }
+
 .hero .carousel-item img {
   width: 1600px;
   margin-top: 100px;
@@ -572,6 +764,36 @@ section {
 /*--------------------------------------------------------------
 # Index Page
 --------------------------------------------------------------*/
+.box {
+  height: auto;
+  border-radius: 5%;
+}
+.box img {
+  height: 350px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.img-fluid {
+  height: 510px;
+  width: 500px;
+}
+
+.css-68j8pv img {
+  background-color: #af1616;
+  height: 110px;
+}
+
+.modal-content {
+  margin-left: -200px;
+  width: 1000px;
+  height: 900px;
+}
+.detailPrWatch img {
+  width: 966px;
+  height: 800px;
+  background-color: #ffffff;
+}
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
@@ -580,6 +802,7 @@ section {
   padding-left: 40px;
   padding-right: 40px;
 }
+
 .about {
   height: 700px;
 }
@@ -613,7 +836,7 @@ section {
 }
 
 .about .btn-read-more span {
-  font-family: "Nunito", sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-weight: 600;
   font-size: 16px;
   letter-spacing: 1px;
@@ -624,6 +847,7 @@ section {
   font-size: 18px;
   transition: 0.3s;
 }
+
 /* .about .card {
   transition: 0.5s;
   transform: scale(1.1);
@@ -632,16 +856,18 @@ section {
   transition: 0.5s;
   transform: scale(1);
 }
+
 .about .card:hover img {
   transform: scale(1.03);
 }
+
 .about .btn-read-more:hover i {
   transform: translateX(5px);
 }
 
 
 /*--------------------------------------------------------------
-# Values
+# home
 --------------------------------------------------------------*/
 .values .box {
   padding-left: 30px;
@@ -662,10 +888,11 @@ section {
   font-size: 18px;
   color: black;
   font-weight: 500;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Noto Sans', sans-serif;
 }
+
 .values .box p {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Noto Sans', sans-serif;
   margin-bottom: 0;
   color: #6c757d;
 }
@@ -676,6 +903,233 @@ section {
 
 .values .box:hover img {
   transform: scale(1);
+}
+
+.overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: -50px;
+  margin-bottom: 50px;
+}
+
+
+/*--------------------------------------------------------------
+# Button
+--------------------------------------------------------------*/
+
+.glow-on-hover {
+  width: 220px;
+  height: 50px;
+  border: none;
+  outline: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  font-size: 14px;
+
+}
+
+.glow-on-hover:before {
+  content: '';
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  position: absolute;
+  top: -2px;
+  left:-2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  border-radius: 10px;
+}
+
+.glow-on-hover:active {
+  color: #000
+}
+
+.glow-on-hover:active:after {
+  background: transparent;
+}
+
+.glow-on-hover:hover:before {
+  opacity: 1;
+  
+}
+
+.glow-on-hover:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+  
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+ /* ----------------------- */
+ html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+b {
+    position: relative;
+    display: block;
+    font-family: helvetica neue, helvetica, sans-serif;
+    line-height: 1.15em;
+    margin-top: -1.15em;
+    top: 2.3em;
+    font-size: 0.67em;
+    font-weight: 400;
+    letter-spacing: 0.025em;
+    opacity: 0.75;
+    text-align: center;
+}
+
+b span {
+    font-size: 0.785em;
+    font-weight: 400;
+    opacity: 0.4;
+}
+
+#intro {
+    width: 200px;
+}
+
+.button-main {
+    display: inline-block;
+    text-decoration: none;
+    position: relative;
+}
+
+.button-main .bottom {
+    position: absolute;
+    left: 7px;
+    top: 7px;
+    width: 100%;
+    height: 100%;
+    background-color: #2acdc1;
+    display: block;
+    -webkit-transition: all .15s ease-out;
+    -moz-transition: all .15s ease-out;
+    -o-transition: all .15s ease-out;
+    transition: all .15s ease-out;
+}
+
+.button-main .top {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 24px 34px 22px 34px;
+    border: 2px solid #04049d;
+}
+
+.button-dark .top {
+    border: 2px solid #fff;
+}
+
+.button-main .top .label {
+    font-family: sans-serif;
+    font-weight: 600;
+    color: #04049d;
+    font-size: 14px;
+    line-height: 110%;
+    letter-spacing: 2px;
+    text-align: center;
+    text-transform: uppercase;
+    -webkit-transition: all .15s ease-out;
+    -moz-transition: all .15s ease-out;
+    -o-transition: all .15s ease-out;
+    transition: all .15s ease-out;
+}
+
+.button-dark .top .label {
+    color: #fff;
+}
+
+.button-main:hover .bottom {
+    left: 0;
+    top: 0;
+    background-color: #f3f3f3;
+}
+
+.button-main:hover .top .label {
+    color: #2acdc1;
+}
+
+.button-border {
+    position: absolute;
+    background-color: #2acdc1;
+    -webkit-transition: all .25s ease-out;
+    -moz-transition: all .25s ease-out;
+    -o-transition: all .25s ease-out;
+    transition: all .25s ease-out;
+}
+
+.button-main:hover .top .button-border-left,
+.button-main:hover .top .button-border-right {
+    height: calc(100% + 2px);
+}
+
+.button-main:hover .top .button-border-top,
+.button-main:hover .top .button-border-bottom {
+    width: calc(100% + 2px);
+}
+
+.button-border-left {
+    left: -2px;
+    bottom: -2px;
+    width: 2px;
+    height: 0;
+}
+
+.button-border-top {
+    left: -2px;
+    top: -2px;
+    width: 0;
+    height: 2px;
+}
+
+.button-border-right {
+    right: -2px;
+    top: -2px;
+    width: 2px;
+    height: 0;
+}
+
+.button-border-bottom {
+    right: -2px;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
 }
 
 /*--------------------------------------------------------------
@@ -711,7 +1165,7 @@ section {
 .counts .count-box p {
   padding: 0;
   margin: 0;
-  font-family: "Nunito", sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   font-size: 14px;
 }
 
@@ -725,11 +1179,69 @@ section {
   height: 100%;
 }
 
+.feture-tabs .css-r3as8n img {
+  width: 100%;
+}
+
+.feture-tabs .css-r3as8n input {
+  padding-top: 10rem;
+  color: #012970;
+}
+
+.css-1glxj2a {
+  opacity: 0;
+  height: 0px;
+  width: 0px;
+  position: absolute;
+  display: none;
+  border-radius: 5%;
+}
+
+.css-68j8pv img {
+  background-color: #aaaaaa;
+  border-radius: 5%;
+}
+.prImg img {
+  background-color: #aaaaaa;
+  border-radius: 5%;
+}
+
 .features .feature-box h3 {
   font-size: 18px;
   color: #012970;
   font-weight: 700;
   margin: 0;
+}
+
+
+.feture-tabs .nav-pills .nav-link {
+  background-color: #aaaaaa;
+  color: #fff;
+  margin-right: 1rem;
+}
+
+.feture-tabs .nav-pills .nav-link.active {
+  background-color: brown;
+
+}
+
+@media (min-width: 960px) {
+  .css-ptp8gj .colorway-images-wrapper {
+    overflow: visible;
+    white-space: normal;
+  }
+}
+
+.css-7aigzk {
+  display: inline-block;
+  margin: 0px;
+  line-height: 0;
+  width: 15%;
+}
+
+.css-b8rwz8 img {
+  width: 125%;
+  margin-bottom: 10%;
 }
 
 .features .feature-box i {
@@ -762,10 +1274,6 @@ section {
   .features .feture-tabs h3 {
     font-size: 28px;
   }
-}
-
-.features .feture-tabs .nav-pills {
-  border-bottom: 1px solid #eee;
 }
 
 .features .feture-tabs .nav-link {
@@ -838,6 +1346,299 @@ section {
 .features .feature-icons .content .icon-box p {
   font-size: 15px;
   color: #848484;
+}
+
+.like .carousel-inner .carousel-item img {
+  margin-top: 5%;
+  margin-right: 5%;
+  width: 100%;
+  background-color: #999;
+  border-radius: 10%;
+}
+
+.like button {
+  /* background-color: #55585e;
+  height: 100%;
+  width: 8%;
+  border-radius: 46%; */
+  height: 48px;
+  width: 48px;
+  background-color: rgb(229, 229, 229);
+  border-radius: 24px;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  color: black;
+  transition: background-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1) 0s;
+  margin-right: 1%;
+}
+
+.like button i {
+  /* background-color: #08da4e; */
+  color: #111;
+  width: 20px;
+  height: 100%;
+}
+
+.carousel-control-next-icon {
+  color: #111;
+}
+.size-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* Cho phép tự động xuống dòng khi không đủ không gian */
+  justify-content: start;
+  /* Căn giữa các phần tử trên cùng một hàng */
+  width: 300px;
+  margin-bottom: 10px;
+  cursor: not-allowed;
+
+}
+
+.size {
+  border-radius: 5px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: grey;
+  color: white;
+  text-align: center;
+  width: calc(15%);
+  /* Để hiển thị tối đa 4 phần tử trên cùng một hàng */
+  margin: 3px;
+  cursor: pointer;
+}
+
+.size:hover {
+  background-color: lightblue;
+  /* Màu nền khi hover */
+  color: white;
+  /* Màu chữ khi hover */
+}
+
+.size label {
+  /* CSS cho nhãn */
+  /* Bạn có thể thêm các tùy chỉnh cho nhãn ở đây */
+}
+
+.color-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* Cho phép tự động xuống dòng khi không đủ không gian */
+  justify-content: start;
+  /* Căn giữa các phần tử trên cùng một hàng */
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.color {
+  border-radius: 5px;
+  height: 30px;
+  border-radius: 55%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: calc(10%);
+  /* Để hiển thị tối đa 4 phần tử trên cùng một hàng */
+  margin: 3px;
+  cursor: pointer;
+}
+
+.color:hover {
+  background-color: lightblue;
+  /* Màu nền khi hover */
+  color: white;
+  /* Màu chữ khi hover */
+}
+
+.color input[type="radio"] {
+  cursor: pointer;
+  /* CSS cho radio button */
+  /* Bạn có thể thêm các tùy chỉnh cho radio button ở đây */
+}
+
+.color label {
+  cursor: pointer;
+  font-size: 7px;
+  color: #eee4e4d5;
+
+  /* CSS cho nhãn */
+  /* Bạn có thể thêm các tùy chỉnh cho nhãn ở đây */
+}
+
+.custom-label {
+  display: inline-block;
+  padding-left: 10px;
+}
+
+.custom-label input {
+  opacity: 0;
+}
+
+
+.size2-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* Cho phép tự động xuống dòng khi không đủ không gian */
+  justify-content: start;
+  /* Căn giữa các phần tử trên cùng một hàng */
+  width: 300px;
+  margin-left: 0px;
+  margin-right: 2px;
+  margin-bottom: 10px;
+}
+/*--------------------------------------------------------------
+# Product
+--------------------------------------------------------------*/
+
+.size2 {
+  border-radius: 5px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  width: 39px;
+  /* Để hiển thị tối đa 4 phần tử trên cùng một hàng */
+  margin: 3px;
+  cursor: pointer;
+
+}
+
+.size2:hover {
+  background-color: lightblue;
+  /* Màu nền khi hover */
+  color: white;
+  /* Màu chữ khi hover */
+}
+
+.size2 input[type="radio"] {
+  cursor: pointer;
+  /* CSS cho radio button */
+  /* Bạn có thể thêm các tùy chỉnh cho radio button ở đây */
+}
+.size2 label {
+  cursor: pointer;
+  /* CSS cho nhãn */
+  /* Bạn có thể thêm các tùy chỉnh cho nhãn ở đây */
+}
+
+.box_product {
+  padding-left: 10px;
+  padding-right: 15px;
+  box-shadow: 0px 0 5px rgba(1, 41, 112, 0.08);
+  text-align: left;
+  transition: 0.3s;
+  height: 100%;
+  border: 0px;
+}
+
+.box_product img {
+  transition: 0.5s;
+  background-color: #f7f7f7;
+  width: 100%;
+  height: 250px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  transform: scale(1.1);
+}
+
+.box_product h5 {
+  font-size: 18px;
+  color: black;
+  font-weight: 500;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.box_product p {
+  font-family: 'Noto Sans', sans-serif;
+  margin-bottom: 0;
+  color: #878b8f;
+}
+
+.box_product:hover {
+  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.08);
+}
+
+.box_product:hover img {
+  transform: scale(1);
+}
+
+.no-results {
+  margin-top: 100px;
+  height: 500px;
+}
+
+/*--------------------------------------------------------------
+# Cart_Items
+--------------------------------------------------------------*/
+.badge {
+  position: absolute;
+  top: 3%;
+  right: -24%;
+  background-color: red;
+  color: white;
+  border-radius: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+.span_item p select {
+  border: 0;
+  height: 30px;
+  width: 25%;
+}
+
+.span_item p select option {
+  border: 0;
+  color: #012970;
+}
+
+
+
+.input-group button {
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  border: 1 #878b8f;
+  background-color: #ffffff;
+}
+
+.input-group input {
+  width: 15%;
+  height: 30px;
+  text-align: center;
+}
+
+/*--------------------------------------------------------------
+# Payment
+--------------------------------------------------------------*/
+.payment .logo img {
+  width: 10rem;
+}
+
+.custom-select select {
+  font-size: 14px;
+}
+
+.hr {
+  height: 3px;
+  width: 100%;
+  background-position-x: -30px;
+  background-size: 116px 3px;
+  background-image: repeating-linear-gradient(45deg, #6fa6d6, #6fa6d6 33px, transparent 0, transparent 41px, #f18d9b 0, #f18d9b 74px, transparent 0, transparent 82px);
+}
+
+.prPay img {
+  background-color: #aaaaaa;
+}
+
+.custom-row {
+  max-height: 10px !important;
 }
 
 /*--------------------------------------------------------------

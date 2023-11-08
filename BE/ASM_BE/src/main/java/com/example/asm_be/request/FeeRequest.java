@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FeeRequest {
-    private Integer dítrictId;
-    private Integer wardId;
+    private Integer districtId;
+    private String wardId;
     private Integer quantity;
 
     public Integer getAvgEdge(){

@@ -24,5 +24,7 @@ public class FavouriteDetails {
     private ProductDetail productDetail;
     @Column(name = "ghi_chu")
     private String description;
+    @Column(name = "trang_thai")
+    private int   status;
 
 }

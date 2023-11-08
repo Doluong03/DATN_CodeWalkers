@@ -1,5 +1,6 @@
 package com.example.asm_be.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class BillDetails {
 
     @ManyToOne
     @JoinColumn(name = "hoa_don_id")
+    @JsonBackReference
     private Bill bill;
     @ManyToOne
     @JoinColumn(name = "chi_tiet_san_pham_id")
