@@ -27,7 +27,7 @@ public class CartImpl implements CartService {
     public Cart save(Cart cart) {
         cart.setCreatedAt(new Date());
         cart.setDescription("Cart-Items");
-
+        cart.setStatus(1);
         return cartRepopsitory.save(cart);
     }
 

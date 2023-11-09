@@ -19,7 +19,6 @@ import java.util.Set;
 @Setter
 @Table(name = "NhanVien")
 public class Staff implements Serializable {
-
     @Id
     @Column(name = "id_nhan_vien")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,6 +61,5 @@ public class Staff implements Serializable {
             joinColumns = @JoinColumn(name = "nhan_vien_id", referencedColumnName = "id_nhan_vien"),
             inverseJoinColumns = @JoinColumn(name = "vai_tro_id", referencedColumnName = "id")
     )
-
     private Set<Role> roles = new HashSet<>();
 }

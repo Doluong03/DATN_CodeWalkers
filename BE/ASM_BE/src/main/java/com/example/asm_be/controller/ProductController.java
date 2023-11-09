@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
-
-@CrossOrigin("*")
+@CrossOrigin({"*"})
 @RestController()
 @RequestMapping("/CodeWalkers")
 public class ProductController {
@@ -23,6 +22,8 @@ public class ProductController {
     MaterialService materialService;
     @Autowired
     ColorService colorService;
+    @Autowired
+    ProductService productService;
 
     @GetMapping("/api/product")
     public ResponseEntity<Collection<ProductDetail>> getAllProduct() {
@@ -50,7 +51,7 @@ public class ProductController {
     }
 
     @GetMapping("/api/search/{name}")
-    public ResponseEntity<Collection<ProductDetail>> findByName(@PathVariable("name") String keyword) {
+    public ResponseEntity<Collection<Product>> findByName(@PathVariable("name") String keyword) {
         return ResponseEntity.ok(productDetailService.findByName(keyword));
     }
 

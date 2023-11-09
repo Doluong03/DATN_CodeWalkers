@@ -18,6 +18,6 @@ public class ProductDetailsRespone {
     private List<Material> materialList;
     private List<Color> colorList;
     private List<Promotional> promotionalList;
-
+    private  List<Status> statusList;
     private long totalPages;
 }

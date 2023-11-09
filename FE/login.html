@@ -14,11 +14,14 @@
         <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
         <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
         <link href="assets/css/style.css" rel="stylesheet">
+        <link href="assets/scss/loadingCss.css" rel="stylesheet">
 </head>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-
-<body class="">
-    <div class="container ">
+<body ng-app="login" ng-controller="loginController">
+    <div class="container " ng-class="{ 'blur-background': showLoading }">
         <!-- Outer Row -->
         <div class="row justify-content-center ">
             <div class="col-xl-10 col-lg-12 col-md-9 form">
@@ -36,13 +39,13 @@
                                     </div>
                                     <form class="user">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
+                                            <input type="text" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                                placeholder="Enter Email Address..." ng-model="loginRequest.userName" >
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                                id="exampleInputPassword" placeholder="Password" ng-model="loginRequest.password" >
                                         </div>
                                         <div class="form-group ms-2">
                                             <div class="custom-control custom-checkbox small">
@@ -51,7 +54,7 @@
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <a href="layoutUser.html#/home"
+                                        <a ng-click="login($event)"
                                             class="btn btn-login  rounded-5 bg-primary-gradient">
                                             Login
                                         </a>
@@ -91,6 +94,16 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.js"></script>
+
+    <script src="assets/js/login.js"></script>
+<style>
+
+</style>
+<div class="loading-container" ng-show="showLoading">
+    <div class="spinner"></div>
+    </div>
 
 </body>
 

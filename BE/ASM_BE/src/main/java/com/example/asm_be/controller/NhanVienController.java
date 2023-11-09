@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +29,7 @@ import java.util.*;
 @RestController
 @RequestMapping({"/CodeWalkers"})
 public class NhanVienController {
+
     @Autowired
     private StaffService staffService;
 
@@ -44,6 +49,11 @@ public class NhanVienController {
         return staffReponse;
     }
 
+    @GetMapping({"/admin/profile/{username}"})
+    public Staff getProfile(@PathVariable("username") String  username) {
+         Optional<Staff> staffList = staffService.findByUserName(username);
+         return (staffList.get());
+    }
     @PostMapping({"/admin/Staff/insert"})
     public ResponseEntity<ResponeObject> insertStaff(@RequestBody SignUpRequest signUpRequest) {
         return ResponseEntity

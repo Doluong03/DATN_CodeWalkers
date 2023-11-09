@@ -17,9 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class AdressImpl implements AddressService {
@@ -58,7 +56,8 @@ public class AdressImpl implements AddressService {
     private final String apiWard = "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id";
     private final String token = "605bbb33-68e2-11ee-a6e6-e60958111f48";
 
-    public HashMap<Integer, String> fetchProvinces() {
+    public List<ProvineResponse> fetchProvinces() {
+        List<ProvineResponse> responseList = new ArrayList<>();
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Token", token);
@@ -68,7 +67,7 @@ public class AdressImpl implements AddressService {
                     apiProvice, HttpMethod.GET, entity, new ParameterizedTypeReference<BaseResponse<List<ProvineResponse>>>() {
                     }
             );
-            List<ProvineResponse> responseList = response.getBody().getData();
+           responseList = response.getBody().getData();
             Iterator var8 = responseList.iterator();
             while (var8.hasNext()) {
                 ProvineResponse data = (ProvineResponse) var8.next();
@@ -77,11 +76,17 @@ public class AdressImpl implements AddressService {
         } catch (Exception var10) {
             System.out.println(var10);
         }
-        return DiaChiCache.hashMapProvince;
+//        HashMap<Integer, String> fee = DiaChiCache.hashMapProvince;
+//        for (Map.Entry<Integer, String> entry : fee.entrySet()) {
+//            provineResponse.setProvinceID(entry.getKey());
+//            provineResponse.setProvinceName(entry.getValue());
+//        }
+        return responseList;
     }
 
     @Override
-    public HashMap<Integer, String> fetchDistrict(int provinceId) {
+    public List<DistrictResponse>  fetchDistrict(int provinceId) {
+        List<DistrictResponse> responseList = new ArrayList<>();
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Token", token);
@@ -92,7 +97,7 @@ public class AdressImpl implements AddressService {
                     apiDistrict, HttpMethod.POST, entity, new ParameterizedTypeReference<BaseResponse<List<DistrictResponse>>>() {
                     }
             );
-            List<DistrictResponse> responseList = response.getBody().getData();
+           responseList = response.getBody().getData();
             HashMap<Integer, String> hashMapDistrict = new HashMap();
             Iterator var8 = responseList.iterator();
             while (var8.hasNext()) {
@@ -104,11 +109,13 @@ public class AdressImpl implements AddressService {
         } catch (Exception var10) {
             System.out.println(var10);
         }
-        return DiaChiCache.hashMapDistrict.get(provinceId);
+
+        return responseList;
     }
 
     @Override
-    public HashMap<String, String> fetchWard(int districtId) {
+    public List<WardResponse> fetchWard(int districtId) {
+        List<WardResponse> responseList = new ArrayList<>();
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Token", token);
@@ -119,7 +126,7 @@ public class AdressImpl implements AddressService {
                     apiWard, HttpMethod.POST, entity, new ParameterizedTypeReference<BaseResponse<List<WardResponse>>>() {
                     }
             );
-            List<WardResponse> responseList = response.getBody().getData();
+            responseList = response.getBody().getData();
             HashMap<String, String> hashMapWard = new HashMap();
             Iterator var8 = responseList.iterator();
             while (var8.hasNext()) {
@@ -131,6 +138,11 @@ public class AdressImpl implements AddressService {
         } catch (Exception var10) {
             System.out.println(var10);
         }
-        return DiaChiCache.hashMapWard.get(districtId);
+        return responseList;
+    }
+
+    @Override
+    public List<Address> getAllByUser(int idUser) {
+        return addressRepository.findByUsersId(idUser);
     }
 }

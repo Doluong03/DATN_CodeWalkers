@@ -1,6 +1,7 @@
 package com.example.asm_be.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,9 +47,6 @@ public class Users {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "dia_chi")
-    private String address;
-
     @Column(name = "hinh_anh")
     private String image;
 
@@ -66,7 +64,7 @@ public class Users {
     private boolean status;
 
 
-
-
-
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Cart cart;
 }

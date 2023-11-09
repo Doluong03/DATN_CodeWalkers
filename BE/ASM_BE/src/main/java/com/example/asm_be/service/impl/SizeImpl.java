@@ -22,9 +22,14 @@ public class SizeImpl implements SizeService {
     private SizeRepository sizeRepository;
 
     @Override
-    public Page<Size> getAll(Integer pageNo, Integer sizePage) {
+    public Page<Size> getAllPage(Integer pageNo, Integer sizePage) {
         Pageable sizePageable = PageRequest.of(pageNo, sizePage);
         return sizeRepository.findAll(sizePageable);
+    }
+
+    @Override
+    public List<Size> getAll() {
+        return sizeRepository.findAll();
     }
 
     @Override
@@ -64,8 +69,14 @@ public class SizeImpl implements SizeService {
             return false;
         }
     }
+
     @Override
     public Optional<Size> findbyId(Integer idSize) {
         return Optional.empty();
+    }
+
+    @Override
+    public Size findByName(String name) {
+        return sizeRepository.findByName(name);
     }
 }

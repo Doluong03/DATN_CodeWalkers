@@ -1,5 +1,7 @@
 package com.example.asm_be.service.impl;
 
+import com.example.asm_be.entities.Staff;
+import com.example.asm_be.repositories.StaffRepository;
 import com.example.asm_be.entities.Role;
 import com.example.asm_be.entities.Size;
 import com.example.asm_be.entities.Staff;
@@ -12,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

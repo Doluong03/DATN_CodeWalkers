@@ -1,5 +1,6 @@
 package com.example.asm_be.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +41,7 @@ public class ProductDetail {
     @ManyToOne()
     @JoinColumn(name = "khuyen_mai_id")
     private Promotional promotional;
+
     @Column(name = "trang_thai")
     private boolean status;
 }

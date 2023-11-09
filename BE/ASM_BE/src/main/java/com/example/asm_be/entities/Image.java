@@ -26,7 +26,7 @@ public class Image {
 
     @Column(name = "link_hinh_anh")
     private String link;
-//    @JsonIgnore
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "san_pham_id")
     private Product product;

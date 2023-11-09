@@ -16,6 +16,10 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:wght@400;700&display=swap');
 
 
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans:wght@400;700&display=swap');
+
+
 body {
   font-family: 'Noto Sans', sans-serif;
   /* Sử dụng font chữ Notosans cho body hoặc các phần tử khác */
@@ -38,6 +42,111 @@ h4,
 h5,
 h6 {
   font-family: 'Noto Sans', sans-serif;
+}
+
+/*--------------------------------------------------------------
+# Title
+--------------------------------------------------------------*/
+a[data-title]:hover:after {
+  content: attr(data-title);
+  background: #000;
+  color: #fff;
+  padding: 4px 8px;
+  position: absolute;
+  z-index: 999;
+  top: -70%;
+  left: 80%;
+  transform: translateX(-50%);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/*--------------------------------------------------------------
+# Login
+--------------------------------------------------------------*/
+.form {
+  margin-top: 100px;
+  margin-left: 100px;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control-user {
+  border-radius: 50px;
+  height: 50px;
+  font-size: 12px;
+  background-color: rgb(255, 255, 255);
+}
+
+.custom-control-label {
+  color: gray;
+}
+
+.btn-user {
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  height: 44px;
+  font-size: 14px;
+}
+
+.btn-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  height: 44px;
+}
+
+.bg-primary-gradient {
+  background-color: rgb(78, 89, 233);
+  color: aliceblue;
+}
+
+.bg-primary-gradient:hover {
+  background-color: rgb(78, 78, 209);
+  color: aliceblue;
+}
+
+.btn-primary-fb {
+  background-color: rgb(9, 38, 202);
+  color: aliceblue;
+}
+
+.btn-primary-fb:hover {
+  background-color: rgb(9, 35, 180);
+  color: aliceblue;
+}
+
+.small {
+  text-decoration-line: none;
+  font-size: 12px;
+}
+
+.btn-user>i {
+  margin-right: 5px;
+}
+
+.blur-background {
+  filter: blur(4px);
+  /* Áp dụng hiệu ứng mờ bằng cách làm mờ nền */
+  pointer-events: none;
+  /* Ngăn các tương tác với form */
+}
+
+.loading-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  /* Đảm bảo hiệu ứng loading hiển thị trên tất cả phần tử khác */
+  padding: 20px;
+  text-align: center;
 }
 /*--------------------------------------------------------------
 # Title
@@ -282,7 +391,7 @@ section {
   letter-spacing: 1px;
   color: #012970;
   font-family: 'Raleway', sans-serif;
-    margin-top: 3px;
+  margin-top: 3px;
 }
 
 /*--------------------------------------------------------------
@@ -314,7 +423,7 @@ section {
   justify-content: space-between;
   padding: 10px 0 10px 30px;
   font-family: 'Raleway', sans-serif;
-    font-size: 16px;
+  font-size: 16px;
   font-weight: 700;
   color: #013289;
   white-space: nowrap;
@@ -664,15 +773,18 @@ section {
   margin-top: 10px;
   margin-bottom: 30px;
 }
+
 .img-fluid {
-height: 510px;
-width: 500px;
+  height: 510px;
+  width: 500px;
 }
-.css-68j8pv img{
-background-color: #af1616;
-height: 110px;
+
+.css-68j8pv img {
+  background-color: #af1616;
+  height: 110px;
 }
-.modal-content{
+
+.modal-content {
   margin-left: -200px;
   width: 1000px;
   height: 900px;
@@ -791,6 +903,233 @@ height: 110px;
 
 .values .box:hover img {
   transform: scale(1);
+}
+
+.overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: -50px;
+  margin-bottom: 50px;
+}
+
+
+/*--------------------------------------------------------------
+# Button
+--------------------------------------------------------------*/
+
+.glow-on-hover {
+  width: 220px;
+  height: 50px;
+  border: none;
+  outline: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  font-size: 14px;
+
+}
+
+.glow-on-hover:before {
+  content: '';
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  position: absolute;
+  top: -2px;
+  left:-2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  border-radius: 10px;
+}
+
+.glow-on-hover:active {
+  color: #000
+}
+
+.glow-on-hover:active:after {
+  background: transparent;
+}
+
+.glow-on-hover:hover:before {
+  opacity: 1;
+  
+}
+
+.glow-on-hover:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+  
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+ /* ----------------------- */
+ html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+b {
+    position: relative;
+    display: block;
+    font-family: helvetica neue, helvetica, sans-serif;
+    line-height: 1.15em;
+    margin-top: -1.15em;
+    top: 2.3em;
+    font-size: 0.67em;
+    font-weight: 400;
+    letter-spacing: 0.025em;
+    opacity: 0.75;
+    text-align: center;
+}
+
+b span {
+    font-size: 0.785em;
+    font-weight: 400;
+    opacity: 0.4;
+}
+
+#intro {
+    width: 200px;
+}
+
+.button-main {
+    display: inline-block;
+    text-decoration: none;
+    position: relative;
+}
+
+.button-main .bottom {
+    position: absolute;
+    left: 7px;
+    top: 7px;
+    width: 100%;
+    height: 100%;
+    background-color: #2acdc1;
+    display: block;
+    -webkit-transition: all .15s ease-out;
+    -moz-transition: all .15s ease-out;
+    -o-transition: all .15s ease-out;
+    transition: all .15s ease-out;
+}
+
+.button-main .top {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 24px 34px 22px 34px;
+    border: 2px solid #04049d;
+}
+
+.button-dark .top {
+    border: 2px solid #fff;
+}
+
+.button-main .top .label {
+    font-family: sans-serif;
+    font-weight: 600;
+    color: #04049d;
+    font-size: 14px;
+    line-height: 110%;
+    letter-spacing: 2px;
+    text-align: center;
+    text-transform: uppercase;
+    -webkit-transition: all .15s ease-out;
+    -moz-transition: all .15s ease-out;
+    -o-transition: all .15s ease-out;
+    transition: all .15s ease-out;
+}
+
+.button-dark .top .label {
+    color: #fff;
+}
+
+.button-main:hover .bottom {
+    left: 0;
+    top: 0;
+    background-color: #f3f3f3;
+}
+
+.button-main:hover .top .label {
+    color: #2acdc1;
+}
+
+.button-border {
+    position: absolute;
+    background-color: #2acdc1;
+    -webkit-transition: all .25s ease-out;
+    -moz-transition: all .25s ease-out;
+    -o-transition: all .25s ease-out;
+    transition: all .25s ease-out;
+}
+
+.button-main:hover .top .button-border-left,
+.button-main:hover .top .button-border-right {
+    height: calc(100% + 2px);
+}
+
+.button-main:hover .top .button-border-top,
+.button-main:hover .top .button-border-bottom {
+    width: calc(100% + 2px);
+}
+
+.button-border-left {
+    left: -2px;
+    bottom: -2px;
+    width: 2px;
+    height: 0;
+}
+
+.button-border-top {
+    left: -2px;
+    top: -2px;
+    width: 0;
+    height: 2px;
+}
+
+.button-border-right {
+    right: -2px;
+    top: -2px;
+    width: 2px;
+    height: 0;
+}
+
+.button-border-bottom {
+    right: -2px;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
 }
 
 /*--------------------------------------------------------------
@@ -1053,6 +1392,8 @@ height: 110px;
   /* Căn giữa các phần tử trên cùng một hàng */
   width: 300px;
   margin-bottom: 10px;
+  cursor: not-allowed;
+
 }
 
 .size {
@@ -1061,7 +1402,7 @@ height: 110px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #aaaaaa;
+  background-color: grey;
   color: white;
   text-align: center;
   width: calc(15%);
@@ -1069,21 +1410,75 @@ height: 110px;
   margin: 3px;
   cursor: pointer;
 }
+
 .size:hover {
-  background-color: lightblue; /* Màu nền khi hover */
-  color: white; /* Màu chữ khi hover */
+  background-color: lightblue;
+  /* Màu nền khi hover */
+  color: white;
+  /* Màu chữ khi hover */
 }
-.size input[type="radio"] {
+
+.size label {
+  /* CSS cho nhãn */
+  /* Bạn có thể thêm các tùy chỉnh cho nhãn ở đây */
+}
+
+.color-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* Cho phép tự động xuống dòng khi không đủ không gian */
+  justify-content: start;
+  /* Căn giữa các phần tử trên cùng một hàng */
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.color {
+  border-radius: 5px;
+  height: 30px;
+  border-radius: 55%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: calc(10%);
+  /* Để hiển thị tối đa 4 phần tử trên cùng một hàng */
+  margin: 3px;
+  cursor: pointer;
+}
+
+.color:hover {
+  background-color: lightblue;
+  /* Màu nền khi hover */
+  color: white;
+  /* Màu chữ khi hover */
+}
+
+.color input[type="radio"] {
   cursor: pointer;
   /* CSS cho radio button */
   /* Bạn có thể thêm các tùy chỉnh cho radio button ở đây */
 }
 
-.size label {
+.color label {
   cursor: pointer;
+  font-size: 7px;
+  color: #eee4e4d5;
+
   /* CSS cho nhãn */
   /* Bạn có thể thêm các tùy chỉnh cho nhãn ở đây */
 }
+
+.custom-label {
+  display: inline-block;
+  padding-left: 10px;
+}
+
+.custom-label input {
+  opacity: 0;
+}
+
+
 .size2-container {
   display: flex;
   flex-wrap: wrap;
@@ -1112,12 +1507,16 @@ height: 110px;
   /* Để hiển thị tối đa 4 phần tử trên cùng một hàng */
   margin: 3px;
   cursor: pointer;
- 
+
 }
+
 .size2:hover {
-  background-color: lightblue; /* Màu nền khi hover */
-  color: white; /* Màu chữ khi hover */
+  background-color: lightblue;
+  /* Màu nền khi hover */
+  color: white;
+  /* Màu chữ khi hover */
 }
+
 .size2 input[type="radio"] {
   cursor: pointer;
   /* CSS cho radio button */
@@ -1153,11 +1552,11 @@ height: 110px;
   font-size: 18px;
   color: black;
   font-weight: 500;
-   font-family: 'Noto Sans', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .box_product p {
-   font-family: 'Noto Sans', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   margin-bottom: 0;
   color: #878b8f;
 }
@@ -1172,8 +1571,9 @@ height: 110px;
 
 .no-results {
   margin-top: 100px;
-height: 500px;
+  height: 500px;
 }
+
 /*--------------------------------------------------------------
 # Cart_Items
 --------------------------------------------------------------*/
@@ -1212,7 +1612,8 @@ height: 500px;
   width: 15%;
   height: 30px;
   text-align: center;
-} 
+}
+
 /*--------------------------------------------------------------
 # Payment
 --------------------------------------------------------------*/
@@ -1220,19 +1621,26 @@ height: 500px;
   width: 10rem;
 }
 
+.custom-select select {
+  font-size: 14px;
+}
+
 .hr {
   height: 3px;
   width: 100%;
   background-position-x: -30px;
   background-size: 116px 3px;
-  background-image: repeating-linear-gradient(45deg,#6fa6d6,#6fa6d6 33px,transparent 0,transparent 41px,#f18d9b 0,#f18d9b 74px,transparent 0,transparent 82px);
+  background-image: repeating-linear-gradient(45deg, #6fa6d6, #6fa6d6 33px, transparent 0, transparent 41px, #f18d9b 0, #f18d9b 74px, transparent 0, transparent 82px);
 }
-.prPay img{
-background-color: #aaaaaa;
+
+.prPay img {
+  background-color: #aaaaaa;
 }
+
 .custom-row {
   max-height: 10px !important;
 }
+
 /*--------------------------------------------------------------
 # Services
 --------------------------------------------------------------*/
