@@ -4,69 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d71f0bcd-3842-4ca2-8ea3-67831a91f29e" name="Changes" comment="Changes">
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/StatisticalController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/AmountRespone.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/InvoiceResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/StatisticalService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/StatisticalImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/KhachHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ProductdetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ProductdetailController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/test.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/ProductDetailsRespone.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/ProductDetailsRespone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Bill.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Bill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/BillDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/BillDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Brands.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Brands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Cart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Color.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Manufacture.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Manufacture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Material.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Material.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Promotional.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Promotional.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Rate.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Rate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Size.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Size.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Users.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/BillDetailsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/BillDetailsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/BillRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/BillRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ProductDetailRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ProductDetailRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/security/WebSecurityconfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/security/WebSecurityconfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductDetailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductDetailImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductDetailImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/KhachHangController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Address.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Address.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Bill.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Bill.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/BillDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/BillDetails.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Brands.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Brands.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Category.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Material.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Material.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/ProductDetail.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/ProductDetail.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Rate.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Rate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Size.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Size.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Users.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Users.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/BillDetailsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/BillDetailsRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/ProductDetailRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/ProductDetailRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/ProductDetailService.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/ProductDetailService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ProductDetailImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ProductDetailImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/chart.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/chart.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/chart-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/chart-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/login-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/login-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/manufacture-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/manufacture-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/product-detail-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/product-detail-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/user-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/user-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/css/css-layout/user.css" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/css/css-layout/user.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/css/vertical-layout-light/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/css/vertical-layout-light/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/nhan-vien.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/nhan-vien.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/product-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/product-details.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/route.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/user.html" afterDir="false" />
-    </list>
+    <list default="true" id="d71f0bcd-3842-4ca2-8ea3-67831a91f29e" name="Changes" comment="Changes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -230,7 +168,7 @@
       <workItem from="1699888179338" duration="658000" />
       <workItem from="1699960613790" duration="4000" />
       <workItem from="1699969839009" duration="6526000" />
-      <workItem from="1700017504602" duration="22883000" />
+      <workItem from="1700017504602" duration="23069000" />
     </task>
     <servers />
   </component>
