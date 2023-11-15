@@ -1,5 +1,6 @@
 package com.example.asm_be.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 @Entity(name = "HoaDon")
 @NoArgsConstructor
@@ -26,6 +27,22 @@ public class Bill {
 
     @Column(name = "ghi_chu")
     private String description;
+    @Column(name = "dia_chi_chi_tiet")
+    private String address;
+    @Column(name = "phuong_xa_id")
+    private String ward;
+    @Column(name = "thanh_pho_id")
+    private int province;
+    @Column(name = "quan_huyen_id")
+    private int district;
+    @Column(name = "ngay_giao")
+    private Date shipDate;
+    @Column(name = "phi_giao_hang")
+    private Double fee;
+    @Column(name = "tong_tien")
+    private Double totalPay;
+    @Column(name = "phuong_thuc")
+    private int paymentOptions;
 
     @Column(name = "ngay_lap")
     private Date createdAt;
@@ -34,7 +51,16 @@ public class Bill {
     @JoinColumn(name = "khach_hang_id")
     private Users users;
 
+
+    @Column(name = "trang_thai")
+    private int status;
+
     @ManyToOne
     @JoinColumn(name = "nguoi_lap_id")
     private Staff staff;
+
+    @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<BillDetails> listBillDetail;
+
 }

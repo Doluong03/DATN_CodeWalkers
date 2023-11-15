@@ -30,10 +30,16 @@ public class BillDetails {
     @Column(name = "mo_ta")
     private String description;
 
+    @Column(name = "ngay_lap")
+    private Date createdAt;
+
     @ManyToOne
     @JoinColumn(name = "hoa_don_id")
     private Bill bill;
     @ManyToOne
     @JoinColumn(name = "chi_tiet_san_pham_id")
     private ProductDetail productDetail;
+
+    @Column(name = "trang_thai")
+    private int status;
 }

@@ -34,5 +34,5 @@ public class Cart {
     private Users users;
 
     @Column(name = "trang_thai")
-    private int   status;
+    private int status;
 }

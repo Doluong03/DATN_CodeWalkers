@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp" >
+<html lang="en" ng-app="myApp">
 
 <head>
   <!-- Required meta tags -->
@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title>Skydash Admin</title>
   <!-- plugins:css -->
+
   <link rel="stylesheet" href="vendors/feather/feather.css" />
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css" />
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css" />
@@ -44,11 +45,18 @@
   <!-- svg.js CDN -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.1/svg.min.js"></script>
 
+  <!-- Include Bootstrap JS and Bootstrap Datepicker JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"></script>
+  <!-- Include Bootstrap Datepicker CSS -->
 
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css"/>
 
+    
 </head>
 
-<body >
+
+<body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <div ng-include src="'./partials/_navbar.html'"></div>
@@ -70,7 +78,7 @@
         <!-- partial:partials/_footer.html -->
         <div ng-include src="'./partials/_footer.html'"></div>
 
-      
+
       </div>
       <!-- main-panel ends -->
     </div>
@@ -86,6 +94,7 @@
 
 
   <!-- Angular library -->
+
   <script src="lib/angular.js"></script>
   <script src="lib/angular-route.js"></script>
   <!-- End library  -->

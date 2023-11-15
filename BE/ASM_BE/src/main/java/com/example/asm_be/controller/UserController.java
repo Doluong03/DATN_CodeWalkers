@@ -7,9 +7,7 @@ package com.example.asm_be.controller;
 
 import com.example.asm_be.dto.UserRespone;
 import com.example.asm_be.entities.ResponeObject;
-import com.example.asm_be.entities.Status;
 import com.example.asm_be.entities.Users;
-import com.example.asm_be.service.StatusService;
 import com.example.asm_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,15 +24,12 @@ import java.util.Locale;
 @CrossOrigin({"*"})
 @RestController
 @RequestMapping({"/CodeWalkers"})
-public class KhachHangController {
+public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private StatusService statusService;
-
-    public KhachHangController() {
+    public UserController() {
     }
 
     @GetMapping({"/User"})
@@ -52,19 +47,17 @@ public class KhachHangController {
     }
 
     @PostMapping({"/admin/User/insert"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE')")
     public ResponseEntity<ResponeObject> insertStaff(@RequestBody Users users) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
         Date current = new Date();
-        Integer id = 2;
-        Status status = statusService.getOne(id);
+
 
         Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
         Date createdDate = dateFormat.parse(current.toString());
 
         users.setDateOfBirth(BirthDayFormat);
         users.setCreatedDate(createdDate);
-        users.setStatus(status);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", userService.save(users)));
@@ -75,16 +68,14 @@ public class KhachHangController {
     public ResponseEntity<ResponeObject> UpdateStaff(@RequestBody Users users) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
         Date current = new Date();
-        Integer id = 2;
-        Status status = statusService.getOne(id);
+
 
         Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
         Date Modified = dateFormat.parse(current.toString());
 
         users.setDateOfBirth(BirthDayFormat);
         users.setModified(Modified);
-        users.setStatus(status);
-
+        
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.userService.update(users)));

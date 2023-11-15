@@ -26232,17 +26232,18 @@ body.avgrund-active {
 
 .expandable-table thead tr th {
   background: #4B49AC;
-  padding: 10px;
+  padding: 11px; /*10 vaf 14 ben duoi*/
   color: #ffffff;
-  font-size: 14px;
+  font-size: 15px;
+  
 }
 
 .expandable-table thead tr th:first-child {
-  border-radius: 8px 0 0 8px;
+  border-radius: 4px 0 0 4px;
 }
 
 .expandable-table thead tr th:last-child {
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 4px 4px 0;
 }
 
 .expandable-table tr.odd, .expandable-table tr.even {
@@ -26250,10 +26251,7 @@ body.avgrund-active {
   border-radius: 4px;
 }
 
-.expandable-table tr td {
-  padding: 14px;
-  font-size: 14px;
-}
+
 
 .expandable-table tr td.select-checkbox {
   padding-left: 26px;
@@ -26270,9 +26268,9 @@ body.avgrund-active {
 .expandable-table tr td .cell-hilighted {
   background-color: #4B49AC;
   border-radius: 10px;
-  padding: 18px;
+  padding: 11px;
   color: #fff;
-  font-size: 11px;
+  font-size: 15px;
 }
 
 .expandable-table tr td .cell-hilighted h5 {

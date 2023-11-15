@@ -449,6 +449,7 @@ window.ManufactureController = function ($scope, $http, $window) {
     return 'sort-none';
   };
 
+ 
   // thu vien jQuery không đụng vào
   (function ($) {
     "use strict";

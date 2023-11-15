@@ -40,7 +40,6 @@ public class ProductDetail {
     @JoinColumn(name = "khuyen_mai_id")
     private Promotional promotional;
 
-
     @ManyToOne
     @JoinColumn(name = "trang_thai_id")
     private Status status;

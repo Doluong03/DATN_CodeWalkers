@@ -36,4 +36,7 @@ public class Address {
     @JoinColumn(name = "quan_huyen_id")
     private District district;
 
+    @Column(name = "trang_thai")
+    private int status;
+
 }

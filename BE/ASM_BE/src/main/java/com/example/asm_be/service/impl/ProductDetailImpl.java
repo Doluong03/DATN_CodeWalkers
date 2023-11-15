@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Iterator;
 import java.util.List;
@@ -72,6 +73,28 @@ public class ProductDetailImpl implements ProductDetailService {
             }
         }
         return detailList;
+    }
+
+    @Override
+    public List<ProductDetail> PRODUCT_DETAILS() {
+        return productDetailRepository.findAll();
+    }
+
+    @Override
+    public List<ProductDetail> findByProductName(String productName) {
+        return productDetailRepository.findByProductName(productName);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateDetail(Integer idDetails) {
+        try {
+            productDetailRepository.capNhatGiaTri(idDetails);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
     }
 
 

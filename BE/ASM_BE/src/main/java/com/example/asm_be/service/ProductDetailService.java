@@ -21,4 +21,10 @@ public interface ProductDetailService {
     public boolean delete(Integer idProductDt);
 
     public List<ProductDetail> getPrBetsSl();
+
+    public  List<ProductDetail> PRODUCT_DETAILS();
+
+    List<ProductDetail> findByProductName(String productName);
+
+     boolean updateDetail(Integer idDetails);
 }

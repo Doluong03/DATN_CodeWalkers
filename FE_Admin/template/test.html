@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="datePickerApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AngularJS Date Range Picker</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
+</head>
+<body ng-controller="DatePickerController">
+    <div>
+        <h1>Date Range Picker Example (AngularJS)</h1>
+
+        <label for="date-range">Chọn khoảng thời gian (tối đa 7 ngày):</label>
+        <input type="text" id="date-range" ng-model="selectedDates" />
+        {{dateList}}
+
+        <script>
+            angular.module('datePickerApp', [])
+                .controller('DatePickerController', function($scope) {
+                    // Tạo danh sách để lưu trữ các ngày
+                    $scope.dateList = [];
+
+                    $scope.flatpickrConfig = {
+                        mode: 'range',
+                        dateFormat: 'Y-m-d',
+                        defaultDate: [new Date()],
+                        maxDate: new Date().fp_incr(7),
+                        onClose: function(selectedDates, dateStr, instance) {
+                            // Xóa danh sách để tránh việc thêm các ngày đã chọn trước đó
+                            $scope.dateList = [];
+
+                            // Thêm từng ngày vào danh sách
+                            var startDate = new Date(selectedDates[0]);
+                            var endDate = new Date(selectedDates[1]);
+                            var currentDate = startDate;
+
+                            while (currentDate <= endDate) {
+                                $scope.dateList.push(currentDate.toISOString().slice(0, 10));
+                                currentDate.setDate(currentDate.getDate() + 1);
+                            }
+
+                            // In danh sách ra console để kiểm tra
+                            console.log($scope.dateList);
+                        }
+                    };
+
+                    // Initialize Flatpickr
+                    var flatpickrInstance = flatpickr(document.getElementById('date-range'), $scope.flatpickrConfig);
+
+                    // Watch for changes and update the model
+                    $scope.$watch('selectedDates', function(newVal, oldVal) {
+                        if (newVal !== oldVal) {
+                            flatpickrInstance.setDate(newVal, false);
+                        }
+                    });
+                });
+        </script>
+    </div>
+</body>
+</html>

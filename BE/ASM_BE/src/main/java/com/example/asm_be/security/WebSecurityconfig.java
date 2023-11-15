@@ -91,7 +91,6 @@ public class WebSecurityconfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/test/**").authenticated()
                                 .requestMatchers("/admin/User/insert").authenticated()
                                 .requestMatchers("/admin/User/update").authenticated()
                                 .requestMatchers("/CodeWalkers/User").permitAll()

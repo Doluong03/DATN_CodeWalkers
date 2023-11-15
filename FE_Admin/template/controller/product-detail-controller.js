@@ -12,7 +12,8 @@ window.productDetailController = function ($scope, $http, $window) {
   $scope.promotionalProduct = [];
   $scope.statusProduct = [];
   $scope.Product = [];
-
+  $scope.detail = [];
+  $scope.modalContent = "";
   // Kiểm tra nếu form là form thêm mới (ví dụ: nếu không có sản phẩm trong danh sách)
 
 
@@ -38,66 +39,63 @@ window.productDetailController = function ($scope, $http, $window) {
     promotional: { id: "" },
     status: { id: "" },
   }
-  // phân trang start
-  $scope.totalPage = 0;
-  $scope.pageCurrent = 0;
-  $scope.itemsPerPage = 3; // Số lượng trang bạn muốn hiển thị
 
-  $scope.pageRange = function () {
+$scope.totalPage = 0;
+$scope.pageCurrent = 0;
+$scope.itemsPerPage = 3;
+$scope.displayedUsers = []; // Thêm mảng để hiển thị người dùng trên trang hiện tại
+$scope.finalMergedProducts = []; // Thêm mảng để lưu dữ liệu cần hiển thị
+
+$scope.pageRange = function () {
     var startPage = Math.max(1, $scope.pageCurrent - Math.floor($scope.itemsPerPage / 2));
     var endPage = Math.min($scope.totalPage, startPage + $scope.itemsPerPage - 1);
     var pages = [];
 
     if ($scope.pageCurrent + Math.floor($scope.itemsPerPage / 2) > $scope.totalPage) {
-      startPage = Math.max(1, $scope.totalPage - $scope.itemsPerPage + 1);
-      endPage = $scope.totalPage;
+        startPage = Math.max(1, $scope.totalPage - $scope.itemsPerPage + 1);
+        endPage = $scope.totalPage;
     }
 
-    // Bắt đầu từ trang đầu tiên nếu trang hiện tại là quá giữa danh sách
     if (startPage > 1) {
-      startPage = Math.max(1, startPage - 1);
+        startPage = Math.max(1, startPage - 1);
     }
 
     for (var i = startPage; i <= endPage; i++) {
-      pages.push(i);
+        pages.push(i);
     }
 
     return pages;
-  };
+};
 
-
-
-  $scope.nextPage = function () {
+$scope.nextPage = function () {
     if ($scope.pageCurrent < $scope.totalPage - 1) {
-      $scope.pageCurrent++;
-      $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+        $scope.pageCurrent++;
+        $scope.loadPage();
     }
-  };
+};
 
-  $scope.previousPage = function () {
+$scope.previousPage = function () {
     if ($scope.pageCurrent > 0) {
-      $scope.pageCurrent--;
+        $scope.pageCurrent--;
+        $scope.loadPage();
     }
-    $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-  };
+};
 
-  $scope.hoveredPage = null;
-
-  $scope.onHover = function (index) {
+$scope.onHover = function (index) {
     $scope.hoveredPage = index;
-  };
+};
 
-  $scope.onLeave = function () {
+$scope.onLeave = function () {
     $scope.hoveredPage = null;
-  };
+};
 
-  // hàm thay đổi số phần tử của trang
-  $scope.onSizePageChange = function () {
-    // Làm cái gì đó với giá trị mới của sizePage
-    console.log("New Size Page: " + $scope.sizePage);
-    $scope.hienThi($scope.pageNo, $scope.sizePage);
-    // Gọi các hàm khác cần thiết với giá trị mới của sizePage
-  };
+$scope.loadPage = function () {
+    var startIndex = $scope.pageCurrent * $scope.itemsPerPage;
+    var endIndex = ($scope.pageCurrent + 1) * $scope.itemsPerPage - 1;
+    $scope.displayedUsers = $scope.finalMergedProducts.slice(startIndex, endIndex + 1);
+    $scope.updateFinalMergedProducts();
+};
+
 
 
   // end phân trang
@@ -116,9 +114,67 @@ window.productDetailController = function ($scope, $http, $window) {
         $scope.promotionalProduct = response.data.promotionalList;
         $scope.statusProduct = response.data.statusList;
         $scope.Product = response.data.productList;
+        $scope.detail = response.data.detailList;
+        // Tạo một đối tượng để lưu trữ thông tin gộp
+        // Hàm chuyển đổi tên màu từ tiếng Việt sang tiếng Anh
+        function convertColorName(colorName) {
+          switch (colorName) {
+            case 'Đen':
+              return 'Black';
+            case 'Trắng':
+              return 'azure';
+            case 'Đỏ':
+              return 'Red';
+            case 'Xanh':
+              return 'Blue';
+            case 'Vàng':
+              return 'Yellow';
+            case 'Xám':
+              return 'Gray';
+            case 'Hồng':
+              return 'Pink';
+            case 'Xanh Lá':
+              return 'Green';
+            case 'Cam':
+              return 'Orange';
+            case 'Nâu':
+              return 'Brown';
+            default:
+              return colorName; // Nếu không khớp với các màu cơ bản, giữ nguyên tên màu
+          }
+        }
+        $scope.updateFinalMergedProducts = function () {
+          var mergedProducts = {};
 
-        console.log(response.data);
-        console.log(response.data.totalPages);
+          $scope.detail.forEach(function (product) {
+            var englishColorName = convertColorName(product.color.name);
+
+            if (product.status.id === 1) {
+              if (!mergedProducts[product.product.name]) {
+                // If the product doesn't exist, add a new entry
+                mergedProducts[product.product.name] = {
+                  name: product.product.name,
+                  sizes: [product.size.name],  // Use an array to store unique sizes
+                  colors: [englishColorName]   // Use an array to store unique colors
+                };
+              } else {
+                // If the product already exists, update sizes and colors only if not already present
+                if (mergedProducts[product.product.name].sizes.indexOf(product.size.name) === -1) {
+                  mergedProducts[product.product.name].sizes.push(product.size.name);
+                }
+
+                if (mergedProducts[product.product.name].colors.indexOf(englishColorName) === -1) {
+                  mergedProducts[product.product.name].colors.push(englishColorName);
+                }
+              }
+            }
+          });
+
+          $scope.finalMergedProducts = Object.values(mergedProducts);
+        };
+
+        // Gọi hàm để cập nhật dữ liệu
+        $scope.updateFinalMergedProducts();
 
       },
       function (error) {
@@ -159,13 +215,13 @@ window.productDetailController = function ($scope, $http, $window) {
         // Hành động khi người dùng ấn "Có"
         $http.delete(api).then(function (response) {
           Swal.fire('Xóa thành công!', '', 'success');
-          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+          $scope.Reload($scope.modalContent)
+          $scope.updateFinalMergedProducts()
           console.log(response);
         })
           .catch(function (error) {
             console.log(error);
           });
-        $scope.hienThi($scope.pageNo);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hành động khi người dùng ấn "Không"
         Swal.fire('Hủy bỏ', '', 'error');
@@ -247,6 +303,7 @@ window.productDetailController = function ($scope, $http, $window) {
       // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
       $scope.showFormUpdate = true;
       $scope.activeItem = item;
+      $('#formModal').modal('toggle');
 
       // Nạp dữ liệu của dòng được chọn vào biểu mẫu
       // Nạp dữ liệu của dòng được chọn vào biểu mẫu
@@ -487,6 +544,85 @@ window.productDetailController = function ($scope, $http, $window) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+  };
+
+
+  $scope.getColorClass = function (color) {
+    switch (color.toLowerCase()) {
+      case 'red':
+        return 'red';
+      case 'blue':
+        return 'blue';
+      case 'green':
+        return 'green';
+      case 'yellow':
+        return 'yellow';
+      case 'orange':
+        return 'orange';
+      case 'purple':
+        return 'purple';
+      case 'pink':
+        return 'pink';
+      case 'brown':
+        return 'brown';
+      case 'grey':
+        return 'grey';
+      case 'teal':
+        return 'teal';
+      default:
+        return ''; // Default class
+    }
+  };
+
+  $scope.removeSizeText = function (size) {
+    // Assuming size is a string
+    return size.replace('Size', '').trim();
+  };
+
+  $scope.getColorClass = function (color) {
+    switch (color.toLowerCase()) {
+      case 'red':
+        return 'red';
+      case 'blue':
+        return 'blue';
+      case 'green':
+        return 'green';
+      case 'orange':
+        return 'orange';
+      case 'purple':
+        return 'purple';
+      case 'pink':
+        return 'pink';
+      case 'yellow':
+        return 'yellow';
+      case 'brown':
+        return 'brown';
+      case 'cyan':
+        return 'cyan';
+      case 'gray':
+        return 'gray';
+      default:
+        return ''; // Default class
+    }
+  };
+
+
+  $scope.openModal = function (itemName) {
+    $scope.modalContent = itemName;
+    $('#myModal').modal('show');
+
+    $scope.Reload(itemName);
+  };
+
+  $scope.Reload = function (itemName) {
+    let api = "http://localhost:8080/CodeWalkers/admin/ProductDetails/details?productName=" + itemName;
+    $http.get(api).then(function (res) {
+      $scope.data = res.data;
+    });
+  };
+
+  $scope.reloadPage = function () {
+    $window.location.reload();
   };
 
 

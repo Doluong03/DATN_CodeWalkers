@@ -3,10 +3,6 @@
     <div class="card-body">
       <h4 class="card-title">Product Details table</h4>
 
-      <!-- <button class="btn-primary"  id="add-icon" ng-click="toggleForm()" >
-                  <i class="fa-solid fa-plus fa-sx" style="color: #ffffff;"></i>
-                  Add New User</button> -->
-
       <div class="search-container">
         <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a User" />
         <i class="fa-light fa-magnifying-glass"></i>
@@ -34,10 +30,9 @@
           SVG
         </button>
       </div>
-      <!-- <input  type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)"> -->
       <!-- start table -->
       <div class="table-responsive pt-3">
-        <table class="display expandable-table" style="width: 100%" id="DTProductTable">
+        <table class="table expandable-table table-hover" style="width: 100%" id="DTProductTable">
           <thead>
             <tr>
               <th ng-click="sortData('id')">
@@ -47,18 +42,7 @@
               <th ng-click="sortData('product.name')">
                 Tên sản phẩm<span class="{{getSortClass('product.name')}}"></span>
               </th>
-              <!-- Cột cho Số lượng -->
-              <th ng-click="sortData('quantity')">
-                Số lượng<span class="{{getSortClass('quantity')}}"></span>
-              </th>
-              <!-- Cột cho Giá -->
-              <th ng-click="sortData('price')">
-                Giá<span class="{{getSortClass('price')}}"></span>
-              </th>
-              <!-- Cột cho Chất liệu -->
-              <th ng-click="sortData('material.name')">
-                Chất liệu<span class="{{getSortClass('material.name')}}"></span>
-              </th>
+
               <!-- Cột cho Kích thước -->
               <th ng-click="sortData('size.name')">
                 Kích thước<span class="{{getSortClass('size.name')}}"></span>
@@ -67,38 +51,39 @@
               <th ng-click="sortData('color.name')">
                 Màu sắc<span class="{{getSortClass('color.name')}}"></span>
               </th>
-              <!-- Cột cho Khuyến mãi -->
-              <th ng-click="sortData('promotional.name')">
-                Khuyến mãi<span class="{{getSortClass('promotional.name')}}"></span>
-              </th>
+
               <th name="Action">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in listProductDetail | filter:searchText | orderBy:sortColumn:reverseSort">
-              <td>{{item.id}}</td>
-              <td>{{item.product.name}}</td>
-              <td>{{item.quantity}}</td>
-              <td>{{item.price}}</td>
-              <td>{{item.material.name}}</td>
-              <td>{{item.size.name}}</td>
-              <td>{{item.color.name}}</td>
-              <td>{{item.promotional.name}}</td>
+            <tr ng-repeat="item in finalMergedProducts | filter:searchText | orderBy:sortColumn:reverseSort">
+              <td >{{$index+1}}</td>
+              <td>{{item.name}}</td>
               <td>
-                <a href="#" ng-click="toggleFormUpdate($event,item)" style="text-decoration: none; color: #1545e1"><i
-                    class="fa-solid fa-pen-to-square"></i>
-                </a>
-                <a href="#" ng-click="removeStaff($event,item)" style="text-decoration: none; color: #fc424a">
-                  <i class="fas fa-fw fa-trash"></i>
-                </a>
+                <span class="sizes" style="margin-left: 150px;">
+                  <span ng-repeat="size in item.sizes track by $index" class="size">{{ removeSizeText(size) }}</span>
+                </span>
               </td>
+              <td>
+                <div class="color-details">
+                  <span class="colors" style="margin-left: 150px;">
+                    <span ng-repeat="color in item.colors track by $index" class="color-box"
+                      style="background-color: {{ color }}"></span>
+                  </span>
+                  <span class="color-name">{{item.color}}</span>
+                </div>
+              </td>
+              <td><i ng-click="openModal(item.name)" class="fas fa-solid fa-eye"></i></td>
             </tr>
           </tbody>
+
+
         </table>
+        <hr style="margin-top: -4px;">
         <!-- phân trang -->
         <nav id="phantrang" aria-label="Page navigation example" style="color: #000000">
           <p style="margin-top: 20px">
-            Đang xem {{listUSers[0].id}} đến {{lastIndex}} trong tổng số
+            Đang xem {{finalMergedProducts[0].id}} đến {{lastIndex}} trong tổng số
             {{sizePage}} mục
           </p>
           <!-- Phân trang -->
@@ -124,7 +109,7 @@
           </ul>
         </nav>
 
-        <div id="sizePage">
+        <!-- <div id="sizePage">
           <label for="itemsPerPage">Xem:</label>
           <select id="itemsPerPage" ng-model="sizePage" ng-init="sizePage = '5'" ng-change="onSizePageChange()">
             <option value="5">5</option>
@@ -133,7 +118,7 @@
             <option value="100">100</option>
           </select>
           <label for="itemsPerPage">mục</label>
-        </div>
+        </div> -->
         <!-- kết thúc phân trang -->
       </div>
     </div>
@@ -213,79 +198,90 @@
   </div>
 </div>
 
-<!-- form update -->
-<div class="col-12 grid-margin stretch-card" ng-show="showFormUpdate">
-  <div class="card">
-    <div class="card-body">
-      <form class="forms-sample">
-        <div class="form-group">
-          <input type="hidden" class="form-control" ng-model="formPdDetailUpdate.id" />
-        </div>
-        <div class="form-group">
-          <label for="exampleInputMiddleName">Tên Sản Phẩm</label>
-          <select class="form-control" id="exampleInputMiddleName" ng-model="formPdDetailUpdate.product.id"
-            ng-options="product.id as product.name for product in Product">
-            <option value="" disabled selected>-- Chọn Tên Sản Phẩm --</option>
-          </select>
-        </div>
 
-        <div class="form-group">
-          <label for="exampleInputDate">Số Lượng</label>
-          <input type="text" class="form-control" id="exampleInputDate" ng-model="formPdDetailUpdate.quantity" />
-        </div>
+<!-- Trong file HTML chính của bạn -->
+<div class="modal fade custom-modal" id="formModal"  role="dialog" >
+      <div class="modal-body" >
+        <!-- form update -->
+        <div class="col-lg-12 grid-margin stretch-card" ng-show="showFormUpdate">
+          <div class="card">
+            <div class="card-body">
+              <form class="forms-sample">
+                <div class="form-group">
+                  <input type="hidden" class="form-control" ng-model="formPdDetailUpdate.id" />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputMiddleName">Tên Sản Phẩm</label>
+                  <select class="form-control" id="exampleInputMiddleName" ng-model="formPdDetailUpdate.product.id"
+                    ng-options="product.id as product.name for product in Product">
+                    <option value="" disabled selected>-- Chọn Tên Sản Phẩm --</option>
+                  </select>
+                </div>
 
-        <div class="form-group">
-          <label for="exampleInputDate">Giá</label>
-          <input type="text" class="form-control" id="exampleInputDate" ng-model="formPdDetailUpdate.price" />
-        </div>
-        <div class="form-group">
-          <label for="exampleInputMaterial">Chất Liệu</label>
-          <select class="form-control" id="exampleInputMaterial" ng-model="formPdDetailUpdate.material.id"
-            ng-options="material.id as material.name for material in materialProduct">
-            <option value="" disabled selected>-- Chọn Chất Liệu --</option>
-          </select>
-        </div>
+                <div class="form-group">
+                  <label for="exampleInputDate">Số Lượng</label>
+                  <input type="text" class="form-control" id="exampleInputDate"
+                    ng-model="formPdDetailUpdate.quantity" />
+                </div>
 
-        <div class="form-group">
-          <label for="exampleInputSize">Kích Thước</label>
-          <select class="form-control" id="exampleInputSize" ng-model="formPdDetailUpdate.size.id"
-            ng-options="size.id as size.name for size in sizeProduct">
-            <option value="" disabled selected>-- Chọn Kích Thước --</option>
-          </select>
-        </div>
+                <div class="form-group">
+                  <label for="exampleInputDate">Giá</label>
+                  <input type="text" class="form-control" id="exampleInputDate" ng-model="formPdDetailUpdate.price" />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputMaterial">Chất Liệu</label>
+                  <select class="form-control" id="exampleInputMaterial" ng-model="formPdDetailUpdate.material.id"
+                    ng-options="material.id as material.name for material in materialProduct">
+                    <option value="" disabled selected>-- Chọn Chất Liệu --</option>
+                  </select>
+                </div>
 
-        <div class="form-group">
-          <label for="exampleInputColor">Màu Sắc</label>
-          <select class="form-control" id="exampleInputColor" ng-model="formPdDetailUpdate.color.id"
-            ng-options="color.id as color.name for color in colorProduct">
-            <option value="" disabled selected>-- Chọn Màu Sắc --</option>
-          </select>
-        </div>
+                <div class="form-group">
+                  <label for="exampleInputSize">Kích Thước</label>
+                  <select class="form-control" id="exampleInputSize" ng-model="formPdDetailUpdate.size.id"
+                    ng-options="size.id as size.name for size in sizeProduct">
+                    <option value="" disabled selected>-- Chọn Kích Thước --</option>
+                  </select>
+                </div>
 
-        <div class="form-group">
-          <label for="exampleInputPromotion">Khuyến Mại</label>
-          <select class="form-control" id="exampleInputPromotion" ng-model="formPdDetailUpdate.promotional.id"
-            ng-options="promotion.id as promotion.name for promotion in promotionalProduct">
-            <option value="" disabled selected>-- Chọn Khuyến Mại --</option>
-          </select>
-        </div>
+                <div class="form-group">
+                  <label for="exampleInputColor">Màu Sắc</label>
+                  <select class="form-control" id="exampleInputColor" ng-model="formPdDetailUpdate.color.id"
+                    ng-options="color.id as color.name for color in colorProduct">
+                    <option value="" disabled selected>-- Chọn Màu Sắc --</option>
+                  </select>
+                </div>
 
-        <div class="form-group">
-          <label for="exampleInputStatus">Trạng Thái</label>
-          <select class="form-control" id="exampleInputStatus" ng-model="formPdDetailUpdate.status.id"
-            ng-options="status.id as status.name for status in statusProduct">
-            <option value="" disabled selected>-- Chọn Trạng Thái --</option>
-          </select>
-        </div>
+                <div class="form-group">
+                  <label for="exampleInputPromotion">Khuyến Mại</label>
+                  <select class="form-control" id="exampleInputPromotion" ng-model="formPdDetailUpdate.promotional.id"
+                    ng-options="promotion.id as promotion.name for promotion in promotionalProduct">
+                    <option value="" disabled selected>-- Chọn Khuyến Mại --</option>
+                  </select>
+                </div>
 
-        <button id="btn-action-add" ng-click="UpdateUser($event)">
-          Submit
-        </button>
-        <button id="btn-action-cancel" ng-click="toggleForm()">Cancel</button>
-      </form>
+                <div class="form-group">
+                  <label for="exampleInputStatus">Trạng Thái</label>
+                  <select class="form-control" id="exampleInputStatus" ng-model="formPdDetailUpdate.status.id"
+                    ng-options="status.id as status.name for status in statusProduct">
+                    <option value="" disabled selected>-- Chọn Trạng Thái --</option>
+                  </select>
+                </div>
+
+                <button id="btn-action-add" ng-click="UpdateUser($event)">
+                  Submit
+                    <button style="float: inline-end;" type="button" id="btn-action-cancel" data-dismiss="modal" ng-click="reloadPage()">Close</button>
+                  
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- Kết thúc form -->
+      </div>
     </div>
   </div>
 </div>
+
 
 <div class="import-container">
   <div ng-show="importing" class="import-animation"></div>
@@ -297,4 +293,78 @@
     // Kích hoạt sự kiện click trên input-file
     document.getElementById("input-file").click();
   }
+
+  $(document).ready(function () {
+    $('#formModal').on('show.bs.modal', function (e) {
+      // Close the first modal when the second modal is about to be shown
+      $('#myModal').modal('hide');
+    });
+  });
 </script>
+
+
+<!-- Modal -->
+<div class="modal fade custom-modal" id="myModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        {{ modalContent }}
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive pt-3">
+          <div class="table-responsive pt-3">
+            <table class="table expandable-table" style="width: 100%" id="DTProductTable">
+              <thead>
+                <tr>
+                  <th ng-click="sortData('id')">#<span class="{{getSortClass('id')}}"></span></th>
+                  <!-- Cột cho Họ và Tên -->
+                  <th ng-click="sortData('product.name')">Tên sản phẩm<span
+                      class="{{getSortClass('product.name')}}"></span></th>
+                  <!-- Cột cho Số lượng -->
+                  <th ng-click="sortData('quantity')">Số lượng<span class="{{getSortClass('quantity')}}"></span></th>
+                  <!-- Cột cho Giá -->
+                  <th ng-click="sortData('price')">Giá<span class="{{getSortClass('price')}}"></span></th>
+                  <!-- Cột cho Chất liệu -->
+                  <th ng-click="sortData('material.name')">Chất liệu<span
+                      class="{{getSortClass('material.name')}}"></span></th>
+                  <!-- Cột cho Kích thước -->
+                  <th ng-click="sortData('size.name')">Kích thước<span class="{{getSortClass('size.name')}}"></span>
+                  </th>
+                  <!-- Cột cho Màu sắc -->
+                  <th ng-click="sortData('color.name')">Màu sắc<span class="{{getSortClass('color.name')}}"></span></th>
+                  <th name="Action">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in data | filter:searchText | orderBy:sortColumn:reverseSort"
+                  ng-if="item.status.name === 'Đang hoạt động'">
+                  <td>{{item.id}}</td>
+                  <td>{{item.product.name}}</td>
+                  <td>{{item.quantity}}</td>
+                  <td>{{item.price}}</td>
+                  <td>{{item.material.name}}</td>
+                  <td>{{item.size.name}}</td>
+                  <td>{{item.color.name}}</td>
+                  <td>
+                    <a href="#" ng-click="toggleFormUpdate($event,item)"
+                      style="text-decoration: none; color: #1545e1;"><i class="fa-solid fa-pen-to-square "></i> </a>
+                    <a href="#" ng-click="removeStaff($event,item)" style="text-decoration: none; color: #FC424A;"> <i
+                        class="fas fa-fw  fa-trash "></i> </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="reloadPage()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  

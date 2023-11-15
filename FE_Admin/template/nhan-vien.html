@@ -25,8 +25,8 @@
             <tbody>
               <tr ng-repeat="item in listStaff | filter:searchText">
                 <td>{{item.id}}</td>
-                <td>{{item.fname}} {{item.middleName}} {{item.name}}</td>
-                <td>{{ item.dateOfBirth.substring(0, 10) }}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.dateOfBirth.substring(0, 10) }}</td>
                 <td>{{item.gender == true ? 'nam' : 'nu'}}</td>
                 <td>{{item.address}}</td>
                 <td>{{item.email}}</td>

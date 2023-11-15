@@ -22,6 +22,7 @@ public class Promotional {
 
     @Column(name = "ma_khuyen_mai")
     private String code;
+
     @Column(name = "ten_khuyen_mai")
     private String name;
 
@@ -35,5 +36,6 @@ public class Promotional {
 
     @Column(name = "ngay_ket_thuc")
     private Date endDate;
-
+    @Column(name = "trang_thai")
+    private int status;
 }

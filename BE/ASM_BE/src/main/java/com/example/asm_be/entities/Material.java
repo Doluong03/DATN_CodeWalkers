@@ -26,7 +26,6 @@ public class Material {
     @Column(name = "mo_ta")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
-    private Status status;
+    @Column(name = "trang_thai")
+    private int   status;
 }
