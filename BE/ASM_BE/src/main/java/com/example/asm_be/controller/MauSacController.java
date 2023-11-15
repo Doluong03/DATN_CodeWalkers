@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.text.ParseException;
 
 @RestController
-@CrossOrigin({"*"})
 @RequestMapping({"/CodeWalkers"})
 public class MauSacController {
 

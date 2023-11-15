@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.catalina.User;
+import org.hibernate.Hibernate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,12 +32,11 @@ public class AddressRequest {
     private String phoneNumber;
     private String email;
     private Integer quantity;
-    public Address map(Address address, Users users ) {
+    public Address map(Address address ) {
         address.setName(this.addressDetail);
         address.setProvince(this.province);
         address.setDistrict(this.district);
         address.setWard(this.ward);
-        address.setUsers(users);
         return address;
     }
 }

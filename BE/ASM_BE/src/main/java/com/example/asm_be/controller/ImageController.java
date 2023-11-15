@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 
 @RestController
-@CrossOrigin({"*"})
 @RequestMapping({"/CodeWalkers/admin"})
 public class ImageController {
     @Autowired

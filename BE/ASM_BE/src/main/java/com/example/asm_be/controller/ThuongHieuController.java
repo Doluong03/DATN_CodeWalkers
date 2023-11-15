@@ -16,7 +16,6 @@ import java.text.ParseException;
 
 
 @RestController
-@CrossOrigin({"*"})
 @RequestMapping({"/CodeWalkers"})
 public class ThuongHieuController {
 

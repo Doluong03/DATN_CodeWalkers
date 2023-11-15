@@ -12,7 +12,7 @@ public interface BillDetailService {
     public List<BillDetails> getAll(int idBill);
     public BillDetails getOne(int id);
     public List<BillDetails> save( int idBill,int idCart);
-    public BillDetails update( BillDetails billDetails);
+    public  void update(int idBill , List<BillDetailsRequest> requestList);
     public void delete( BillDetails billDetails);
     public Double getTongGia(List<BillDetailsRequest> list);
 }

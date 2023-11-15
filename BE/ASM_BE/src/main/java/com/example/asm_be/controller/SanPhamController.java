@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
-@CrossOrigin({"*"})
 @RestController
 @RequestMapping({"/CodeWalkers"})
 public class SanPhamController {

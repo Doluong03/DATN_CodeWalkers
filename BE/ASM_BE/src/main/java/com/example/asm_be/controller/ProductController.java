@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
-@CrossOrigin({"*"})
 @RestController()
 @RequestMapping("/CodeWalkers")
 public class ProductController {
