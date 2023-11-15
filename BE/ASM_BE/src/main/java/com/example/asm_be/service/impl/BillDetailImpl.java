@@ -3,15 +3,14 @@ package com.example.asm_be.service.impl;
 import com.example.asm_be.entities.*;
 import com.example.asm_be.repositories.*;
 import com.example.asm_be.request.BillDetailsRequest;
-import com.example.asm_be.service.AddressService;
 import com.example.asm_be.service.BillDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 public class BillDetailImpl implements BillDetailService {
@@ -35,7 +34,7 @@ public class BillDetailImpl implements BillDetailService {
     }
 
     @Override
-    public List<BillDetails> save( int idBill, int idCart) {
+    public List<BillDetails> save(int idBill, int idCart) {
         List<CartDetails> listCartDt = cartDetailsRepository.findByCartId(idCart);
         Bill bill = billRepository.findById(idBill).orElse(null);
         List<BillDetails> billDetailsList = new ArrayList<>();
@@ -75,9 +74,26 @@ public class BillDetailImpl implements BillDetailService {
 
 
     @Override
-    public BillDetails update(BillDetails billDetail) {
-        return billDetailsRepository.save(billDetail);
+    @Transactional
+    public void update(int idBill , List<BillDetailsRequest> requestList) {
+        try {
+            billDetailsRepository.deleteAllByBillId(idBill);
+            for (BillDetailsRequest x : requestList) {
+                BillDetails details = new BillDetails();
+                details.setProductDetail(productDetailRepository.findById(x.getPrDetailId()).get());
+
+                Optional<Bill> bill = billRepository.findById(idBill);
+                details.setBill(bill.get());
+
+                details.setQuantity(x.getQuantity());
+                details.setPrice(x.getPrice());
+                billDetailsRepository.save(details);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     @Override
     public void delete(BillDetails billDetail) {

@@ -312,6 +312,11 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     var productId = $scope.productId;
     var selectedValue = $scope.selectedValue;
     var selectedColor = $scope.selectedColor || undefined; // Xử lý trường hợp không chọn màu sắc
+       
+    if (!selectedColor) {
+      toastr.error("Vui lòng chọn màu sắc ","Warning")
+      return;
+    }
     if ($scope.quantity === null || $scope.quantity === undefined) {
       console.error('Giá trị quantity không hợp lệ.');
       return;
@@ -319,11 +324,11 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   
     if (!productId || !selectedValue) {
       console.log(productId, selectedValue);
-      console.error('Giá trị không hợp lệ. Sản phẩm hoặc giá trị đã chọn không được xác định.');
+      toastr.error("Vui lòng chọn kích cỡ ","Warning")
       return;
     }
   
-    if (!cartId) {
+    if (!cartId || cartId==95) {
       // Thực hiện khi cartId không hợp lệ hoặc không tồn tại
       $scope.createCart().then(function (cartIdResponse) {
         var cartIdResponse = $cookies.get('cartId');

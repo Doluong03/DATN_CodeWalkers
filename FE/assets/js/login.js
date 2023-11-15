@@ -31,7 +31,7 @@ app.controller('loginController', ['$scope', '$http', function ($scope, $http) {
           // Sử dụng setTimeout để chuyển hướng sau 2 giây
           setTimeout(function () {
             // Use regular JavaScript for navigation to another app or page
-            window.location.href = "http://127.0.0.1:5500/FE/layoutUser.html#home";
+            window.location.href = "http://127.0.0.1:5501/layoutUser.html#home";
             console.log(result.data.role, "here")
           }, 1000); // 2 giây (2000 ms)
         }

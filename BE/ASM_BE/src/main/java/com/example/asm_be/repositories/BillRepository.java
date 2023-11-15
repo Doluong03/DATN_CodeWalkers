@@ -15,6 +15,6 @@ import java.util.UUID;
 public interface BillRepository extends JpaRepository<Bill, Integer> {
     List<Bill> findByUsersId(int id);
     Optional<Bill> findTopByOrderByIdDesc();
-    Page<Bill> findAllByStatusNot(int status, Pageable pageable);
-    Page<Bill> findAllByStatus(int status, Pageable pageable);
+    Page<Bill> findAllByStatusNotOrderByIdDesc(int status, Pageable pageable);
+    Page<Bill> findAllByStatusOrderByIdDesc(int status, Pageable pageable);
 }

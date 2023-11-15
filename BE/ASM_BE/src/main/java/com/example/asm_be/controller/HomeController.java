@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.UUID;
-@CrossOrigin({"*"})
 @RestController()
 @RequestMapping("/CodeWalkers")
 public class HomeController {

@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface BillDetailsRepository extends JpaRepository<BillDetails, Integer> {
     List<BillDetails> findByBillId(int idBill);
+    int deleteAllByBillId(int idBill);
 }

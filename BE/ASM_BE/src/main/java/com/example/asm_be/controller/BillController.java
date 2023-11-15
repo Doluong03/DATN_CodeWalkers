@@ -1,9 +1,6 @@
 package com.example.asm_be.controller;
 import com.example.asm_be.entities.*;
-import com.example.asm_be.request.CreateOrder;
-import com.example.asm_be.request.FeeRequest;
-import com.example.asm_be.request.AddBillRequest;
-import com.example.asm_be.request.Invariable;
+import com.example.asm_be.request.*;
 import com.example.asm_be.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
-@CrossOrigin({"*"})
+import java.util.Optional;
+
 @RestController()
 @RequestMapping({"/CodeWalkers"})
 public class BillController {
@@ -103,7 +101,11 @@ public class BillController {
     public ResponseEntity<?> addBillDt(@PathVariable("idCart") int idCart, @PathVariable("idBill") int idBill) {
         return ResponseEntity.ok(billDetailService.save( idBill, idCart));
     }
-
+    @PutMapping("/api/bill/updateBillDt/{idBill}")
+    public ResponseEntity<?> updateBillDt(@PathVariable("idBill") int idBill, @RequestBody List<BillDetailsRequest> detailsRequests ) {
+        billDetailService.update(idBill,detailsRequests);
+        return ResponseEntity.ok().build();
+    }
     @PostMapping({"/calculateFee"})
     public ResponseEntity<?> getFeeShip(@RequestBody FeeRequest phiVanChuyenRequest) {
         try {
@@ -130,6 +132,21 @@ public class BillController {
             System.out.println(billRequest + "<---");
           String url =  billService.update(billRequest);
           return ResponseEntity.ok(url);
+        } catch (Exception var) {
+            var.printStackTrace();
+        }
+        return null;
+    }
+    @PutMapping("/bill/updateBillAdmin")
+    public ResponseEntity<?> updateBillAdmin(@RequestBody BillRequest billRequest) {
+        try {
+            System.out.println(billRequest + "<---");
+            Bill bill = billService.getOne(billRequest.getBillId());
+            if(bill!= null){
+                bill.setShipDate(billRequest.getShipDate());
+                bill.setDescription(billRequest.getCode());
+            }
+            return ResponseEntity.ok(billService.saveAdmin(bill));
         } catch (Exception var) {
             var.printStackTrace();
         }

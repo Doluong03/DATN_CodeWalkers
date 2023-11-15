@@ -90,6 +90,7 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
             })
         }
     }
+
     $scope.loadAllPr = function (cartId) {
         var url = `${host}/api/detail`;
         var config = {
@@ -141,14 +142,14 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
         var url = `${host}/api/updateSize/`;
         var productId = $scope.productId; // Thay thế bằng ID của sản phẩm cần cập nhật
         var id = $scope.id;
-        if(!dataUserCart){
+        if (!dataUserCart) {
             $scope.cartIdFinal = cartId;
             console.log("Using existing Cart ID:", cartId);
-          }else{
+        } else {
             $scope.cartIdFinal = dataUserCart;
             console.log("Using existing Cart ID:", dataUserCart);
-          }
-        var updateData = { size: newSize, idCart:  $scope.cartIdFinal };
+        }
+        var updateData = { size: newSize, idCart: $scope.cartIdFinal };
         console.log(url + id + "/" + productId + "/" + idColor, updateData, ":::::")
         // Sử dụng $http.put để gửi yêu cầu cập nhật đến API
         $http.put(url + id + "/" + productId + "/" + idColor, updateData)
@@ -273,7 +274,7 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
     $scope.billJson = {};
     $scope.addBill = function () {
         var url = `${host}/api/addBill/${$scope.idUserFinal}`;
-        console.log(url,"url") ; 
+        console.log(url, "url");
         return $http.post(url).then(function (res) {
             $scope.bill = res.data; // Gán dữ liệu từ API vào $scope.bill
             $scope.billJson = JSON.stringify($scope.bill);
