@@ -1,5 +1,5 @@
 let host = "http://localhost:8080/CodeWalkers";
-window.orderManage = function ($scope, $http, $window, $timeout,$document) {
+window.orderManage = function ($scope, $http, $window, $timeout, $document) {
     $scope.listOrders = [];
     $scope.pageNo = 0;
     $scope.sizePage = 5;
@@ -213,13 +213,18 @@ window.orderManage = function ($scope, $http, $window, $timeout,$document) {
 
     $scope.getBadge = function () {
         apiUrl = apiOrder + "/get-all-bill" + "?pageNo=" + 0 + "&sizePage=" + 10000;
+        $scope.listBadge = [];
         $scope.badgeAcp = 0;
         $scope.badgeShip = 0;
         $http.get(apiUrl, headers).then(
             function (response) {
                 // Xử lý phản hồi thành công
                 $scope.listBadge = response.data;
-                console.log(response.data);
+    
+                // Reset counts before recalculating
+                $scope.badgeAcp = 0;
+                $scope.badgeShip = 0;
+    
                 for (var i = 0; i < $scope.listBadge.length; i++) {
                     if ($scope.listBadge[i].status == 1) {
                         $scope.badgeAcp += 1;
@@ -227,7 +232,6 @@ window.orderManage = function ($scope, $http, $window, $timeout,$document) {
                     if ($scope.listBadge[i].status == 2) {
                         $scope.badgeShip += 1;
                     }
-
                 }
             },
             function (error) {
@@ -235,6 +239,7 @@ window.orderManage = function ($scope, $http, $window, $timeout,$document) {
                 console.log(error);
             })
     }
+    
     $scope.hienThi = function (pageNo, sizePage) {
         if (!$scope.status) {
             apiUrl = apiOrder + "/get-all-bill" + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
@@ -785,7 +790,15 @@ window.orderManage = function ($scope, $http, $window, $timeout,$document) {
             item.isSelected = $scope.selectAllCheckbox;
         });
     };
+    $scope.activeTab = 'all'; // Default to the 'all' tab
 
+    $scope.showTab = function (tabId) {
+        $scope.getBadge();
+        $scope.activeTab = tabId;
+        var tab = new bootstrap.Tab(document.getElementById(tabId));
+        tab.show();
+    };
+    
     $scope.UpdateStatusAll = function (status) {
         var selectedItems = $scope.listOrders.filter(function (item) {
             return item.isSelected;
@@ -813,9 +826,39 @@ window.orderManage = function ($scope, $http, $window, $timeout,$document) {
                     let api = apiAdmin + "Bill/updateStatus/" + billId + "?status=" + status;
                     console.log(element, "here item")
                     $http.put(api, headers).then(function (response) {
+                        $scope.getByStatus(status);
                         $scope.hienThi($scope.pageCurrent, $scope.sizePage);
                         console.log(response);
                         isAcp = true;
+
+                        // Switch to the tab with the updated status
+                        switch (status) {
+                            case 0:
+                                // Tất cả
+                                $scope.showTab('all');
+                                break;
+                            case 1:
+                                // Chờ xác nhận
+                                $scope.showTab('wait_acp');
+                                break;
+                            case 2:
+                                // Chờ giao hàng
+                                $scope.showTab('wait_ship');
+                                break;
+                            case 3:
+                                // Chờ giao hàng
+                                $scope.showTab('shipping');
+                                break;
+                            case 4:
+                                // Chờ giao hàng
+                                $scope.showTab('done');
+                                break;
+                            case 5:
+                                // Chờ giao hàng
+                                $scope.showTab('cancel');
+                                break;
+                            // Add cases for other status values as needed
+                        }
                     })
                         .catch(function (error) {
                             console.log(error);
@@ -829,7 +872,6 @@ window.orderManage = function ($scope, $http, $window, $timeout,$document) {
                 Swal.fire("Hủy bỏ", "", "error");
             }
         });
-
         // Thực hiện xử lý xóa tất cả ở đây với mảng selectedItems
     };
 
@@ -878,105 +920,6 @@ window.orderManage = function ($scope, $http, $window, $timeout,$document) {
 
         $scope.hienThi(0, 5);
     };
-    // sell tai quay 
-    var data = localStorage.getItem('userData');
-    var dataStaff = JSON.parse(data);
-    $scope.formOrderAdd = {
-        idBill: "",
-        address: "",
-        wardId: "",
-        provinceId: 0, // Gửi ID
-        districtId: 0,
-        userName: "",
-        phone: "",
-        fee: "Mua hàng tại quầy",
-        optionPay: 0,
-        totalPay: 0,
-    };
-    $scope.formNotEditAdmin = {
-        staffName: dataStaff.name,
-        staffPhone: dataStaff.phoneNumber
-    }
-    $scope.tabs = [
-        { title: 'Hóa đơn 1', content: '/template/billAdmin.html', active: true, isLast: false },
-      ];
-      $scope.activateTab = function (selectedTab) {
-        if (!selectedTab.disabled) {
-          $scope.tabs.forEach(function (tab) {
-            tab.active = (tab === selectedTab);
-          });
-        }
-      };
-      $scope.addNewTab = function (currentTab) {
-        if ($scope.tabs.length >= 5) {
-          return;
-        }
-      
-        $scope.newTabIndex = $scope.newTabIndex || $scope.tabs.length + 1;
-      
-        var newTab = { 
-          title: 'Hóa đơn ' + $scope.newTabIndex, 
-          content: '/template/billAdmin.html', 
-          active: true, 
-          isLast: false 
-        };
-      
-        $scope.tabs.push(newTab);
-        $scope.newTabIndex++;
-      
-        for (var i = 0; i < $scope.tabs.length - 1; i++) {
-          $scope.tabs[i].active = false;
-        }
-        updateTabStatus();
-      };
-      
-      $scope.removeTab = function (tabToRemove) {
-        var tabIndex = $scope.tabs.indexOf(tabToRemove);
-        // Kích hoạt tab trước đó nếu tab hiện tại là tab cuối cùng
-        var previousTabIndex = (tabIndex === $scope.tabs.length - 1) ? tabIndex - 1 : tabIndex;
-        // Kích hoạt tab trước đó
-        $scope.activateTab($scope.tabs[previousTabIndex]);
-        // Xóa tab hiện tại
-        $scope.tabs.splice(tabIndex, 1);
-        // Cập nhật trạng thái tab
-        updateTabStatus();
-      };
-    
-      function updateTabStatus() {
-        // Cập nhật trạng thái "isLast" cho từng tab
-        $scope.tabs.forEach(function (tab, index) {
-          tab.isLast = (index === $scope.tabs.length - 1);
-        });
-      }
-    
-      // Khởi tạo trạng thái ban đầu
-      updateTabStatus();
-      $scope.dropdownOpen = false;
-
-      $scope.toggleDropdown = function () {
-          $scope.dropdownOpen = !$scope.dropdownOpen;
-      };
-      $document.on("click", function (event) {
-          // Check if the click is outside of the dropdown
-          if (!$scope.isDescendant(document.getElementById("productDropdown"), event.target) && !$scope.isDescendant(document.getElementById("productInput"), event.target)) {
-              $scope.$apply(function () {
-                  $scope.dropdownOpen = false;
-              });
-          }
-      });
-
-      // Helper function to check if an element is a descendant of another
-      $scope.isDescendant = function (parent, child) {
-          var node = child.parentNode;
-          while (node != null) {
-              if (node == parent) {
-                  return true;
-              }
-              node = node.parentNode;
-          }
-          return false;
-      };
-    // end sell
 
     // thu vien jQuery không đụng vào
     (function ($) {

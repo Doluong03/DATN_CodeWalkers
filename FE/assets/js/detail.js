@@ -337,7 +337,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
         console.log("Cart ID created:", $scope.cartIdFinal);
         $scope.sendDetailAddRequest(sl,$scope.cartIdFinal);
         // $scope.loadAllPrCart($scope.cartIdFinal);
-      });
+      });   
     } else {
       if(!dataUserCart){
         $scope.cartIdFinal = cartId;

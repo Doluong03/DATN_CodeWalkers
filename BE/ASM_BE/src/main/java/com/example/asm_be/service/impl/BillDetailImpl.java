@@ -47,6 +47,7 @@ public class BillDetailImpl implements BillDetailService {
                 Optional<ProductDetail> productDetail = productDetailRepository.findById(cartDetails.getProductDetail().getId());
                 ProductDetail prDtOut = productDetail.get();
                 prDtOut.setQuantity(prDtOut.getQuantity() - cartDetails.getQuantity());
+                productDetailRepository.save(prDtOut);
                 billDetail.setPrice(cartDetails.getProductDetail().getPrice());
                 billDetailsRepository.save(billDetail);
                 billDetailsList.add(billDetail);

@@ -200,7 +200,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
     })
     .when("/sell-admin", {
       templateUrl: "/template/SellAdmin.html",
-      controller: orderManage,
+      controller: SellAdminController,
       resolve: {
         checkData: function (DataService) {
           return DataService.fetchData();
