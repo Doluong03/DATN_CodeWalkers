@@ -1,37 +1,9 @@
-<style>
-    .custom-dropdown-sell {
-        position: relative;
-        display: inline-block;
-        z-index: 2;
-    }
-
-    .dropdown-content-sell {
-        display: none;
-        position: absolute;
-        background-color: #f9f9f9;
-        min-width: 160px;
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-        padding: 12px;
-        z-index: 3;
-        overflow-y: auto;
-        /* Enable vertical scrollbar */
-        max-height: 400px;
-        /* Set maximum height */
-
-    }
-    .custom-dropdown-sell:hover .dropdown-content-sell {
-        display: block;
-    }
-
-    .prName-sell {
-        font-weight: bold;
-    }
-
-</style>
+<link rel="stylesheet" href="css/css-layout/order.css">
 <div>
+    <h4> Quản lý hóa đơn </h4>
     <div class="row">
-        <div class="custom-dropdown-sell ms-1 mb-1 col-lg-4 ">
-            <input type="text" class="form-control" id="productInput"  ng-click="toggleDropdown()"
+        <div class="custom-dropdown-sell ms-1 mb-1 col-lg-4 " ng-if="tabs.length > 0">
+            <input type="text" class="form-control" id="productInput" ng-click="toggleDropdown()"
                 placeholder="Search products" ng-model="productInput" ng-change="filterProducts()">
             <div id="productDropdown" class="dropdown-content-sell w-100">
                 <!-- Product options go here -->
@@ -59,29 +31,208 @@
                         class="fa-sharp fa-solid fa-xmark ms-2"></i></span>
             </button>
             <span ng-if="!tab.isLast" ng-click="addNewTab(tab)" style="cursor: pointer; margin-left: 5px;"><i
-                    class="fa-sharp fa-light fa-circle-plus fs-4" style="margin-top: 12px;"></i></span>
-
+                    class="fa-sharp fa-light fa-circle-plus fs-4" style="margin-top: 12px;" title="Tạo mới hóa đơn "
+                    ng-if="tabs.length > 0"></i>
+                <button class="btn btn-outline-primary ms-2 mt-3" ng-show="tabs.length == 0"> Tạo mới hóa
+                    đơn</button></span>
         </div>
-        <div class="tab-content ms-3  bg-light" id="nav-tabContent">
+        <div class="tab-content ms-3 bg-light" id="nav-tabContent">
+            <div class="text-center" ng-show="tabs.length == 0">
+                <img src="images/logo.png" alt="" class="text-center w-25 h-25 ">
+            </div>
             <div class="tab-pane fade show " ng-repeat="tab in tabs" ng-class="{ 'active': tab.active }">
-                <!-- Sử dụng ng-include để đặt nội dung từ file HTML -->
-                <div ng-include="tab.content" ></div>
+                <div class="bg-light">
+                    <form class="forms-sample row border rounded-4" ng-if="tab.active" ng-submit="submitForm(tab)">
+                        <div class="col-lg-5">
+                            <div class="form-group text-center mt-2">
+                                <h5>Thông tin khách hàng</h5>
+                            </div>
+                            <div class="row ">
+                                <div class="custom-dropdown-user form-group col-lg justify-items-end">
+                                    <label for="customerSearch">Tìm Khách Hàng</label>
+                                    <input type="search" class="form-control" id="exampleInputMiddleName"
+                                        placeholder="Search by phone or email" ng-model="tab.formData.userName"
+                                        ng-change="searchCustomers(tab)">
+                                    <div id="customerDropdown" class="dropdown-content-user">
+                                        <div ng-repeat="user in filteredUsers">
+                                            <button ng-click="selectCustomer(user, tab)"
+                                                class="border-0  bg-light text-start">
+                                                <span class="">{{user.name}}</span>
+                                                <br>
+                                                <span class="">SDT: {{user.phoneNumber}}</span>
+                                            </button>
+                                            <hr class="mt-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg mt-1">
+                                    <input type="text" class="form-control mt-4" id="exampleInputMiddleName"
+                                        placeholder="Phone Number" required ng-model="tab.formData.phoneNumber">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputDate">Mã hóa đơn</label>
+                                <input type="text" class="form-control" id="exampleInputDate" placeholder=""
+                                    ng-model="tab.formData.code" readonly>
+                            </div>
+                            <div class="row ">
+                                <div class="form-group col-lg ">
+                                    <label for="exampleInputDate">Nhân viên</label>
+                                    <input type="search" class="form-control" id="exampleInputMiddleName"
+                                        placeholder="Search by phone or email" required
+                                        ng-model="formNotEditAdmin.staffName" readonly>
+                                </div>
+                                <div class="form-group col-lg justify-items-end">
+                                    <label for="exampleInputMiddleName">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="exampleInputMiddleName"
+                                        placeholder="Họ và Tên" required ng-model="formNotEditAdmin.staffPhone"
+                                        readonly>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="form-group col-lg ">
+                                    <label for="exampleInputDate">Địa chỉ</label>
+                                    <!-- <input type="search" class="form-control mb-2" id="exampleInputMiddleName" placeholder="Tỉnh/Thành phố" required
+                                        ng-model="tab.formData.province">
+                                      <input type="search" class="form-control mb-2" id="exampleInputMiddleName" placeholder="Quận/Huyện" required
+                                        ng-model="tab.formData.district">
+                                      <input type="search" class="form-control" id="exampleInputMiddleName" placeholder="Phường/Xã" required
+                                        ng-model="tab.formData.ward"> -->
+                                    <select id="select1" class="form-select col" ng-model="tab.formData.provinceId"
+                                        ng-change="loadDistrict(tab.formData.provinceId)"
+                                        ng-class="{'is-invalid': checkAddress && !tab.formData.provinceId}">
+                                        <option value="">Tỉnh/Thành phố
+                                        </option>
+                                        <option ng-repeat="provin in provinces" ng-value="provin.ProvinceID">
+                                            {{provin.ProvinceName}}</option>
+                                    </select>
+                                    <select id="select2" class="form-select col" ng-model="tab.formData.districtId"
+                                        ng-change="loadWard(tab.formData.districtId)"
+                                        ng-class="{'is-invalid': checkAddress && !tab.formData.districtId}">
+                                        <option value="">Quận/Huyện</option>
+                                        <option ng-repeat="district in districts" ng-value="district.DistrictID">
+                                            {{district.DistrictName}}</option>
+                                    </select>
+                                    <select id="select3" class="form-select col" ng-model="tab.formData.wardId"
+                                        ng-change="getFee()"
+                                        ng-class="{'is-invalid': checkAddress && !tab.formData.wardId}">
+                                        <option value="">Phường/Xã</option>
+                                        <option ng-repeat="ward in wards" ng-value="ward.WardCode">{{ward.WardName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg justify-items-end">
+                                    <label for="exampleInputMiddleName">Địa chỉ chi tiết</label>
+                                    <textarea type="text" class="form-control" id="exampleInputMiddleName"
+                                        placeholder="Họ và Tên"
+                                        ng-class="{'is-invalid': checkAddress && !tab.formData.address}"
+                                        ng-model="tab.formData.address"></textarea>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="form-group col-lg ">
+                                    <label for="exampleInputDate">Khuyến mãi</label>
+                                    <input type="search" class="form-control" id="exampleInputMiddleName"
+                                        placeholder="Search by phone or email"
+                                        ng-class="{'is-invalid': checkAddress && !tab.formData.fee}"
+                                        ng-model="tab.formData.fee">
+                                </div>
+                                <div class="form-group col-lg justify-items-end ">
+                                    <label for="exampleInputMiddleName">Tổng tiền sản phẩm</label>
+                                    <input type="text" class="form-control" id="exampleInputMiddleName"
+                                        placeholder="Họ và Tên" ng-model="tab.formData.totalPay"
+                                        ng-value="tab.formData.totalPay | vndCurrency"
+                                        ng-class="{'is-invalid': checkAddress && !tab.formData.totalPay}">
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="form-group col-lg ">
+                                    <label for="exampleInputDate">Phí vận chuyển</label>
+                                    <input type="search" class="form-control" id="exampleInputMiddleName"
+                                        placeholder="Search by phone or email"
+                                        ng-class="{'is-invalid': checkAddress && !tab.formData.fee}"
+                                        ng-model="tab.formData.fee"
+                                        ng-value="tab.formData.fee == 0 ? 'Mua hàng tại quầy': tab.formData.fee | vndCurrency">
+                                </div>
+                                <div class="form-group col-lg justify-items-end">
+                                    <label for="exampleInputMiddleName">Phương thức thanh toán</label>
+                                    <input type="text" class="form-control" id="exampleInputMiddleName"
+                                        placeholder="Họ và Tên" ng-model="tab.formData.optionPay"
+                                        ng-value="tab.formData.optionPay == 0 ? 'Thanh toán khi nhận hàng': 'Thanh toán online'">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg scrollable-modal-body border rounded-4 z-0">
+                            <div class="text-center mt-2 mb-4">
+                                <h5>Giỏ hàng</h5>
+                            </div>
+                            <table class="table   table-hover expandable-table ">
+                                <thead class="sticky-top fs-4 thead-light">
+                                    <tr class="fs-1">
+                                        <th>#</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Đơn giá</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="align-middle text-center table-group-divider">
+                                    <tr ng-repeat="pr in listRes" varStatus="loop">
+                                        <td>{{$index +1}}</td>
+                                        <td>{{pr.productDetail.product.name}} [{{pr.productDetail.size.name}} -
+                                            {{pr.productDetail.color.name}}] </td>
+                                        <td class="h-25 align-middle ">
+                                            <div class="input-group quantity-input">
+                                                <div class="input-group-prepend">
+                                                    <button class="quantity-button border-1" type="button"
+                                                        ng-click="decreaseQuantity(pr)">
+                                                        <i class="fa-sharp fa-solid fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                                <!-- Sử dụng ng-model để liên kết quantity với productInfoList.quantity -->
+                                                <input type="number" class="quantity-value border-1 "
+                                                    aria-label="Quantity" ng-model="pr.quantity"
+                                                    ng-keypress="onInputKeyPress($event,quantity)"
+                                                    ng-blur="onInputBlur(pr)">
+
+                                                <div class="input-group-append">
+                                                    <button class="quantity-button border-1" type="button"
+                                                        ng-click="increaseQuantity(pr)">
+                                                        <i class="fa-sharp fa-solid fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                        </td>
+                                        <td>{{pr.productDetail.price | vndCurrency }}</td>
+                                        <td>{{pr.total| vndCurrency}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-end">
+                            <button id="btn-action-cancel" type="button" class="btn btn-secondary" data-dismiss="modal"
+                                ng-click="removeTab(tab)">Hủy</button>
+                            <button id="btn-action-add" type="button" class="btn btn-primary"
+                                ng-click="UpdateBillEdit($event)">Cập
+                                nhật</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+</div>
 
 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-    <Script>
-        $(document).ready(function () {
-            $('.dropdown-toggle').dropdown();
-        });
-    </Script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<Script>
+    $(document).ready(function () {
+        $('.dropdown-toggle').dropdown();
+    });
+</Script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
 </div>

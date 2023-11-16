@@ -5,30 +5,44 @@
         <h5 class="card-title">Quản lý đơn hàng</h5>
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button"
-              role="tab" aria-controls="all" aria-selected="true" ng-click="getByStatus(0)">Tất cả</button>
+            <button class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button"
+              role="tab" aria-controls="all" aria-selected="true" ng-click="getByStatus(0); showTab('all')"
+              ng-class="{ 'active': activeTab === 'all' }">Tất cả</button>
+
             <button class="nav-link position-relative z-3" id="nav-wait_acp-tab" data-bs-toggle="tab"
               data-bs-target="#wait_acp" type="button" role="tab" aria-controls="wait_acp" aria-selected="false"
-              ng-click="getByStatus(1)">Chờ xác nhận
+              ng-click="getByStatus(1); showTab('wait_acp')" ng-class="{ 'active': activeTab === 'wait_acp' }">
+              Chờ xác nhận
               <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ">
                 {{badgeAcp}}
                 <span class="visually-hidden">unread messages</span>
               </span>
             </button>
+            <!-- Repeat for other tabs -->
+
 
             <button class="nav-link position-relative z-1" id="nav-wait_ship-tab" data-bs-toggle="tab"
               data-bs-target="#wait_ship" type="button" role="tab" aria-controls="wait_ship" aria-selected="false"
-              ng-click="getByStatus(2)"> Chờ
-              giao hàng <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              ng-click="getByStatus(2); showTab('wait_ship')" ng-class="{ 'active': activeTab === 'wait_ship' }">
+              Chờ giao hàng
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 {{badgeShip}}
-                <span class="visually-hidden">unread messages</span></button>
+                <span class="visually-hidden">unread messages</span>
+              </span>
+            </button>
+
             <button class="nav-link" id="nav-shipping-tab" data-bs-toggle="tab" data-bs-target="#shipping" type="button"
-              role="tab" aria-controls="shipping" aria-selected="false" ng-click="getByStatus(3)">Đang giao
-              hàng</button>
+              role="tab" aria-controls="shipping" aria-selected="false" ng-click="getByStatus(3); showTab('shipping')"
+              ng-class="{ 'active': activeTab === 'shipping' }">Đang giao hàng</button>
+
             <button class="nav-link" id="nav-done-tab" data-bs-toggle="tab" data-bs-target="#done" type="button"
-              role="tab" aria-controls="done" aria-selected="false" ng-click="getByStatus(4)">Hoàn thành</button>
-            <button class="nav-link" id="nav-wait_pay-tab" data-bs-toggle="tab" data-bs-target="#wait_pay" type="button"
-              role="tab" aria-controls="wait_pay" aria-selected="false" ng-click="getByStatus(5)">Đã hủy</button>
+              role="tab" aria-controls="done" aria-selected="false" ng-click="getByStatus(4); showTab('done')"
+              ng-class="{ 'active': activeTab === 'done' }">Hoàn thành</button>
+
+            <button class="nav-link" id="nav-cancel-tab" data-bs-toggle="tab" data-bs-target="#cancel" type="button"
+              role="tab" aria-controls="cancel" aria-selected="false" ng-click="getByStatus(5); showTab('cancel')"
+              ng-class="{ 'active': activeTab === 'cancel' }">Đã hủy</button>
+
           </div>
         </nav>
         <div class="tab-content" style="margin-top: -30px;" id="nav-tabContent">
@@ -1000,7 +1014,7 @@
     }
   </style>
   <div class="modal fade justify-items-center" id="userUpdateModal" tabindex="-1" role="dialog"
-    aria-labelledby="userUpdateModalLabel" aria-hidden="true" >
+    aria-labelledby="userUpdateModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content ">
         <div class="modal-header">
@@ -1053,7 +1067,8 @@
                 <div class="form-group col-lg justify-items-end">
                   <label for="exampleInputMiddleName">Tên Khách Hàng</label>
                   <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên" required
-                    ng-model="formOrderUpdate.userName" required ng-class="{'is-invalid': checkAddress && !formOrderUpdate.userName}">
+                    ng-model="formOrderUpdate.userName" required
+                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.userName}">
                 </div>
               </div>
               <div class="form-group">
@@ -1083,20 +1098,22 @@
                   <input type="search" class="form-control" id="exampleInputMiddleName" placeholder="Phường/Xã" required
                     ng-model="formOrderUpdate.ward"> -->
                   <select id="select1" class="form-select col" ng-model="formOrderUpdate.provinceId"
-                    ng-change="loadDistrict(formOrderUpdate.provinceId)" ng-class="{'is-invalid': checkAddress && !formOrderUpdate.provinceId}">
+                    ng-change="loadDistrict(formOrderUpdate.provinceId)"
+                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.provinceId}">
                     <option value="">Tỉnh/Thành phố
                     </option>
                     <option ng-repeat="provin in provinces" ng-value="provin.ProvinceID">
                       {{provin.ProvinceName}}</option>
                   </select>
                   <select id="select2" class="form-select col" ng-model="formOrderUpdate.districtId"
-                    ng-change="loadWard(formOrderUpdate.districtId)" ng-class="{'is-invalid': checkAddress && !formOrderUpdate.districtId}">
+                    ng-change="loadWard(formOrderUpdate.districtId)"
+                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.districtId}">
                     <option value="">Quận/Huyện</option>
                     <option ng-repeat="district in districts" ng-value="district.DistrictID">
                       {{district.DistrictName}}</option>
                   </select>
                   <select id="select3" class="form-select col" ng-model="formOrderUpdate.wardId" ng-change="getFee()"
-                  ng-class="{'is-invalid': checkAddress && !formOrderUpdate.wardId}">
+                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.wardId}">
                     <option value="">Phường/Xã</option>
                     <option ng-repeat="ward in wards" ng-value="ward.WardCode">{{ward.WardName}}</option>
                   </select>
@@ -1104,31 +1121,35 @@
                 <div class="form-group col-lg justify-items-end">
                   <label for="exampleInputMiddleName">Địa chỉ chi tiết</label>
                   <textarea type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên"
-                  ng-class="{'is-invalid': checkAddress && !formOrderUpdate.address}" ng-model="formOrderUpdate.address"   ></textarea>
+                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.address}"
+                    ng-model="formOrderUpdate.address"></textarea>
                 </div>
               </div>
               <div class="row ">
                 <div class="form-group col-lg ">
                   <label for="exampleInputDate">Khuyến mãi</label>
                   <input type="search" class="form-control" id="exampleInputMiddleName"
-                    placeholder="Search by phone or email" ng-class="{'is-invalid': checkAddress && !formOrderUpdate.fee}" ng-model="formOrderUpdate.fee" >
+                    placeholder="Search by phone or email"
+                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.fee}" ng-model="formOrderUpdate.fee">
                 </div>
                 <div class="form-group col-lg justify-items-end ">
                   <label for="exampleInputMiddleName">Tổng tiền sản phẩm</label>
-                  <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên" 
-                    ng-model="formOrderUpdate.totalPay" ng-value="formOrderUpdate.totalPay | vndCurrency" ng-class="{'is-invalid': checkAddress && !formOrderUpdate.totalPay}">
+                  <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên"
+                    ng-model="formOrderUpdate.totalPay" ng-value="formOrderUpdate.totalPay | vndCurrency"
+                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.totalPay}">
                 </div>
               </div>
               <div class="row ">
                 <div class="form-group col-lg ">
                   <label for="exampleInputDate">Phí vận chuyển</label>
                   <input type="search" class="form-control" id="exampleInputMiddleName"
-                    placeholder="Search by phone or email" ng-class="{'is-invalid': checkAddress && !formOrderUpdate.fee}" ng-model="formOrderUpdate.fee"
+                    placeholder="Search by phone or email"
+                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.fee}" ng-model="formOrderUpdate.fee"
                     ng-value="formOrderUpdate.fee == 0 ? 'Mua hàng tại quầy': formOrderUpdate.fee | vndCurrency">
                 </div>
                 <div class="form-group col-lg justify-items-end">
                   <label for="exampleInputMiddleName">Phương thức thanh toán</label>
-                  <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên" 
+                  <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên"
                     ng-model="formOrderUpdate.optionPay"
                     ng-value="formOrderUpdate.optionPay == 0 ? 'Thanh toán khi nhận hàng': 'Thanh toán online'">
                 </div>

@@ -347,14 +347,14 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
             var billId = $cookies.get('billId');
             if (!dataUserJson) {
                 var cartId = $cookies.get('cartId');
+                var idUser = $cookies.get('idUser');
                 var dataToSend = {
                     idBill: billId,
                     address: $scope.formAddress.addressDetail,
                     wardId: $scope.formAddress.ward.WardCode,
                     provinceId: $scope.formAddress.province.ProvinceID, // Gửi ID
                     districtId: $scope.formAddress.district.DistrictID,
-                    userName: $scope.formAddress.userName,
-                    phone: $scope.formAddress.phoneNumber,
+                    userName: idUser,
                     fee: $scope.feeShip,
                     optionPay: $scope.CreateOrder.optionPay,
                     totalPay: $scope.totalPay,
@@ -367,8 +367,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                     wardId: $scope.selectedAddress.WardCode,
                     provinceId: $scope.selectedAddress.ProvinceID, // Gửi ID
                     districtId: $scope.selectedAddress.DistrictID,
-                    userName: $scope.selectedAddress.UserName,
-                    phone: $scope.selectedAddress.PhoneNumber,
+                    userName: dataUserJson,
                     fee: $scope.feeShip,
                     optionPay: $scope.CreateOrder.optionPay,
                     totalPay: $scope.totalPay,
@@ -382,6 +381,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
             $http.put(url, dataToSend)
                 .then(function (res) {
                     // Xử lý khi cập nhật thành công
+                    if(res){
                     Swal.fire({
                         icon: 'success',
                         title: 'Đặt hàng thành công!',
@@ -391,6 +391,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                         $window.location.href = res.data;
                     });
                     console.log('Suaw thành công');
+                }
                 })
                 .catch(function (error) {
                     // Xử lý khi cập nhật thất bại

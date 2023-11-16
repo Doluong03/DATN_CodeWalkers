@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 public class AddBillRequest {
     private String userName;
-    private String phone;
     private Integer idBill;
     private Integer provinceId;
     private Integer districtId;
@@ -28,7 +27,7 @@ public class AddBillRequest {
     private Double totalPay;
     private Date shipDate;
 
-    public Bill map(Bill bill, Users users){
+    public Bill map(Bill bill){
         bill.setCreatedAt(new Date());
         bill.setAddress(this.address);
         bill.setDistrict(this.districtId);
@@ -39,7 +38,6 @@ public class AddBillRequest {
         bill.setTotalPay(this.totalPay);
         bill.setDescription(this.note);
         bill.setShipDate(this.shipDate);
-        bill.setUsers(users);
         return bill;
     }
 
