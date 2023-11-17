@@ -42,6 +42,7 @@ public class ProductDetail {
     @JoinColumn(name = "khuyen_mai_id")
     private Promotional promotional;
 
-    @Column(name = "trang_thai")
-    private boolean status;
+    @ManyToOne
+    @JoinColumn(name = "trang_thai_id")
+    private Status status;
 }

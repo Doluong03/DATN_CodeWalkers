@@ -238,3 +238,99 @@ myApp.filter('dateformat', function () {
     return "";
   };
 });
+
+myApp.service('DateService', function () {
+  var dateList = [];
+  var dayList = [];
+
+  function formatDate(date) {
+      var day = date.getDate();
+      var month = date.getMonth() + 1;
+      var year = date.getFullYear();
+      return day + '-' + month + '-' + year;
+  }
+
+  return {
+      setDateList: function (newDateList) {
+          dateList = newDateList;
+      },
+      setDayList: function (newDayList) {
+          dayList = newDayList;
+      },
+      getDateList: function () {
+          return dateList;
+      },
+      getDayList: function () {
+          return dayList;
+      },
+      generateLists: function (startDate, endDate) {
+          // Xóa danh sách ngày và chỉ chứa phần ngày trước khi thêm ngày mới
+          dateList.splice(0, dateList.length);
+          dayList.splice(0, dayList.length);
+
+          var currentDate = new Date(startDate);
+          while (currentDate <= endDate) {
+              dateList.push(formatDate(new Date(currentDate)));
+              dayList.push(currentDate.getDate());
+              currentDate.setDate(currentDate.getDate() + 1);
+          }
+      }
+  };
+});
+
+
+myApp.service('YearService', function () {
+  var yearList = [];
+
+  return {
+      setYearList: function (newYearList) {
+          yearList = newYearList;
+      },
+      getYearList: function () {
+          return yearList;
+      },
+      generateYearList: function (year1, year2) {
+          yearList = [];
+          for (var i = year1; i <= year2; i++) {
+              yearList.push(i);
+          }
+      }
+  };
+});
+
+
+myApp.service('MonthService', function () {
+  // Hàm lấy danh sách tháng trong khoảng từ month1 đến month2
+  this.getDateRanges = function (start, end) {
+      var dateRanges = [];
+      var startDate = new Date(start.year, start.month - 1); // Adjust month to 0-based index
+      var endDate = new Date(end.year, end.month - 1);
+
+      while (startDate <= endDate) {
+          var year = startDate.getFullYear().toString();
+          var month = (startDate.getMonth() + 1).toString(); // Adjust month to 1-based index
+
+          dateRanges.push({ year: year, month: month });
+
+          startDate.setMonth(startDate.getMonth() + 1);
+      }
+
+      return dateRanges;
+  };
+
+  this.getMMYYYYDates = function (yearMonthObjects) {
+    var mmYYYYDates = [];
+
+    yearMonthObjects.forEach(function (item) {
+        var year = item.year;
+        var month = item.month;
+
+        // Định dạng mm/yyyy
+        var formattedDate = (month < 10 ? '0' : '') + month + '/' + year;
+
+        mmYYYYDates.push(formattedDate);
+    });
+
+    return mmYYYYDates;
+};
+});
