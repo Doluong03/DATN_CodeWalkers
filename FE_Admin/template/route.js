@@ -64,7 +64,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
   // $routeProvider : chuyen trang
   $routeProvider
     .when("/trang-chu", {
-      templateUrl: "/FE_Admin/template/trang-chu.html",
+      templateUrl: "/template/trang-chu.html",
       controller: UserController,
       resolve: {
         checkData: function(DataService) {
@@ -73,7 +73,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })
      .when("/bieu-do", {
-      templateUrl: "/FE_Admin/template/chart.html",
+      templateUrl: "/template/chart.html",
       controller : ChartController,
       resolve: {
         checkData: function(DataService) {
@@ -82,7 +82,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })   
     .when("/nhan-vien", {
-      templateUrl: "/FE_Admin/template/staff.html",
+      templateUrl: "/template/staff.html",
       controller : StaffController,
       resolve: {
         checkData: function(DataService) {
@@ -91,7 +91,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })
       .when("/khach-hang", {
-      templateUrl: "/FE_Admin/template/user.html",
+      templateUrl: "/template/user.html",
       controller : UserController,
       resolve: {
         checkData: function(DataService) {
@@ -100,7 +100,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })    
      .when("/nsx", {
-      templateUrl: "/FE_Admin/template/manufacture.html",
+      templateUrl: "/template/manufacture.html",
       controller : ManufactureController,
       resolve: {
         checkData: function(DataService) {
@@ -109,7 +109,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })  
     .when("/product-detail", {
-      templateUrl: "/FE_Admin/template/product-details.html",
+      templateUrl: "/template/product-details.html",
       controller : productDetailController,
       resolve: {
         checkData: function(DataService) {
@@ -118,7 +118,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     }) 
     .when("/material", {
-      templateUrl: "/FE_Admin/template/material.html",
+      templateUrl: "/template/material.html",
       controller :MaterialController,
       resolve: {
         checkData: function(DataService) {
@@ -127,7 +127,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })  
     .when("/category", {
-      templateUrl: "/FE_Admin/template/category.html",
+      templateUrl: "/template/category.html",
       controller :CategoryController,
       resolve: {
         checkData: function(DataService) {
@@ -136,7 +136,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })  
     .when("/bill", {
-      templateUrl: "/FE_Admin/template/bill.html",
+      templateUrl: "/template/bill.html",
       controller :BillController,
       resolve: {
         checkData: function(DataService) {
@@ -145,7 +145,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })  
     .when("/color", {
-      templateUrl: "/FE_Admin/template/color.html",
+      templateUrl: "/template/color.html",
       controller :ColorController,
       resolve: {
         checkData: function(DataService) {
@@ -154,7 +154,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })  
     .when("/kich-thuoc", {
-      templateUrl: "/FE_Admin/template/size.html",
+      templateUrl: "/template/size.html",
       controller : SizeController,
       resolve: {
         checkData: function(DataService) {
@@ -163,7 +163,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     }) 
     .when("/brand", {
-      templateUrl: "/FE_Admin/template/brands.html",
+      templateUrl: "/template/brands.html",
       controller :BrandsController,
       resolve: {
         checkData: function(DataService) {
@@ -172,7 +172,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     }) 
     .when("/product", {
-      templateUrl: "/FE_Admin/template/product.html",
+      templateUrl: "/template/product.html",
       controller :ProductController,
       resolve: {
         checkData: function(DataService) {
@@ -181,7 +181,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     }) 
     .when("/order", {
-      templateUrl: "/FE_Admin/template/order_manage.html",
+      templateUrl: "/template/order_manage.html",
       controller : orderManage,
       resolve: {
         checkData: function(DataService) {
@@ -190,7 +190,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })  
     .when("/hinh-anh", {
-      templateUrl: "/FE_Admin/template/image.html",
+      templateUrl: "/template/image.html",
       controller : ImageController,
       resolve: {
         checkData: function(DataService) {

@@ -47,6 +47,11 @@ public class StaffIplm implements StaffService {
     }
 
     @Override
+    public List getList() {
+        return staffRepository.findAll();
+    }
+
+    @Override
     public boolean save(Staff staff) {
         try {
             staffRepository.save(staff);

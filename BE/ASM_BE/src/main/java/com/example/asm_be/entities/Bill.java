@@ -55,7 +55,7 @@ public class Bill {
     private Users users;
 
     @Column(name = "trang_thai")
-    private int status;
+    private boolean status;
 
     @ManyToOne
     @JoinColumn(name = "nguoi_lap_id")
