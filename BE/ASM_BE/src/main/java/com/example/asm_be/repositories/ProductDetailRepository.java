@@ -18,7 +18,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
             "    FROM ChiTietSanPham c2\n" +
             "    GROUP BY c2.product.id\n" +
             ")\n")
-    List<ProductDetail> getAll();
+    List<ProductDetail> getAllDistinct();
     List<ProductDetail> findByProductId(int id);
     List<ProductDetail> findByProduct_NameContaining(String keyword);
     List<ProductDetail> findAllByOrderByProduct_NameAsc();

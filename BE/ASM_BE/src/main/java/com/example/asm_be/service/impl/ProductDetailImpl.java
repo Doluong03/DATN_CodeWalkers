@@ -27,8 +27,13 @@ public class ProductDetailImpl implements ProductDetailService {
     private ProductRepository productRepository;
 
     @Override
+    public List<ProductDetail> getAllDistinct() {
+        return productDetailRepository.getAllDistinct();
+    }
+
+    @Override
     public List<ProductDetail> getAll() {
-        return productDetailRepository.getAll();
+        return productDetailRepository.findAll();
     }
 
     @Override
@@ -145,7 +150,7 @@ public class ProductDetailImpl implements ProductDetailService {
 
     @Override
     public ProductDetail findBySize(int proId, int sizeId, int idCl) {
-        return productDetailRepository.findBySize(proId, sizeId,idCl);
+        return productDetailRepository.findBySize(proId, sizeId, idCl);
     }
 
     @Override

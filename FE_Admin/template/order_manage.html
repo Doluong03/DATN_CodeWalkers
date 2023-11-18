@@ -1183,7 +1183,7 @@
                         </div>
                         <!-- Sử dụng ng-model để liên kết quantity với productInfoList.quantity -->
                         <input type="number" class="quantity-value border-1 " aria-label="Quantity"
-                          ng-model="pr.quantity" ng-keypress="onInputKeyPress($event,quantity)"
+                          ng-model="pr.quantity" ng-keypress="onInputKeyPress($event,pr)"
                           ng-blur="onInputBlur(pr)">
 
                         <div class="input-group-append">
@@ -1247,14 +1247,3 @@
     });
   </Script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <script>
-    function showDropdown() {
-      document.getElementById("productDropdown").style.display = "block";
-    }
-
-    function selectProduct(product) {
-      document.getElementById("productInput").value = product;
-      document.getElementById("productDropdown").style.display = "none";
-    }
-  </script>

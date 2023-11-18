@@ -2,6 +2,12 @@
     position: relative;
     display: inline-block;
     z-index: 2;
+    text-align: end;
+    justify-content: end;
+    width: 520px;
+    margin-left: 1050px;
+    margin-top: -45px;
+    margin-bottom: 5px;
 }
 
 .dropdown-content-sell {

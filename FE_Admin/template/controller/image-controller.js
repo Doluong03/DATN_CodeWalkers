@@ -2,11 +2,11 @@
 window.ImageController = function ($scope, $http, $window, $timeout) {
 
   $scope.listImage = [];
-  $scope.Product=[];
+  $scope.Product = [];
   $scope.pageNo = 0;
   $scope.sizePage = 5;
   $scope.lastIndex = 0; // phần tử cuối của mảng
-  $scope.isDeleted =false;
+  $scope.isDeleted = false;
 
   //config headers
   var headers = {
@@ -114,10 +114,7 @@ window.ImageController = function ($scope, $http, $window, $timeout) {
 
 
   $scope.hienThi = function (pageNo, sizePage) {
-
-
     let apiUrl = apiImage + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
-
     $http.get(apiUrl, headers).then(
       function (response) {
         // Xử lý phản hồi thành công
@@ -128,6 +125,7 @@ window.ImageController = function ($scope, $http, $window, $timeout) {
         console.log($scope.Product);
         console.log(response.data);
         console.log(response.data.totalPages);
+        return response.data.imageList;
       },
       function (error) {
         // Xử lý lỗi
@@ -281,9 +279,6 @@ window.ImageController = function ($scope, $http, $window, $timeout) {
         });
       };
       $scope.formImageUpdate = {
-        id: item.id,
-        name: item.name,
-        link: item.link,
         product: item.product,
       }
     } else {
@@ -295,44 +290,31 @@ window.ImageController = function ($scope, $http, $window, $timeout) {
   };
 
   // update
-  $scope.UpdateImage = function (event) {
-    event.preventDefault();
-    console.log($scope.formImageUpdate);
+  $scope.UpdateImage = function (idImg) {
+    var idPr = 16;
+    console.log(apiAdmin + "Image/updateImgCb/" + idImg + `?idPr=${idPr}`);
 
-    Swal.fire({
-      title: 'Xác nhận',
-      text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Có',
-      cancelButtonText: 'Không'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        $http.put(apiAdmin + "Image/update", JSON.stringify($scope.formImageUpdate), headers)
-          .then(function (response) {
-            console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
-            Swal.fire({
-              icon: 'success',
-              title: 'Cập nhật thành công!',
-              text: 'Thông tin người dùng đã được cập nhật.'
-            });
-            $scope.formImageUpdate = {};
-            $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-          })
-          .catch(function (error) {
-            console.error("Error:", error);
-            Swal.fire({
-              icon: "error",
-              title: "Lỗi!",
-              text: "Đã xảy ra lỗi khi cập nhật người dùng. Vui lòng thử lại sau."
-            });
-          });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire('Hủy bỏ', '', 'error');
-      }
-    });
+    $http.put(apiAdmin + "Image/updateImgCb/" + idImg+ `?idPr=${idPr}`, headers)
+      .then(function (response) {
+        console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
+        Swal.fire({
+          icon: 'success',
+          title: 'Cập nhật thành công!',
+          text: 'Thông tin người dùng đã được cập nhật.'
+        });
+        $scope.formImageUpdate = {};
+        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+      })
+      .catch(function (error) {
+        console.error("Error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi!",
+          text: "Đã xảy ra lỗi khi cập nhật người dùng. Vui lòng thử lại sau."
+        });
+      });
   };
-
+// end update
 
   // import exel
 
@@ -552,28 +534,28 @@ window.ImageController = function ($scope, $http, $window, $timeout) {
       if (result.isConfirmed) {
 
 
-    selectedItems.forEach(element => {
-      let imageId = element.id;
-      let api = apiURL + "admin/Image/delete/" + imageId;
-      console.log(api)
-      $http.delete(api, headers).then(function (response) {
-          
-          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-          console.log(response);
-          isDeleted = true;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    });
-        
-    if(isDeleted){
-      Swal.fire("Xóa thành công!", "", "success");
-      $scope.selectAllCheckbox = false;
+        selectedItems.forEach(element => {
+          let imageId = element.id;
+          let api = apiURL + "admin/Image/delete/" + imageId;
+          console.log(api)
+          $http.delete(api, headers).then(function (response) {
 
-    }
-      
-     } else if (result.dismiss === Swal.DismissReason.cancel) {
+            $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            console.log(response);
+            isDeleted = true;
+          })
+            .catch(function (error) {
+              console.log(error);
+            });
+        });
+
+        if (isDeleted) {
+          Swal.fire("Xóa thành công!", "", "success");
+          $scope.selectAllCheckbox = false;
+
+        }
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hành động khi người dùng ấn "Không"
         Swal.fire("Hủy bỏ", "", "error");
       }
@@ -581,52 +563,121 @@ window.ImageController = function ($scope, $http, $window, $timeout) {
     // Thực hiện xử lý xóa tất cả ở đây với mảng selectedItems
   };
 
-// Lấy tên cột từ bảng HTML
-$scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
-$scope.columns = [];
+  // Lấy tên cột từ bảng HTML
+  $scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
+  $scope.columns = [];
 
-// Khai báo biến và khởi tạo giá trị mặc định
-$scope.columnFilters = {};
+  // Khai báo biến và khởi tạo giá trị mặc định
+  $scope.columnFilters = {};
 
-// Sử dụng $timeout để đảm bảo rằng DOM đã được tạo trước khi lấy thông tin cột
-$timeout(function () {
-  var thElements = document.querySelectorAll('#ImageTable th:not(:last-child)'); // Loại bỏ cột "Action"
+  // Sử dụng $timeout để đảm bảo rằng DOM đã được tạo trước khi lấy thông tin cột
+  $timeout(function () {
+    var thElements = document.querySelectorAll('#ImageTable th:not(:last-child)'); // Loại bỏ cột "Action"
 
-  angular.forEach(thElements, function (thElement) {
-    var columnName = thElement.innerText.trim();
-    $scope.columns.push({ name: columnName, selected: true }); // Chọn tất cả mặc định
-    $scope.columnFilters[columnName] = ''; // Khởi tạo filter cho mỗi cột
-  });
-
-  // Kiểm tra xem tất cả các cột có được chọn không và cập nhật trạng thái của checkbox "Chọn Tất Cả"
-  $scope.selectAll = $scope.columns.every(function (column) {
-    return column.selected;
-  });
-});
-
-$scope.toggleAll = function () {
-  angular.forEach($scope.columns, function (column) {
-    column.selected = $scope.selectAll;
-  });
-};
-
-$scope.toggleColumn = function (column) {
-  if (!column.selected) {
-    $scope.selectAll = $scope.columns.some(function (column) {
-      return column.selected;
+    angular.forEach(thElements, function (thElement) {
+      var columnName = thElement.innerText.trim();
+      $scope.columns.push({ name: columnName, selected: true }); // Chọn tất cả mặc định
+      $scope.columnFilters[columnName] = ''; // Khởi tạo filter cho mỗi cột
     });
-  } else {
+
+    // Kiểm tra xem tất cả các cột có được chọn không và cập nhật trạng thái của checkbox "Chọn Tất Cả"
     $scope.selectAll = $scope.columns.every(function (column) {
       return column.selected;
     });
-  }
-};
+  });
 
-$scope.reLoad = function(){
- 
-    $scope.hienThi(0,5);
-};
+  $scope.toggleAll = function () {
+    angular.forEach($scope.columns, function (column) {
+      column.selected = $scope.selectAll;
+    });
+  };
 
+  $scope.toggleColumn = function (column) {
+    if (!column.selected) {
+      $scope.selectAll = $scope.columns.some(function (column) {
+        return column.selected;
+      });
+    } else {
+      $scope.selectAll = $scope.columns.every(function (column) {
+        return column.selected;
+      });
+    }
+  };
+
+  $scope.reLoad = function () {
+
+    $scope.hienThi(0, 5);
+  };
+
+  // checkbox image
+  $scope.selectedImages = [];
+  $scope.listCheckBox = [];
+
+
+  $scope.hienThiCheckBox = function () {
+    let apiUrl = apiImage + "?pageNo=" + 0 + "&sizePage=" + 1000;
+    $http.get(apiUrl, headers).then(
+      function (response) {
+        // Xử lý phản hồi thành công
+        $scope.listCheckBox = response.data.imageList;
+      },
+      function (error) {
+        // Xử lý lỗi
+        console.log(error);
+      }
+    );
+  };
+  $scope.hienThiCheckBox();
+  $scope.updateSelection = function (image) {
+    if (image.selected) {
+      if ($scope.selectedImages.length < 4) {
+        $scope.selectedImages.push(image);
+      } else {
+        image.selected = false; // Prevent selecting more than 4 images
+      }
+    } else {
+      var index = $scope.selectedImages.indexOf(image);
+      if (index !== -1) {
+        $scope.selectedImages.splice(index, 1);
+      }
+    }
+  };
+  $scope.addImg = function () {
+    var selectedItems = $scope.selectedImages;
+    var isDeleted = true;
+
+    if (selectedItems.length === 0) {
+      alert("Vui lòng chọn các kích thước bạn muốn xóa ?");
+      return false;
+    }
+    Swal.fire({
+      title: "Xác nhận",
+      text: "Bạn có chắc chắn muốn thực hiện hành động này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Có",
+      cancelButtonText: "Không",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        selectedItems.forEach(element => {
+          let imageId = element.id;
+          let idPr = 16;
+          $scope.UpdateImage(imageId);
+          isDeleted = true;
+        });
+        if (isDeleted) {
+          Swal.fire("Update thành công!", "", "success");
+          $scope.selectAllCheckbox = false;
+
+        }
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Hành động khi người dùng ấn "Không"
+        Swal.fire("Hủy bỏ", "", "error");
+      }
+    });
+  };
+  // end checkbox image
 
   // thu vien jQuery không đụng vào
   (function ($) {
