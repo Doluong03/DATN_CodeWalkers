@@ -311,6 +311,22 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
         });
     };
 
+    //staff
+    var data = localStorage.getItem('userData');
+    var dataStaff = JSON.parse(data);
+    $scope.getDataStaff = function () {
+        var url = 'http://localhost:8080/CodeWalkers/admin/profile/' + dataStaff.username;
+        $http.get(url).then(res => {
+            $scope.formNotEditAdmin = {
+                staffId: res.data.id,
+                staffName: res.data.name,
+                staffPhone: res.data.phoneNumber
+            }
+        }).catch(error => {
+            console.log("Error", error);
+        });
+    }
+    $scope.getDataStaff();
     // show form add
     $scope.showForm = false; // Mặc định ẩn form
     $scope.toggleForm = function () {
@@ -358,16 +374,17 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             }
             $scope.formNotEdit = item;
             $scope.formOrderUpdate = {
+                userName: item.users[0].id,
                 idBill: item.id,
                 address: item.address,
                 wardId: item.ward,
                 provinceId: item.province, // Gửi ID
                 districtId: item.district,
-                userName: item.users[0].name,
-                phone: item.users[0].phoneNumber,
                 fee: item.fee,
                 optionPay: item.paymentOptions,
                 totalPay: item.totalPay,
+                status: item.status,
+                idStaff: $scope.formNotEditAdmin.staffId,
             };
         } else {
             // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
@@ -410,6 +427,37 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
         $scope.hienThi($scope.pageCurrent, $scope.sizePage);
     }
 
+    $scope.listUser = []; // Tạo danh sách người dùng
+    $scope.filteredUsers = []; // Tạo danh sách người dùng lọc
+
+    $scope.loadUser = function () {
+        var url = `${host}/user/getAll`;
+        $http.get(url).then(function (res) {
+            res.data.forEach(element => {
+                if (element.status == true) {
+                    $scope.listUser.push(element);
+                }
+            });
+            $scope.filteredUsers = $scope.listUser;
+            console.log($scope.filteredUsers, 'aaa')
+        }).catch(error => {
+            console.log("Error", error);
+        });
+    };
+    $scope.loadUser();
+    $scope.searchCustomers = function (tab) {
+        var searchText = $scope.formNotEdit.users[0].name.toLowerCase();
+        $scope.filteredUsers = $scope.listUser.filter(function (user) {
+            var lowerSearchText = searchText.toLowerCase();
+            return user.name.toLowerCase().includes(lowerSearchText) || (user.phoneNumber && user.phoneNumber.includes(searchText));
+        });
+    };
+
+    $scope.selectCustomer = function (user, tab) {
+        $scope.formNotEdit.users[0].name = user.name;
+        $scope.formNotEdit.users[0].phoneNumber = user.phoneNumber;
+        $scope.formOrderUpdate.userName = user.id;
+    };
     // update
     $scope.UpdateBillEdit = function (event) {
         event.preventDefault();
@@ -646,25 +694,25 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
     $scope.filterProducts = function () {
         var searchText = $scope.productInput.toLowerCase();
         var searchTerms = searchText.split(' ');
-      
+
         $scope.filteredItems = $scope.itemsBs.filter(function (item) {
-          var nameMatch = item.product.name.toLowerCase().includes(searchText);
-          var sizeMatch = item.size.name.toLowerCase().includes(searchText);
-          var colorMatch = item.color.name.toLowerCase().includes(searchText);
-      
-          // Lọc theo mỗi từ khóa trong searchTerms
-          var searchTermMatch = searchTerms.every(function (term) {
-            return (
-              item.product.name.toLowerCase().includes(term) ||
-              item.size.name.toLowerCase().includes(term) ||
-              item.color.name.toLowerCase().includes(term)
-            );
-          });
-      
-          return nameMatch || sizeMatch || colorMatch || searchTermMatch;
+            var nameMatch = item.product.name.toLowerCase().includes(searchText);
+            var sizeMatch = item.size.name.toLowerCase().includes(searchText);
+            var colorMatch = item.color.name.toLowerCase().includes(searchText);
+
+            // Lọc theo mỗi từ khóa trong searchTerms
+            var searchTermMatch = searchTerms.every(function (term) {
+                return (
+                    item.product.name.toLowerCase().includes(term) ||
+                    item.size.name.toLowerCase().includes(term) ||
+                    item.color.name.toLowerCase().includes(term)
+                );
+            });
+
+            return nameMatch || sizeMatch || colorMatch || searchTermMatch;
         });
-      };
-      
+    };
+
     $scope.selectProduct = function (pr) {
         // Your selection logic here
         $scope.check = true;
@@ -936,30 +984,30 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
     $document.on("click", function (event) {
         // Check if the click is outside of the input and dropdown
         if (
-          !$scope.isDescendant(document.getElementById("customerDropdown"), event.target) &&
-          !$scope.isDescendant(document.getElementById("productDropdown"), event.target) &&
-          !$scope.isDescendant(document.getElementById("productInput"), event.target)
+            !$scope.isDescendant(document.getElementById("customerDropdown"), event.target) &&
+            !$scope.isDescendant(document.getElementById("productDropdown"), event.target) &&
+            !$scope.isDescendant(document.getElementById("productInput"), event.target)
         ) {
-          $scope.$apply(function () {
-            // Ẩn dropdown và thực hiện các hành động khác tùy thuộc vào yêu cầu của bạn
-            $scope.dropdownOpen = false;
-    
-            // Thực hiện các hành động khác (nếu cần)
-          });
+            $scope.$apply(function () {
+                // Ẩn dropdown và thực hiện các hành động khác tùy thuộc vào yêu cầu của bạn
+                $scope.dropdownOpen = false;
+
+                // Thực hiện các hành động khác (nếu cần)
+            });
         }
-      });
-    
-      // Helper function to check if an element is a descendant of another
-      $scope.isDescendant = function (parent, child) {
+    });
+
+    // Helper function to check if an element is a descendant of another
+    $scope.isDescendant = function (parent, child) {
         var node = child.parentNode;
         while (node != null) {
-          if (node == parent) {
-            return true;
-          }
-          node = node.parentNode;
+            if (node == parent) {
+                return true;
+            }
+            node = node.parentNode;
         }
         return false;
-      };
+    };
     // thu vien jQuery không đụng vào
     (function ($) {
         "use strict";

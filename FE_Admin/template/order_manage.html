@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="css/css-layout/order.css">
+
 <div class="col-lg-12 grid-margin stretch-card">
   <div class="card">
     <div class="card">
@@ -1059,7 +1061,7 @@
               <div class="form-group text-center mt-2">
                 <h5>Thông tin khách hàng</h5>
               </div>
-              <div class="row ">
+              <!-- <div class="row ">
                 <div class="form-group col-lg mt-1">
                   <input type="search" class="form-control mt-4" id="exampleInputMiddleName"
                     placeholder="Search by phone or email" required ng-model="formOrderUpdate.search">
@@ -1070,7 +1072,30 @@
                     ng-model="formOrderUpdate.userName" required
                     ng-class="{'is-invalid': checkAddress && !formOrderUpdate.userName}">
                 </div>
-              </div>
+              </div> -->
+              <div class="row ">
+                <div class="custom-dropdown-user form-group col-lg justify-items-end">
+                    <label for="customerSearch">Tìm Khách Hàng</label>
+                    <input type="search" class="form-control" id="exampleInputMiddleName"
+                        placeholder="Search by phone or email" ng-model="formNotEdit.users[0].name"
+                        ng-change="searchCustomers(tab)">
+                    <div id="customerDropdown" class="dropdown-content-user">
+                        <div ng-repeat="user in filteredUsers">
+                            <button ng-click="selectCustomer(user, tab)" type="button"
+                                class="border-0  bg-light text-start">
+                                <span class="">{{user.name}}</span>
+                                <br>
+                                <span class="">SDT: {{user.phoneNumber}}</span>
+                            </button>
+                            <hr class="mt-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg mt-1">
+                    <input type="text" class="form-control mt-4" id="exampleInputMiddleName"
+                        placeholder="Phone Number" ng-model="formNotEdit.users[0].phoneNumber">
+                </div>
+            </div>
               <div class="form-group">
                 <label for="exampleInputDate">Mã hóa đơn</label>
                 <input type="text" class="form-control" id="exampleInputDate" placeholder="" ng-model="formNotEdit.code"
