@@ -43,7 +43,6 @@ public class Users {
     @Column(name = "gioi_tinh")
     private Boolean gender;
 
-
     @Column(name = "email")
     private String email;
 
@@ -59,10 +58,8 @@ public class Users {
     @Column(name = "user_name")
     private String userName;
 
-
     @Column(name = "trang_thai")
     private boolean status;
-
 
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
