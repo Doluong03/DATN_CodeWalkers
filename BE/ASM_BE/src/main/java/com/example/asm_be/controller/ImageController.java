@@ -79,5 +79,4 @@ public class ImageController {
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.imageService.update(imageRes)));
     }
-
 }

@@ -76,7 +76,7 @@
               <th>
                 <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox" type="checkbox"> #
               </th>
-              <th ng-show="columns[1].selected" ng-click="sortData('name')">Tên Kích cỡ<span class="{{getSortClass('name')}}"></span></th>
+              <th ng-show="columns[1].selected" ng-click="sortData('name')">Tên thương hiệu<span class="{{getSortClass('name')}}"></span></th>
               <th ng-show="columns[2].selected" ng-click="sortData('description')">Mô Tả<span class="{{getSortClass('description')}}"></span></th>
               <th ng-show="columns[3].selected" ng-click="sortData('status')">Trạng Thái<span class="{{getSortClass('status')}}"></span></th>    
               <th name="Action">Action</th>
@@ -161,7 +161,7 @@
         <form class="forms-sample" >
           <div class="form-group">
             <label for="exampleSelectGender">Tên Kích Cỡ</label>
-            <input type="text" class="form-control" ng-model="formSize.name">
+            <input type="text" class="form-control" ng-model="formSize.name" id="nameBrands">
           </div>
           
           <div class="form-group">
@@ -239,8 +239,3 @@
 </Script>
 
 
-<Script>
-  $(document).ready(function () {
-    $('.dropdown-toggle').dropdown();
-  });
-</Script>

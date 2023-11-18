@@ -71,11 +71,11 @@
         </div>
       </li>
       <li class="nav-item nav-profile dropdown">
-        <a class="nav-link dropdown-toggle" ng-href="FE_Admin/template/login.html" data-toggle="dropdown" id="profileDropdown">
+        <a class="nav-link dropdown-toggle" ng-href="/template/login.html" data-toggle="dropdown" id="profileDropdown">
           <img id="profileImage" alt="profile" />
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-          <a class="dropdown-item" ng-href="template/login.html">
+          <a class="dropdown-item" ng-href="/template/login.html">
             <i class="ti-settings text-primary"></i>
             Settings
           </a>
@@ -118,7 +118,7 @@
           // Clear the JWT from local storage or cookies
           clearToken();
           // Redirect or perform other actions after successful logout
-          window.location.href = "/FE_Admin/template/login.html";
+          window.location.href = "/template/login.html";
         } else {
           console.error('Logout failed:', response.statusText);
         }
