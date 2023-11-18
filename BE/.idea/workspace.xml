@@ -30,6 +30,9 @@
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/css/css-layout/order.css" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/css/css-layout/order.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/image.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/image.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/order_manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/order_manage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/ProductDetail.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/ProductDetail.class" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,6 +129,17 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AsmBeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="ASM_BE" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.asm_be.AsmBeApplication" />
@@ -318,6 +332,7 @@
       <workItem from="1700080346343" duration="4483000" />
       <workItem from="1700134562760" duration="12270000" />
       <workItem from="1700210617260" duration="9126000" />
+      <workItem from="1700145594468" duration="4643000" />
     </task>
     <servers />
   </component>
