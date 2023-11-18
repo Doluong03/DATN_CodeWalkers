@@ -24,6 +24,8 @@ public interface BillService {
     boolean saveAdmin( Bill bill);
 
     boolean delete( Integer idBill);
+    void updateStatus( Integer idBill,int status);
     public  Integer getFee(FeeRequest feeRequest);
     public Object createOrder(CreateOrder createOrder);
+
 }

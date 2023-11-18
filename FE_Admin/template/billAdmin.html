@@ -1,0 +1,160 @@
+<style>
+    .input-group button {
+      width: 30px;
+      height: 30px;
+      align-items: center;
+      border: 1 #878b8f;
+      background-color: #ffffff;
+    }
+
+    .input-group input {
+      width: 15%;
+      height: 30px;
+      text-align: center;
+    }
+
+    .input-group {
+      text-align: center;
+      justify-content: center;
+    }
+  </style>
+              <div class="row" style="background-color: white;">
+                <form class="forms-sample col-lg-5 border rounded-4">
+                  <div class="form-group text-center mt-2">
+                    <h5>Thông tin khách hàng</h5>
+                  </div>
+                  <div class="row ">
+                    <div class="form-group col-lg mt-1">
+                      <input type="search" class="form-control mt-4" id="exampleInputMiddleName"
+                        placeholder="Search by phone or email" required ng-model="formOrderUpdate.search">
+                    </div>
+                    <div class="form-group col-lg justify-items-end">
+                      <label for="exampleInputMiddleName">Tên Khách Hàng</label>
+                      <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên" required
+                        ng-model="formOrderUpdate.userName" required ng-class="{'is-invalid': checkAddress && !formOrderUpdate.userName}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputDate">Mã hóa đơn</label>
+                    <input type="text" class="form-control" id="exampleInputDate" placeholder="" ng-model="formNotEdit.code"
+                      readonly>
+                  </div>
+                  <div class="row ">
+                    <div class="form-group col-lg ">
+                      <label for="exampleInputDate">Nhân viên</label>
+                      <input type="search" class="form-control" id="exampleInputMiddleName"
+                        placeholder="Search by phone or email" required ng-model="formNotEditAdmin.staffName" readonly>
+                    </div>
+                    <div class="form-group col-lg justify-items-end">
+                      <label for="exampleInputMiddleName">Số điện thoại</label>
+                      <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên" required
+                        ng-model="formNotEditAdmin.staffPhone" readonly>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="form-group col-lg ">
+                      <label for="exampleInputDate">Địa chỉ</label>
+                      <!-- <input type="search" class="form-control mb-2" id="exampleInputMiddleName" placeholder="Tỉnh/Thành phố" required
+                        ng-model="formOrderUpdate.province">
+                      <input type="search" class="form-control mb-2" id="exampleInputMiddleName" placeholder="Quận/Huyện" required
+                        ng-model="formOrderUpdate.district">
+                      <input type="search" class="form-control" id="exampleInputMiddleName" placeholder="Phường/Xã" required
+                        ng-model="formOrderUpdate.ward"> -->
+                      <select id="select1" class="form-select col" ng-model="formOrderUpdate.provinceId"
+                        ng-change="loadDistrict(formOrderUpdate.provinceId)" ng-class="{'is-invalid': checkAddress && !formOrderUpdate.provinceId}">
+                        <option value="">Tỉnh/Thành phố
+                        </option>
+                        <option ng-repeat="provin in provinces" ng-value="provin.ProvinceID">
+                          {{provin.ProvinceName}}</option>
+                      </select>
+                      <select id="select2" class="form-select col" ng-model="formOrderUpdate.districtId"
+                        ng-change="loadWard(formOrderUpdate.districtId)" ng-class="{'is-invalid': checkAddress && !formOrderUpdate.districtId}">
+                        <option value="">Quận/Huyện</option>
+                        <option ng-repeat="district in districts" ng-value="district.DistrictID">
+                          {{district.DistrictName}}</option>
+                      </select>
+                      <select id="select3" class="form-select col" ng-model="formOrderUpdate.wardId" ng-change="getFee()"
+                      ng-class="{'is-invalid': checkAddress && !formOrderUpdate.wardId}">
+                        <option value="">Phường/Xã</option>
+                        <option ng-repeat="ward in wards" ng-value="ward.WardCode">{{ward.WardName}}</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-lg justify-items-end">
+                      <label for="exampleInputMiddleName">Địa chỉ chi tiết</label>
+                      <textarea type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên"
+                      ng-class="{'is-invalid': checkAddress && !formOrderUpdate.address}" ng-model="formOrderUpdate.address"   ></textarea>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="form-group col-lg ">
+                      <label for="exampleInputDate">Khuyến mãi</label>
+                      <input type="search" class="form-control" id="exampleInputMiddleName"
+                        placeholder="Search by phone or email" ng-class="{'is-invalid': checkAddress && !formOrderUpdate.fee}" ng-model="formOrderUpdate.fee" >
+                    </div>
+                    <div class="form-group col-lg justify-items-end ">
+                      <label for="exampleInputMiddleName">Tổng tiền sản phẩm</label>
+                      <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên" 
+                        ng-model="formOrderUpdate.totalPay" ng-value="formOrderUpdate.totalPay | vndCurrency" ng-class="{'is-invalid': checkAddress && !formOrderUpdate.totalPay}">
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="form-group col-lg ">
+                      <label for="exampleInputDate">Phí vận chuyển</label>
+                      <input type="search" class="form-control" id="exampleInputMiddleName"
+                        placeholder="Search by phone or email" ng-class="{'is-invalid': checkAddress && !formOrderUpdate.fee}" ng-model="formOrderUpdate.fee"
+                        ng-value="formOrderUpdate.fee == 0 ? 'Mua hàng tại quầy': formOrderUpdate.fee | vndCurrency">
+                    </div>
+                    <div class="form-group col-lg justify-items-end">
+                      <label for="exampleInputMiddleName">Phương thức thanh toán</label>
+                      <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên" 
+                        ng-model="formOrderUpdate.optionPay"
+                        ng-value="formOrderUpdate.optionPay == 0 ? 'Thanh toán khi nhận hàng': 'Thanh toán online'">
+                    </div>
+                  </div>
+                </form>
+                <div class="col-lg scrollable-modal-body border rounded-4 z-0">
+                  <div class="text-center mt-2 mb-4">
+                    <h5>Giỏ hàng</h5>
+                  </div>
+                  <table class="table   table-hover expandable-table ">
+                    <thead class="sticky-top fs-4 thead-light">
+                      <tr class="fs-1">
+                        <th>#</th>
+                        <th>Sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody class="align-middle text-center table-group-divider">
+                      <tr ng-repeat="pr in listRes" varStatus="loop">
+                        <td>{{$index +1}}</td>
+                        <td>{{pr.productDetail.product.name}} [{{pr.productDetail.size.name}} -
+                          {{pr.productDetail.color.name}}] </td>
+                        <td class="h-25 align-middle ">
+                          <div class="input-group quantity-input">
+                            <div class="input-group-prepend">
+                              <button class="quantity-button border-1" type="button" ng-click="decreaseQuantity(pr)">
+                                <i class="fa-sharp fa-solid fa-minus"></i>
+                              </button>
+                            </div>
+                            <!-- Sử dụng ng-model để liên kết quantity với productInfoList.quantity -->
+                            <input type="number" class="quantity-value border-1 " aria-label="Quantity"
+                              ng-model="pr.quantity" ng-keypress="onInputKeyPress($event,quantity)"
+                              ng-blur="onInputBlur(pr)">
+    
+                            <div class="input-group-append">
+                              <button class="quantity-button border-1" type="button" ng-click="increaseQuantity(pr)">
+                                <i class="fa-sharp fa-solid fa-plus"></i>
+                              </button>
+                            </div>
+                        </td>
+                        <td>{{pr.productDetail.price | vndCurrency }}</td>
+                        <td>{{pr.total| vndCurrency}}</td>
+                      </tr>
+    
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>

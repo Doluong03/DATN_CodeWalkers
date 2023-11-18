@@ -18,7 +18,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin({"*"})
 @RequestMapping({"/CodeWalkers/admin"})
 public class CategoryController {
     @Autowired

@@ -29,16 +29,20 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "khach_hang_id")
     private Users users;
+    @Column(name = "ten_khach_hang")
+    private String userName;
+    @Column(name = "sdt_khach_hang")
+    private String userPhone;
 
     public AddressResponse map (AddressResponse addressResponse){
         addressResponse.setId(this.id);
         addressResponse.setAddressDetail(this.name);
         addressResponse.setEmail(this.users.getEmail());
         addressResponse.setDistrictID(this.district);
-        addressResponse.setPhoneNumber(this.users.getPhoneNumber());
+        addressResponse.setPhoneNumber(this.userPhone);
         addressResponse.setProvinceID(this.province);
         addressResponse.setWardCode(this.ward);
-        addressResponse.setUserName(this.users.getName());
+        addressResponse.setUserName(this.userName);
         return addressResponse;
     }
 }

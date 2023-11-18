@@ -1,6 +1,7 @@
 package com.example.asm_be.request;
 
 import com.example.asm_be.entities.Bill;
+import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,6 @@ import java.util.List;
 @Setter
 public class AddBillRequest {
     private String userName;
-    private String phone;
     private Integer idBill;
     private Integer provinceId;
     private Integer districtId;
@@ -27,8 +27,10 @@ public class AddBillRequest {
     private int optionPay;
     private Double totalPay;
     private Date shipDate;
+    private int status;
+    private int idStaff;
 
-    public Bill map(Bill bill, Users users){
+    public Bill map(Bill bill){
         bill.setCreatedAt(new Date());
         bill.setAddress(this.address);
         bill.setDistrict(this.districtId);
@@ -39,7 +41,10 @@ public class AddBillRequest {
         bill.setTotalPay(this.totalPay);
         bill.setDescription(this.note);
         bill.setShipDate(this.shipDate);
-        bill.setUsers(users);
+        bill.setStatus(this.status);
+        Staff staff = new Staff();
+        staff.setId(this.idStaff);
+        bill.setStaff(staff);
         return bill;
     }
 

@@ -67,13 +67,13 @@ public class BillImpl implements BillService {
     @Override
     public Page<Bill> getAllPage(Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo, sizePage);
-        return billRepository.findAllByStatusNot(0, pageable);
+        return billRepository.findAllByStatusNotOrderByIdDesc(0, pageable);
     }
 
     @Override
     public Page<Bill> getAllPageByStatsus(Integer pageNo, Integer sizePage, int status) {
         Pageable pageable = PageRequest.of(pageNo, sizePage);
-        return billRepository.findAllByStatus(status, pageable);
+        return billRepository.findAllByStatusOrderByIdDesc(status, pageable);
     }
 
     @Override
@@ -93,6 +93,7 @@ public class BillImpl implements BillService {
         // usersRes.setName("Khách lẻ");
         // userRepository.save(usersRes);
         bill.setUsers(user);
+        bill.setStatus(0);
         return billRepository.save(bill);
     }
 
@@ -111,11 +112,13 @@ public class BillImpl implements BillService {
     @Override
     public String update(AddBillRequest billRequest) {
         Optional<Bill> bill = billRepository.findById(billRequest.getIdBill());
-        if (bill.isPresent()) {
-            Optional<Users> users = userRepository.findByNameAndPhoneNumber(billRequest.getUserName(),
-                    billRequest.getPhone());
-            if (users.isPresent()) {
-                billRequest.map(bill.get(), users.get());
+        try {
+            if (bill.isPresent()) {
+                Optional<Users> users = userRepository.findById(Integer.valueOf(billRequest.getUserName()));
+                if (users.isPresent()) {
+                    bill.get().setUsers(users.get());
+                }
+                billRequest.map(bill.get());
                 billRepository.save(bill.get());
                 if (bill.get().getPaymentOptions() == Invariable.VNPAY) {
                     try {
@@ -130,11 +133,13 @@ public class BillImpl implements BillService {
                     }
                 } else {
                     Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
-                    String jsonString = gson.toJson("http://127.0.0.1:5500/FE/layoutUser.html#/orderOverview");
+                    String jsonString = gson.toJson("http://127.0.0.1:5501/layoutUser.html#/orderOverview");
                     System.out.println(jsonString);
                     return jsonString;
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -307,5 +312,18 @@ public class BillImpl implements BillService {
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = VNpayConfig.vnp_PayUrl + "?" + queryUrl;
         return paymentUrl;
+    }
+
+    @Override
+    public void updateStatus(Integer idBill, int status) {
+        try {
+            Optional<Bill> bill = billRepository.findById(idBill);
+            if (bill.isPresent()) {
+                bill.get().setStatus(status);
+                this.billRepository.save(bill.get());
+            }
+        } catch (Exception var3) {
+            var3.printStackTrace();
+        }
     }
 }

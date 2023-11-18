@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -15,7 +16,6 @@ import java.util.List;
 @Setter
 public class BillRequest {
     private Integer billId;
-    private String reason;
-    private Integer status;
-
+    private Date shipDate;
+    private String code;
 }

@@ -29,6 +29,7 @@
   <link href="assets/scss/loadingCss.css" rel="stylesheet">
   <link href="assets/scss/button.css" rel="stylesheet">
 
+
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
@@ -97,17 +98,22 @@
           </li>
 
           <li><a class="nav-link scrollto text-decoration-none text-dark " href="#contact">Contact</a></li>
-          <form class="d-flex align-items-left ms-4 col-lg-3 "><input placeholder="Search" type="search" name="name"
+          <form class="d-flex align-items-left ms-4 col-lg-4 "><input placeholder="Search" type="search" name="name"
               ng-model="name" class="form-control rounded-4" ng-keypress="onKeyPress($event)"
               class="form-control rounded-4 "></form>
           <li><a class="text-decoration-none text-dark" href="#about" data-title="Yêu thích"><i
                 class="bi bi-heart fs-5"></i></a></li>
           <li><a class="text-decoration-none text-dark" href="#cart" data-title="Giỏ hàng"><i
                 class="bi bi-cart3 fs-5"></i> <span class="badge border border-success"></span></a></li>
-          <li class="dropdown text-dark" ng-show="showIcon"><a class="text-decoration-none text-dark" href="#about"
-              data-title="Tài khoản"><i class="bi bi-person fs-4"></i></a>
+          <li class="dropdown text-dark" ng-show="showIcon" id="profile"><a class="text-decoration-none text-dark " href="#about"
+               > <img src="assets/img/user/{{imgProfile}}" alt=""> {{username}}</a>
             <ul class="userDropdown">
-              <li><a href="#" class="d-block "> <i class=" me-2 fs-5 text-end bi bi-person-fill"></i> Trang cá nhân </a>
+              <li><a href="#" class="d-block text-dark"> <i class=" me-2 fs-5 text-end bi bi-person-fill"></i> Trang cá nhân </a>
+              </li>
+              <li>
+                <hr>
+              </li>
+              <li><a href="#orderOverview" class="d-block text-dark "> <i class=" me-2 fs-5 text-end bi bi-receipt-cutoff "></i> Đơn mua </a>
               </li>
               <li>
                 <hr>
@@ -117,8 +123,9 @@
                   xuất</button></li>
             </ul>
           </li>
+          
           <li class=" col-3 ms-2 row w-25" ng-show="!showIcon">
-            <a href="/FE/login.html" class=" btn btn ms-3 col  border-end">Đăng nhập</a> 
+            <a href="/login.html" class=" btn btn ms-3 col  border-end">Đăng nhập</a> 
             <button ng-click="logOut()" class=" btn btn ms-0 col ">Đăng ký</button></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -127,7 +134,9 @@
     </div>
   </header>
   <!-- End Header -->
+<style>
 
+</style>
   <!-- banner  -->
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="hero d-flex align-items-center ">
@@ -741,7 +750,7 @@
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
             <div class="member">
               <div class="member-img">
-                <img src="assets/img/team/team-1.jpg" class="img-fluid" alt="">
+                <img src="assets/img/user/team-1.jpg" class="img-fluid" alt="">
                 <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -761,7 +770,7 @@
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
             <div class="member">
               <div class="member-img">
-                <img src="assets/img/team/team-2.jpg" class="img-fluid" alt="">
+                <img src="assets/img/user/team-2.jpg" class="img-fluid" alt="">
                 <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -781,7 +790,7 @@
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
             <div class="member">
               <div class="member-img">
-                <img src="assets/img/team/team-3.jpg" class="img-fluid" alt="">
+                <img src="assets/img/user/team-3.jpg" class="img-fluid" alt="">
                 <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -801,7 +810,7 @@
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
             <div class="member">
               <div class="member-img">
-                <img src="assets/img/team/team-4.jpg" class="img-fluid" alt="">
+                <img src="assets/img/user/team-4.jpg" class="img-fluid" alt="">
                 <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>

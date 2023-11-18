@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.UUID;
-@CrossOrigin({"*"})
 @RestController()
 @RequestMapping("/CodeWalkers")
 public class HomeController {
@@ -41,6 +40,9 @@ public class HomeController {
 
     @GetMapping("/api/product_bs")
     public ResponseEntity<Collection<ProductDetail>> getAllProduct() {
+        return ResponseEntity.ok(productDetailService.getAllDistinct());
+    }  @GetMapping("/api/get-all-pr")
+    public ResponseEntity<Collection<ProductDetail>> getAll() {
         return ResponseEntity.ok(productDetailService.getAll());
     }
 

@@ -13,6 +13,7 @@ public interface ProductDetailService {
 
     public Page<ProductDetail> getAllPage(Integer pageNo,Integer sizePage);
 
+    public List<ProductDetail> getAllDistinct();
     public List<ProductDetail> getAll();
 
     public ProductDetail getOne(int id);

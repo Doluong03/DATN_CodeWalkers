@@ -27,10 +27,9 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: "page/order.html",
             controller: "OrderController"
         })
-        .when("/orderOverview", {
-            templateUrl: "page/order.html",
-            controller: "OrderController"
-        })
+        .otherwise({
+            redirectTo: "/home",
+        });
 
 })
 app.controller("LayOutController", function ($scope, $http, $window, $cookies, $anchorScroll) {
@@ -40,8 +39,10 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
     $scope.itemsBs = [];
     $scope.currentImageSource = "";
     $scope.showIcon = false;
+    $scope.imgProfile = "";
     var dataUser = localStorage.getItem('userData');
     var dataUserJson = JSON.parse(dataUser);
+
     $scope.loadAllPrBs = function () {
         var url = `${host}/api/product_bs`;
         $http.get(url).then(res => {
@@ -75,11 +76,13 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
             callback(cartIdCall);
         } else {
             $scope.showIcon = true;
+            $scope.username = dataUserJson.username;
             var username = dataUserJson.username;
             var password = dataUserJson.password;
             var updateData = { password: password };
             console.log(url + username, updateData)
             $http.post(url + username, updateData).then(function (res) {
+                $scope.imgProfile = res.data.image;
                 localStorage.setItem('userIdData', res.data.id);
                 if (!res.data.cart) {
                     $scope.updateCartByUser(res.data.id)
@@ -174,7 +177,7 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
                     // Clear the JWT from local storage or cookies
                     clearToken();
                     // Redirect or perform other actions after successful logout
-                    window.location.href = "http://127.0.0.1:5500/FE/login.html";
+                    window.location.href = "http://127.0.0.1:5501/login.html";
                 } else {
                     console.error('Logout failed:', response.statusText);
                 }
@@ -204,13 +207,13 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
         // Lấy giá trị của tham số 'vnp_TransactionStatus'
         var vnp_TransactionStatus = urlParams.get('vnp_TransactionStatus');
         if (vnp_TransactionStatus == "00") {
-            $window.location.href = "http://127.0.0.1:5500/FE/layoutUser.html#/orderOverview"
+            $window.location.href = "http://127.0.0.1:5501/layoutUser.html#/orderOverview"
 
         }
         else if (vnp_TransactionStatus == null) {
-            // $window.location.href = "http://127.0.0.1:5500/FE/layoutUser.html#/home"
+            // $window.location.href = "http://127.0.0.1:5501/FE/layoutUser.html#/home"
         } else {
-            $window.location.href = "http://127.0.0.1:5500/FE/layoutUser.html#/product"
+            $window.location.href = "http://127.0.0.1:5501/layoutUser.html#/product"
             Swal.fire({
                 icon: 'warning',
                 title: 'Đang chờ thanh toán!',
@@ -317,10 +320,10 @@ app.filter('findProvinceNameById', function () {
 
         return matchedProvince ? matchedProvince.ProvinceName : 'Không tìm thấy';
     };
-}); 
+});
 
 app.filter('findDistrictNameById', function () {
-    return function ( districts ,id) {
+    return function (districts, id) {
         if (districts) {
             var matchedDistrict = districts.find(function (dt) {
                 return dt.DistrictID === id;
