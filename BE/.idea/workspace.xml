@@ -17,6 +17,7 @@
       <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/request/AddBillRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/request/AddBillRequest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$2.class" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +69,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../backup/DATN_CodeWalkers/BE" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../DATN/DATN_CodeWalkers/BE" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -313,6 +314,7 @@
       <workItem from="1700145594468" duration="4643000" />
       <workItem from="1700309845210" duration="490000" />
       <workItem from="1700310355596" duration="2229000" />
+
     </task>
     <servers />
   </component>
