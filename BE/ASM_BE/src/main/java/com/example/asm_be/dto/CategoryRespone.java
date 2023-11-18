@@ -12,5 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryRespone {
     private List<Category> categoryList;
-    private long categoryPages;
+    private long totalPages;
 }

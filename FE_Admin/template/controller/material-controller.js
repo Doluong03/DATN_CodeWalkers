@@ -1,50 +1,23 @@
-window.MaterialController = function ($scope, $http, $window) {
-
+window.MaterialController = function ($scope, $http, $window, $timeout) {
   $scope.listMaterial = [];
-  $scope.sizePage = 5;
-  $scope.lastIndex = 0;
   $scope.pageNo = 0;
-
-  $scope.viTriUpdate = -1;
-  $scope.request = {
-    name: "",
-    moTa: "",
-    status: "",
-  };
-  $scope.formMaterial = {
-    id: "",
-    name: "",
-    moTa: "",
-    status: "",
-  };
-  $scope.formMaterialUpdate = {
-    id: "",
-    name: "",
-    moTa: "",
-    status: "",
-  };
+  $scope.sizePage = 5;
+  $scope.lastIndex = 0; // phần tử cuối của mảng
+  $scope.isDeleted = false;
+  //config headers
   var headers = {
     headers: {
-      'Authorization': 'Bearer ' + tokenAuthen(),
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      Authorization: "Bearer " + tokenAuthen(),
+      Accept: "application/json",
+      "Content-Type": "application/json",
       // Các header khác nếu cần
-    }
-  };
-
-  var headers = {
-    headers: {
-      'Authorization': 'Bearer ' + tokenAuthen(),
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-      // Các header khác nếu cần
-    }
+    },
   };
 
   //token authen
   function tokenAuthen() {
     // Lấy dữ liệu từ localStorage
-    var userDataString = localStorage.getItem('userData');
+    var userDataString = localStorage.getItem("userData");
 
     // Kiểm tra xem dữ liệu có tồn tại không
     if (userDataString) {
@@ -56,19 +29,44 @@ window.MaterialController = function ($scope, $http, $window) {
       return userData.token;
     } else {
       // Trường hợp không có dữ liệu trong localStorage
-      console.log('Không có dữ liệu đăng nhập trong localStorage.');
+      console.log("Không có dữ liệu đăng nhập trong localStorage.");
     }
   }
+
+  $scope.formMaterial = {
+    id: "",
+    name: "",
+    moTa: "",
+    status: "",
+  };
+
+  $scope.formMaterialUpdate = {
+    id: "",
+    name: "",
+    moTa: "",
+    status: "",
+  };
+
   // phân trang start
   $scope.totalPage = 0;
   $scope.pageCurrent = 0;
   $scope.itemsPerPage = 3; // Số lượng trang bạn muốn hiển thị
+
   $scope.pageRange = function () {
-    var startPage = Math.max(1, $scope.pageCurrent - Math.floor($scope.itemsPerPage / 2));
-    var endPage = Math.min($scope.totalPage, startPage + $scope.itemsPerPage - 1);
+    var startPage = Math.max(
+      1,
+      $scope.pageCurrent - Math.floor($scope.itemsPerPage / 2)
+    );
+    var endPage = Math.min(
+      $scope.totalPage,
+      startPage + $scope.itemsPerPage - 1
+    );
     var pages = [];
 
-    if ($scope.pageCurrent + Math.floor($scope.itemsPerPage / 2) > $scope.totalPage) {
+    if (
+      $scope.pageCurrent + Math.floor($scope.itemsPerPage / 2) >
+      $scope.totalPage
+    ) {
       startPage = Math.max(1, $scope.totalPage - $scope.itemsPerPage + 1);
       endPage = $scope.totalPage;
     }
@@ -84,8 +82,6 @@ window.MaterialController = function ($scope, $http, $window) {
 
     return pages;
   };
-
-
 
   $scope.nextPage = function () {
     if ($scope.pageCurrent < $scope.totalPage - 1) {
@@ -121,18 +117,19 @@ window.MaterialController = function ($scope, $http, $window) {
   // end phân trang
 
   $scope.hienThi = function (pageNo, sizePage) {
-    let apiUrl = apiAdmin + "Material/select" + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+    let apiUrl =  apiAdmin + "Material/select"  + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+
     $http.get(apiUrl, headers).then(
       function (response) {
-        // Kiểm tra dữ liệu có được in ra không
+        // Xử lý phản hồi thành công
         $scope.listMaterial = response.data.materialList;
         $scope.totalPage = response.data.totalPages;
         $scope.lastIndex = $scope.listMaterial[$scope.listMaterial.length - 1].id;
-        console.log("vip" + $scope.listMaterial.length)
         console.log(response.data);
-        console.log(response.data.materialList);
+        console.log(response.data.totalPages);
       },
       function (error) {
+        // Xử lý lỗi
         console.log(error);
       }
     );
@@ -141,44 +138,21 @@ window.MaterialController = function ($scope, $http, $window) {
   $scope.PageNo = function (pageNo, sizePage) {
     $scope.pageCurrent = pageNo; // Cập nhật pageCurrent khi chọn trang cụ thể
     $scope.sizePage = sizePage; // Cập nhật sizePage
-    $scope.hienThi(pageNo, sizePage); // Truyền giá trị pageNo vào hàm hienThi
+    $scope.hienThi(pageNo, sizePage);
     $scope.hoveredPage = pageNo; // Truyền giá trị pageNo vào hàm hienThi
   };
 
   // Gọi hàm hienThi() để lấy dữ liệu ban đầu
   $scope.hienThi($scope.pageNo, $scope.sizePage);
 
+  //delete data
 
-
-  //delete data 
-
-  //   $scope.removeMaterial = function (event, index) {
-  //     event.preventDefault();
-
-  //     let material = $scope.listMaterial[index];
-  //     let materialId = material.id;
-  //     let api = apiAdmin + "Material/delete/" + materialId;
-  //     var confirmation = confirm("Ban có chắc muốn xóa chất liệu này không?");
-
-  // if (confirmation === true) {
-  //     // Perform the account deletion
-  //     $http.delete(api,headers).then(function () {
-  //       $scope.listMaterial.splice(index, 1);
-  //       alert("xoa thanh cong");
-  //     }).catch(function (error) {
-  //       console.log(error);
-  //     });
-  // } else {
-  //     // Cancel the account deletion
-  //     alert("Account deletion canceled.");
-  // }
-  //   };
   $scope.removeMaterial = function (event, item) {
     event.preventDefault();
 
     console.log(item);
     let materialId = item.id;
-    let api = apiAdmin + "Material/delete/" + materialId;
+    let api =  apiAdmin + "Material/delete/" + materialId;
 
     Swal.fire({
       title: 'Xác nhận',
@@ -206,20 +180,7 @@ window.MaterialController = function ($scope, $http, $window) {
 
   };
 
-  // add data
-  // $scope.addMaterial = function (event) {
-  //   event.preventDefault();
-  //   let apiAdd = apiAdmin + "Material/insert";
-  //   $http.post(apiAdd, JSON.stringify($scope.request),headers)
-  //     .then(function (response) {
-  //       console.log($scope.request)
-  //       alert("them thanh cong");
-  //       $scope.hienThi($scope.pageNo,$scope.sizePage);
-  //     }).catch(function (error) {
-  //       console.log(error);
-  //     });
-  // };
-
+  // show form add
   $scope.showForm = false; // Mặc định ẩn form
   $scope.toggleForm = function () {
     if ($scope.showFormUpdate) {
@@ -227,14 +188,25 @@ window.MaterialController = function ($scope, $http, $window) {
       $scope.showFormUpdate = false;
     }
     $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
-    $scope.request = {};
+    $scope.formMaterial= {};
   };
   // add one product
-
+  $('#materialAddModal').on('hidden.bs.modal', function (e) {
+    // Thực hiện hành động khi modal đóng
+    $scope.formMaterial = {};
+  });
   $scope.addMaterial = function (event) {
-    event.preventDefault();
-    console.log($scope.request);
 
+    if (!$scope.formMaterial.name
+      || !$scope.formMaterial.moTa
+      || !$scope.formMaterial.status
+    ) {
+      // Hiển thị thông báo lỗi
+      $scope.checkAddress = true;
+      return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
+    }
+    event.preventDefault();
+    console.log($scope.formMaterial);
     Swal.fire({
       title: 'Xác nhận',
       text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
@@ -244,23 +216,23 @@ window.MaterialController = function ($scope, $http, $window) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        $http.post(apiAdmin + "Material/insert", JSON.stringify($scope.request), headers)
+        $http.post(apiAdmin + "Material/insert", JSON.stringify($scope.formMaterial), headers)
           .then(function (response) {
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
             Swal.fire({
               icon: 'success',
               title: 'Thêm thành công!',
-              text: 'Thông tin người dùng đã được thêm.'
+              text: 'Thông tin chất liệu đã được thêm.'
             });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-            $scope.request = {};
+            $scope.formMaterial = {};
           })
           .catch(function (error) {
             console.error("Error:", error);
             Swal.fire({
               icon: "error",
               title: "Lỗi!",
-              text: "Đã xảy ra lỗi khi thêm người dùng. Vui lòng thử lại sau."
+              text: "Đã xảy ra lỗi khi thêm chất liệu. Vui lòng thử lại sau."
             });
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -269,53 +241,59 @@ window.MaterialController = function ($scope, $http, $window) {
     });
   };
 
-
-  //  -------------------------------
-
   // show form user and load detail
-
   $scope.showFormUpdate = false;
-  $scope.activeIndex = -1; // Khởi tạo activeIndex là -1
+  $scope.activeItem = -1;
+  $scope.formMaterialUpdate = {};
 
-  $scope.formmMaterialUpdate = {}; // Khởi tạo biểu mẫu
-
-  $scope.toggleFormUpdate = function (event, index) {
+  $scope.toggleFormUpdate = function (event, item) {
     event.preventDefault();
-    if ($scope.activeIndex === index && $scope.showFormUpdate) {
+
+    if ($scope.showForm) {
+      // Nếu form thêm mới đang mở, đóng nó trước khi mở form cập nhật
+      $scope.showForm = false;
+    }
+
+    if (item && $scope.activeItem === item && $scope.showFormUpdate) {
       // Trường hợp ấn lại dòng đã chọn và form đang hiển thị, đóng form và xóa dữ liệu
       $scope.showFormUpdate = false;
-      $scope.activeIndex = -1;
+      $scope.activeItem = null;
       $scope.formMaterialUpdate = {};
-    } else {
+    } else if (item) {
       // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
       $scope.showFormUpdate = true;
-      $scope.activeIndex = index;
+      $scope.activeItem = item;
 
-      let material = $scope.listMaterial[index];
       // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-      $scope.formMaterialUpdate.id = material.id;
-      $scope.formMaterialUpdate.name = material.name;
-      $scope.formMaterialUpdate.moTa = material.moTa;
-      $scope.formMaterialUpdate.status = material.status;
-      console.log(material)
+      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
+      $scope.formMaterialUpdate = {
+        id: item.id,
+        name: item.name,
+        moTa: item.moTa,
+        status: item.status,
+      };
+    } else {
+      // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
+      $scope.showFormUpdate = false;
+      $scope.activeItem = null;
+      $scope.formMaterialUpdate = {};
     }
   };
-  // --------------------------------------------------------
-  // -----------Update
+  $('#materialUpdateModal').on('hidden.bs.modal', function (e) {
+    // Thực hiện hành động khi modal đóng
+    $scope.formMaterialUpdate = {};
+});
 
-  // $scope.updateMaterial = function (event) {
-  //   event.preventDefault();
-  //   let apiUpdate = apiAdmin + "Material/update";
-  //   $http.put(apiUpdate, JSON.stringify($scope.formMaterialUpdate),headers)
-  //     .then(function (response) {
-  //       console.log($scope.request)
-  //       $scope.hienThi($scope.pageNo);
-  //       alert("sua thanh cong");
-  //     }).catch(function (error) {
-  //       console.log(error);
-  //     });
-  // };
-  $scope.updateMaterial = function (event) {
+  // update
+  $scope.UpdateMaterial = function (event) {
+    if (!$scope.formMaterialUpdate.name
+      || !$scope.formMaterialUpdate.moTa
+      || !$scope.formMaterialUpdate.status
+    ) {
+      // Hiển thị thông báo lỗi
+      $scope.checkAddress = true;
+      return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
+    }
     event.preventDefault();
     console.log($scope.formMaterialUpdate);
 
@@ -334,9 +312,9 @@ window.MaterialController = function ($scope, $http, $window) {
             Swal.fire({
               icon: 'success',
               title: 'Cập nhật thành công!',
-              text: 'Thông tin người dùng đã được cập nhật.'
+              text: 'Thông tin chất liệu cỡ đã được cập nhật.'
             });
-            $scope.formMaterialUpdate = {};
+            $scope.formUserUpdate = {};
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
           })
           .catch(function (error) {
@@ -344,7 +322,7 @@ window.MaterialController = function ($scope, $http, $window) {
             Swal.fire({
               icon: "error",
               title: "Lỗi!",
-              text: "Đã xảy ra lỗi khi cập nhật người dùng. Vui lòng thử lại sau."
+              text: "Đã xảy ra lỗi khi cập nhật chất liệu cỡ. Vui lòng thử lại sau."
             });
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -353,11 +331,6 @@ window.MaterialController = function ($scope, $http, $window) {
     });
   };
 
-  // --------
-  $scope.showForm = false; // Mặc định ẩn form
-  $scope.toggleForm = function () {
-    $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form
-  };
   // import exel
 
   $scope.importing = false; // Biến để theo dõi trạng thái của animation
@@ -369,7 +342,7 @@ window.MaterialController = function ($scope, $http, $window) {
     if ($scope.importInProgress) {
       return;
     }
-
+ 
     $scope.importInProgress = true; // Set the flag to true
 
     $scope.importing = true; // Bắt đầu animation
@@ -380,16 +353,20 @@ window.MaterialController = function ($scope, $http, $window) {
       try {
         var workbook = new ExcelJS.Workbook();
         await workbook.xlsx.load(reader.result);
-        const worksheet = workbook.getWorksheet('Sheet1');
+        const worksheet = workbook.getWorksheet("Sheet1");
         worksheet.eachRow((row, index) => {
           if (index > 1) {
-            let material = {
+            let Material = {
               name: row.getCell(1).value,
-              status: parseStatus(row.getCell(3).value),
-              moTa: row.getCell(2).value
-
+              moTa: row.getCell(2).value,
+              status: row.getCell(3).value,
             };
-            $http.post(apiAdmin + "Material/insert", JSON.stringify(material), headers)
+            $http
+              .post(
+                apiAdmin + "Material/insert",
+                JSON.stringify(Material),
+                headers
+              )
               .then(function (response) {
                 if (!$scope.errorShown) {
                   Swal.fire({
@@ -398,6 +375,7 @@ window.MaterialController = function ($scope, $http, $window) {
                     text: "Đã import thành công",
                   });
                 }
+                $scope.hienThi($scope.pageCurrent, $scope.sizePage);
               })
               .catch(function (error) {
                 if (!$scope.errorShown) {
@@ -419,7 +397,7 @@ window.MaterialController = function ($scope, $http, $window) {
             title: "Oops...",
             text: "Đã xảy ra lỗi!",
           });
-          console.error('Error reading file:', error);
+          console.error("Error reading file:", error);
           $scope.errorShown = true; // Set the error flag
         }
       } finally {
@@ -427,44 +405,49 @@ window.MaterialController = function ($scope, $http, $window) {
         $scope.importInProgress = false; // Reset the flag
         $scope.$apply(); // Cập nhật scope
         // Xóa file sau khi đã xử lý xong
-        document.getElementById('input-file').value = '';
+        document.getElementById("input-file").value = "";
       }
     };
     reader.readAsArrayBuffer(files[0]);
     $scope.hienThi($scope.pageNo);
   };
 
+  function formatDate(date) {
+    // Giả sử ngày đang trong định dạng ISO 8601
+    const isoDate = new Date(date);
+    const formattedDate = isoDate.toLocaleDateString("en-GB");
+    return formattedDate;
+  }
 
-
-
-  function parseStatus(genderValue) {
+  function parseGender(genderValue) {
     // Giả sử giá trị của genderValue là một giá trị boolean trong Excel (đúng hoặc sai)
     return genderValue === true;
   }
 
   // sort column
-  $scope.sortColumn = '';
+  $scope.sortColumn = "";
   $scope.reverseSort = false;
 
   $scope.sortData = function (column) {
-    $scope.reverseSort = ($scope.sortColumn === column) ? !$scope.reverseSort : false;
+    $scope.reverseSort =
+      $scope.sortColumn === column ? !$scope.reverseSort : false;
     $scope.sortColumn = column;
   };
 
   $scope.getSortClass = function (column) {
     if ($scope.sortColumn === column) {
-      return $scope.reverseSort ? 'sort-down' : 'sort-up';
+      return $scope.reverseSort ? "sort-down" : "sort-up";
     }
-    return 'sort-none';
+    return "sort-none";
   };
 
   // export pdf
   $scope.exportToPDF = function () {
-    const tableId = 'MaterialTable';
-    const fileName = 'exported_data';
+    const tableId = "MaterialTable";
+    const fileName = "exported_data";
 
     // Tạo đối tượng jsPDF
-    const pdf = new $window.jsPDF('p', 'pt', 'letter');
+    const pdf = new $window.jsPDF("p", "pt", "letter");
 
     // Thêm bảng vào PDF
     pdf.autoTable({ html: `#${tableId}` });
@@ -475,7 +458,7 @@ window.MaterialController = function ($scope, $http, $window) {
 
   $scope.exportToExcel = function () {
     // Lấy bảng theo ID
-    var table = document.getElementById('MaterialTable'); // Thay id table bảng của bạn vào đây
+    var table = document.getElementById("MaterialTable"); // Thay id table bảng của bạn vào đây
 
     // Lấy dữ liệu từ bảng
     var data = [];
@@ -490,14 +473,15 @@ window.MaterialController = function ($scope, $http, $window) {
     // Tạo một workbook và một worksheet
     var ws = XLSX.utils.aoa_to_sheet(data);
     var wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
     // Xuất file Excel
-    XLSX.writeFile(wb, 'exported_data.xlsx');
+    XLSX.writeFile(wb, "exported_data.xlsx");
   };
 
   $scope.exportToSVG = function () {
     // Lấy bảng theo ID
-    var table = document.getElementById('MaterialTable'); // Thay id table bảng của bạn vào đây
+    var table = document.getElementById("MaterialTable"); // Thay id table bảng của bạn vào đây
 
     // Tạo một đối tượng SVG
     var svg = SVG().size(2000, 1500); // Kích thước SVG
@@ -511,6 +495,7 @@ window.MaterialController = function ($scope, $http, $window) {
       var cellWidth = table.rows[i].cells[0].offsetWidth;
       maxWidth = Math.max(maxWidth, cellWidth);
     }
+
     // Thêm các đối tượng SVG từ các cột của bảng
     for (var i = 0; i < table.rows.length; i++) {
       for (var j = 0; j < table.rows[i].cells.length; j++) {
@@ -527,38 +512,137 @@ window.MaterialController = function ($scope, $http, $window) {
     var svgString = svg.svg();
 
     // Xuất file SVG
-    var blob = new Blob([svgString], { type: 'image/svg+xml' });
+    var blob = new Blob([svgString], { type: "image/svg+xml" });
     var url = window.URL.createObjectURL(blob);
-    var a = document.createElement('a');
+    var a = document.createElement("a");
     a.href = url;
-    a.download = 'exported_svg.svg';
+    a.download = "exported_svg.svg";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
   };
 
+  $scope.selectAllChanged = function () {
+    console.log("Trạng thái của selectAllCheckbox:", $scope.selectAllCheckbox);
+    angular.forEach($scope.listMaterial, function (item) {
+      item.isSelected = $scope.selectAllCheckbox;
+    });
+  };
+
+  $scope.deleteAll = function () {
+    var selectedItems = $scope.listMaterial.filter(function (item) {
+      return item.isSelected;
+    });
+
+    if (selectedItems.length === 0) {
+      alert("Vui lòng chọn các kích thước bạn muốn xóa ?");
+      return false;
+    }
+
+    Swal.fire({
+      title: "Xác nhận",
+      text: "Bạn có chắc chắn muốn thực hiện hành động này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Có",
+      cancelButtonText: "Không",
+    }).then((result) => {
+      if (result.isConfirmed) {
 
 
+        selectedItems.forEach(element => {
+          let materialId = element.id;
+          let api = apiAdmin + "Material/delete/" + materialId;
+          console.log(api)
+          $http.delete(api, headers).then(function (response) {
 
+            $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            console.log(response);
+            isDeleted = true;
+          })
+            .catch(function (error) {
+              console.log(error);
+            });
+        });
+
+        if (isDeleted) {
+          Swal.fire("Xóa thành công!", "", "success");
+          $scope.selectAllCheckbox = false;
+
+        }
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Hành động khi người dùng ấn "Không"
+        Swal.fire("Hủy bỏ", "", "error");
+      }
+    });
+    // Thực hiện xử lý xóa tất cả ở đây với mảng selectedItems
+  };
+
+  // Lấy tên cột từ bảng HTML
+  $scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
+  $scope.columns = [];
+
+  // Khai báo biến và khởi tạo giá trị mặc định
+  $scope.columnFilters = {};
+
+  // Sử dụng $timeout để đảm bảo rằng DOM đã được tạo trước khi lấy thông tin cột
+  $timeout(function () {
+    var thElements = document.querySelectorAll('#MaterialTable th:not(:last-child)'); // Loại bỏ cột "Action"
+
+    angular.forEach(thElements, function (thElement) {
+      var columnName = thElement.innerText.trim();
+      $scope.columns.push({ name: columnName, selected: true }); // Chọn tất cả mặc định
+      $scope.columnFilters[columnName] = ''; // Khởi tạo filter cho mỗi cột
+    });
+
+    // Kiểm tra xem tất cả các cột có được chọn không và cập nhật trạng thái của checkbox "Chọn Tất Cả"
+    $scope.selectAll = $scope.columns.every(function (column) {
+      return column.selected;
+    });
+  });
+
+  $scope.toggleAll = function () {
+    angular.forEach($scope.columns, function (column) {
+      column.selected = $scope.selectAll;
+    });
+  };
+
+  $scope.toggleColumn = function (column) {
+    if (!column.selected) {
+      $scope.selectAll = $scope.columns.some(function (column) {
+        return column.selected;
+      });
+    } else {
+      $scope.selectAll = $scope.columns.every(function (column) {
+        return column.selected;
+      });
+    }
+  };
+
+  $scope.reLoad = function () {
+
+    $scope.hienThi(0, 5);
+  };
 
   // thu vien jQuery không đụng vào
   (function ($) {
-    'use strict';
+    "use strict";
     $(function () {
       $('[data-toggle="offcanvas"]').on("click", function () {
-        $('.sidebar-offcanvas').toggleClass('active')
+        $(".sidebar-offcanvas").toggleClass("active");
       });
     });
   })(jQuery);
 
   (function ($) {
-    'use strict';
+    "use strict";
     $(function () {
-      var body = $('body');
-      var contentWrapper = $('.content-wrapper');
-      var scroller = $('.container-scroller');
-      var footer = $('.footer');
-      var sidebar = $('.sidebar');
+      var body = $("body");
+      var contentWrapper = $(".content-wrapper");
+      var scroller = $(".container-scroller");
+      var footer = $(".footer");
+      var sidebar = $(".sidebar");
 
       //Add active class to nav-link based on url dynamically
       //Active class can be hard coded directly in html file also as required
@@ -566,41 +650,38 @@ window.MaterialController = function ($scope, $http, $window) {
       function addActiveClass(element) {
         if (current === "") {
           //for root url
-          if (element.attr('href').indexOf("index.html") !== -1) {
-            element.parents('.nav-item').last().addClass('active');
-            if (element.parents('.sub-menu').length) {
-              element.closest('.collapse').addClass('show');
-              element.addClass('active');
+          if (element.attr("href").indexOf("index.html") !== -1) {
+            element.parents(".nav-item").last().addClass("active");
+            if (element.parents(".sub-menu").length) {
+              element.closest(".collapse").addClass("show");
+              element.addClass("active");
             }
           }
         } else {
           //for other url
-          if (element.attr('href').indexOf(current) !== -1) {
-            element.parents('.nav-item').last().addClass('active');
-            if (element.parents('.sub-menu').length) {
-              element.closest('.collapse').addClass('show');
-              element.addClass('active');
+          if (element.attr("href").indexOf(current) !== -1) {
+            element.parents(".nav-item").last().addClass("active");
+            if (element.parents(".sub-menu").length) {
+              element.closest(".collapse").addClass("show");
+              element.addClass("active");
             }
-            if (element.parents('.submenu-item').length) {
-              element.addClass('active');
+            if (element.parents(".submenu-item").length) {
+              element.addClass("active");
             }
           }
         }
       }
 
-
-
-      $('.horizontal-menu .nav li a').each(function () {
+      $(".horizontal-menu .nav li a").each(function () {
         var $this = $(this);
         addActiveClass($this);
-      })
+      });
 
       //Close other submenu in sidebar on opening any
 
-      sidebar.on('show.bs.collapse', '.collapse', function () {
-        sidebar.find('.collapse.show').collapse('hide');
+      sidebar.on("show.bs.collapse", ".collapse", function () {
+        sidebar.find(".collapse.show").collapse("hide");
       });
-
 
       //Change sidebar and content-wrapper height
       applyStyles();
@@ -608,67 +689,75 @@ window.MaterialController = function ($scope, $http, $window) {
       function applyStyles() {
         //Applying perfect scrollbar
         if (!body.hasClass("rtl")) {
-          if ($('.settings-panel .tab-content .tab-pane.scroll-wrapper').length) {
-            const settingsPanelScroll = new PerfectScrollbar('.settings-panel .tab-content .tab-pane.scroll-wrapper');
+          if (
+            $(".settings-panel .tab-content .tab-pane.scroll-wrapper").length
+          ) {
+            const settingsPanelScroll = new PerfectScrollbar(
+              ".settings-panel .tab-content .tab-pane.scroll-wrapper"
+            );
           }
-          if ($('.chats').length) {
-            const chatsScroll = new PerfectScrollbar('.chats');
+          if ($(".chats").length) {
+            const chatsScroll = new PerfectScrollbar(".chats");
           }
           if (body.hasClass("sidebar-fixed")) {
-            if ($('#sidebar').length) {
-              var fixedSidebarScroll = new PerfectScrollbar('#sidebar .nav');
+            if ($("#sidebar").length) {
+              var fixedSidebarScroll = new PerfectScrollbar("#sidebar .nav");
             }
           }
         }
       }
 
       $('[data-toggle="minimize"]').on("click", function () {
-        if ((body.hasClass('sidebar-toggle-display')) || (body.hasClass('sidebar-absolute'))) {
-          body.toggleClass('sidebar-hidden');
+        if (
+          body.hasClass("sidebar-toggle-display") ||
+          body.hasClass("sidebar-absolute")
+        ) {
+          body.toggleClass("sidebar-hidden");
         } else {
-          body.toggleClass('sidebar-icon-only');
+          body.toggleClass("sidebar-icon-only");
         }
       });
 
       //checkbox and radios
-      $(".form-check label,.form-radio label").append('<i class="input-helper"></i>');
+      $(".form-check label,.form-radio label").append(
+        '<i class="input-helper"></i>'
+      );
 
       //Horizontal menu in mobile
       $('[data-toggle="horizontal-menu-toggle"]').on("click", function () {
         $(".horizontal-menu .bottom-navbar").toggleClass("header-toggled");
       });
       // Horizontal menu navigation in mobile menu on click
-      var navItemClicked = $('.horizontal-menu .page-navigation >.nav-item');
+      var navItemClicked = $(".horizontal-menu .page-navigation >.nav-item");
       navItemClicked.on("click", function (event) {
-        if (window.matchMedia('(max-width: 991px)').matches) {
-          if (!($(this).hasClass('show-submenu'))) {
-            navItemClicked.removeClass('show-submenu');
+        if (window.matchMedia("(max-width: 991px)").matches) {
+          if (!$(this).hasClass("show-submenu")) {
+            navItemClicked.removeClass("show-submenu");
           }
-          $(this).toggleClass('show-submenu');
+          $(this).toggleClass("show-submenu");
         }
-      })
+      });
 
       $(window).scroll(function () {
-        if (window.matchMedia('(min-width: 992px)').matches) {
-          var header = $('.horizontal-menu');
+        if (window.matchMedia("(min-width: 992px)").matches) {
+          var header = $(".horizontal-menu");
           if ($(window).scrollTop() >= 70) {
-            $(header).addClass('fixed-on-scroll');
+            $(header).addClass("fixed-on-scroll");
           } else {
-            $(header).removeClass('fixed-on-scroll');
+            $(header).removeClass("fixed-on-scroll");
           }
         }
       });
     });
 
     // focus input when clicking on search icon
-    $('#navbar-search-icon').click(function () {
+    $("#navbar-search-icon").click(function () {
       $("#navbar-search-input").focus();
     });
-
   })(jQuery);
 
   (function ($) {
-    'use strict';
+    "use strict";
     $(function () {
       $(".nav-settings").on("click", function () {
         $("#right-sidebar").toggleClass("open");
@@ -681,9 +770,9 @@ window.MaterialController = function ($scope, $http, $window) {
         $("#theme-settings").toggleClass("open");
       });
 
-
       //background constants
-      var navbar_classes = "navbar-danger navbar-success navbar-warning navbar-dark navbar-light navbar-primary navbar-info navbar-pink";
+      var navbar_classes =
+        "navbar-danger navbar-success navbar-warning navbar-dark navbar-light navbar-primary navbar-info navbar-pink";
       var sidebar_classes = "sidebar-light sidebar-dark";
       var $body = $("body");
 
@@ -700,7 +789,6 @@ window.MaterialController = function ($scope, $http, $window) {
         $(".sidebar-bg-options").removeClass("selected");
         $(this).addClass("selected");
       });
-
 
       //Navbar Backgrounds
       $(".tiles.primary").on("click", function () {
@@ -754,95 +842,95 @@ window.MaterialController = function ($scope, $http, $window) {
   })(jQuery);
 
   (function ($) {
-    'use strict';
+    "use strict";
     //Open submenu on hover in compact sidebar mode and horizontal menu mode
-    $(document).on('mouseenter mouseleave', '.sidebar .nav-item', function (ev) {
-      var body = $('body');
-      var sidebarIconOnly = body.hasClass("sidebar-icon-only");
-      var sidebarFixed = body.hasClass("sidebar-fixed");
-      if (!('ontouchstart' in document.documentElement)) {
-        if (sidebarIconOnly) {
-          if (sidebarFixed) {
-            if (ev.type === 'mouseenter') {
-              body.removeClass('sidebar-icon-only');
-            }
-          } else {
-            var $menuItem = $(this);
-            if (ev.type === 'mouseenter') {
-              $menuItem.addClass('hover-open')
+    $(document).on(
+      "mouseenter mouseleave",
+      ".sidebar .nav-item",
+      function (ev) {
+        var body = $("body");
+        var sidebarIconOnly = body.hasClass("sidebar-icon-only");
+        var sidebarFixed = body.hasClass("sidebar-fixed");
+        if (!("ontouchstart" in document.documentElement)) {
+          if (sidebarIconOnly) {
+            if (sidebarFixed) {
+              if (ev.type === "mouseenter") {
+                body.removeClass("sidebar-icon-only");
+              }
             } else {
-              $menuItem.removeClass('hover-open')
+              var $menuItem = $(this);
+              if (ev.type === "mouseenter") {
+                $menuItem.addClass("hover-open");
+              } else {
+                $menuItem.removeClass("hover-open");
+              }
             }
           }
         }
       }
-    });
+    );
   })(jQuery);
-
 
   (function ($) {
     showSwal = function (type) {
-      'use strict';
-      if (type === 'basic') {
+      "use strict";
+      if (type === "basic") {
         swal({
-          text: 'Any fool can use a computer',
+          text: "Any fool can use a computer",
           button: {
             text: "OK",
             value: true,
             visible: true,
-            className: "btn btn-primary"
-          }
-        })
-
-      } else if (type === 'title-and-text') {
+            className: "btn btn-primary",
+          },
+        });
+      } else if (type === "title-and-text") {
         swal({
-          title: 'Read the alert!',
-          text: 'Click OK to close this alert',
+          title: "Read the alert!",
+          text: "Click OK to close this alert",
           button: {
             text: "OK",
             value: true,
             visible: true,
-            className: "btn btn-primary"
-          }
-        })
-
-      } else if (type === 'success-message') {
+            className: "btn btn-primary",
+          },
+        });
+      } else if (type === "success-message") {
         swal({
-          title: 'Congratulations!',
-          text: 'You entered the correct answer',
-          icon: 'success',
+          title: "Congratulations!",
+          text: "You entered the correct answer",
+          icon: "success",
           button: {
             text: "Continue",
             value: true,
             visible: true,
-            className: "btn btn-primary"
-          }
-        })
-
-      } else if (type === 'auto-close') {
+            className: "btn btn-primary",
+          },
+        });
+      } else if (type === "auto-close") {
         swal({
-          title: 'Auto close alert!',
-          text: 'I will close in 2 seconds.',
+          title: "Auto close alert!",
+          text: "I will close in 2 seconds.",
           timer: 2000,
-          button: false
+          button: false,
         }).then(
           function () { },
           // handling the promise rejection
           function (dismiss) {
-            if (dismiss === 'timer') {
-              console.log('I was closed by the timer')
+            if (dismiss === "timer") {
+              console.log("I was closed by the timer");
             }
           }
-        )
-      } else if (type === 'warning-message-and-cancel') {
+        );
+      } else if (type === "warning-message-and-cancel") {
         swal({
-          title: 'Are you sure?',
+          title: "Are you sure?",
           text: "You won't be able to revert this!",
-          icon: 'warning',
+          icon: "warning",
           showCancelButton: true,
-          confirmButtonColor: '#3f51b5',
-          cancelButtonColor: '#ff4081',
-          confirmButtonText: 'Great ',
+          confirmButtonColor: "#3f51b5",
+          cancelButtonColor: "#ff4081",
+          confirmButtonText: "Great ",
           buttons: {
             cancel: {
               text: "Cancel",
@@ -856,170 +944,68 @@ window.MaterialController = function ($scope, $http, $window) {
               value: true,
               visible: true,
               className: "btn btn-primary",
-              closeModal: true
-            }
-          }
-        })
-
-      } else if (type === 'custom-html') {
+              closeModal: true,
+            },
+          },
+        });
+      } else if (type === "custom-html") {
         swal({
           content: {
             element: "input",
             attributes: {
               placeholder: "Type your password",
               type: "password",
-              class: 'form-control'
+              class: "form-control",
             },
           },
           button: {
             text: "OK",
             value: true,
             visible: true,
-            className: "btn btn-primary"
-          }
-        })
+            className: "btn btn-primary",
+          },
+        });
       }
-    }
-
+    };
   })(jQuery);
 
-
-
   (function ($) {
-    'use strict';
-    if ($('.grid').length) {
-      var colcade = new Colcade('.grid', {
-        columns: '.grid-col',
-        items: '.grid-item'
+    "use strict";
+    if ($(".grid").length) {
+      var colcade = new Colcade(".grid", {
+        columns: ".grid-col",
+        items: ".grid-item",
       });
     }
   })(jQuery);
 
-  $(function () {
-    /* ChartJS
-     * -------
-     * Data and config for chartjs
-     */
-    'use strict';
-    var data = {
-      labels: ["2013", "2014", "2014", "2015", "2016", "2017"],
-      datasets: [{
-        label: '# of Votes',
-        data: [10, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255,99,132,1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
-        ],
-        borderWidth: 1,
-        fill: false
-      }]
-    };
-    var multiLineData = {
-      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-      datasets: [{
-        label: 'Dataset 1',
-        data: [12, 19, 3, 5, 2, 3],
-        borderColor: [
-          '#587ce4'
-        ],
-        borderWidth: 2,
-        fill: false
-      },
-      {
-        label: 'Dataset 2',
-        data: [5, 23, 7, 12, 42, 23],
-        borderColor: [
-          '#ede190'
-        ],
-        borderWidth: 2,
-        fill: false
-      },
-      {
-        label: 'Dataset 3',
-        data: [15, 10, 21, 32, 12, 33],
-        borderColor: [
-          '#f44252'
-        ],
-        borderWidth: 2,
-        fill: false
-      }
-      ]
-    };
-    var options = {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      },
-      legend: {
-        display: false
-      },
-      elements: {
-        point: {
-          radius: 0
-        }
-      }
-
-    };
-
-    // Get context with jQuery - using jQuery's .get() method.
-    if ($("#barChart").length) {
-      var barChartCanvas = $("#barChart").get(0).getContext("2d");
-      // This will get the first returned node in the jQuery collection.
-      var barChart = new Chart(barChartCanvas, {
-        type: 'bar',
-        data: data,
-        options: options
-      });
-    }
-
-
-  });
-
   (function ($) {
-    'use strict';
+    "use strict";
     //Open submenu on hover in compact sidebar mode and horizontal menu mode
-    $(document).on('mouseenter mouseleave', '.sidebar .nav-item', function (ev) {
-      var body = $('body');
-      var sidebarIconOnly = body.hasClass("sidebar-icon-only");
-      var sidebarFixed = body.hasClass("sidebar-fixed");
-      if (!('ontouchstart' in document.documentElement)) {
-        if (sidebarIconOnly) {
-          if (sidebarFixed) {
-            if (ev.type === 'mouseenter') {
-              body.removeClass('sidebar-icon-only');
-            }
-          } else {
-            var $menuItem = $(this);
-            if (ev.type === 'mouseenter') {
-              $menuItem.addClass('hover-open')
+    $(document).on(
+      "mouseenter mouseleave",
+      ".sidebar .nav-item",
+      function (ev) {
+        var body = $("body");
+        var sidebarIconOnly = body.hasClass("sidebar-icon-only");
+        var sidebarFixed = body.hasClass("sidebar-fixed");
+        if (!("ontouchstart" in document.documentElement)) {
+          if (sidebarIconOnly) {
+            if (sidebarFixed) {
+              if (ev.type === "mouseenter") {
+                body.removeClass("sidebar-icon-only");
+              }
             } else {
-              $menuItem.removeClass('hover-open')
+              var $menuItem = $(this);
+              if (ev.type === "mouseenter") {
+                $menuItem.addClass("hover-open");
+              } else {
+                $menuItem.removeClass("hover-open");
+              }
             }
           }
         }
       }
-    });
-  })(jQuery)
-
-
-
-
-
-
-
-}
+    );
+  })(jQuery);
+};

@@ -39,7 +39,7 @@ public CategoryRespone getAllCategory(@RequestParam(value = "pageNo",defaultValu
     Page<Category> categoryPage = categoryService.getAllPage(pageNo,sizePage);
 
     categoryRespone.setCategoryList(categoryPage.getContent());
-    categoryRespone.setCategoryPages(categoryPage.getTotalPages());
+    categoryRespone.setTotalPages(categoryPage.getTotalPages());
 
     return categoryRespone;
 }
