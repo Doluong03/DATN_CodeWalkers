@@ -38,8 +38,8 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
     name: "",
     mainImg: "",
     description: "",
-    brands: "",
-    category: "",
+    brands: { id: "" },
+    category: { id: "" },
     status: "",
   };
 
@@ -132,7 +132,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
         // Xử lý phản hồi thành công
         $scope.listProduct = response.data.productList;
         $scope.totalPage = response.data.totalPages;
-        $scope.lastIndex = $scope.istProduct[$scope.istProduct.length - 1].id;
+        $scope.lastIndex = $scope.istProduct[$scope.listProduct.length - 1].id;
         console.log(response.data);
         console.log(response.data.totalPages);
       },
@@ -244,7 +244,6 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       $scope.checkAddress = true;
       return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
     }
-
     Swal.fire({
       title: 'Xác nhận',
       text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
@@ -256,13 +255,19 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       if (result.isConfirmed) {
         $http.post(apiAdmin + "Product" + "/insert", JSON.stringify($scope.formproduct), headers)
           .then(function (response) {
-            console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
+            console.log("Success Response:", response.data.data.id); // Assuming the data property contains the relevant information
+            $scope.selectedImages.forEach(element => {
+              let imageId = element.id;
+              $scope.UpdateImage(imageId, response.data.data.id);
+              isDeleted = true;
+            });
             Swal.fire({
               icon: 'success',
               title: 'Thêm thành công!',
               text: 'Thông tin sản phẩm đã được thêm.'
             });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            $scope.selectedImages = [];
             $scope.formproduct = {};
           })
           .catch(function (error) {
@@ -301,7 +306,6 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
       $scope.showFormUpdate = true;
       $scope.activeItem = item;
-
       // Nạp dữ liệu của dòng được chọn vào biểu mẫu
       // Nạp dữ liệu của dòng được chọn vào biểu mẫu
       $scope.formProductUpdate = {
@@ -311,9 +315,9 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
         description: item.description,
         brands: { id: item.brands.id },
         category: { id: item.category.id },
-
         status: item.status
       };
+      $scope.selectedImages = item.listImage;
     } else {
       // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
       $scope.showFormUpdate = false;
@@ -398,6 +402,9 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
     if (image.selected) {
       if ($scope.selectedImages.length < 4) {
         $scope.selectedImages.push(image);
+        console.log($scope.selectedImages);
+
+        $scope.formproduct.mainImg = $scope.selectedImages[0].link;
       } else {
         image.selected = false; // Prevent selecting more than 4 images
       }
@@ -408,45 +415,10 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       }
     }
   };
-  $scope.addImg = function () {
-    var selectedItems = $scope.selectedImages;
-    var isDeleted = true;
 
-    if (selectedItems.length === 0) {
-      alert("Vui lòng chọn các sản phẩm bạn muốn xóa ?");
-      return false;
-    }
-    Swal.fire({
-      title: "Xác nhận",
-      text: "Bạn có chắc chắn muốn thực hiện hành động này?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Có",
-      cancelButtonText: "Không",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        selectedItems.forEach(element => {
-          let imageId = element.id;
-          let idPr = 16;
-          $scope.UpdateImage(imageId);
-          isDeleted = true;
-        });
-        if (isDeleted) {
-          Swal.fire("Update thành công!", "", "success");
-          $scope.selectAllCheckbox = false;
-
-        }
-
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Hành động khi người dùng ấn "Không"
-        Swal.fire("Hủy bỏ", "", "error");
-      }
-    });
-  };
   // end checkbox image
   // update
-  $scope.UpdateImage = function (idImg) {
-    var idPr = 16;
+  $scope.UpdateImage = function (idImg, idPr) {
     console.log(apiAdmin + "Image/updateImgCb/" + idImg + `?idPr=${idPr}`);
 
     $http.put(apiAdmin + "Image/updateImgCb/" + idImg + `?idPr=${idPr}`, headers)

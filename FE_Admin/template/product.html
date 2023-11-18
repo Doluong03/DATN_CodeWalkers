@@ -188,22 +188,27 @@
           <form class="forms-sample" name="AddProduct">
             <div class="form-group">
               <label for="exampleSelectGender">Tên sản phẩm</label>
-              <input type="text" class="form-control" ng-model="formproduct.name" required maxlength="30" name="txtName"
+              <input type="text" class="form-control" ng-model="formproduct.name"  maxlength="30" name="txtName"
                 ng-class="{'is-invalid': checkAddress && !formproduct.name}">
               <!-- <label ng-show="AddProduct.txtName.$invalid" style="color: #FC424A;">Bạn cần nhập tên Color tối đa 30 ký
                 tự</label> -->
             </div>
             <div class="form-group">
-              <label for="exampleInputMiddleName">Ảnh chính</label>
+              <label for="exampleInputMiddleName ">Ảnh chính</label>
+              <button class="btn border btn-outline-secomdary d-flex" data-toggle="modal" data-target="#modaleImg"> Chọn ảnh</button>
+              <div class="listImg row text-align-left d-flex flex-wrap ms-1 ">
+                <img ng-repeat="img in selectedImages" src="/template/images/sp1/{{img.link}}" alt="{{img.link}}" class="col-2 border ">
+            </div>
+            
               <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Ảnh chính"
-                ng-model="formproduct.mainImg" required maxlength="30" name="txtImage"
+                ng-model="formproduct.mainImg"  maxlength="30" name="txtImage"
                 ng-class="{'is-invalid': checkAddress && !formproduct.mainImg}">
               <!-- <label ng-show="AddProduct.txtImage.$invalid" style="color: #FC424A;">Bạn cần nhập tối đa 30 ký tự</label> -->
             </div>
             <div class="form-group">
               <label for="exampleInputDescription">Mô tả</label>
               <input type="text" class="form-control" id="exampleInputDescription" placeholder="Mô tả"
-                ng-model="formproduct.description" required maxlength="30" name="txtMota"
+                ng-model="formproduct.description"  maxlength="30" name="txtMota"
                 ng-class="{'is-invalid': checkAddress && !formproduct.description}">
               <!-- <label ng-show="AddProduct.txtMota.$invalid" style="color: #FC424A;">Bạn cần nhập tối đa 30 ký tự</label> -->
             </div>
@@ -286,14 +291,19 @@
             <div class="form-group">
               <label for="exampleSelectGender">Tên sản phẩm</label>
               <input type="text" class="form-control" ng-model="formProductUpdate.name"
-              ng-class="{'is-invalid': checkUpdate && !formProductUpdate.name}">
+                ng-class="{'is-invalid': checkUpdate && !formProductUpdate.name}">
             </div>
             <div class="form-group">
               <label for="exampleInputMiddleName">Ảnh chính</label>
+              <button class="btn border btn-outline-secomdary d-flex" data-toggle="modal" data-target="#modaleImg"> Chọn ảnh</button>
+              <div class="listImg row text-align-left d-flex flex-wrap ms-1 ">
+                <img ng-repeat="img in selectedImages" src="/template/images/sp1/{{img.link}}" alt="{{img.link}}" class="col-2 border ">
+            </div>
               <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Ảnh chính" required
                 ng-model="formProductUpdate.mainImg"
                 ng-class="{'is-invalid': checkUpdate && !formProductUpdate.mainImg}">
             </div>
+
             <div class="form-group">
               <label for="exampleInputDescription">Mô tả </label>
               <input type="text" class="form-control" id="exampleInputEmail" placeholder="Description" required
@@ -379,14 +389,16 @@
     text-align: left;
 
   }
+  .listImg img {
+    width: 120px;
+    height: 80px;
+    border-radius: 5px;
+    margin: 5px 5px 5px 0;
+  }
 </style>
-<!-- Button to trigger the modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-  Open Modal
-</button>
 
 <!-- The Modal -->
-<div class="modal" id="myModal">
+<div class="modal" id="modaleImg">
   <div class="modal-dialog-pr">
     <div class="modal-content">
 

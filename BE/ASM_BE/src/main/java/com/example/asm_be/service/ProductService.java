@@ -16,7 +16,7 @@ public interface ProductService {
 
     Product getOne(Integer id);
 
-    boolean save( Product product);
+    Product save( Product product);
 
     boolean update( Product product);
 

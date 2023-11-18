@@ -198,6 +198,15 @@ myApp.config(function ($routeProvider, $locationProvider) {
         }
       }
     }) 
+    .when("/sell-admin", {
+      templateUrl: "/template/SellAdmin.html",
+      controller: SellAdminController,
+      resolve: {
+        checkData: function (DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })
     .otherwise({
       redirectTo: "/trang-chu",
     });
