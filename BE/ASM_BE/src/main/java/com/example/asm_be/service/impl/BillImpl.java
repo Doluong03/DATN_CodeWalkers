@@ -119,7 +119,6 @@ public class BillImpl implements BillService {
                     bill.get().setUsers(users.get());
                 }
                 billRequest.map(bill.get());
-                bill.get().setStatus(1);
                 billRepository.save(bill.get());
                 if (bill.get().getPaymentOptions() == Invariable.VNPAY) {
                     try {

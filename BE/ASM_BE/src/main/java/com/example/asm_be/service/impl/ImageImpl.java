@@ -28,7 +28,7 @@ public class ImageImpl implements ImageService {
 
     @Override
     public Image getOne(Integer idFacture) {
-        return null;
+        return imageRepository.findById(idFacture).get();
     }
 
     @Override

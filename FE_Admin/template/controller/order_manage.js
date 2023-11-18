@@ -220,11 +220,11 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             function (response) {
                 // Xử lý phản hồi thành công
                 $scope.listBadge = response.data;
-    
+
                 // Reset counts before recalculating
                 $scope.badgeAcp = 0;
                 $scope.badgeShip = 0;
-    
+
                 for (var i = 0; i < $scope.listBadge.length; i++) {
                     if ($scope.listBadge[i].status == 1) {
                         $scope.badgeAcp += 1;
@@ -239,7 +239,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
                 console.log(error);
             })
     }
-    
+
     $scope.hienThi = function (pageNo, sizePage) {
         if (!$scope.status) {
             apiUrl = apiOrder + "/get-all-bill" + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
@@ -631,27 +631,40 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
         $scope.hienThi($scope.pageNo);
     };
     $scope.loadAllPrBs = function () {
-        var url = `${host}/api/product_bs`;
+        var url = `${host}/api/get-all-pr`;
         $http.get(url).then(res => {
             $scope.itemsBs = res.data;
             // Gọi loadDetail sau khi tải dữ liệu thành công
             //  $scope.loadDetail();
             $scope.filteredItems = $scope.itemsBs;
-            $scope.numVisibleItems = 4;
         }).catch(error => {
             console.log("Error", error);
         });
     }
     $scope.loadAllPrBs();
     $scope.filteredItems = $scope.itemsBs;
-
     $scope.filterProducts = function () {
         var searchText = $scope.productInput.toLowerCase();
-        $scope.filteredItems = $scope.itemsBs.filter(function (pr) {
-            return pr.product.name.toLowerCase().includes(searchText);
+        var searchTerms = searchText.split(' ');
+      
+        $scope.filteredItems = $scope.itemsBs.filter(function (item) {
+          var nameMatch = item.product.name.toLowerCase().includes(searchText);
+          var sizeMatch = item.size.name.toLowerCase().includes(searchText);
+          var colorMatch = item.color.name.toLowerCase().includes(searchText);
+      
+          // Lọc theo mỗi từ khóa trong searchTerms
+          var searchTermMatch = searchTerms.every(function (term) {
+            return (
+              item.product.name.toLowerCase().includes(term) ||
+              item.size.name.toLowerCase().includes(term) ||
+              item.color.name.toLowerCase().includes(term)
+            );
+          });
+      
+          return nameMatch || sizeMatch || colorMatch || searchTermMatch;
         });
-    };
-
+      };
+      
     $scope.selectProduct = function (pr) {
         // Your selection logic here
         $scope.check = true;
@@ -798,7 +811,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
         var tab = new bootstrap.Tab(document.getElementById(tabId));
         tab.show();
     };
-    
+
     $scope.UpdateStatusAll = function (status) {
         var selectedItems = $scope.listOrders.filter(function (item) {
             return item.isSelected;
@@ -920,7 +933,33 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
 
         $scope.hienThi(0, 5);
     };
-
+    $document.on("click", function (event) {
+        // Check if the click is outside of the input and dropdown
+        if (
+          !$scope.isDescendant(document.getElementById("customerDropdown"), event.target) &&
+          !$scope.isDescendant(document.getElementById("productDropdown"), event.target) &&
+          !$scope.isDescendant(document.getElementById("productInput"), event.target)
+        ) {
+          $scope.$apply(function () {
+            // Ẩn dropdown và thực hiện các hành động khác tùy thuộc vào yêu cầu của bạn
+            $scope.dropdownOpen = false;
+    
+            // Thực hiện các hành động khác (nếu cần)
+          });
+        }
+      });
+    
+      // Helper function to check if an element is a descendant of another
+      $scope.isDescendant = function (parent, child) {
+        var node = child.parentNode;
+        while (node != null) {
+          if (node == parent) {
+            return true;
+          }
+          node = node.parentNode;
+        }
+        return false;
+      };
     // thu vien jQuery không đụng vào
     (function ($) {
         "use strict";

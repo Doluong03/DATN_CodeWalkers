@@ -49,7 +49,6 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                 for (var i = 0; i < $scope.listBillDt.length; i++) {
                     $scope.totalPrice += $scope.calculateTotalPrice($scope.listBillDt[i]);
                     $scope.totalQuantity += $scope.listBillDt[i].quantity;
-
                     $scope.listResPr.push({
                         productDetail: $scope.listBillDt[i].productDetail,
                         quantity: $scope.listBillDt[i].quantity,
@@ -358,6 +357,8 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                     fee: $scope.feeShip,
                     optionPay: $scope.CreateOrder.optionPay,
                     totalPay: $scope.totalPay,
+                    status: 1,
+                    idStaff: 1,
                 }
             } else {
                 var cartId = dataUserCart;
@@ -371,6 +372,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                     fee: $scope.feeShip,
                     optionPay: $scope.CreateOrder.optionPay,
                     totalPay: $scope.totalPay,
+                    status: 1,
                 }
             }
             $scope.pay(cartId);
@@ -381,17 +383,17 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
             $http.put(url, dataToSend)
                 .then(function (res) {
                     // Xử lý khi cập nhật thành công
-                    if(res){
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Đặt hàng thành công!',
-                        text: 'Thông tin đơn hàng đã được thêm.'
-                    }).then(function () {
-                        $scope.deleteCart();
-                        $window.location.href = res.data;
-                    });
-                    console.log('Suaw thành công');
-                }
+                    if (res) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đặt hàng thành công!',
+                            text: 'Thông tin đơn hàng đã được thêm.'
+                        }).then(function () {
+                            $scope.deleteCart();
+                            $window.location.href = res.data;
+                        });
+                        console.log('Suaw thành công');
+                    }
                 })
                 .catch(function (error) {
                     // Xử lý khi cập nhật thất bại

@@ -2,6 +2,7 @@ package com.example.asm_be.controller;
 
 import com.example.asm_be.dto.ImageRespone;
 import com.example.asm_be.entities.Image;
+import com.example.asm_be.entities.Product;
 import com.example.asm_be.entities.ResponeObject;
 import com.example.asm_be.service.ImageService;
 import com.example.asm_be.service.ProductService;
@@ -55,4 +56,28 @@ public class ImageController {
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Delete thanh cong", this.imageService.delete(idImage)));
     }
+    @PutMapping({"/Image/updateImgCb/{idImg}"})
+    public ResponseEntity<ResponeObject> UpdateImageCb(@PathVariable("idImg") int idImg, @RequestParam int idPr) throws ParseException {
+        Image imageRes = imageService.getOne(idImg);
+
+        // Kiểm tra nếu imageRes là null
+        if (imageRes == null) {
+            // Xử lý hoặc trả về lỗi tùy thuộc vào logic của bạn
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponeObject("error", "Không tìm thấy ảnh với idImg = " + idImg, null));
+        }
+
+        Product productRes = productService.getOne(idPr);
+
+        // Kiểm tra nếu productRes là null
+        if (productRes == null) {
+            // Xử lý hoặc trả về lỗi tùy thuộc vào logic của bạn
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponeObject("error", "Không tìm thấy sản phẩm với idPr = " + idPr, null));
+        }
+
+        imageRes.setProduct(productRes);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Update thanh cong", this.imageService.update(imageRes)));
+    }
+
 }

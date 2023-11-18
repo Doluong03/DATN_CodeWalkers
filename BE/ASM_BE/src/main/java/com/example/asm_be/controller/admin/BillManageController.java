@@ -5,7 +5,9 @@ import com.example.asm_be.dto.ProductDetailsRespone;
 import com.example.asm_be.entities.Bill;
 import com.example.asm_be.entities.ProductDetail;
 import com.example.asm_be.entities.ResponObject;
+import com.example.asm_be.entities.Users;
 import com.example.asm_be.service.BillService;
+import com.example.asm_be.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +27,8 @@ import java.util.List;
 public class BillManageController {
     @Autowired
     BillService billService;
+    @Autowired
+    UserService userService;
     @Autowired
     ObjectMapper objectMapper;
 
@@ -64,7 +68,23 @@ public class BillManageController {
     @PutMapping({"/admin/Bill/updateStatus/{id}"})
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponObject> updateStatus(@PathVariable("id") Integer idBill, @RequestParam Integer status) {
-        billService.updateStatus(idBill,status);
+        billService.updateStatus(idBill, status);
+        return ResponseEntity.status(HttpStatus.OK)
+                .build();
+    }
+
+    @PutMapping({"/admin/Bill/updateUser/{id}"})
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ResponObject> updateUser(@PathVariable("id") Integer idUser, @RequestParam String name, @RequestParam String phone) {
+        try {
+            Users users = userService.getOne(idUser);
+            users.setName(name);
+            users.setPhoneNumber(phone);
+            userService.update(users);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return ResponseEntity.status(HttpStatus.OK)
                 .build();
     }

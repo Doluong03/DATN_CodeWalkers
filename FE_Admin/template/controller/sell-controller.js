@@ -7,6 +7,10 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       // Các header khác nếu cần
     }
   };
+  // Load tabs from local storage
+  $scope.tabs = JSON.parse(localStorage.getItem('tabs')) || [
+    // { title: 'Tab 1', formData: {}, active: true,id: generateUniqueId() },
+  ];
   function tokenAuthen() {
     // Lấy dữ liệu từ localStorage
     var userDataString = localStorage.getItem('userData');
@@ -25,77 +29,129 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     }
   }
   $scope.listRes = [];
-  $scope.tabs = [
-    { title: 'Hóa đơn 1', content: '/template/billAdmin.html', active: true, isLast: false },
-  ];
-  $scope.increaseQuantity = function (pr) {
+
+
+  $scope.increaseQuantity = function (tab, pr) {
     pr.quantity++; // Tăng số lượng cho sản phẩm cụ thể
     pr.total += pr.price;
-    $scope.updateTotalPay();
+    $scope.updateTotalPay(tab, pr);
   };
 
-  $scope.decreaseQuantity = function (pr) {
+  $scope.decreaseQuantity = function (tab, pr) {
     if (pr.quantity > 0) {
       pr.quantity--; // Giảm số lượng cho sản phẩm cụ thể nếu lớn hơn 1
       pr.total -= pr.price;
     }
     if (pr.quantity <= 0) {
-      $scope.removeProduct(pr);
+      $scope.removeProduct(tab, pr);
     }
-    $scope.updateTotalPay();
+    $scope.updateTotalPay(tab, pr);
   };
 
-  $scope.onInputKeyPress = function (event, pr) {
+  $scope.onInputKeyPress = function (event, tab, pr) {
     if (event.keyCode === 13) { // Kiểm tra nếu phím Enter (keyCode=13)
       if (pr.quantity <= 0) {
-        $scope.removeProduct(pr);
+        $scope.removeProduct(tab, pr);
       }
       pr.total = pr.price * pr.quantity;
-      $scope.updateTotalPay();
+      $scope.updateTotalPay(tab, pr);
     }
   };
 
-  $scope.onInputBlur = function (pr) {
+  $scope.onInputBlur = function (tab, pr) {
     if (pr.quantity <= 0) {
-      $scope.removeProduct(pr);
+      $scope.removeProduct(tab, pr);
     }
     pr.total = pr.price * pr.quantity;
-  };
-  $scope.removeProduct = function (pr) {
-    var index = $scope.listRes.indexOf(pr); // Tìm vị trí của phần tử trong mảng
-    if (index !== -1) {
-      $scope.listRes.splice(index, 1); // Xóa phần tử từ mảng
-      console.log("tru r")
-    }
+    $scope.updateTotalPay(tab, pr);
   };
 
-  $scope.updateTotalPay = function () {
-    $scope.formOrderUpdate.totalPay = 0;
-    for (var i = 0; i < $scope.listRes.length; i++) {
-      $scope.formOrderUpdate.totalPay += $scope.listRes[i].total;
-    }
-    $scope.getFee();
+
+  $scope.removeProduct = function (tab, pr) {
+    $scope.confirmDelete(pr.productDetail.id, pr.cart.id, tab);
+  };
+  $scope.confirmDelete = function (productDtId, cartId, tab) {
+    var url = `${host}/api/cart/delete/`;
+    return swal.fire({
+      title: "Xác nhận xóa",
+      text: "Bạn có chắc muốn xóa sản phẩm khỏi giỏ hàng?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3f51b5",
+      cancelButtonColor: "#ff4081",
+      confirmButtonText: "Có",
+      cancelButtonText: "Hủy",
+    }).then((result) => {
+      if (result.value) {
+        // Xử lý khi người dùng xác nhận xóa ở đây
+        $http.delete(url + productDtId + "/" + cartId)
+          .then(function () {
+            toastr.success('Xóa sản phẩm thành công!', 'Thông báo')
+            return $scope.getCart(tab);
+          })
+          .catch(function (error) {
+            // Xử lý khi Delete thất bại
+            console.error('Delete thất bại', error);
+            toastr.error('Xóa sản phẩm thất bại!', 'Thông báo');
+          });
+
+      } else {
+        // Xử lý khi người dùng không xác nhận xóa ở đây
+        console.log("Xóa bị hủy bỏ.");
+        return Promise.reject("Xóa bị hủy bỏ");
+      }
+    });
+  };
+
+  $scope.updateProductQuantity = function (idCartdt, quantity, tab) {
+    var url = `${host}/api/updateQuantity/`;
+    var updateData = { quantity: quantity };
+
+    // Sử dụng $http.put để gửi yêu cầu cập nhật đến API
+    $http.put(url + idCartdt, updateData, headers)
+      .then(function (response) {
+        console.log('Cập nhật số lượng thành công');
+        $scope.activateTab(tab);
+        $scope.activateTab(tab);
+      })
+      .catch(function (error) {
+        // Xử lý khi cập nhật thất bại
+        console.error('Cập nhật số lượng thất bại', error);
+      });
+    console.log('Giá trị đã thay đổi:', quantity);
   }
-  $scope.getFee = function () {
+  $scope.updateTotalPay = function (tab, pr) {
+    $scope.updateProductQuantity(pr.id, pr.quantity, tab);
+    tab.formData.totalPay = 0;
+    for (var i = 0; i < tab.formData.listPrByCart.length; i++) {
+      tab.formData.totalPay += $scope.calculateTotalPrice(tab.formData.listPrByCart[i]);
+      $scope.saveTabsToLocalStorage();
+    }
+    
+  }
+  $scope.getFee = function (tab) {
     $scope.totalQuantity = 0;
-    for (var i = 0; i < $scope.listRes.length; i++) {
-      $scope.totalQuantity += $scope.listRes[i].quantity;
+    for (var i = 0; i < tab.formData.listPrByCart.length; i++) {
+      $scope.totalQuantity += tab.formData.listPrByCart[i].quantity;
     }
     $scope.fee = {
       quantity: $scope.totalQuantity,
-      wardId: $scope.formOrderUpdate.wardId,
-      districtId: $scope.formOrderUpdate.districtId
+      wardId: tab.formData.wardId,
+      districtId: tab.formData.districtId
     };
     console.log($scope.fee, "hereeee")
     var url = `${host}/calculateFee`;
     $http.post(url, JSON.stringify($scope.fee)).then(function (res) {
       console.log("Phi ", res.data);
-      $scope.formOrderUpdate.fee = res.data;
-      $scope.formOrderUpdate.totalPay = Number($scope.formOrderUpdate.totalPay) + Number($scope.formOrderUpdate.fee);
+      tab.formData.fee = res.data;
+      tab.formData.totalPay = Number(tab.formData.totalPay) + Number(tab.formData.fee);
+      $scope.saveTabsToLocalStorage();
     }).catch(function (error) {
       console.log("Lỗi khi tải ", error);
     });
+
   }
+
   //load address
   $scope.loadProvince = function () {
     var url = `${host}/get-province`;
@@ -128,13 +184,10 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
   }
 
   $scope.loadAllPrBs = function () {
-    var url = `${host}/api/product_bs`;
+    var url = `${host}/api/get-all-pr`;
     $http.get(url).then(res => {
       $scope.itemsBs = res.data;
-      // Gọi loadDetail sau khi tải dữ liệu thành công
-      //  $scope.loadDetail();
       $scope.filteredItems = $scope.itemsBs;
-      $scope.numVisibleItems = 4;
     }).catch(error => {
       console.log("Error", error);
     });
@@ -142,15 +195,37 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
   $scope.loadAllPrBs();
   $scope.filteredItems = $scope.itemsBs;
 
-  $scope.filterProducts = function () {
-    var searchText = $scope.productInput.toLowerCase();
-    $scope.filteredItems = $scope.itemsBs.filter(function (pr) {
-      return pr.product.name.toLowerCase().includes(searchText);
+
+  $scope.filterProducts = function (tab) {
+    var searchText = tab.formData.search.toLowerCase();
+    var searchTerms = searchText.split(' ');
+
+    $scope.filteredItems = $scope.itemsBs.filter(function (item) {
+      var nameMatch = item.product.name.toLowerCase().includes(searchText);
+      var sizeMatch = item.size.name.toLowerCase().includes(searchText);
+      var colorMatch = item.color.name.toLowerCase().includes(searchText);
+
+      // Lọc theo mỗi từ khóa trong searchTerms
+      var searchTermMatch = searchTerms.every(function (term) {
+        return (
+          item.product.name.toLowerCase().includes(term) ||
+          item.size.name.toLowerCase().includes(term) ||
+          item.color.name.toLowerCase().includes(term)
+        );
+      });
+
+      return nameMatch || sizeMatch || colorMatch || searchTermMatch;
     });
   };
 
-  $scope.selectProduct = function (tab,pr) {
-    $scope.sendDetailAddRequest(tab,)
+  $scope.selectProduct = function (tab, pr) {
+    $scope.sendDetailAddRequest(tab, pr);
+    $scope.saveTabsToLocalStorage();
+    tab.formData.totalPay = 0;
+    for (var i = 0; i < tab.formData.listPrByCart.length; i++) {
+      tab.formData.totalPay += $scope.calculateTotalPrice(tab.formData.listPrByCart[i]);
+    }
+
   }
   // sell tai quay 
   var data = localStorage.getItem('userData');
@@ -161,6 +236,7 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     var url = 'http://localhost:8080/CodeWalkers/admin/profile/' + dataStaff.username;
     $http.get(url).then(res => {
       $scope.formNotEditAdmin = {
+        staffId: res.data.id,
         staffName: res.data.name,
         staffPhone: res.data.phoneNumber
       }
@@ -169,19 +245,6 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     });
   }
   $scope.getDataStaff();
-  $scope.formOrderAdd = {
-    idBill: "",
-    address: "",
-    wardId: "",
-    provinceId: 0, // Gửi ID
-    districtId: 0,
-    userName: "",
-    phone: "",
-    fee: "Mua hàng tại quầy",
-    optionPay: 0,
-    totalPay: 0,
-  };
-
   $scope.addBill = function (tab) {
     var url = `${host}/api/addBill/0`;
     console.log(url, "url");
@@ -189,7 +252,11 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       $scope.bill = res.data; // Gán dữ liệu từ API vào $scope.bill
       tab.formData.code = $scope.bill.code;
       tab.formData.id = $scope.bill.id;
-      $scope.idUser = $scope.bill.users.id;
+      tab.formData.userID = $scope.bill.users.id;
+      // Cập nhật title của tab thành mã hóa đơn vừa tạo
+      tab.title = 'Hóa đơn ' + $scope.bill.code.slice(5);
+      $scope.saveTabsToLocalStorage();
+      console.log($scope.bill, 'bill')
     }).catch(function (error) {
       console.error('ADD thất bại', error);
     });
@@ -198,19 +265,51 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     var url = `${host}/api/CreateCart`;
     return $http.post(url).then(function (response) {
       tab.formData.cart = response.data.id;
+      $scope.getCart(tab);
+      $scope.saveTabsToLocalStorage();
       return response.data; // Trả về dữ liệu cho promise
     }).catch(function (error) {
       console.error('Lỗi: ', error);
       return $q.reject(error); // Trả về lỗi cho promise
     });
   };
+  $scope.getCart = function (tab) {
+    var url = `${host}/api/cart`;
+    $scope.totalPrice = 0;
+    var config = {
+      params: { idCart: tab.formData.cart }
+    };
+    return $http.get(url, config)
+      .then(function (res) {
+        console.log(res.data, "here");
+        tab.formData.listPrByCart = res.data;
+        tab.formData.totalPay = 0;
+        for (var i = 0; i < tab.formData.listPrByCart.length; i++) {
+          tab.formData.totalPay += $scope.calculateTotalPrice(tab.formData.listPrByCart[i]);
+          $scope.saveTabsToLocalStorage();
+        }
+        $scope.saveTabsToLocalStorage();
+      })
+      .catch(function (error) {
+        console.error('get cart thất bại', error);
+      });
+  };
+  $scope.calculateTotalPrice = function (item) {
+    // Tính tổng giá trị của sản phẩm (price * quantity)
+    return item.productDetail.price * item.quantity;
+  };
 
-  $scope.sendDetailAddRequest = function (tab,pr) {
+
+  $scope.sendDetailAddRequest = function (tab, pr) {
+    $scope.productId = pr.product.id;
+    $scope.selectedValue = pr.size.id;
+    $scope.selectedColor = pr.color.id;
     var url = `${host}/api/detailAdd/${tab.formData.cart}/${$scope.productId}/${$scope.selectedValue}/${$scope.selectedColor || ''}`;
     var data = { quantity: 1 };
     console.log("Sending request to:", url);
     $http.post(url, data)
       .then(function (response) {
+        $scope.getCart(tab);
         toastr.success('Thêm sản phẩm thành công!', 'Thông báo');
       })
       .catch(function (error) {
@@ -219,14 +318,26 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       });
   };
 
+
+  // Function to save tabs to local storage
+  $scope.saveTabsToLocalStorage = function () {
+    localStorage.setItem('tabs', JSON.stringify($scope.tabs));
+  }
+
   $scope.activateTab = function (selectedTab) {
     if (!selectedTab.disabled) {
       $scope.tabs.forEach(function (tab) {
         tab.active = (tab === selectedTab);
       });
+      $scope.saveTabsToLocalStorage();
     }
-  };
-  $scope.tabs = [];
+    $scope.getCart(selectedTab);
+
+  }
+  function generateUniqueId() {
+    return '_' + Math.random().toString(36).substr(2, 9);
+  }
+
   $scope.addNewTab = function (currentTab) {
     if ($scope.tabs.length >= 5) {
       return;
@@ -235,35 +346,62 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     $scope.newTabIndex = $scope.newTabIndex || $scope.tabs.length + 1;
 
     var newTab = {
-      title: 'Hóa đơn ' + $scope.newTabIndex,
-      formData: {},  // Tạo một đối tượng formData mới cho mỗi tab
+      title: generateUniqueId(),
+      formData: {},
       active: true,
-      isLast: false
+      isLast: false,
+      id: generateUniqueId() // Hàm này tự viết để tạo id duy nhất
     };
-    newTab.formData = {};
+
     $scope.tabs.push(newTab);
     $scope.newTabIndex++;
 
     for (var i = 0; i < $scope.tabs.length - 1; i++) {
       $scope.tabs[i].active = false;
     }
-    updateTabStatus();
     $scope.addBill(newTab);
     $scope.createCart(newTab);
+    updateTabStatus();
+    $scope.saveTabsToLocalStorage();
   };
 
+  // Clear tabs from local storage on logout or when needed
+  $scope.clear = function clearTabsFromLocalStorage() {
+    localStorage.removeItem('tabs');
+    // toastr.success("ok", "ok")
+  }
+
+  function loadTabsFromLocalStorage() {
+    var tabsData = localStorage.getItem('tabs');
+    console.log(tabsData, "tab")
+    if (tabsData) {
+      $scope.tabs = JSON.parse(tabsData);
+    }
+  }
+  // Call this function when your controller is initialized
+  loadTabsFromLocalStorage();
+
+  // Call clearTabsFromLocalStorage when needed
 
   $scope.removeTab = function (tabToRemove) {
-    $scope.removeBill(tabToRemove);
+    if (!$scope.checkDone) {
+      $scope.removeBill(tabToRemove);
+    }
     var tabIndex = $scope.tabs.indexOf(tabToRemove);
-    // Kích hoạt tab trước đó nếu tab hiện tại là tab cuối cùng
     var previousTabIndex = (tabIndex === $scope.tabs.length - 1) ? tabIndex - 1 : tabIndex;
     // Kích hoạt tab trước đó
-    $scope.activateTab($scope.tabs[previousTabIndex]);
+    console.log(previousTabIndex, "_----")
+    if (previousTabIndex < 0) {
+      $scope.clear();
+    } else {
+      $scope.activateTab($scope.tabs[previousTabIndex]);
+    }
     // Xóa tab hiện tại
     $scope.tabs.splice(tabIndex, 1);
     // Cập nhật trạng thái tab
     updateTabStatus();
+    // Lưu trạng thái mới vào local storage
+    $scope.saveTabsToLocalStorage();
   };
 
   function updateTabStatus() {
@@ -272,9 +410,6 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       tab.isLast = (index === $scope.tabs.length - 1);
     });
   }
-
-  // Khởi tạo trạng thái ban đầu
-  updateTabStatus();
   $scope.dropdownOpen = false;
 
   $scope.toggleDropdown = function () {
@@ -297,28 +432,43 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     }).catch(error => {
       console.log("Error", error);
     });
-  }
+  };
   $scope.loadUser();
+
   $scope.filterUsers = function () {
     var searchText = $scope.userInput.toLowerCase();
     $scope.filteredUsers = $scope.listUser.filter(function (user) {
       return user.name.toLowerCase().includes(searchText);
     });
   };
+
+
   $scope.searchCustomers = function (tab) {
-    console.log("here", tab.formData.userName);
     var searchText = tab.formData.userName.toLowerCase();
     $scope.filteredUsers = $scope.listUser.filter(function (user) {
       var lowerSearchText = searchText.toLowerCase();
       return user.name.toLowerCase().includes(lowerSearchText) || (user.phoneNumber && user.phoneNumber.includes(searchText));
     });
-
   };
 
   $scope.selectCustomer = function (user, tab) {
     tab.formData.userName = user.name;
     tab.formData.phoneNumber = user.phoneNumber; // Replace 'phoneNumber' with the actual property name in your user object
+    tab.formData.userID = user.id;
+    $scope.saveTabsToLocalStorage();
   };
+
+  $scope.searchPhone = function(tab) {
+    $scope.listUser.forEach(x => {
+        // Kiểm tra điều kiện để đảm bảo chỉ cập nhật khi số điện thoại khác nhau
+        if (tab.formData.phoneNumber !== x.phoneNumber) {
+            let api = apiAdmin + "Bill/updateUser/" + tab.formData.userID + "?name=" + tab.formData.userName + "&phone=" + tab.formData.phoneNumber;
+            $http.put(api, headers).then(function(response) {
+                console.log("update User success");
+            });
+        }
+    });
+};
 
   $scope.removeBill = function (tab) {
     let billId = tab.formData.id;
@@ -336,7 +486,6 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
         // Hành động khi người dùng ấn "Có"
         $http.delete(api, headers).then(function (response) {
           Swal.fire('Xóa thành công!', '', 'success');
-          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
           console.log(response);
         })
           .catch(function (error) {
@@ -345,11 +494,100 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hành động khi người dùng ấn "Không"
         Swal.fire('Hủy bỏ', '', 'error');
+      } tab.formData
+    });
+  };
+  $scope.pay = function (idBill,idCart) {
+    var url = `${host}/api/addBillDt/`;
+    $http.post(url + idBill + "/" + idCart).then(function () {
+        console.log('ADD thành công');
+    }).catch(function (error) {
+        console.error('ADD thất bại', error);
+    });
+}
+  $scope.submitForm = function (event, tab) {
+    event.preventDefault();
+    $scope.checkDone = false;
+    if (!tab.formData.listPrByCart) {
+      toastr.error("Chưa có sản phẩm trong giỏ hàng", "Lỗi");
+      return;
+    }
+    var dataToSend = {
+      userName: tab.formData.userID,
+      idBill: tab.formData.id,
+      provinceId: tab.formData.provinceId || 0,
+      districtId: tab.formData.districtId || 0,
+      wardId: tab.formData.wardId || 0,
+      address: tab.formData.address || '',
+      note: "Mua hàng tại quầy",
+      fee: tab.formData.fee,
+      optionPay: tab.formData.optionPay,
+      totalPay: tab.formData.totalPay,
+      shipDate: new Date,
+      status: 6,
+      idStaff: $scope.formNotEditAdmin.staffId,
+    }
+    if (tab.formData.checkAct) {
+      dataToSend.note = "Đặt hàng";
+      dataToSend.status = 1;
+      dataToSend.shipDate = "";
+      if (
+        !tab.formData.provinceId ||
+        !tab.formData.districtId ||
+        !tab.formData.wardId ||
+        !tab.formData.address ||
+        !tab.formData.fee
+      ) {
+        // Hiển thị thông báo lỗi
+        $scope.checkAddress = true;
+        return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
+      }
+    }
+    if (!tab.formData.userName ||
+      !tab.formData.phoneNumber ||
+      !tab.formData.totalPay) {
+      // Hiển thị thông báo lỗi
+      $scope.checkAddress = true;
+      return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
+    }
+    Swal.fire({
+      title: "Xác nhận",
+      text: "Bạn có chắc chắn muốn thực hiện hành động này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Có",
+      cancelButtonText: "Không",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $http.put(
+          `${host}/bill/updateBill`, dataToSend,
+          headers
+        ).then(function (response) {
+            if(response){
+              Swal.fire({
+                icon: "success",
+                title: "Cập nhật thành công!",
+                text: "Thông tin đơn hàng đã được cập nhật.",
+              });
+              $scope.searchPhone(tab);
+              $scope.pay(tab.formData.id,tab.formData.cart);
+              $scope.checkDone = true;
+              $scope.removeTab(tab);
+            }
+          })
+          .catch(function (error) {
+            console.error("Error:", error);
+            Swal.fire({
+              icon: "error",
+              title: "Lỗi!",
+              text: "Đã xảy ra lỗi khi cập nhật đơn hàng. Vui lòng thử lại sau.",
+            });
+          });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Hủy bỏ", "", "error");
       }
     });
-
   };
-
 
   $document.on("click", function (event) {
     // Check if the click is outside of the input and dropdown
