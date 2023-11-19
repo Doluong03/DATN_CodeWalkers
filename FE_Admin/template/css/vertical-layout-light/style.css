@@ -26235,6 +26235,7 @@ body.avgrund-active {
   padding: 10px;
   color: #ffffff;
   font-size: 14px;
+  border: solid;
 }
 
 .expandable-table thead tr th:first-child {

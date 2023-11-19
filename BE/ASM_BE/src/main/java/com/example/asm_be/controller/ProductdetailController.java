@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping({"/CodeWalkers"})
@@ -47,6 +48,8 @@ public class ProductdetailController {
         productDetailsRespone.setMaterialList(materialService.getAll());
         productDetailsRespone.setSizeList(sizeService.getAll());
         productDetailsRespone.setPromotionalList(promotionalService.getAll());
+        productDetailsRespone.setProductDetailList(productDetailService.PRODUCT_DETAILS());
+        productDetailsRespone.setStatusList(statusService.getAll());
         return productDetailsRespone;
     }
 
@@ -71,5 +74,8 @@ public class ProductdetailController {
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Delete thanh cong",  productDetailService.delete(idProduct)));
     }
-
+    @GetMapping("/admin/ProductDetails/details")
+    public List<ProductDetail> detailsProduct(@RequestParam("productName") String productName){
+        return productDetailService.findByProductName(productName);
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -162,4 +163,27 @@ public class ProductDetailImpl implements ProductDetailService {
     public List<ProductDetail> getPrByColor(int idPr, int idColor) {
         return productDetailRepository.findByProductIdAndColorId(idPr, idColor);
     }
+
+    @Override
+    public List<ProductDetail> PRODUCT_DETAILS() {
+        return productDetailRepository.findAll();
+    }
+
+    @Override
+    public List<ProductDetail> findByProductName(String productName) {
+        return productDetailRepository.findByProductName(productName);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateDetail(Integer idDetails) {
+        try {
+            productDetailRepository.capNhatGiaTri(idDetails);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
+    }
+
 }
