@@ -163,7 +163,6 @@ CREATE TABLE HangKhachHang (
   mo_ta NVARCHAR(255)DEFAULT NULL,
   trang_thai bit  DEFAULT NULL
 );
-
 CREATE TABLE NhanVien (
   id_nhan_vien int PRIMARY KEY Identity(1,1),
   ho_nhan_vien NVARCHAR(255),
@@ -234,9 +233,6 @@ CREATE TABLE VaiTro (
   ten_vai_tro NVARCHAR(20),
 );
 
-
-
-
 CREATE TABLE CaLam (
   id int PRIMARY KEY Identity(1,1),
   nhan_vien_id int,
@@ -245,7 +241,6 @@ CREATE TABLE CaLam (
   ngay_lam date,
   doanh_thu money
 );
-
 
 
 -----Chi tiet san pham-----

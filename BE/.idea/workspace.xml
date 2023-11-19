@@ -12,6 +12,16 @@
       <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ProductDetailService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductDetailImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductDetailImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Staff.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Staff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/StaffIplm.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/StaffIplm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Staff.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Staff.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/account.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/account.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/account-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/account-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/size-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/size-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/staff-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/staff-controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/size.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/size.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/staff.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/staff.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -323,6 +333,20 @@
       <workItem from="1700320036746" duration="2191000" />
       <workItem from="1700389184676" duration="39000" />
       <workItem from="1700389314419" duration="10514000" />
+      <workItem from="1699576203287" duration="1122000" />
+      <workItem from="1699577714433" duration="1914000" />
+      <workItem from="1699623445542" duration="961000" />
+      <workItem from="1699696611102" duration="1055000" />
+      <workItem from="1699785266180" duration="724000" />
+      <workItem from="1699853586190" duration="1858000" />
+      <workItem from="1699887603727" duration="749000" />
+      <workItem from="1699939596877" duration="3662000" />
+      <workItem from="1700026112042" duration="617000" />
+      <workItem from="1700116060010" duration="736000" />
+      <workItem from="1700182042395" duration="2672000" />
+      <workItem from="1700300903026" duration="61000" />
+      <workItem from="1700300981091" duration="8686000" />
+      <workItem from="1700361594199" duration="11103000" />
     </task>
     <servers />
   </component>
