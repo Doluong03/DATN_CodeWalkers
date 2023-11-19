@@ -132,7 +132,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat="item in listOrders | filter:searchText | orderBy:sortColumn:reverseSort">
+                    <tr ng-repeat="item in listOrders | filter:searchText | orderBy:sortColumn:reverseSort" class="trOrder text-center">
                       <td><input type="checkbox" ng-model="item.isSelected"></td>
                       <td ng-show="columns[1].selected">{{ item.code }}</td>
                       <td ng-show="columns[2].selected">{{ item.users[0].name}}</td>
