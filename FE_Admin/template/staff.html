@@ -1,10 +1,10 @@
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Staff table</h4>
+            <h4 class="card-title">Quản lý nhân viên</h4>
 
             <div class="search-container">
-                <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a Size">
+                <input type="text" id="btn-search" ng-model="searchText" placeholder="Tìm kiếm nhân viên">
                 <i class="fa-light fa-magnifying-glass"></i>
             </div>
 
@@ -50,9 +50,6 @@
                     <i class="fa-sharp fa-solid fa-file-import"></i>
                 </button>
 
-                <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
-                        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button> -->
-
 
                 <div class="btn-group">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuIconButton1"
@@ -76,7 +73,7 @@
                         <tr>
                             <th>
                                 <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()"
-                                    class="select-checkbox" type="checkbox"> #
+                                    class="select-checkbox" type="checkbox"> 
                             </th>
                             <th ng-show="columns[1].selected" ng-click="sortData('name')">Họ và Tên<span
                                     class="{{getSortClass('name')}}"></span></th>
@@ -106,13 +103,11 @@
                             <td><input type="checkbox" ng-model="item.isSelected"></td>
                             <td ng-show="columns[1].selected">{{item.name}}</td>
                             <td ng-show="columns[2].selected">{{item.dateOfBirth| date : "dd/MM/yyyy"}}</td>
-                            <td ng-show="columns[3].selected" style="text-align: center;">{{item.gender == true ? 'nam'
-                                : 'nữ'}}</td>
+                            <td ng-show="columns[3].selected" style="text-align: center;">{{item.gender == true ? 'Nam'
+                                : 'Nữ'}}</td>
                             <td ng-show="columns[4].selected" style="text-align: center;">{{item.address}}</td>
                             <td ng-show="columns[5].selected">{{item.email}}</td>
                             <td ng-show="columns[6].selected">{{item.phoneNumber}}</td>
-                            <!-- <td ng-show="columns[7].selected">{{item.userName}}</td>
-                            <td ng-show="columns[8].selected">{{item.password}}</td> -->
                             <td ng-show="columns[7].selected">
                                 <span ng-if="item.status == true" style="margin-left: -9px;">
                                     <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i>
@@ -122,10 +117,9 @@
                                     <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Disable
                                 </span>
                             </td>
-                            <td ng-show="columns[8].selected" style="text-align: center"><img
+                            <td ng-show="columns[8].selected"><img
                                     style="border-radius: 15%; width: 135px; height: 120px;"
                                     src="/FE_Admin/template/images/staff/{{item.image}}" alt="{{item.image}}"> </td>
-                            <td ng-show="columns[9].selected">{{item.roles[0].nameRole}}</td>
                             <td>
                                 <a href="#" ng-click="toggleFormUpdate($event,item)"
                                     style="text-decoration: none; color: #1545e1;" data-bs-toggle="modal"
@@ -205,7 +199,7 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputDate">Ngày Sinh</label>
-                        <input type="text" class="form-control" id="exampleInputDate" name="dateOfBirth"
+                        <input type="date" class="form-control" id="exampleInputDate" name="dateOfBirth"
                             ng-model="formStaff.dateOfBirth">
                     </div>
                     <div class="form-group">

@@ -425,27 +425,25 @@ window.SizeController = function ($scope, $http, $window, $timeout) {
   };
 
   $scope.exportToExcel = function () {
-    // Lấy bảng theo ID
-    var table = document.getElementById("SizeTable"); // Thay id table bảng của bạn vào đây
-
-    // Lấy dữ liệu từ bảng
+    var table = document.getElementById("SizeTable");
     var data = [];
+    
     for (var i = 0; i < table.rows.length; i++) {
-      var rowData = [];
-      for (var j = 0; j < table.rows[i].cells.length; j++) {
-        rowData.push(table.rows[i].cells[j].innerText);
-      }
-      data.push(rowData);
+        var rowData = [];
+        // Bỏ cột đầu tiên và cột cuối
+        for (var j = 1; j < table.rows[i].cells.length - 1; j++) {
+            rowData.push(table.rows[i].cells[j].innerText);
+        }
+        data.push(rowData);
     }
 
-    // Tạo một workbook và một worksheet
     var ws = XLSX.utils.aoa_to_sheet(data);
     var wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.utils.book_append_sheet(wb, ws, "Danh sách Kích cỡ");
 
-    // Xuất file Excel
-    XLSX.writeFile(wb, "exported_data.xlsx");
-  };
+    XLSX.writeFile(wb, "Danh sách Kích cỡ.xlsx");
+};
+
 
   $scope.exportToSVG = function () {
     // Lấy bảng theo ID

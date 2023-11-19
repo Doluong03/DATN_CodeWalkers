@@ -208,7 +208,23 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
       }
     });
   };
-
+  function convertDateFormat(inputDate) {
+    // Chuyển đổi chuỗi ngày thành đối tượng Date
+    var dateParts = inputDate.split("/");
+    var dateObject = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+  
+    // Lấy ngày, tháng và năm
+    var day = dateObject.getDate();
+    var month = dateObject.getMonth() + 1; // Tháng bắt đầu từ 0
+    var year = dateObject.getFullYear();
+  
+    // Định dạng lại ngày thành "DD/MM/YYYY"
+    var formattedDate = (day < 10 ? '0' : '') + day + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        year;
+  
+    return formattedDate;
+  }
 
   $scope.addStaff = function (event) {
     event.preventDefault();
@@ -234,6 +250,7 @@ $scope.checkAdd=true;
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
+     
         $http.post(apiAdmin+"Staff" + "/insert", JSON.stringify($scope.formStaff),headers)
           .then(function (response) {
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
@@ -481,27 +498,44 @@ $scope.exportToPDF = function () {
 };
 
 $scope.exportToExcel = function () {
-  // Lấy bảng theo ID
-  var table = document.getElementById("StaffTable"); // Thay id table bảng của bạn vào đây
-
-  // Lấy dữ liệu từ bảng
+  var table = document.getElementById("StaffTable");
   var data = [];
-  for (var i = 0; i < table.rows.length; i++) {
-    var rowData = [];
-    for (var j = 0; j < table.rows[i].cells.length; j++) {
-      rowData.push(table.rows[i].cells[j].innerText);
-    }
-    data.push(rowData);
+
+  // Tạo một hàng tiêu đề với tên các cột
+  var headerRow = [];
+  for (var k = 1; k < table.rows[0].cells.length - 1; k++) {
+      if (k === 8) {
+          headerRow.push("Hình ảnh"); // Thêm tên cột hình ảnh vào hàng đầu tiên
+      } else {
+          headerRow.push(table.rows[0].cells[k].innerText);
+      }
+  }
+  data.push(headerRow);
+
+  for (var i = 1; i < table.rows.length; i++) {
+      var rowData = [];
+
+      for (var j = 1; j < table.rows[i].cells.length - 1; j++) {
+          if (j === 8) {
+              var imgElement = table.rows[i].cells[j].querySelector('img');
+              var altText = imgElement ? imgElement.alt : '';
+              rowData.push(altText);
+          } else {
+              rowData.push(table.rows[i].cells[j].innerText);
+          }
+      }
+
+      data.push(rowData);
   }
 
-  // Tạo một workbook và một worksheet
   var ws = XLSX.utils.aoa_to_sheet(data);
   var wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+  XLSX.utils.book_append_sheet(wb, ws, "Danh sách Nhân viên");
 
-  // Xuất file Excel
-  XLSX.writeFile(wb, "exported_data.xlsx");
+  XLSX.writeFile(wb, "Danh sách Nhân viên.xlsx");
 };
+
+
 
 $scope.exportToSVG = function () {
   // Lấy bảng theo ID

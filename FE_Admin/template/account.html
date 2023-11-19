@@ -179,13 +179,18 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Tên đăng nhập</label>
                         <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Tên đăng nhập"
-                            ng-model="formStaffUpdate.username" ng-class="{'is-invalid': checkUpdate && !formStaffUpdate.username}" name="username" required>
+                            ng-model="formStaffUpdate.userName" ng-class="{'is-invalid': checkUpdate && !formStaffUpdate.userName}" name="userName" required>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Mật khẩu</label>
                         <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Mật khẩu"
                             ng-model="formStaffUpdate.password" ng-class="{'is-invalid': checkUpdate && !formStaffUpdate.password}" name="password" required>
                     </div>
+                    <div class="form-group">
+                        <label for="exampleSelectGender">Vai trò</label>
+                        <select class="form-control" id="exampleInputMaterial" ng-model="formStaffUpdate.roles[0].id" ng-options="roles.id as roles.nameRole for roles in roles">
+                      </select>
+                      </div> 
                     <div class="form-group">
                         <label for="exampleSelectGender">Trạng Thái</label>
                         <select class="form-control" id="exampleSelectGender" ng-model="formStaffUpdate.status"

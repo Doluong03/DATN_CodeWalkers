@@ -41,9 +41,9 @@ window.AccountController = function ($scope, $http, $window, $timeout) {
   $scope.formStaffUpdate = {
     id: "",
     name: "",
-    username: "",
+    userName: "",
     password: "",
-    //   roles: {id},
+    roles: [{ id: "" }],
     status: ""
   };
 
@@ -194,24 +194,18 @@ window.AccountController = function ($scope, $http, $window, $timeout) {
       id: item.id,
       name: item.name,
       password: item.password,
-      username: item.userName,
+      userName: item.userName,
       status: item.status,
+      roles: item.roles,
     };
-  };
-
-  // Hàm để mã hóa mật khẩu bằng SHA256 sử dụng thư viện CryptoJS
-  $scope.hashPassword = function (password) {
-    const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
-    return hashedPassword;
   };
 
 
   // update
   $scope.UpdateStaff = function (event) {
-    $scope.formStaffUpdate.password = $scope.hashPassword($scope.formStaffUpdate.password);
     if (!$scope.formStaffUpdate.name
-      ||!$scope.formStaffUpdate.username
-      ||!$scope.formStaffUpdate.password
+      || !$scope.formStaffUpdate.userName
+      || !$scope.formStaffUpdate.password
     ) {
       // Nếu form không hợp lệ, thông báo lỗi và ngăn chặn việc thực hiện tiếp
       // console.log("Vui lòng điền đầy đủ thông tin cần thiết.");
@@ -303,27 +297,24 @@ window.AccountController = function ($scope, $http, $window, $timeout) {
   };
 
   $scope.exportToExcel = function () {
-    // Lấy bảng theo ID
-    var table = document.getElementById("AccountTable"); // Thay id table bảng của bạn vào đây
-
-    // Lấy dữ liệu từ bảng
+    var table = document.getElementById("AccountTable");
     var data = [];
+    
     for (var i = 0; i < table.rows.length; i++) {
-      var rowData = [];
-      for (var j = 0; j < table.rows[i].cells.length; j++) {
-        rowData.push(table.rows[i].cells[j].innerText);
-      }
-      data.push(rowData);
+        var rowData = [];
+        // Bỏ cột đầu tiên và cột cuối
+        for (var j = 1; j < table.rows[i].cells.length - 1; j++) {
+            rowData.push(table.rows[i].cells[j].innerText);
+        }
+        data.push(rowData);
     }
 
-    // Tạo một workbook và một worksheet
     var ws = XLSX.utils.aoa_to_sheet(data);
     var wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.utils.book_append_sheet(wb, ws, "Quản lý Tài khoản");
 
-    // Xuất file Excel
-    XLSX.writeFile(wb, "exported_data.xlsx");
-  };
+    XLSX.writeFile(wb, "Quản lý Tài khoản.xlsx");
+};
 
   $scope.exportToSVG = function () {
     // Lấy bảng theo ID

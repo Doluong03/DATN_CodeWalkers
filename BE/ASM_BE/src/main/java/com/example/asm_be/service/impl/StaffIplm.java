@@ -117,8 +117,11 @@ public class StaffIplm implements StaffService {
                 // Cập nhật chỉ các trường bạn muốn thay đổi
                 existingStaff.setName(staff.getName());
                 existingStaff.setUserName(staff.getUserName());
-                existingStaff.setPassword(staff.getPassword()); // Nếu không cần thay đổi mật khẩu
 
+                if(existingStaff.getPassword().equals(staff.getPassword())){
+                    existingStaff.setPassword(staff.getPassword());
+                }else{
+                    existingStaff.setPassword(passwordEncoder.encode(staff.getPassword()));}
                 // Cập nhật trạng thái, roles
                 existingStaff.setStatus(staff.isStatus());
                 existingStaff.setRoles(staff.getRoles());
@@ -133,6 +136,7 @@ public class StaffIplm implements StaffService {
 
                 // Lưu thông tin cập nhật vào cơ sở dữ liệu
                 staffRepository.save(existingStaff);
+
                 return true;
             } else {
                 return false; // Xử lý khi nhân viên không tồn tại
@@ -188,7 +192,7 @@ public class StaffIplm implements StaffService {
         staff.setGender(signUpRequest.getGender());
 
         try {
-            Date birthDayFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US)
+            Date birthDayFormat = new SimpleDateFormat("dd/MM/yyyy")
                     .parse(signUpRequest.getDateOfBirth().toString());
             staff.setDateOfBirth(birthDayFormat);
         } catch (ParseException e) {
@@ -196,7 +200,8 @@ public class StaffIplm implements StaffService {
         }
 
         // Thiết lập giá trị mặc định cho username và password
-        staff.setUserName("CodeWalker");
+        String randomId = generateRandomId();
+        staff.setUserName("CodeWalker"+randomId);
         staff.setPassword(passwordEncoder.encode("123"));
 
         staff.setPhoneNumber(signUpRequest.getPhoneNumber());
@@ -231,6 +236,14 @@ public class StaffIplm implements StaffService {
         staff.setRoles(listRole);
         staffRepository.save(staff);
         return true;
+    }
+    public static String generateRandomId() {
+        // Tạo một đối tượng Random
+        Random random = new Random();
+
+        // Sinh một số ngẫu nhiên và chuyển nó thành chuỗi
+        int randomId = random.nextInt(Integer.MAX_VALUE);
+        return String.valueOf(randomId);
     }
 
 }

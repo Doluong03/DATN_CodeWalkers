@@ -29,7 +29,7 @@ public class Staff implements Serializable {
     @Column(name = "ten_nhan_vien")
     private String name;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+//    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "ngay_sinh")
     private Date dateOfBirth;
 
@@ -57,7 +57,7 @@ public class Staff implements Serializable {
     @Column(name = "hinh_anh")
     private String image;
 
-    @ManyToMany(fetch =  FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch =  FetchType.EAGER)
     @JoinTable(name = "VaiTroNhanVien",
             joinColumns = @JoinColumn(name = "nhan_vien_id", referencedColumnName = "id_nhan_vien"),
             inverseJoinColumns = @JoinColumn(name = "vai_tro_id", referencedColumnName = "id")
