@@ -3,10 +3,12 @@ package com.example.asm_be.request;
 import com.example.asm_be.entities.Bill;
 import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
+import com.example.asm_be.service.StaffService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
@@ -42,9 +44,6 @@ public class AddBillRequest {
         bill.setDescription(this.note);
         bill.setShipDate(this.shipDate);
         bill.setStatus(this.status);
-        Staff staff = new Staff();
-        staff.setId(this.idStaff);
-        bill.setStaff(staff);
         return bill;
     }
 

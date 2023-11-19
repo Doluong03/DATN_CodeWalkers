@@ -129,7 +129,7 @@ public class BillController {
     @PutMapping("/bill/updateBill")
     public ResponseEntity<?> updateBill(@RequestBody AddBillRequest billRequest) {
         try {
-            System.out.println(billRequest.toString() + "<---");
+            System.out.println(billRequest.getIdStaff() + "<---");
           String url =  billService.update(billRequest);
           return ResponseEntity.ok(url);
         } catch (Exception var) {

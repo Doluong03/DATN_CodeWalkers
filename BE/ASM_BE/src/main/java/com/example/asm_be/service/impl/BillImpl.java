@@ -27,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
@@ -80,15 +81,13 @@ public class BillImpl implements BillService {
     public Bill getOne(int id) {
         return billRepository.findById(id).get();
     }
-
+    @Transactional
     @Override
     public Bill save(Bill bill, Users user) {
         bill.setCreatedAt(new Date());
         String invoiceCode = generateInvoiceCode();
         bill.setCode("HD" + invoiceCode);
         bill.setDescription("Khách lẻ");
-        Staff staff = staffRepository.findById(1).get();
-        bill.setStaff(staff);
         // Users usersRes = new Users();
         // usersRes.setName("Khách lẻ");
         // userRepository.save(usersRes);
@@ -108,7 +107,7 @@ public class BillImpl implements BillService {
             return false;
         }
     }
-
+    @Transactional
     @Override
     public String update(AddBillRequest billRequest) {
         Optional<Bill> bill = billRepository.findById(billRequest.getIdBill());
@@ -119,6 +118,9 @@ public class BillImpl implements BillService {
                     bill.get().setUsers(users.get());
                 }
                 billRequest.map(bill.get());
+                Staff staff = staffRepository.findById(billRequest.getIdStaff()).get();
+                System.out.println(staff +"hahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+                bill.get().setStaff(staff);
                 billRepository.save(bill.get());
                 if (bill.get().getPaymentOptions() == Invariable.VNPAY) {
                     try {
