@@ -119,7 +119,6 @@ public class BillImpl implements BillService {
                 }
                 billRequest.map(bill.get());
                 Staff staff = staffRepository.findById(billRequest.getIdStaff()).get();
-                System.out.println(staff +"hahahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
                 bill.get().setStaff(staff);
                 billRepository.save(bill.get());
                 if (bill.get().getPaymentOptions() == Invariable.VNPAY) {

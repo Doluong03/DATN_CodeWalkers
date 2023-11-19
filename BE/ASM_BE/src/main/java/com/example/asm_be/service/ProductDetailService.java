@@ -34,5 +34,10 @@ public interface ProductDetailService {
     public ProductDetail  findBySize(int proId, int sizeId, int idCl);
     public List<ProductDetail> findByPrId(int proId);
 
+    public  List<ProductDetail> PRODUCT_DETAILS();
+
+    List<ProductDetail> findByProductName(String productName);
+
+    boolean updateDetail(Integer idDetails);
 
 }

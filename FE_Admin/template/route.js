@@ -217,6 +217,7 @@ myApp.filter('vndCurrency', function () {
       return input.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
   };
 });
+
 myApp.filter('dateformat', function() {
   return function(input) {
     if (input) {

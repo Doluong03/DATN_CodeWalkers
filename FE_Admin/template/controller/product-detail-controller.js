@@ -2,141 +2,198 @@
 window.productDetailController = function ($scope, $http, $window) {
 
 
-  $scope.listProductDetail= [];
+  $scope.listProductDetail = [];
   $scope.pageNo = 0;
   $scope.sizePage = 5;
-  $scope.lastIndex =0; // phần tử cuối của mảng
-  $scope.sizeProduct =[];
-  $scope.colorProduct =[];
-  $scope.materialProduct =[];
-  $scope.promotionalProduct =[];
-  $scope.statusProduct =[];
-  $scope.Product=[];
+  $scope.lastIndex = 0; // phần tử cuối của mảng
+  $scope.sizeProduct = [];
+  $scope.colorProduct = [];
+  $scope.materialProduct = [];
+  $scope.promotionalProduct = [];
+  $scope.statusProduct = [];
+  $scope.Product = [];
+  $scope.detail = [];
+  $scope.modalContent = "";
+  // Kiểm tra nếu form là form thêm mới (ví dụ: nếu không có sản phẩm trong danh sách)
 
-   // Kiểm tra nếu form là form thêm mới (ví dụ: nếu không có sản phẩm trong danh sách)
-  
 
   $scope.formProductDetail = {
-      quantity: "",
-      price: "",
-      product: {id:""},
-      material: {id:""},
-      size:  {id:""},
-      color: {id:""},
-      promotional : {id:""},
-      status : {id:""},
+    quantity: "",
+    price: "",
+    product: { id: "" },
+    material: { id: "" },
+    size: { id: "" },
+    color: { id: "" },
+    promotional: { id: "" },
+    status: { id: "" },
   };
 
   $scope.formPdDetailUpdate = {
     id: "",
     quantity: "",
     price: "",
-    product: {id:""},
-    material:  {id:""},
-    size:  {id:""},
-    color:  {id:""},
-    promotional : {id:""},
-    status :  "",
+    product: { id: "" },
+    material: { id: "" },
+    size: { id: "" },
+    color: { id: "" },
+    promotional: { id: "" },
+    status: { id: "" },
   }
-  // phân trang start
-  $scope.totalPage = 0;
-  $scope.pageCurrent = 0;
-  $scope.itemsPerPage = 3; // Số lượng trang bạn muốn hiển thị
-  
-  $scope.pageRange = function () {
+
+$scope.totalPage = 0;
+$scope.pageCurrent = 0;
+$scope.itemsPerPage = 3;
+$scope.displayedUsers = []; // Thêm mảng để hiển thị người dùng trên trang hiện tại
+$scope.finalMergedProducts = []; // Thêm mảng để lưu dữ liệu cần hiển thị
+
+$scope.pageRange = function () {
     var startPage = Math.max(1, $scope.pageCurrent - Math.floor($scope.itemsPerPage / 2));
     var endPage = Math.min($scope.totalPage, startPage + $scope.itemsPerPage - 1);
     var pages = [];
-  
+
     if ($scope.pageCurrent + Math.floor($scope.itemsPerPage / 2) > $scope.totalPage) {
-      startPage = Math.max(1, $scope.totalPage - $scope.itemsPerPage + 1);
-      endPage = $scope.totalPage;
+        startPage = Math.max(1, $scope.totalPage - $scope.itemsPerPage + 1);
+        endPage = $scope.totalPage;
     }
-  
-    // Bắt đầu từ trang đầu tiên nếu trang hiện tại là quá giữa danh sách
+
     if (startPage > 1) {
-      startPage = Math.max(1, startPage - 1);
+        startPage = Math.max(1, startPage - 1);
     }
-  
+
     for (var i = startPage; i <= endPage; i++) {
-      pages.push(i);
+        pages.push(i);
     }
-  
+
     return pages;
-  };
-  
-  
-  
-  $scope.nextPage = function () {
-    if ($scope.pageCurrent < $scope.totalPage - 1) {
-      $scope.pageCurrent++;
-      $scope.hienThi($scope.pageCurrent,$scope.sizePage);
-    }
-  };
-  
-  $scope.previousPage = function () {
-    if ($scope.pageCurrent > 0) {
-      $scope.pageCurrent--;
-    }
-      $scope.hienThi($scope.pageCurrent,$scope.sizePage);
-  };
-  
-  $scope.hoveredPage = null;
-
-  $scope.onHover = function (index) {
-    $scope.hoveredPage = index;
-  };
-  
-  $scope.onLeave = function () {
-    $scope.hoveredPage = null;
-  };
-
-  // hàm thay đổi số phần tử của trang
-  $scope.onSizePageChange = function () {
-    // Làm cái gì đó với giá trị mới của sizePage
-    console.log("New Size Page: " + $scope.sizePage);
-    $scope.hienThi($scope.pageNo,$scope.sizePage);
-    // Gọi các hàm khác cần thiết với giá trị mới của sizePage
 };
 
-  
+$scope.nextPage = function () {
+    if ($scope.pageCurrent < $scope.totalPage - 1) {
+        $scope.pageCurrent++;
+        $scope.loadPage();
+    }
+};
+
+$scope.previousPage = function () {
+    if ($scope.pageCurrent > 0) {
+        $scope.pageCurrent--;
+        $scope.loadPage();
+    }
+};
+
+$scope.onHover = function (index) {
+    $scope.hoveredPage = index;
+};
+
+$scope.onLeave = function () {
+    $scope.hoveredPage = null;
+};
+
+$scope.loadPage = function () {
+    var startIndex = $scope.pageCurrent * $scope.itemsPerPage;
+    var endIndex = ($scope.pageCurrent + 1) * $scope.itemsPerPage - 1;
+    $scope.displayedUsers = $scope.finalMergedProducts.slice(startIndex, endIndex + 1);
+    $scope.updateFinalMergedProducts();
+};
+
+
+
   // end phân trang
- 
-  $scope.hienThi = function (pageNo,sizePage) {
-    let apiUrl = apiProductDetails + "?pageNo=" + pageNo+"&sizePage=" + sizePage;
+
+  $scope.hienThi = function (pageNo, sizePage) {
+    let apiUrl = apiProductDetails + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
     $http.get(apiUrl).then(
       function (response) {
         // Kiểm tra dữ liệu có được in ra không
+        console.log(response,"")
         $scope.listProductDetail = response.data.productDetailList;
         $scope.totalPage = response.data.totalPages;
         $scope.lastIndex = $scope.listProductDetail[$scope.listProductDetail.length - 1].id;
-        $scope.sizeProduct =response.data.sizeList;
-        $scope.colorProduct =response.data.colorList;
-        $scope.materialProduct =response.data.materialList;
-        $scope.promotionalProduct =response.data.promotionalList;
-        $scope.statusProduct =response.data.statusList;
-        $scope.Product =response.data.productList;
+        $scope.sizeProduct = response.data.sizeList;
+        $scope.colorProduct = response.data.colorList;
+        $scope.materialProduct = response.data.materialList;
+        $scope.promotionalProduct = response.data.promotionalList;
+        $scope.statusProduct = response.data.statusList;
+        $scope.Product = response.data.productList;
+        $scope.detail = response.data.productDetailList;
+        // Tạo một đối tượng để lưu trữ thông tin gộp
+        // Hàm chuyển đổi tên màu từ tiếng Việt sang tiếng Anh
+        function convertColorName(colorName) {
+          switch (colorName) {
+            case 'Đen':
+              return 'Black';
+            case 'Trắng':
+              return 'azure';
+            case 'Đỏ':
+              return 'Red';
+            case 'Xanh dương':
+              return 'Blue';
+            case 'Vàng':
+              return 'Yellow';
+            case 'Xám':
+              return 'Gray';
+            case 'Hồng':
+              return 'Pink';
+            case 'Xanh lá':
+              return 'Green';
+            case 'Cam':
+              return 'Orange';
+            case 'Nâu':
+              return 'Brown';
+            default:
+              return colorName; // Nếu không khớp với các màu cơ bản, giữ nguyên tên màu
+          }
+        }
+        $scope.updateFinalMergedProducts = function () {
+          var mergedProducts = {};
 
-        console.log(response.data);
-        console.log(response.data.totalPages);
-        
+          $scope.detail.forEach(function (product) {
+            var englishColorName = convertColorName(product.color.name);
+
+            if (product.status.id === 1) {
+              if (!mergedProducts[product.product.name]) {
+                // If the product doesn't exist, add a new entry
+                mergedProducts[product.product.name] = {
+                  name: product.product.name,
+                  sizes: [product.size.name],  // Use an array to store unique sizes
+                  colors: [englishColorName]   // Use an array to store unique colors
+                };
+              } else {
+                // If the product already exists, update sizes and colors only if not already present
+                if (mergedProducts[product.product.name].sizes.indexOf(product.size.name) === -1) {
+                  mergedProducts[product.product.name].sizes.push(product.size.name);
+                }
+
+                if (mergedProducts[product.product.name].colors.indexOf(englishColorName) === -1) {
+                  mergedProducts[product.product.name].colors.push(englishColorName);
+                }
+              }
+            }
+          });
+
+          $scope.finalMergedProducts = Object.values(mergedProducts);
+        };
+
+        // Gọi hàm để cập nhật dữ liệu
+        $scope.updateFinalMergedProducts();
+
       },
       function (error) {
         console.log(error);
       }
     );
   };
-  
+
   $scope.PageNo = function (pageNo, sizePage) {
     $scope.pageCurrent = pageNo; // Cập nhật pageCurrent khi chọn trang cụ thể
     $scope.sizePage = sizePage; // Cập nhật sizePage
     $scope.hienThi(pageNo, sizePage);
     $scope.hoveredPage = pageNo; // Truyền giá trị pageNo vào hàm hienThi
-};
+  };
 
   // Gọi hàm hienThi() để lấy dữ liệu ban đầu
-  $scope.hienThi($scope.pageNo,$scope.sizePage);
-  
+  $scope.hienThi($scope.pageNo, $scope.sizePage);
+
 
   //delete data
 
@@ -159,19 +216,19 @@ window.productDetailController = function ($scope, $http, $window) {
         // Hành động khi người dùng ấn "Có"
         $http.delete(api).then(function (response) {
           Swal.fire('Xóa thành công!', '', 'success');
-          $scope.hienThi($scope.pageCurrent,$scope.sizePage);
+          $scope.Reload($scope.modalContent)
+          $scope.updateFinalMergedProducts()
           console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-        $scope.hienThi($scope.pageNo);
+        })
+          .catch(function (error) {
+            console.log(error);
+          });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hành động khi người dùng ấn "Không"
         Swal.fire('Hủy bỏ', '', 'error');
       }
     });
-    
+
   };
 
   // show form add
@@ -182,14 +239,14 @@ window.productDetailController = function ($scope, $http, $window) {
       $scope.showFormUpdate = false;
     }
     $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
-    $scope.formProductDetail={};
+    $scope.formProductDetail = {};
   };
   // add one product
 
   $scope.addUser = function (event) {
     event.preventDefault();
     console.log($scope.formProductDetail);
-  
+
     Swal.fire({
       title: 'Xác nhận',
       text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
@@ -223,58 +280,59 @@ window.productDetailController = function ($scope, $http, $window) {
       }
     });
   };
-  
 
-// show form user and load detail
-$scope.showFormUpdate = false;
-$scope.activeItem = -1;
-$scope.formPdDetailUpdate = {};
 
-$scope.toggleFormUpdate = function (event, item) {
-  event.preventDefault();
- 
-  if ($scope.showForm) {
-    // Nếu form thêm mới đang mở, đóng nó trước khi mở form cập nhật
-    $scope.showForm = false;
-  }
+  // show form user and load detail
+  $scope.showFormUpdate = false;
+  $scope.activeItem = -1;
+  $scope.formPdDetailUpdate = {};
 
-  if (item && $scope.activeItem === item && $scope.showFormUpdate) {
-    // Trường hợp ấn lại dòng đã chọn và form đang hiển thị, đóng form và xóa dữ liệu
-    $scope.showFormUpdate = false;
-    $scope.activeItem = null;
-    $scope.formPdDetailUpdate = {};
-  } else if (item) {
-    // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
-    $scope.showFormUpdate = true;
-    $scope.activeItem = item;
+  $scope.toggleFormUpdate = function (event, item) {
+    event.preventDefault();
 
-    // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-   // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-   $scope.formPdDetailUpdate = {
-      id: item.id,
-      quantity: item.quantity,
-      price: item.price,
-      product: {id:item.product.id},
-      material:  {id:item.material.id},
-      size:  {id:item.size.id},
-      color:  {id:item.color.id},
-      promotional : {id:item.promotional.id},
-      status :  item.status,
+    if ($scope.showForm) {
+      // Nếu form thêm mới đang mở, đóng nó trước khi mở form cập nhật
+      $scope.showForm = false;
+    }
+
+    if (item && $scope.activeItem === item && $scope.showFormUpdate) {
+      // Trường hợp ấn lại dòng đã chọn và form đang hiển thị, đóng form và xóa dữ liệu
+      $scope.showFormUpdate = false;
+      $scope.activeItem = null;
+      $scope.formPdDetailUpdate = {};
+    } else if (item) {
+      // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
+      $scope.showFormUpdate = true;
+      $scope.activeItem = item;
+      $('#formModal').modal('toggle');
+
+      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
+      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
+      $scope.formPdDetailUpdate = {
+        id: item.id,
+        quantity: item.quantity,
+        price: item.price,
+        product: { id: item.product.id },
+        material: { id: item.material.id },
+        size: { id: item.size.id },
+        color: { id: item.color.id },
+        promotional: { id: item.promotional.id },
+        status: { id: item.status.id },
+      };
+      console.log($scope.formPdDetailUpdate)
+    } else {
+      // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
+      $scope.showFormUpdate = false;
+      $scope.activeItem = null;
+      $scope.formPdDetailUpdate = {};
+    }
   };
-  console.log($scope.formPdDetailUpdate)
-  } else {
-    // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
-    $scope.showFormUpdate = false;
-    $scope.activeItem = null;
-    $scope.formPdDetailUpdate = {};
-  }
-};
 
   // update
   $scope.UpdateUser = function (event) {
     event.preventDefault();
     console.log($scope.formPdDetailUpdate);
-  
+
     Swal.fire({
       title: 'Xác nhận',
       text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
@@ -308,186 +366,265 @@ $scope.toggleFormUpdate = function (event, item) {
       }
     });
   };
-  
 
-// import exel
 
-$scope.importing = false; // Biến để theo dõi trạng thái của animation
-$scope.importInProgress = false; // Flag để kiểm soát quá trình import
-$scope.errorShown = false; // Flag để kiểm soát việc hiển thị lỗi
+  // import exel
 
-$scope.import = function (files) {
-  // Check if an import is already in progress
-  if ($scope.importInProgress) {
-    return;
-  }
+  $scope.importing = false; // Biến để theo dõi trạng thái của animation
+  $scope.importInProgress = false; // Flag để kiểm soát quá trình import
+  $scope.errorShown = false; // Flag để kiểm soát việc hiển thị lỗi
 
-  $scope.importInProgress = true; // Set the flag to true
-
-  $scope.importing = true; // Bắt đầu animation
-  $scope.errorShown = false; // Reset the error flag
-
-  var reader = new FileReader();
-  reader.onloadend = async () => {
-    try {
-      var workbook = new ExcelJS.Workbook();
-      await workbook.xlsx.load(reader.result);
-      const worksheet = workbook.getWorksheet('Sheet1');
-      worksheet.eachRow((row, index) => {
-        if (index > 1) {
-          let productDt = {
-                  quantity: rơw.getCell(1).getValue,
-                  price: rơw.getCell(2).getValue,
-                  product: {id:rơw.getCell(3).getValue},
-                  material:  {id:rơw.getCell(4).getValue},
-                  size:  {id:rơw.getCell(5).getValue},
-                  color:  {id:rơw.getCell(6).getValue},
-                  promotional : {id:rơw.getCell(7).getValue},
-                  status :  {id:1},
-         
-          };
-          $http.post(apiProductDetails + "/insert", JSON.stringify(productDt))
-            .then(function (response) {
-              if (!$scope.errorShown) {
-                Swal.fire({
-                  icon: "success",
-                  title: "Ok",
-                  text: "Đã import thành công",
-                });
-              }
-            })
-            .catch(function (error) {
-              if (!$scope.errorShown) {
-                Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: "Đã xảy ra lỗi!",
-                });
-                console.log(error);
-                $scope.errorShown = true; // Set the error flag
-              }
-            });
-        }
-      });
-    } catch (error) {
-      if (!$scope.errorShown) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Đã xảy ra lỗi!",
-        });
-        console.error('Error reading file:', error);
-        $scope.errorShown = true; // Set the error flag
-      }
-    } finally {
-      $scope.importing = false; // Kết thúc animation
-      $scope.importInProgress = false; // Reset the flag
-      $scope.$apply(); // Cập nhật scope
-      // Xóa file sau khi đã xử lý xong
-      document.getElementById('input-file').value = '';
+  $scope.import = function (files) {
+    // Check if an import is already in progress
+    if ($scope.importInProgress) {
+      return;
     }
+
+    $scope.importInProgress = true; // Set the flag to true
+
+    $scope.importing = true; // Bắt đầu animation
+    $scope.errorShown = false; // Reset the error flag
+
+    var reader = new FileReader();
+    reader.onloadend = async () => {
+      try {
+        var workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.load(reader.result);
+        const worksheet = workbook.getWorksheet('Sheet1');
+        worksheet.eachRow((row, index) => {
+          if (index > 1) {
+            let productDt = {
+              quantity: rơw.getCell(1).getValue,
+              price: rơw.getCell(2).getValue,
+              product: { id: rơw.getCell(3).getValue },
+              material: { id: rơw.getCell(4).getValue },
+              size: { id: rơw.getCell(5).getValue },
+              color: { id: rơw.getCell(6).getValue },
+              promotional: { id: rơw.getCell(7).getValue },
+              status: { id: 1 },
+
+            };
+            $http.post(apiProductDetails + "/insert", JSON.stringify(productDt))
+              .then(function (response) {
+                if (!$scope.errorShown) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "Ok",
+                    text: "Đã import thành công",
+                  });
+                }
+              })
+              .catch(function (error) {
+                if (!$scope.errorShown) {
+                  Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Đã xảy ra lỗi!",
+                  });
+                  console.log(error);
+                  $scope.errorShown = true; // Set the error flag
+                }
+              });
+          }
+        });
+      } catch (error) {
+        if (!$scope.errorShown) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Đã xảy ra lỗi!",
+          });
+          console.error('Error reading file:', error);
+          $scope.errorShown = true; // Set the error flag
+        }
+      } finally {
+        $scope.importing = false; // Kết thúc animation
+        $scope.importInProgress = false; // Reset the flag
+        $scope.$apply(); // Cập nhật scope
+        // Xóa file sau khi đã xử lý xong
+        document.getElementById('input-file').value = '';
+      }
+    };
+    reader.readAsArrayBuffer(files[0]);
+    $scope.hienThi($scope.pageNo);
   };
-  reader.readAsArrayBuffer(files[0]);
-  $scope.hienThi($scope.pageNo);
-};
 
 
-// sort column
-$scope.sortColumn = '';
-$scope.reverseSort = false;
+  // sort column
+  $scope.sortColumn = '';
+  $scope.reverseSort = false;
 
-$scope.sortData = function (column) {
+  $scope.sortData = function (column) {
     $scope.reverseSort = ($scope.sortColumn === column) ? !$scope.reverseSort : false;
     $scope.sortColumn = column;
-};
+  };
 
-$scope.getSortClass = function (column) {
+  $scope.getSortClass = function (column) {
     if ($scope.sortColumn === column) {
-        return $scope.reverseSort ? 'sort-down' : 'sort-up';
+      return $scope.reverseSort ? 'sort-down' : 'sort-up';
     }
     return 'sort-none';
-};              
+  };
 
-// export pdf
-$scope.exportToPDF = function () {
-  const tableId = 'DTProductTable';
-  const fileName = 'exported_data';
+  // export pdf
+  $scope.exportToPDF = function () {
+    const tableId = 'DTProductTable';
+    const fileName = 'exported_data';
 
-  // Tạo đối tượng jsPDF
-  const pdf = new $window.jsPDF('p', 'pt', 'letter');
+    // Tạo đối tượng jsPDF
+    const pdf = new $window.jsPDF('p', 'pt', 'letter');
 
-  // Thêm bảng vào PDF
-  pdf.autoTable({ html: `#${tableId}` });
+    // Thêm bảng vào PDF
+    pdf.autoTable({ html: `#${tableId}` });
 
-  // Tải file PDF
-  pdf.save(`${fileName}.pdf`);
-};
+    // Tải file PDF
+    pdf.save(`${fileName}.pdf`);
+  };
 
-$scope.exportToExcel = function() {
-  // Lấy bảng theo ID
-  var table = document.getElementById('DTProductTable'); // Thay id table bảng của bạn vào đây
+  $scope.exportToExcel = function () {
+    // Lấy bảng theo ID
+    var table = document.getElementById('DTProductTable'); // Thay id table bảng của bạn vào đây
 
-  // Lấy dữ liệu từ bảng
-  var data = [];
-  for (var i = 0; i < table.rows.length; i++) {
-    var rowData = [];
-    for (var j = 0; j < table.rows[i].cells.length; j++) {
-      rowData.push(table.rows[i].cells[j].innerText);
+    // Lấy dữ liệu từ bảng
+    var data = [];
+    for (var i = 0; i < table.rows.length; i++) {
+      var rowData = [];
+      for (var j = 0; j < table.rows[i].cells.length; j++) {
+        rowData.push(table.rows[i].cells[j].innerText);
+      }
+      data.push(rowData);
     }
-    data.push(rowData);
-  }
 
-  // Tạo một workbook và một worksheet
-  var ws = XLSX.utils.aoa_to_sheet(data);
-  var wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    // Tạo một workbook và một worksheet
+    var ws = XLSX.utils.aoa_to_sheet(data);
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-  // Xuất file Excel
-  XLSX.writeFile(wb, 'exported_data.xlsx');
-};
+    // Xuất file Excel
+    XLSX.writeFile(wb, 'exported_data.xlsx');
+  };
 
-$scope.exportToSVG = function() {
-  // Lấy bảng theo ID
-  var table = document.getElementById('DTProductTable'); // Thay id table bảng của bạn vào đây
+  $scope.exportToSVG = function () {
+    // Lấy bảng theo ID
+    var table = document.getElementById('DTProductTable'); // Thay id table bảng của bạn vào đây
 
-  // Tạo một đối tượng SVG
-  var svg = SVG().size(2000, 1500); // Kích thước SVG
+    // Tạo một đối tượng SVG
+    var svg = SVG().size(2000, 1500); // Kích thước SVG
 
-  // Lấy số cột của bảng
-  var numColumns = table.rows.length > 0 ? table.rows[0].cells.length : 0;
+    // Lấy số cột của bảng
+    var numColumns = table.rows.length > 0 ? table.rows[0].cells.length : 0;
 
-  // Xác định chiều rộng của cột rộng nhất
-  var maxWidth = 0;
-  for (var i = 0; i < table.rows.length; i++) {
-    var cellWidth = table.rows[i].cells[0].offsetWidth;
-    maxWidth = Math.max(maxWidth, cellWidth);
-  }
-
-  // Thêm các đối tượng SVG từ các cột của bảng
-  for (var i = 0; i < table.rows.length; i++) {
-    for (var j = 0; j < table.rows[i].cells.length; j++) {
-      // Tính toán vị trí dựa trên chỉ số của cột
-      var xPosition = 10 + j * (maxWidth + 180); // 10 là khoảng cách giữa các cột
-      var yPosition = 30 * i + 40;
-
-      // Thêm văn bản từ cột của bảng vào SVG
-      svg.text(table.rows[i].cells[j].innerText).move(xPosition, yPosition);
+    // Xác định chiều rộng của cột rộng nhất
+    var maxWidth = 0;
+    for (var i = 0; i < table.rows.length; i++) {
+      var cellWidth = table.rows[i].cells[0].offsetWidth;
+      maxWidth = Math.max(maxWidth, cellWidth);
     }
-  }
 
-  // Xuất nội dung SVG dưới dạng chuỗi
-  var svgString = svg.svg();
+    // Thêm các đối tượng SVG từ các cột của bảng
+    for (var i = 0; i < table.rows.length; i++) {
+      for (var j = 0; j < table.rows[i].cells.length; j++) {
+        // Tính toán vị trí dựa trên chỉ số của cột
+        var xPosition = 10 + j * (maxWidth + 180); // 10 là khoảng cách giữa các cột
+        var yPosition = 30 * i + 40;
 
-  // Xuất file SVG
-  var blob = new Blob([svgString], { type: 'image/svg+xml' });
-  var url = window.URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'exported_svg.svg';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-};
+        // Thêm văn bản từ cột của bảng vào SVG
+        svg.text(table.rows[i].cells[j].innerText).move(xPosition, yPosition);
+      }
+    }
+
+    // Xuất nội dung SVG dưới dạng chuỗi
+    var svgString = svg.svg();
+
+    // Xuất file SVG
+    var blob = new Blob([svgString], { type: 'image/svg+xml' });
+    var url = window.URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'exported_svg.svg';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+
+  $scope.getColorClass = function (color) {
+    switch (color.toLowerCase()) {
+      case 'red':
+        return 'red';
+      case 'blue':
+        return 'blue';
+      case 'green':
+        return 'green';
+      case 'yellow':
+        return 'yellow';
+      case 'orange':
+        return 'orange';
+      case 'purple':
+        return 'purple';
+      case 'pink':
+        return 'pink';
+      case 'brown':
+        return 'brown';
+      case 'grey':
+        return 'grey';
+      case 'teal':
+        return 'teal';
+      default:
+        return ''; // Default class
+    }
+  };
+
+  $scope.removeSizeText = function (size) {
+    // Assuming size is a string
+    return size.replace('Size', '').trim();
+  };
+
+  $scope.getColorClass = function (color) {
+    switch (color.toLowerCase()) {
+      case 'red':
+        return 'red';
+      case 'blue':
+        return 'blue';
+      case 'green':
+        return 'green';
+      case 'orange':
+        return 'orange';
+      case 'purple':
+        return 'purple';
+      case 'pink':
+        return 'pink';
+      case 'yellow':
+        return 'yellow';
+      case 'brown':
+        return 'brown';
+      case 'cyan':
+        return 'cyan';
+      case 'gray':
+        return 'gray';
+      default:
+        return ''; // Default class
+    }
+  };
+
+
+  $scope.openModal = function (itemName) {
+    $scope.modalContent = itemName;
+    $('#myModal').modal('show');
+
+    $scope.Reload(itemName);
+  };
+
+  $scope.Reload = function (itemName) {
+    let api = "http://localhost:8080/CodeWalkers/admin/ProductDetails/details?productName=" + itemName;
+    $http.get(api).then(function (res) {
+      $scope.data = res.data;
+    });
+  };
+
+  $scope.reloadPage = function () {
+    $window.location.reload();
+  };
 
 
   // thu vien jQuery không đụng vào
@@ -779,7 +916,7 @@ $scope.exportToSVG = function() {
           timer: 2000,
           button: false,
         }).then(
-          function () {},
+          function () { },
           // handling the promise rejection
           function (dismiss) {
             if (dismiss === "timer") {
