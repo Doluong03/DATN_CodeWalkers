@@ -68,6 +68,13 @@ public class NhanVienController {
                 .body(new ResponeObject("success", "Update thanh cong", this.staffService.update(staff)));
     }
 
+    @PutMapping({"/admin/Staff/updateAccount"})
+    public ResponseEntity<ResponeObject> UpdateAccount(@RequestBody Staff staff) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Update thanh cong", this.staffService.updateAccount(staff)));
+    }
+
     @DeleteMapping({"/admin/Staff/delete/{id}"})
     public ResponseEntity<ResponeObject> deleteStaff(@PathVariable("id") Integer idStaff) {
         return ResponseEntity
@@ -75,10 +82,6 @@ public class NhanVienController {
                 .body(new ResponeObject("success", "Delete thanh cong", this.staffService.delete(idStaff)));
     }
 
-//    @GetMapping({"/admin/profile/{username}"})
-//    public Staff getProfile(@PathVariable("username") String  username) {
-//         Optional<Staff> staffList = staffService.findByUserName(username);
-//         return (staffList.get());
-//    }
+
 }
 

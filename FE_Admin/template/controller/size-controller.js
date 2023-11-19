@@ -34,17 +34,16 @@ window.SizeController = function ($scope, $http, $window, $timeout) {
   }
 
   $scope.formSize = {
-    id: "",
     name: "",
     description: "",
-    status: true,
+    status: "",
   };
 
   $scope.formSizeUpdate = {
     id: "",
     name: "",
     description: "",
-    status: true,
+    status: "",
   };
 
   // phân trang start
@@ -180,22 +179,17 @@ window.SizeController = function ($scope, $http, $window, $timeout) {
 
   };
 
-  // show form add
-  $scope.showForm = false; // Mặc định ẩn form
-  $scope.toggleForm = function () {
-    if ($scope.showFormUpdate) {
-      // Nếu form cập nhật đang mở, đóng nó trước khi mở form thêm mới
-      $scope.showFormUpdate = false;
-    }
-    $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
-    $scope.formSize = {};
-  };
   // add one product
 
   $scope.addSize = function (event) {
     event.preventDefault();
+    if (!$scope.formSize.name||!$scope.formSize.status) {
+      // Nếu form không hợp lệ, thông báo lỗi và ngăn chặn việc thực hiện tiếp
+      // console.log("Vui lòng điền đầy đủ thông tin cần thiết.");
+    $scope.checkAdd=true;
+      return;
+    }
     console.log($scope.formSize);
-
     Swal.fire({
       title: 'Xác nhận',
       text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
@@ -205,6 +199,7 @@ window.SizeController = function ($scope, $http, $window, $timeout) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
+        let item = angular.copy($scope.formInput);
         $http.post(apiAdmin + "Size" + "/insert", JSON.stringify($scope.formSize), headers)
           .then(function (response) {
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
@@ -212,9 +207,13 @@ window.SizeController = function ($scope, $http, $window, $timeout) {
               icon: 'success',
               title: 'Thêm thành công!',
               text: 'Thông tin kích cỡ đã được thêm.'
+            }).then(() => {
+              $('#exampleModal').modal('hide'); // Đóng modal khi thông báo thành công hiển thị và người dùng ấn OK
+              $('.modal-backdrop').hide();
             });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
             $scope.formSize = {};
+            // $('#exampleModal').modal('hide');
           })
           .catch(function (error) {
             console.error("Error:", error);
@@ -230,48 +229,37 @@ window.SizeController = function ($scope, $http, $window, $timeout) {
     });
   };
 
+
+
   // show form user and load detail
   $scope.showFormUpdate = false;
   $scope.activeItem = -1;
   $scope.formSizeUpdate = {};
 
   $scope.toggleFormUpdate = function (event, item) {
-    event.preventDefault();
 
-    if ($scope.showForm) {
-      // Nếu form thêm mới đang mở, đóng nó trước khi mở form cập nhật
-      $scope.showForm = false;
-    }
-
-    if (item && $scope.activeItem === item && $scope.showFormUpdate) {
-      // Trường hợp ấn lại dòng đã chọn và form đang hiển thị, đóng form và xóa dữ liệu
-      $scope.showFormUpdate = false;
-      $scope.activeItem = null;
-      $scope.formSizeUpdate = {};
-    } else if (item) {
       // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
       $scope.showFormUpdate = true;
       $scope.activeItem = item;
+      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
 
-      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
       $scope.formSizeUpdate = {
         id: item.id,
         name: item.name,
         description: item.description,
         status: item.status,
       };
-    } else {
-      // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
-      $scope.showFormUpdate = false;
-      $scope.activeItem = null;
-      $scope.formSizeUpdate = {};
-    }
   };
 
   // update
   $scope.UpdateSize = function (event) {
     event.preventDefault();
+    if (!$scope.formSizeUpdate.name) {
+      // Nếu form không hợp lệ, thông báo lỗi và ngăn chặn việc thực hiện tiếp
+      // console.log("Vui lòng điền đầy đủ thông tin cần thiết.");
+    $scope.checkUpdate=true;
+      return;
+    }
     console.log($scope.formSizeUpdate);
 
     Swal.fire({
@@ -290,8 +278,11 @@ window.SizeController = function ($scope, $http, $window, $timeout) {
               icon: 'success',
               title: 'Cập nhật thành công!',
               text: 'Thông tin kích cỡ đã được cập nhật.'
+            }).then(() => {
+              $('#modalUpdate').modal('hide'); // Đóng modal khi thông báo thành công hiển thị và người dùng ấn OK
+              $('.modal-backdrop').hide();
             });
-            $scope.formUserUpdate = {};
+            $scope.formSizeUpdate = {};
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
           })
           .catch(function (error) {

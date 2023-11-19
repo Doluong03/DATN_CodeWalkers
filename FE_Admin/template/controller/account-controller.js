@@ -1,23 +1,27 @@
-window.UserController = function ($scope, $http, $window, $timeout) {
-  $scope.listUSers = [];
+
+window.AccountController = function ($scope, $http, $window, $timeout) {
+
+  $scope.listAccount = [];
+  $scope.roles = [];
   $scope.pageNo = 0;
   $scope.sizePage = 5;
   $scope.lastIndex = 0; // phần tử cuối của mảng
-  $scope.isDeleted =false;
+  $scope.isDeleted = false;
+
   //config headers
   var headers = {
     headers: {
-      Authorization: "Bearer " + tokenAuthen(),
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      'Authorization': 'Bearer ' + tokenAuthen(),
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
       // Các header khác nếu cần
-    },
+    }
   };
 
   //token authen
   function tokenAuthen() {
     // Lấy dữ liệu từ localStorage
-    var userDataString = localStorage.getItem("userData");
+    var userDataString = localStorage.getItem('userData');
 
     // Kiểm tra xem dữ liệu có tồn tại không
     if (userDataString) {
@@ -29,34 +33,18 @@ window.UserController = function ($scope, $http, $window, $timeout) {
       return userData.token;
     } else {
       // Trường hợp không có dữ liệu trong localStorage
-      console.log("Không có dữ liệu đăng nhập trong localStorage.");
+      console.log('Không có dữ liệu đăng nhập trong localStorage.');
     }
   }
 
-  $scope.formUser = {
-    id: "",
-    name: "",
-    dateOfBirth: "",
-    phoneNumber: "",
-    gender: true,
-    email: "",
-    address: "",
-    createdDate: "",
-    modified: "",
-    image: "",
-  };
 
-  $scope.formUserUpdate = {
+  $scope.formStaffUpdate = {
     id: "",
     name: "",
-    dateOfBirth: "",
-    phoneNumber: "",
-    gender: true,
-    email: "",
-    address: "",
-    createdDate: "",
-    modified: "",
-    image: "",
+    username: "",
+    password: "",
+    //   roles: {id},
+    status: ""
   };
 
   // phân trang start
@@ -65,20 +53,11 @@ window.UserController = function ($scope, $http, $window, $timeout) {
   $scope.itemsPerPage = 3; // Số lượng trang bạn muốn hiển thị
 
   $scope.pageRange = function () {
-    var startPage = Math.max(
-      1,
-      $scope.pageCurrent - Math.floor($scope.itemsPerPage / 2)
-    );
-    var endPage = Math.min(
-      $scope.totalPage,
-      startPage + $scope.itemsPerPage - 1
-    );
+    var startPage = Math.max(1, $scope.pageCurrent - Math.floor($scope.itemsPerPage / 2));
+    var endPage = Math.min($scope.totalPage, startPage + $scope.itemsPerPage - 1);
     var pages = [];
 
-    if (
-      $scope.pageCurrent + Math.floor($scope.itemsPerPage / 2) >
-      $scope.totalPage
-    ) {
+    if ($scope.pageCurrent + Math.floor($scope.itemsPerPage / 2) > $scope.totalPage) {
       startPage = Math.max(1, $scope.totalPage - $scope.itemsPerPage + 1);
       endPage = $scope.totalPage;
     }
@@ -94,6 +73,8 @@ window.UserController = function ($scope, $http, $window, $timeout) {
 
     return pages;
   };
+
+
 
   $scope.nextPage = function () {
     if ($scope.pageCurrent < $scope.totalPage - 1) {
@@ -128,15 +109,19 @@ window.UserController = function ($scope, $http, $window, $timeout) {
   };
   // end phân trang
 
+
   $scope.hienThi = function (pageNo, sizePage) {
-    let apiUrl = apiUser + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+
+
+    let apiUrl = apiStaff + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
 
     $http.get(apiUrl, headers).then(
       function (response) {
         // Xử lý phản hồi thành công
-        $scope.listUSers = response.data.usersList;
+        $scope.listAccount = response.data.staffList;
         $scope.totalPage = response.data.totalPages;
-        $scope.lastIndex = $scope.listUSers[$scope.listUSers.length - 1].id;
+        $scope.lastIndex = $scope.listAccount[$scope.listAccount.length - 1].id;
+        $scope.roles = response.data.roleList;
         console.log(response.data);
         console.log(response.data.totalPages);
       },
@@ -146,6 +131,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
       }
     );
   };
+
 
   $scope.PageNo = function (pageNo, sizePage) {
     $scope.pageCurrent = pageNo; // Cập nhật pageCurrent khi chọn trang cụ thể
@@ -163,165 +149,98 @@ window.UserController = function ($scope, $http, $window, $timeout) {
     event.preventDefault();
 
     console.log(item);
-    let userId = item.id;
-    let api = apiURL + "admin/User/delete/" + userId;
+    let staffId = item.id;
+    let api = apiURL + "admin/Staff/delete/" + staffId;
 
     Swal.fire({
-      title: "Xác nhận",
-      text: "Bạn có chắc chắn muốn thực hiện hành động này?",
-      icon: "warning",
+      title: 'Xác nhận',
+      text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Có",
-      cancelButtonText: "Không",
+      confirmButtonText: 'Có',
+      cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
         // Hành động khi người dùng ấn "Có"
-        $http
-          .delete(api, headers)
-          .then(function (response) {
-            Swal.fire("Xóa thành công!", "", "success");
-            $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-            console.log(response);
-          })
+        $http.delete(api, headers).then(function (response) {
+          Swal.fire('Xóa thành công!', '', 'success');
+          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+          console.log(response);
+        })
           .catch(function (error) {
             console.log(error);
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hành động khi người dùng ấn "Không"
-        Swal.fire("Hủy bỏ", "", "error");
+        Swal.fire('Hủy bỏ', '', 'error');
       }
     });
-  };
 
-  // show form add
-  $scope.showForm = false; // Mặc định ẩn form
-  $scope.toggleForm = function () {
-    if ($scope.showFormUpdate) {
-      // Nếu form cập nhật đang mở, đóng nó trước khi mở form thêm mới
-      $scope.showFormUpdate = false;
-    }
-    $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
-    // Tìm và thêm lớp overlay
-    var overlay = document.getElementById('overlay');
-    overlay.style.display = $scope.showForm ? 'flex' : 'none';
-    $scope.formUser = {};
-  };
-  // add one product
-
-  $scope.addUser = function (event) {
-    event.preventDefault();
-    console.log($scope.formUser);
-
-    Swal.fire({
-      title: "Xác nhận",
-      text: "Bạn có chắc chắn muốn thực hiện hành động này?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Có",
-      cancelButtonText: "Không",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        $http
-          .post(
-            apiAdmin + "User" + "/insert",
-            JSON.stringify($scope.formUser),
-            headers
-          )
-          .then(function (response) {
-            console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
-            Swal.fire({
-              icon: "success",
-              title: "Thêm thành công!",
-              text: "Thông tin người dùng đã được thêm.",
-            });
-            $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-            $scope.formUser = {};
-          })
-          .catch(function (error) {
-            console.error("Error:", error);
-            Swal.fire({
-              icon: "error",
-              title: "Lỗi!",
-              text: "Đã xảy ra lỗi khi thêm người dùng. Vui lòng thử lại sau.",
-            });
-          });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire("Hủy bỏ", "", "error");
-      }
-    });
   };
 
   // show form user and load detail
   $scope.showFormUpdate = false;
   $scope.activeItem = -1;
-  $scope.formUserUpdate = {};
+  $scope.formStaffUpdate = {};
 
   $scope.toggleFormUpdate = function (event, item) {
     event.preventDefault();
+    // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
+    $scope.showFormUpdate = true;
+    $scope.activeItem = item;
 
-    if ($scope.showForm) {
-      // Nếu form thêm mới đang mở, đóng nó trước khi mở form cập nhật
-      $scope.showForm = false;
-    }
-
-    if (item && $scope.activeItem === item && $scope.showFormUpdate) {
-      // Trường hợp ấn lại dòng đã chọn và form đang hiển thị, đóng form và xóa dữ liệu
-      $scope.showFormUpdate = false;
-      $scope.activeItem = null;
-      $scope.formUserUpdate = {};
-    } else if (item) {
-      // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
-      $scope.showFormUpdate = true;
-      $scope.activeItem = item;
-
-      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-      $scope.formUserUpdate = {
-        id: item.id,
-        name: item.name,
-        dateOfBirth: item.dateOfBirth,
-        phoneNumber: item.phoneNumber,
-        gender: item.gender,
-        email: item.email,
-        address: item.address,
-        createdDate: item.createdDate,
-      };
-    } else {
-      // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
-      $scope.showFormUpdate = false;
-      $scope.activeItem = null;
-      $scope.formUserUpdate = {};
-    }
+    // Nạp dữ liệu của dòng được chọn vào biểu mẫu
+    $scope.formStaffUpdate = {
+      id: item.id,
+      name: item.name,
+      password: item.password,
+      username: item.userName,
+      status: item.status,
+    };
   };
 
+  // Hàm để mã hóa mật khẩu bằng SHA256 sử dụng thư viện CryptoJS
+  $scope.hashPassword = function (password) {
+    const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+    return hashedPassword;
+  };
+
+
   // update
-  $scope.UpdateUser = function (event) {
-    event.preventDefault();
-    console.log($scope.formUserUpdate);
+  $scope.UpdateStaff = function (event) {
+    $scope.formStaffUpdate.password = $scope.hashPassword($scope.formStaffUpdate.password);
+    if (!$scope.formStaffUpdate.name
+      ||!$scope.formStaffUpdate.username
+      ||!$scope.formStaffUpdate.password
+    ) {
+      // Nếu form không hợp lệ, thông báo lỗi và ngăn chặn việc thực hiện tiếp
+      // console.log("Vui lòng điền đầy đủ thông tin cần thiết.");
+      $scope.checkUpdate = true;
+      return;
+    }
+    console.log($scope.formStaffUpdate);
 
     Swal.fire({
-      title: "Xác nhận",
-      text: "Bạn có chắc chắn muốn thực hiện hành động này?",
-      icon: "warning",
+      title: 'Xác nhận',
+      text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Có",
-      cancelButtonText: "Không",
+      confirmButtonText: 'Có',
+      cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        $http
-          .put(
-            apiAdmin + "User/update",
-            JSON.stringify($scope.formUserUpdate),
-            headers
-          )
+        $http.put(apiAdmin + "Staff/updateAccount", JSON.stringify($scope.formStaffUpdate), headers)
           .then(function (response) {
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
             Swal.fire({
-              icon: "success",
-              title: "Cập nhật thành công!",
-              text: "Thông tin người dùng đã được cập nhật.",
+              icon: 'success',
+              title: 'Cập nhật thành công!',
+              text: 'Thông tin nhân viên đã được cập nhật.'
+            }).then(() => {
+              $('#modalUpdate').modal('hide'); // Đóng modal khi thông báo thành công hiển thị và người dùng ấn OK
+              $('.modal-backdrop').hide();
             });
-            $scope.formUserUpdate = {};
+            $scope.formStaffUpdate = {};
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
           })
           .catch(function (error) {
@@ -329,98 +248,15 @@ window.UserController = function ($scope, $http, $window, $timeout) {
             Swal.fire({
               icon: "error",
               title: "Lỗi!",
-              text: "Đã xảy ra lỗi khi cập nhật người dùng. Vui lòng thử lại sau.",
+              text: "Đã xảy ra lỗi khi cập nhật nhân viên. Vui lòng thử lại sau."
             });
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire("Hủy bỏ", "", "error");
+        Swal.fire('Hủy bỏ', '', 'error');
       }
     });
   };
 
-  // import exel
-
-  $scope.importing = false; // Biến để theo dõi trạng thái của animation
-  $scope.importInProgress = false; // Flag để kiểm soát quá trình import
-  $scope.errorShown = false; // Flag để kiểm soát việc hiển thị lỗi
-
-  $scope.import = function (files) {
-    // Check if an import is already in progress
-    if ($scope.importInProgress) {
-      return;
-    }
-
-    $scope.importInProgress = true; // Set the flag to true
-
-    $scope.importing = true; // Bắt đầu animation
-    $scope.errorShown = false; // Reset the error flag
-
-    var reader = new FileReader();
-    reader.onloadend = async () => {
-      try {
-        var workbook = new ExcelJS.Workbook();
-        await workbook.xlsx.load(reader.result);
-        const worksheet = workbook.getWorksheet("Sheet1");
-        worksheet.eachRow((row, index) => {
-          if (index > 1) {
-            let user = {
-              name: row.getCell(1).value,
-              dateOfBirth: formatDate(row.getCell(2).value),
-              phoneNumber: "0" + row.getCell(3).value,
-              gender: parseGender(row.getCell(4).value),
-              email: row.getCell(5).value,
-              address: row.getCell(6).value,
-              image: row.getCell(7).value,
-            };
-            $http
-              .post(
-                apiAdmin + "User" + "/insert",
-                JSON.stringify(user),
-                headers
-              )
-              .then(function (response) {
-                if (!$scope.errorShown) {
-                  Swal.fire({
-                    icon: "success",
-                    title: "Ok",
-                    text: "Đã import thành công",
-                  });
-                }
-              })
-              .catch(function (error) {
-                if (!$scope.errorShown) {
-                  Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Đã xảy ra lỗi!",
-                  });
-                  console.log(error);
-                  $scope.errorShown = true; // Set the error flag
-                }
-              });
-          }
-        });
-      } catch (error) {
-        if (!$scope.errorShown) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Đã xảy ra lỗi!",
-          });
-          console.error("Error reading file:", error);
-          $scope.errorShown = true; // Set the error flag
-        }
-      } finally {
-        $scope.importing = false; // Kết thúc animation
-        $scope.importInProgress = false; // Reset the flag
-        $scope.$apply(); // Cập nhật scope
-        // Xóa file sau khi đã xử lý xong
-        document.getElementById("input-file").value = "";
-      }
-    };
-    reader.readAsArrayBuffer(files[0]);
-    $scope.hienThi($scope.pageNo);
-  };
 
   function formatDate(date) {
     // Giả sử ngày đang trong định dạng ISO 8601
@@ -453,7 +289,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
 
   // export pdf
   $scope.exportToPDF = function () {
-    const tableId = "UserTable";
+    const tableId = "AccountTable";
     const fileName = "exported_data";
 
     // Tạo đối tượng jsPDF
@@ -468,7 +304,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
 
   $scope.exportToExcel = function () {
     // Lấy bảng theo ID
-    var table = document.getElementById("UserTable"); // Thay id table bảng của bạn vào đây
+    var table = document.getElementById("AccountTable"); // Thay id table bảng của bạn vào đây
 
     // Lấy dữ liệu từ bảng
     var data = [];
@@ -491,7 +327,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
 
   $scope.exportToSVG = function () {
     // Lấy bảng theo ID
-    var table = document.getElementById("UserTable"); // Thay id table bảng của bạn vào đây
+    var table = document.getElementById("AccountTable"); // Thay id table bảng của bạn vào đây
 
     // Tạo một đối tượng SVG
     var svg = SVG().size(2000, 1500); // Kích thước SVG
@@ -534,13 +370,13 @@ window.UserController = function ($scope, $http, $window, $timeout) {
 
   $scope.selectAllChanged = function () {
     console.log("Trạng thái của selectAllCheckbox:", $scope.selectAllCheckbox);
-    angular.forEach($scope.listUSers, function (item) {
+    angular.forEach($scope.listAccount, function (item) {
       item.isSelected = $scope.selectAllCheckbox;
     });
   };
 
   $scope.deleteAll = function () {
-    var selectedItems = $scope.listUSers.filter(function (item) {
+    var selectedItems = $scope.listAccount.filter(function (item) {
       return item.isSelected;
     });
 
@@ -560,28 +396,28 @@ window.UserController = function ($scope, $http, $window, $timeout) {
       if (result.isConfirmed) {
 
 
-    selectedItems.forEach(element => {
-      let userId = element.id;
-      let api = apiURL + "admin/User/delete/" + userId;
-      console.log(api)
-      $http.delete(api, headers).then(function (response) {
-          
-          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-          console.log(response);
-          isDeleted = true;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    });
-        
-    if(isDeleted){
-      Swal.fire("Xóa thành công!", "", "success");
-      $scope.selectAllCheckbox = false;
+        selectedItems.forEach(element => {
+          let userId = element.id;
+          let api = apiURL + "admin/Staff/delete/" + userId;
+          console.log(api)
+          $http.delete(api, headers).then(function (response) {
 
-    }
-      
-     } else if (result.dismiss === Swal.DismissReason.cancel) {
+            $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            console.log(response);
+            isDeleted = true;
+          })
+            .catch(function (error) {
+              console.log(error);
+            });
+        });
+
+        if (isDeleted) {
+          Swal.fire("Xóa thành công!", "", "success");
+          $scope.selectAllCheckbox = false;
+
+        }
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hành động khi người dùng ấn "Không"
         Swal.fire("Hủy bỏ", "", "error");
       }
@@ -589,51 +425,52 @@ window.UserController = function ($scope, $http, $window, $timeout) {
     // Thực hiện xử lý xóa tất cả ở đây với mảng selectedItems
   };
 
-// Lấy tên cột từ bảng HTML
-$scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
-$scope.columns = [];
+  // Lấy tên cột từ bảng HTML
+  $scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
+  $scope.columns = [];
 
-// Khai báo biến và khởi tạo giá trị mặc định
-$scope.columnFilters = {};
+  // Khai báo biến và khởi tạo giá trị mặc định
+  $scope.columnFilters = {};
 
-// Sử dụng $timeout để đảm bảo rằng DOM đã được tạo trước khi lấy thông tin cột
-$timeout(function () {
-  var thElements = document.querySelectorAll('#UserTable th:not(:last-child)'); // Loại bỏ cột "Action"
+  // Sử dụng $timeout để đảm bảo rằng DOM đã được tạo trước khi lấy thông tin cột
+  $timeout(function () {
+    var thElements = document.querySelectorAll('#AccountTable th:not(:last-child)'); // Loại bỏ cột "Action"
 
-  angular.forEach(thElements, function (thElement) {
-    var columnName = thElement.innerText.trim();
-    $scope.columns.push({ name: columnName, selected: true }); // Chọn tất cả mặc định
-    $scope.columnFilters[columnName] = ''; // Khởi tạo filter cho mỗi cột
-  });
-
-  // Kiểm tra xem tất cả các cột có được chọn không và cập nhật trạng thái của checkbox "Chọn Tất Cả"
-  $scope.selectAll = $scope.columns.every(function (column) {
-    return column.selected;
-  });
-});
-
-$scope.toggleAll = function () {
-  angular.forEach($scope.columns, function (column) {
-    column.selected = $scope.selectAll;
-  });
-};
-
-$scope.toggleColumn = function (column) {
-  if (!column.selected) {
-    $scope.selectAll = $scope.columns.some(function (column) {
-      return column.selected;
+    angular.forEach(thElements, function (thElement) {
+      var columnName = thElement.innerText.trim();
+      $scope.columns.push({ name: columnName, selected: true }); // Chọn tất cả mặc định
+      $scope.columnFilters[columnName] = ''; // Khởi tạo filter cho mỗi cột
     });
-  } else {
+
+    // Kiểm tra xem tất cả các cột có được chọn không và cập nhật trạng thái của checkbox "Chọn Tất Cả"
     $scope.selectAll = $scope.columns.every(function (column) {
       return column.selected;
     });
-  }
-};
+  });
 
-$scope.reLoad = function(){
- 
-    $scope.hienThi(0,5);
-};
+  $scope.toggleAll = function () {
+    angular.forEach($scope.columns, function (column) {
+      column.selected = $scope.selectAll;
+    });
+  };
+
+  $scope.toggleColumn = function (column) {
+    if (!column.selected) {
+      $scope.selectAll = $scope.columns.some(function (column) {
+        return column.selected;
+      });
+    } else {
+      $scope.selectAll = $scope.columns.every(function (column) {
+        return column.selected;
+      });
+    }
+  };
+
+  $scope.reLoad = function () {
+
+    $scope.hienThi(0, 5);
+  };
+
 
   // thu vien jQuery không đụng vào
   (function ($) {
@@ -988,6 +825,7 @@ $scope.reLoad = function(){
       });
     }
   })(jQuery);
+
 
   (function ($) {
     "use strict";

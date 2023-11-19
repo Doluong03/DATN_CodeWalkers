@@ -38,17 +38,14 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
 }
 
   $scope.formStaff = {
-    id: "",
     name: "",
     dateOfBirth: "",
     phoneNumber: "",
-    gender: true,
+    gender: "",
     email: "",
     address: "",
-    userName : "",
-    status : true,
-    password:"",
-    image : "",
+    status : "",
+    image : ""
     // roles: {id},
   };
 
@@ -57,13 +54,11 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
     name: "",
     dateOfBirth: "",
     phoneNumber: "",
-    gender: true,
+    gender: "",
     email: "",
     address: "",
-    userName : "",
-    status : true,
-    image : "",
-    password: "",
+    status : "",
+    image : ""
     // roles: {id},
   };
 
@@ -199,16 +194,6 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
     
   };
 
-  // show form add
-  $scope.showForm = false; // Mặc định ẩn form
-  $scope.toggleForm = function () {
-    if ($scope.showFormUpdate) {
-      // Nếu form cập nhật đang mở, đóng nó trước khi mở form thêm mới
-      $scope.showFormUpdate = false;
-    }
-    $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
-    $scope.formStaff={};
-  };
   // add one product
   $scope.formStaff.image = null;
   $scope.openFileInput = function () {
@@ -218,11 +203,26 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
   $scope.fileChanged = function (element) {
     $scope.$apply(function () {
       var fileInput = document.getElementById('fileInput');
-      $scope.formStaff.image = fileInput.files[0].name;
+      if (fileInput.files.length > 0) { // Kiểm tra nếu đã chọn tệp
+        $scope.formStaff.image = fileInput.files[0].name;
+      }
     });
   };
+
+
   $scope.addStaff = function (event) {
     event.preventDefault();
+// Kiểm tra xem form có hợp lệ không
+if (!$scope.formStaff.name
+  ||!$scope.formStaff.phoneNumber
+  ||!$scope.formStaff.gender
+  ||!$scope.formStaff.email
+  ||!$scope.formStaff.status) {
+  // Nếu form không hợp lệ, thông báo lỗi và ngăn chặn việc thực hiện tiếp
+  // console.log("Vui lòng điền đầy đủ thông tin cần thiết.");
+$scope.checkAdd=true;
+  return;
+}
     console.log($scope.formStaff);
   
     Swal.fire({
@@ -241,6 +241,9 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
               icon: 'success',
               title: 'Thêm thành công!',
               text: 'Thông tin nhân viên đã được thêm.'
+            }).then(() => {
+              $('#exampleModal').modal('hide'); // Đóng modal khi thông báo thành công hiển thị và người dùng ấn OK
+              $('.modal-backdrop').hide();
             });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
             $scope.formStaff = {};
@@ -267,18 +270,6 @@ $scope.formStaffUpdate = {};
 
 $scope.toggleFormUpdate = function (event, item) {
   event.preventDefault();
- 
-  if ($scope.showForm) {
-    // Nếu form thêm mới đang mở, đóng nó trước khi mở form cập nhật
-    $scope.showForm = false;
-  }
-
-  if (item && $scope.activeItem === item && $scope.showFormUpdate) {
-    // Trường hợp ấn lại dòng đã chọn và form đang hiển thị, đóng form và xóa dữ liệu
-    $scope.showFormUpdate = false;
-    $scope.activeItem = -1;
-    $scope.formStaffUpdate = {};
-  } else if (item) {
     // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
     $scope.showFormUpdate = true;
     $scope.activeItem = item;
@@ -305,20 +296,20 @@ $scope.toggleFormUpdate = function (event, item) {
     address: item.address,
     image: item.image,
     status: item.status,
-    userName: item.userName,
-    password: item.password
   };
-  } else {
-    // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
-    $scope.showFormUpdate = false;
-    $scope.activeItem = null;
-    $scope.formStaffUpdate = {};
-  }
 };
 
   // update
   $scope.UpdateStaff = function (event) {
     event.preventDefault();
+    if (!$scope.formStaffUpdate.name
+      ||!$scope.formStaffUpdate.phoneNumber
+      ||!$scope.formStaffUpdate.email) {
+      // Nếu form không hợp lệ, thông báo lỗi và ngăn chặn việc thực hiện tiếp
+      // console.log("Vui lòng điền đầy đủ thông tin cần thiết.");
+    $scope.checkUpdate=true;
+      return;
+    }
     console.log($scope.formStaffUpdate);
   
     Swal.fire({
@@ -337,6 +328,9 @@ $scope.toggleFormUpdate = function (event, item) {
               icon: 'success',
               title: 'Cập nhật thành công!',
               text: 'Thông tin nhân viên đã được cập nhật.'
+            }).then(() => {
+              $('#modalUpdate').modal('hide'); // Đóng modal khi thông báo thành công hiển thị và người dùng ấn OK
+              $('.modal-backdrop').hide();
             });
             $scope.formStaffUpdate = {};
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
@@ -511,7 +505,7 @@ $scope.exportToExcel = function () {
 
 $scope.exportToSVG = function () {
   // Lấy bảng theo ID
-  var table = document.getElementById("UserTable"); // Thay id table bảng của bạn vào đây
+  var table = document.getElementById("StaffTable"); // Thay id table bảng của bạn vào đây
 
   // Tạo một đối tượng SVG
   var svg = SVG().size(2000, 1500); // Kích thước SVG

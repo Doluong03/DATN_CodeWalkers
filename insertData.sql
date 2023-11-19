@@ -18,7 +18,7 @@ VALUES
 
 --Thêm bản ghi bảng "VaiTro"
  INSERT INTO VaiTro(ten_vai_tro)
- VALUES
+ VALUES (N'ROLE_ADMIN'),(N'ROLE_EMPLOYEE');
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======

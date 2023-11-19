@@ -198,6 +198,15 @@ myApp.config(function ($routeProvider, $locationProvider) {
         }
       }
     }) 
+    .when("/tai-khoan", {
+      templateUrl: "/FE_Admin/template/account.html",
+      controller : AccountController,
+      resolve: {
+        checkData: function(DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })
     .otherwise({
       redirectTo: "/trang-chu",
     });

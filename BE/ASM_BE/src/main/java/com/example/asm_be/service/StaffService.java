@@ -19,6 +19,8 @@ public interface StaffService {
 
     boolean update(Staff staff);
 
+    boolean updateAccount(Staff staff);
+
     boolean delete(Integer idStaff);
 
     Optional<Staff> findByUserName(String userName);
