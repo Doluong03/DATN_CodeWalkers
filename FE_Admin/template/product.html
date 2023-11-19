@@ -13,65 +13,119 @@
         <i class="fa-light fa-magnifying-glass"></i>
       </div>
 
+      <button ng-click="deleteAll()" id="delete-all" class="btn btn-danger mt-3"><i class="fa-duotone fa-trash"></i> Xoá
+        Nhiều</button>
+
+
       <div class="btn-group">
 
-        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="toggleForm()">
+        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="toggleForm()" data-toggle="modal"
+          data-target="#productAddModal">
           <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
 
-        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToPDF();">
-          PDF
+        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
+          <i class="fa-solid fa-arrows-rotate "></i>
         </button>
+
+
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuIconButton3"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-list"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton3">
+            <label class="dropdown-item">
+              <input type="checkbox" ng-model="selectAll" ng-change="toggleAll()"> Chọn Tất Cả
+            </label>
+            <hr>
+            <label class="dropdown-item" ng-repeat="column in columns">
+              <input type="checkbox" ng-model="column.selected" ng-change="toggleColumn(column)">
+              {{ column.name }}
+            </label>
+          </div>
+        </div>
+
 
         <input type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)"
           style="display:none;">
         <button type="button" id="btn-icon" class="btn btn-secondary " onclick="triggerFileInput()">
-          Upload
+          <i class="fa-sharp fa-solid fa-file-import"></i>
         </button>
 
-        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
-        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button>
+        <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
+                <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button> -->
 
+
+        <div class="btn-group">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuIconButton1"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-down-to-line"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+            <a class="dropdown-item" ng-click="exportToSVG()">SVG</a>
+            <a class="dropdown-item" ng-click="exportToExcel()">Excel</a>
+            <a class="dropdown-item" ng-click="exportToPDF();">PDF</a>
+          </div>
+        </div>
 
       </div>
-      <!-- <input  type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)"> -->
-
-
-
 
 
 
       <!-- start table -->
       <div class="table-responsive pt-3">
-        <table class="display expandable-table" style="width: 100%" id="UserTable">
+        <table class="display expandable-table" style="width: 100%" id="ProductTable">
           <thead>
             <tr>
-              <th ng-click="sortData('id')">#<span class="{{getSortClass('id')}}"></span></th>
-              <th ng-click="sortData('name')">Tên sản phẩm<span class="{{getSortClass('name')}}"></span></th>
-              <th ng-click="sortData('name')">Ảnh chính<span class="{{getSortClass('name')}}"></span></th>
-              <th ng-click="sortData('name')">Mô tả<span class="{{getSortClass('name')}}"></span></th>
-              <th ng-click="sortData('name')">Thương hiệuu<span class="{{getSortClass('name')}}"></span></th>
-              <th ng-click="sortData('name')">Phân loại<span class="{{getSortClass('name')}}"></span></th>
-              <th ng-click="sortData('name')">Trạng thái<span class="{{getSortClass('name')}}"></span></th>
+              <th>
+                <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox"
+                  type="checkbox"> #
+              </th>
+              <th ng-show="columns[1].selected" ng-click="sortData('name')">Tên Kích cỡ<span
+                  class="{{getSortClass('name')}}"></span></th>
+              <th ng-show="columns[2].selected" ng-click="sortData('mainImg')">Ảnh chính<span
+                  class="{{getSortClass('name')}}"></span></th>
+              <th ng-show="columns[3].selected" ng-click="sortData('description')">Mô tả<span
+                  class="{{getSortClass('name')}}"></span></th>
+              <th ng-show="columns[4].selected" ng-click="sortData('brands')">Thương hiệu<span
+                  class="{{getSortClass('name')}}"></span></th>
+              <th ng-show="columns[5].selected" ng-click="sortData('category')">Phân loại<span
+                  class="{{getSortClass('name')}}"></span></th>
+              <th ng-show="columns[6].selected" ng-click="sortData('status')">Trạng Thái<span
+                  class="{{getSortClass('status')}}"></span></th>
               <th name="Action">Action</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="item in listProduct | filter:searchText | orderBy:sortColumn:reverseSort">
-              <td>{{item.id}}</td>
-              <td>{{item.name}} </td>
-              <td>{{item.mainImg}} </td>
-              <td>{{item.description}} </td>
-              <td>{{item.brands.name}} </td>
-              <td>{{item.category.name}} </td>
-              <td>{{item.status}}</td>
+              <td><input type="checkbox" ng-model="item.isSelected"></td>
+              <td ng-show="columns[1].selected" style="text-align: center;"> {{item.name}}</td>
+              <td ng-show="columns[2].selected" style="text-align: center;"> {{item.mainImg}}</td>
+              <td ng-show="columns[3].selected" style="text-align: center;"> {{item.description}}</td>
+              <td ng-show="columns[4].selected" style="text-align: center;"> {{item.brands.name}}</td>
+              <td ng-show="columns[5].selected" style="text-align: center;"> {{item.category.name}}</td>
+              <td ng-show="columns[6].selected" style="text-align: center;">
+                <span ng-if="item.status == true" style="margin-left: -9px;">
+                  <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i> Active
+                </span>
+                <span ng-if="item.status != true">
+                  <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Disable
+                </span>
+              </td>
               <td>
-                <a href="#" ng-click="toggleFormUpdate($event,item)" style="text-decoration: none; color: #1545e1;"><i
-                    class="fa-solid fa-pen-to-square "></i> </a>
-                <a href="#" ng-click="removeProduct($event,item)" style="text-decoration: none; color: #FC424A;"> <i
-                    class="fas fa-fw  fa-trash "></i> </a>
+                <a href="#" ng-click="toggleFormUpdate($event, item)" data-toggle="modal"
+                  data-target="#productUpdateModal" style="text-decoration: none; color: rgb(62, 44, 165);">
+                  <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                </a>
+
+                <a href="#" ng-click="removeColor($event, item)" style="text-decoration: none; color: #FC424A;">
+                  <i class="fas fa-fw fa-trash"></i>
+                </a>
               </td>
             </tr>
-          </tbody>
+
+
         </table>
         <!-- phân trang -->
         <nav id="phantrang" aria-label="Page navigation example" style="color: #000000;">
@@ -119,110 +173,265 @@
 <!-- end table -->
 
 <!-- form add -->
-<div class="col-12 grid-margin stretch-card" ng-if="showForm">
-  <div class="card">
-    <div class="card-body">
-      <form class="forms-sample">
-        <div class="form-group">
-          <input type="hidden" class="form-control" ng-model="formproduct.id">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputMiddleName">Tên sản phẩm</label>
-          <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Tên sản phẩm"
-            ng-model="formproduct.name">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputMiddleName">Ảnh chính</label>
-          <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Ảnh chính"
-            ng-model="formproduct.mainImg">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputDescription">Mô tả</label>
-          <input type="text" class="form-control" id="exampleInputDescription" placeholder="Mô tả"
-            ng-model="formproduct.description">
-        </div>
+<div class="modal fade justify-items-center" id="productAddModal" tabindex="-1" role="dialog"
+  aria-labelledby="productAddModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h5 class="modal-title" id="colorAddModalLabel"> Thêm Sản phẩm</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body  ">
+        <div class="row">
+          <form class="forms-sample" name="AddProduct">
+            <div class="form-group">
+              <label for="exampleSelectGender">Tên sản phẩm</label>
+              <input type="text" class="form-control" ng-model="formproduct.name"  maxlength="30" name="txtName"
+                ng-class="{'is-invalid': checkAddress && !formproduct.name}">
+              <!-- <label ng-show="AddProduct.txtName.$invalid" style="color: #FC424A;">Bạn cần nhập tên Color tối đa 30 ký
+                tự</label> -->
+            </div>
+            <div class="form-group">
+              <label for="exampleInputMiddleName ">Ảnh chính</label>
+              <button class="btn border btn-outline-secomdary d-flex" data-toggle="modal" data-target="#modaleImg"> Chọn ảnh</button>
+              <div class="listImg row text-align-left d-flex flex-wrap ms-1 ">
+                <img ng-repeat="img in selectedImages" src="/template/images/sp1/{{img.link}}" alt="{{img.link}}" class="col-2 border ">
+            </div>
+            
+              <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Ảnh chính"
+                ng-model="formproduct.mainImg"  maxlength="30" name="txtImage"
+                ng-class="{'is-invalid': checkAddress && !formproduct.mainImg}">
+              <!-- <label ng-show="AddProduct.txtImage.$invalid" style="color: #FC424A;">Bạn cần nhập tối đa 30 ký tự</label> -->
+            </div>
+            <div class="form-group">
+              <label for="exampleInputDescription">Mô tả</label>
+              <input type="text" class="form-control" id="exampleInputDescription" placeholder="Mô tả"
+                ng-model="formproduct.description"  maxlength="30" name="txtMota"
+                ng-class="{'is-invalid': checkAddress && !formproduct.description}">
+              <!-- <label ng-show="AddProduct.txtMota.$invalid" style="color: #FC424A;">Bạn cần nhập tối đa 30 ký tự</label> -->
+            </div>
 
-        <div class="form-group">
-          <label for="exampleInputRate">Brands</label>
-          <select class="form-control" id="exampleInputRate" ng-model="formproduct.brands.id">
-            <option value="" disabled>-- Chọn Trạng thái --</option>
-            <option ng-repeat="item in brands" value={{item.id}}>{{item.name}}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="exampleInputRate">Caegory</label>
-          <select class="form-control" id="exampleInputRate" ng-model="formproduct.category.id">
-            <option ng-repeat="item in category" value={{item.id}}>{{item.name}}</option>
-          </select>
-        </div>
+            <div class="form-group">
+              <label for="exampleInputRate">Brands</label>
+              <select class="form-control" id="exampleInputRate" ng-model="formproduct.brands.id"
+                ng-class="{'is-invalid': checkAddress && !formproduct.brands.id}">
+                <option value="" disabled>-- Select a brand --</option>
+                <option ng-repeat="item in brands" value={{item.id}}>{{item.name}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputRate">Category</label>
+              <select class="form-control" id="exampleInputRate" ng-model="formproduct.category.id"
+                ng-class="{'is-invalid': checkAddress && !formproduct.category.id}">
+                <option value="" disabled>-- Select a category --</option>
+                <option ng-repeat="item in category" value={{item.id}}>{{item.name}}</option>
+              </select>
+            </div>
 
-        <div class="form-group">
-          <label for="exampleSelectGender">Trạng thái</label>
-          <select class="form-control" id="exampleSelectGender" ng-model="formproduct.status">
-            <option value="" disabled>-- Chọn Trạng thái --</option>
-            <option value="true" ng-selected="formproduct.status == 'true'">Đang hoạt động</option>
-            <option value="false" ng-selected="formproduct.status == 'false'">Ngừng hoạt động</option>
-          </select>
-        </div>
+            <div class="form-group">
+              <label for="exampleSelectGender">Trạng Thái</label>
+              <select class="form-control" ng-model="formproduct.status"
+                ng-class="{'is-invalid': checkAddress && !formproduct.status}">
+                <option value="" disabled>-- Chọn Trạng thái --</option>
+                <option value=true>Đang hoạt động</option>
+                <option value=false>Ngừng hoạt động</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button id="btn-action-cancel" type="button" class="btn btn-secondary"
+                data-dismiss="modal">Cancel</button>
+              <button id="btn-action-add" type="button" class="btn btn-primary"
+                ng-click="addProduct($event)">Submit</button>
+            </div>
+          </form>
 
-        <button id="btn-action-add" ng-click="addProduct($event)">Submit</button>
-        <button id="btn-action-cancel" ng-click="toggleForm()">Cancel</button>
-      </form>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
+
 
 
 <!-- form update -->
-<div class="col-12 grid-margin stretch-card" ng-if="showFormUpdate">
-  <div class="card">
-    <div class="card-body">
-      <form class="forms-sample">
-        <div class="form-group">
-          <input type="hidden" class="form-control" ng-model="formProductUpdate.id">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputMiddleName">Tên sản phẩm</label>
-          <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Tên sản phẩm" required
-            ng-model="formProductUpdate.name">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputMiddleName">Ảnh chính</label>
-          <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Ảnh chính" required
-            ng-model="formProductUpdate.mainImg">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputDescription">Mô tả </label>
-          <input type="text" class="form-control" id="exampleInputEmail" placeholder="Description" required
-            ng-model="formProductUpdate.description">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputRate">Brands</label>
-          <select class="form-control" id="exampleInputRate" ng-model="formProductUpdate.brands.id"
-            ng-options="brands.id as brands.name for brands in brands">
-            <option value="">Select a brand</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="exampleInputRate">Category</label>
-          <select class="form-control" id="exampleInputRate" ng-model="formProductUpdate.category.id"
-            ng-options="category.id as category.name for category in category">
-            <option value="">Select a category</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="exampleSelectGender">Trạng thái</label>
-          <select class="form-control" id="exampleSelectGender" ng-model="formProductUpdate.status"
-            ng-options="status as (status ? 'Đang hoạt động' : 'Ngừng hoạy động') for status in [true, false]">
-          </select>
-        </div>
+<style>
+  .modal-dialog .modal-content {
+    width: 1400px;
+    margin-top: -50px;
+    right: 70%;
+  }
 
-        <button id="btn-action-add" ng-click="UpdateProduct($event)">Submit</button>
-        <button id="btn-action-cancel" ng-click="toggleForm()">Cancel</button>
-      </form>
+  .scrollable-modal-body {
+    max-height: 800px;
+    /* Điều chỉnh chiều cao tối đa theo ý muốn */
+    overflow-y: auto;
+    /* Tạo thanh cuộn dọc */
+  }
+</style>
+<div class="modal fade justify-items-center" id="productUpdateModal" tabindex="-1" role="dialog"
+  aria-labelledby="productUpdateModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h5 class="modal-title" id="colorUpdateModalLabel">Cập nhật Sản phẩm</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body  ">
+        <div class="row">
+          <form class="forms-sample">
+            <div class="form-group">
+              <input type="hidden" class="form-control" ng-model="formProductUpdate.id">
+            </div>
+
+            <div class="form-group">
+              <label for="exampleSelectGender">Tên sản phẩm</label>
+              <input type="text" class="form-control" ng-model="formProductUpdate.name"
+                ng-class="{'is-invalid': checkUpdate && !formProductUpdate.name}">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputMiddleName">Ảnh chính</label>
+              <button class="btn border btn-outline-secomdary d-flex" data-toggle="modal" data-target="#modaleImg"> Chọn ảnh</button>
+              <div class="listImg row text-align-left d-flex flex-wrap ms-1 ">
+                <img ng-repeat="img in selectedImages" src="/template/images/sp1/{{img.link}}" alt="{{img.link}}" class="col-2 border ">
+            </div>
+              <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Ảnh chính" required
+                ng-model="formProductUpdate.mainImg"
+                ng-class="{'is-invalid': checkUpdate && !formProductUpdate.mainImg}">
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputDescription">Mô tả </label>
+              <input type="text" class="form-control" id="exampleInputEmail" placeholder="Description" required
+                ng-model="formProductUpdate.description"
+                ng-class="{'is-invalid': checkUpdate && !formProductUpdate.description}">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputRate">Brands</label>
+              <select class="form-control" id="exampleInputRate" ng-model="formProductUpdate.brands.id"
+                ng-options="brands.id as brands.name for brands in brands"
+                ng-class="{'is-invalid': checkUpdate && !formProductUpdate.brands.id}">
+                <option value="">Select a brand</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputRate">Category</label>
+              <select class="form-control" id="exampleInputRate" ng-model="formProductUpdate.category.id"
+                ng-options="category.id as category.name for category in category"
+                ng-class="{'is-invalid': checkUpdate && !formProductUpdate.category.id}">
+                <option value="">Select a category</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleSelectGender">Trạng Thái</label>
+              <select class="form-control" id="exampleSelectGender" ng-model="formProductUpdate.status"
+                ng-options="status as (status ? 'Đang hoạt động' : 'Ngừng hoạt động') for status in [true, false]"
+                ng-class="{'is-invalid': checkUpdate && !formProductUpdate.status}">
+                <option value="" disabled>-- Chọn Trạng thái --</option>
+              </select>
+            </div>
+
+            <div class="modal-footer">
+              <button id="btn-action-cancel" type="button" class="btn btn-secondary"
+                data-dismiss="modal">Cancel</button>
+              <button id="btn-action-add" type="button" class="btn btn-primary"
+                ng-click="UpdateProduct($event)">Submit</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
+
+
+
+<!-- list ảnh -->
+<style>
+  /* Optional: Add some styles to the image */
+  .image-pr {
+    width: 180px;
+    /* Adjust the width as needed */
+    height: 160px;
+    /* Adjust the height as needed */
+    object-fit: cover;
+
+  }
+
+  /* Adjust modal width and margin */
+  .modal-dialog-pr {
+    width: 80%;
+    /* Adjust the width as needed */
+    margin: 30px auto;
+  }
+
+  /* Customize modal body to display images horizontally */
+  .modal-body-pr {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+  }
+
+  .checkboxImg {
+    bottom: 20px;
+    background-color: aqua;
+  }
+
+  /* Style for each image container */
+  .image-container-pr {
+    margin: 10px;
+    text-align: left;
+
+  }
+  .listImg img {
+    width: 120px;
+    height: 80px;
+    border-radius: 5px;
+    margin: 5px 5px 5px 0;
+  }
+</style>
+
+<!-- The Modal -->
+<div class="modal" id="modaleImg">
+  <div class="modal-dialog-pr">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Select Images</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body-pr">
+        <div ng-repeat="image in listCheckBox" class="image-container">
+          <label class="label-checkbox border rounded-1 m-2">
+            <input type="checkbox" ng-model="image.selected" ng-change="updateSelection(image)"
+              class="checkboxImg ms-2">
+            <img src="/template/images/sp1/{{image.link}}" alt="{{item.link}}" class="image-pr">
+          </label>
+          <p>{{item.link}}</p>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary" ng-click="addImg()">Thêm mới</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- The Modal -->
+
+
 
 <div class="import-container">
   <div ng-show="importing" class="import-animation"></div>

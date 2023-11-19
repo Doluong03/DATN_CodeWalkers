@@ -32,7 +32,6 @@ public class ThuongHieuController {
             @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         BrandRespone brandRespone = new BrandRespone();
         Page<Brands> brandsPage = brandService.getAllPage(pageNo, sizePage);
-
         brandRespone.setBrandsList(brandsPage.getContent());
         brandRespone.setTotalPages(brandsPage.getTotalPages());
 
@@ -41,8 +40,6 @@ public class ThuongHieuController {
     @PostMapping({"/admin/Brands/insert"})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponeObject> insertBrands(@RequestBody Brands brands) throws ParseException {
-
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", brandService.save(brands)));
@@ -51,8 +48,6 @@ public class ThuongHieuController {
     @PutMapping({"/admin/Brands/update"})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponeObject> UpdateBrands(@RequestBody Brands brands) throws ParseException {
-
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.brandService.update(brands)));
@@ -66,6 +61,5 @@ public class ThuongHieuController {
                 .body(new ResponeObject("success", "Delete thanh cong", this.brandService.delete(idBrands)));
 
     }
-
 
 }

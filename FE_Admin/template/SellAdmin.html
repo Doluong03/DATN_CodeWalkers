@@ -26,9 +26,9 @@
             <div class="tab-pane fade show" ng-repeat="tab in tabs track by tab.id" ng-class="{ 'active': tab.active }">
                 <div class="row h-25">
                     <div class="col d-flex">
-                        <input type="checkbox" id="switch" ng-model="tab.formData.checkAct" ng-change="saveTabsToLocalStorage(tab)" /><label for="switch"
-                            id="switch">Toggle</label>
-                            <p class="mt-1 ms-2 fs-5 text-primary-emphasis">Đặt hàng</p>
+                        <input type="checkbox" id="switch" ng-model="tab.formData.checkAct"
+                            ng-change="saveTabsToLocalStorage(tab)" /><label for="switch" id="switch">Toggle</label>
+                        <p class="mt-1 ms-2 fs-5 text-primary-emphasis">Đặt hàng</p>
                     </div>
                     <div class="custom-dropdown-sell" ng-if="tabs.length > 0">
                         <input type="text" class="form-control" id="productInput" ng-click="toggleDropdown()"
@@ -120,7 +120,8 @@
                                             {{district.DistrictName}}</option>
                                     </select>
                                     <select id="select3" class="form-select col" ng-model="tab.formData.wardId"
-                                        ng-class="{'is-invalid': checkAddress && !tab.formData.wardId}" ng-change="getFee(tab)">
+                                        ng-class="{'is-invalid': checkAddress && !tab.formData.wardId}"
+                                        ng-change="getFee(tab)">
                                         <option value="">Phường/Xã</option>
                                         <option ng-repeat="ward in wards" ng-value="ward.WardCode">{{ward.WardName}}
                                         </option>
