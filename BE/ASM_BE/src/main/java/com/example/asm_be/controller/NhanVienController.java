@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@CrossOrigin({"*"})
 @RestController
 @RequestMapping({"/CodeWalkers"})
 public class NhanVienController {
@@ -38,6 +38,7 @@ public class NhanVienController {
 
 
     @GetMapping({"/admin/Staff"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public StaffReponse getAllStaff(@RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo
             , @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         StaffReponse staffReponse = new StaffReponse();
@@ -55,7 +56,9 @@ public class NhanVienController {
          return (staffList.get());
     }
     @PostMapping({"/admin/Staff/insert"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponeObject> insertStaff(@RequestBody SignUpRequest signUpRequest) {
+        System.out.println(signUpRequest +"asdlasdkljaskldjak");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", this.staffService.saveStaff(signUpRequest)));
@@ -81,7 +84,6 @@ public class NhanVienController {
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Delete thanh cong", this.staffService.delete(idStaff)));
     }
-
 
 }
 

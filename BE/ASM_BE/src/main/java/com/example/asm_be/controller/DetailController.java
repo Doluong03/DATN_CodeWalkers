@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.Map;
 
-@CrossOrigin("*")
 @RestController()
 @RequestMapping("/CodeWalkers")
 public class DetailController {
@@ -90,12 +89,9 @@ public class DetailController {
             @PathVariable("id_sp") int id_sp,
             @PathVariable("id_size") int id_size,
             @PathVariable("id_Cl") int id_Cl,
-            @RequestBody Map<String, Integer> quantity,
-            CartDetails cartDetails,
-            HttpSession session
+            @RequestBody Map<String, Integer> quantity
     ) {
         Cart cart = cartService.getOne(id_gh); // Lấy thông tin giỏ hàng từ cơ sở dữ liệu
-
         // Tìm sản phẩm
         System.out.println(id_sp + "@@@@@@@@@@" + id_size + "aaaaaaaaaaaaaaaaaaaa");
         ProductDetail productDetailCheck = productDetailService.findBySize(id_sp, id_size, id_Cl);

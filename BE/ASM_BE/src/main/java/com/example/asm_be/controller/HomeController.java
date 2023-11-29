@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
-@CrossOrigin({"*"})
 @RestController()
 @RequestMapping("/CodeWalkers")
 public class HomeController {
@@ -35,12 +35,15 @@ public class HomeController {
 //    }
 
     @GetMapping("/api/product/{id}")
-    public ResponseEntity<Collection<ProductDetail>> getProduct(@PathVariable("id") int id) {
+    public ResponseEntity<List<ProductDetail>> getProduct(@PathVariable("id") int id) {
         return ResponseEntity.ok(productDetailService.findByPrId(id));
     }
 
     @GetMapping("/api/product_bs")
     public ResponseEntity<Collection<ProductDetail>> getAllProduct() {
+        return ResponseEntity.ok(productDetailService.getAllDistinct());
+    }  @GetMapping("/api/get-all-pr")
+    public ResponseEntity<Collection<ProductDetail>> getAll() {
         return ResponseEntity.ok(productDetailService.getAll());
     }
 

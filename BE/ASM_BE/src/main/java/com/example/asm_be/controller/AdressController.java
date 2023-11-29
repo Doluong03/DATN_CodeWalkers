@@ -10,6 +10,7 @@ import com.example.asm_be.request.FeeRequest;
 import com.example.asm_be.response.AddressResponse;
 import com.example.asm_be.service.*;
 import jakarta.validation.Valid;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
-@CrossOrigin("*")
 @RestController()
 @RequestMapping("/CodeWalkers")
 public class AdressController {
@@ -86,22 +86,40 @@ public class AdressController {
                 List<ObjectError> objectError = result.getAllErrors();
                 return ResponseEntity.ok(objectError);
             } else {
-                if (users.isPresent()) {
-                    addressRequest.map(address, users.get());
-                    addressService.save(address);
-                    cart.setUsers(users.get());
-                    cartService.save(cart);
+                Users usersRes = userService.getOne(idUser);
+                if (usersRes.getUserName() == null) {
+                    if (users.isPresent()) {
+                        addressRequest.map(address);
+                        address.setUserName(addressRequest.getUserName());
+                        address.setUserPhone(addressRequest.getPhoneNumber());
+                        address.setUsers(users.get());
+                        addressService.save(address);
+                        cart.setUsers(users.get());
+                        cartService.save(cart);
+                    } else {
+                        usersRes.setName(addressRequest.getUserName());
+                        usersRes.setPhoneNumber(addressRequest.getPhoneNumber());
+                        usersRes.setEmail(addressRequest.getEmail());
+                        cart.setUsers(usersRes);
+                        cartService.save(cart);
+                        addressRequest.map(address);
+                        address.setUserName(addressRequest.getUserName());
+                        address.setUserPhone(addressRequest.getPhoneNumber());
+                        Users users1 = new Users();
+                        users1.setId(idUser);
+                        address.setUsers(users1);
+                        addressService.save(address);
+                    }
                 } else {
-                    System.out.println(idUser);
-                    Users usersRes = userService.getOne(idUser);
-                    usersRes.setName(addressRequest.getUserName());
-                    usersRes.setPhoneNumber(addressRequest.getPhoneNumber());
-                    usersRes.setEmail(addressRequest.getEmail());
-                    userService.save(usersRes);
-                    addressRequest.map(address, usersRes);
-                    addressService.save(address);
                     cart.setUsers(usersRes);
                     cartService.save(cart);
+                    addressRequest.map(address);
+                    address.setUserName(addressRequest.getUserName());
+                    address.setUserPhone(addressRequest.getPhoneNumber());
+                    Users users1 = new Users();
+                    users1.setId(idUser);
+                    address.setUsers(users1);
+                    addressService.save(address);
                 }
             }
         } catch (Exception var) {
@@ -110,15 +128,34 @@ public class AdressController {
         return ResponseEntity.ok(address);
     }
 
+    @PostMapping("/update-address")
+    public ResponseEntity<?> updateAddress(@RequestBody AddressRequest addressRequest) {
+        addressService.update(addressRequest);
+        return ResponseEntity.ok(addressRequest);
+    }
+
     @GetMapping({"/get-address/{idUser}"})
     public ResponseEntity<?> getAddressByUser(@PathVariable("idUser") int idUser) {
         List<Address> listOut = addressService.getAllByUser(idUser);
-        List<AddressResponse> listRes =new ArrayList<>();
+        List<AddressResponse> listRes = new ArrayList<>();
         for (Address x : listOut) {
             AddressResponse addressResponse = new AddressResponse();
             x.map(addressResponse);
             listRes.add(addressResponse);
         }
         return ResponseEntity.ok(listRes);
+    }
+
+    @GetMapping({"/get-address-by-id/{id}"})
+    public ResponseEntity<?> getAddressById(@PathVariable("id") int id) {
+        Address address = addressService.getOne(id);
+        return ResponseEntity.ok(address);
+    }
+
+    @DeleteMapping({"/delete-address-by-id/{id}"})
+    public ResponseEntity<?> deleteAdrById(@PathVariable("id") int id) {
+        Address address = addressService.getOne(id);
+        addressService.delete(address);
+        return ResponseEntity.ok().build();
     }
 }

@@ -1,11 +1,14 @@
 package com.example.asm_be.request;
 
 import com.example.asm_be.entities.Bill;
+import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
+import com.example.asm_be.service.StaffService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
@@ -15,20 +18,23 @@ import java.util.List;
 @Getter
 @Setter
 public class AddBillRequest {
-    private String userName;
-    private String phone;
+    private String userId;
     private Integer idBill;
     private Integer provinceId;
     private Integer districtId;
     private String wardId;
     private String address;
     private String note;
+    private String userPhone;
+    private String userName;
     private Double fee;
     private int optionPay;
     private Double totalPay;
     private Date shipDate;
+    private int status;
+    private int idStaff;
 
-    public Bill map(Bill bill, Users users){
+    public Bill map(Bill bill){
         bill.setCreatedAt(new Date());
         bill.setAddress(this.address);
         bill.setDistrict(this.districtId);
@@ -39,7 +45,9 @@ public class AddBillRequest {
         bill.setTotalPay(this.totalPay);
         bill.setDescription(this.note);
         bill.setShipDate(this.shipDate);
-        bill.setUsers(users);
+        bill.setStatus(this.status);
+        bill.setUserName(this.userName);
+        bill.setUserPhone(this.userPhone);
         return bill;
     }
 

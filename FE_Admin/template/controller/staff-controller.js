@@ -208,23 +208,28 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
       }
     });
   };
-  function convertDateFormat(inputDate) {
+  $scope.convertDateFormat = function (inputDate) {
     // Chuyển đổi chuỗi ngày thành đối tượng Date
-    var dateParts = inputDate.split("/");
-    var dateObject = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-  
+    var dateObject = new Date(inputDate);
+
+    // Kiểm tra xem dateObject có hợp lệ không
+    if (isNaN(dateObject.getTime())) {
+        return "Invalid Date";
+    }
+
     // Lấy ngày, tháng và năm
     var day = dateObject.getDate();
     var month = dateObject.getMonth() + 1; // Tháng bắt đầu từ 0
     var year = dateObject.getFullYear();
-  
+
     // Định dạng lại ngày thành "DD/MM/YYYY"
     var formattedDate = (day < 10 ? '0' : '') + day + '/' +
-                        (month < 10 ? '0' : '') + month + '/' +
-                        year;
-  
+        (month < 10 ? '0' : '') + month + '/' +
+        year;
+
     return formattedDate;
-  }
+};
+
 
   $scope.addStaff = function (event) {
     event.preventDefault();
@@ -238,8 +243,7 @@ if (!$scope.formStaff.name
   // console.log("Vui lòng điền đầy đủ thông tin cần thiết.");
 $scope.checkAdd=true;
   return;
-}
-    console.log($scope.formStaff);
+}    console.log($scope.formStaff.dateOfBirth);
   
     Swal.fire({
       title: 'Xác nhận',
@@ -306,7 +310,7 @@ $scope.toggleFormUpdate = function (event, item) {
    $scope.formStaffUpdate = {
     id: item.id,
     name: item.name,
-    dateOfBirth: item.dateOfBirth,
+    dateOfBirth: new Date(item.dateOfBirth ),
     phoneNumber: item.phoneNumber,
     gender: item.gender,
     email: item.email,

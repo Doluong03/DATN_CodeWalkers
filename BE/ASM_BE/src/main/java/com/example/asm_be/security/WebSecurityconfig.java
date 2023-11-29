@@ -43,15 +43,14 @@ public class WebSecurityconfig {
     private CustomUsersDetailsService userDetailsCustom;
 
     @Bean
-    public JwtAuthenticationFilter authenticationFilter(){
-          return new JwtAuthenticationFilter();
+    public JwtAuthenticationFilter authenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Bean
-    public static PasswordEncoder passwordEncoder(){
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 
     @Bean
@@ -82,9 +81,6 @@ public class WebSecurityconfig {
     }
 
 
-
-
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -95,7 +91,6 @@ public class WebSecurityconfig {
                                 .requestMatchers("/admin/User/insert").authenticated()
                                 .requestMatchers("/admin/User/update").authenticated()
                                 .requestMatchers("/CodeWalkers/User").permitAll()
-
                                 .requestMatchers("/CodeWalkers/admin/Material/select").permitAll()
                                 .requestMatchers("/CodeWalkers/admin/Material/insert").authenticated()
                                 .requestMatchers("/CodeWalkers/admin/Material/update").authenticated()
@@ -108,6 +103,7 @@ public class WebSecurityconfig {
                                 .requestMatchers("/CodeWalkers/admin/Bill/insert").authenticated()
                                 .requestMatchers("/CodeWalkers/admin/Bill/update").authenticated()
                                 .requestMatchers("/CodeWalkers/admin/Bill/delete").authenticated()
+//                                .requestMatchers("/CodeWalkers/admin/Bill/updateStatus").authenticated()
                                 //crus phải có đuôi authenticated() còn hiển thị thì đuôi permitAll()
                                 .anyRequest().permitAll()
                 )
@@ -122,7 +118,6 @@ public class WebSecurityconfig {
     }
 
 
-
 //    @Bean
 //    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 //        return configuration.getAuthenticationManager();
@@ -132,14 +127,12 @@ public class WebSecurityconfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://127.0.0.1:5500"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
         return source;
     }
 

@@ -29,7 +29,6 @@ public class Staff implements Serializable {
     @Column(name = "ten_nhan_vien")
     private String name;
 
-//    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "ngay_sinh")
     private Date dateOfBirth;
 

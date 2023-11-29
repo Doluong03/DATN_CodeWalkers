@@ -16,7 +16,6 @@ import java.text.ParseException;
 
 
 @RestController
-@CrossOrigin({"*"})
 @RequestMapping({"/CodeWalkers"})
 public class ThuongHieuController {
 
@@ -33,40 +32,34 @@ public class ThuongHieuController {
             @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         BrandRespone brandRespone = new BrandRespone();
         Page<Brands> brandsPage = brandService.getAllPage(pageNo, sizePage);
-
         brandRespone.setBrandsList(brandsPage.getContent());
         brandRespone.setTotalPages(brandsPage.getTotalPages());
 
         return brandRespone;
     }
     @PostMapping({"/admin/Brands/insert"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> insertBrands(@RequestBody Brands brands) throws ParseException {
-
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", brandService.save(brands)));
     }
 
     @PutMapping({"/admin/Brands/update"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> UpdateBrands(@RequestBody Brands brands) throws ParseException {
-
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.brandService.update(brands)));
     }
 
     @DeleteMapping({"/admin/Brands/delete/{id}"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> deleteBrands(@PathVariable("id") Integer idBrands) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Delete thanh cong", this.brandService.delete(idBrands)));
 
     }
-
 
 }

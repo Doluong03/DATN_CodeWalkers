@@ -9,6 +9,7 @@ import com.example.asm_be.entities.Users;
 // (powered by FernFlower decompiler)
 //
 
+import com.example.asm_be.request.UserRequest;
 import com.example.asm_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@CrossOrigin({"*"})
 @RestController
 @RequestMapping({"/CodeWalkers"})
 public class KhachHangController {
@@ -35,7 +35,7 @@ public class KhachHangController {
     }
 
     @GetMapping({"/User"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public UserRespone getAllUser(
             @RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
             @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
@@ -49,17 +49,15 @@ public class KhachHangController {
     }
 
     @PostMapping({"/admin/User/insert"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> insertStaff(@RequestBody Users users) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
         Date current = new Date();
         Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
         Date createdDate = dateFormat.parse(current.toString());
-
         users.setDateOfBirth(BirthDayFormat);
         users.setCreatedDate(createdDate);
-        users.setStatus(true);
-        users.setPhoneNumber("0"+users.getPhoneNumber());
+        users.setPhoneNumber(users.getPhoneNumber());
         users.setStatus(true);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -67,16 +65,7 @@ public class KhachHangController {
     }
 
     @PutMapping({"/admin/User/update"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponeObject> UpdateStaff(@RequestBody Users users) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-        Date current = new Date();
-        Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
-        Date Modified = dateFormat.parse(current.toString());
-
-        users.setDateOfBirth(BirthDayFormat);
-        users.setModified(Modified);
-        users.setStatus(true);
+    public ResponseEntity<ResponeObject> UpdateStaff(@RequestBody UserRequest users) throws ParseException {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.userService.update(users)));
@@ -88,7 +77,6 @@ public class KhachHangController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Delete thanh cong", this.userService.delete(idUsers)));
-
     }
 
     @GetMapping({"/profile/{username}"})

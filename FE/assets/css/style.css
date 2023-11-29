@@ -869,6 +869,15 @@ section {
 /*--------------------------------------------------------------
 # home
 --------------------------------------------------------------*/
+#profile a img{
+  width: 50px;
+  height: 35px;
+  border-radius: 50%;
+  margin-right: 10%;
+}
+#profile a{
+  font-family: 'Noto Sans', sans-serif;
+}
 .values .box {
   padding-left: 30px;
   padding-right: 30px;
@@ -1493,6 +1502,32 @@ b span {
 /*--------------------------------------------------------------
 # Product
 --------------------------------------------------------------*/
+.hidden-menu {
+  display: none;
+}
+.loading-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: #07d5c0 solid;
+  background-color: rgba(255, 255, 255, 0.8); /* Một lớp mờ để làm nổi bật loading */
+  z-index: 9999; /* Z-index lớn để đảm bảo nó nằm trên tất cả các phần tử khác */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px; /* Thiết lập kích thước tối thiểu nếu cần */
+  min-height: 100px; /* Thiết lập kích thước tối thiểu nếu cần */
+}
+
+.sticky-top {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: #fff; /* Chọn màu nền phù hợp */
+  padding: 15px; /* Điều chỉnh padding nếu cần */
+  z-index: 1000; /* Đảm bảo nằm trên các phần khác */
+}
 
 .size2 {
   border-radius: 5px;
@@ -1517,7 +1552,7 @@ b span {
   /* Màu chữ khi hover */
 }
 
-.size2 input[type="radio"] {
+.size2 input[type="checkbox"] {
   cursor: pointer;
   /* CSS cho radio button */
   /* Bạn có thể thêm các tùy chỉnh cho radio button ở đây */

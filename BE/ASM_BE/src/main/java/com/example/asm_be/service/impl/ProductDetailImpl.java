@@ -1,5 +1,6 @@
 package com.example.asm_be.service.impl;
 
+import com.example.asm_be.dto.ProductFilterDTO;
 import com.example.asm_be.entities.Product;
 import com.example.asm_be.entities.ProductDetail;
 import com.example.asm_be.entities.Size;
@@ -10,12 +11,14 @@ import com.example.asm_be.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import java.util.stream.Collectors;
+
 
 @Component
 public class ProductDetailImpl implements ProductDetailService {
@@ -27,8 +30,13 @@ public class ProductDetailImpl implements ProductDetailService {
     private ProductRepository productRepository;
 
     @Override
+    public List<ProductDetail> getAllDistinct() {
+        return productDetailRepository.getAllDistinct();
+    }
+
+    @Override
     public List<ProductDetail> getAll() {
-        return productDetailRepository.getAll();
+        return productDetailRepository.findAll();
     }
 
     @Override
@@ -75,28 +83,15 @@ public class ProductDetailImpl implements ProductDetailService {
         }
     }
 
-    @Override
-    public List<Product> getPrBetsSl() {
-        // List<Product> detailList = productDetailRepository.getAll();
-        List<Product> detailList = productRepository.findAll();
-        Iterator<Product> iterator = detailList.iterator();
-        while (iterator.hasNext()) {
-            Product x = iterator.next();
-//            if (x.getListProduct().get(0).getPrice() < 85) {
-//                iterator.remove(); // Loại bỏ phần tử không cần thiết
-//            }
-        }
-        return detailList;
-    }
 
     @Override
-    public List<Product> findByName(String keyWord) {
-        List<Product> allProducts = productRepository.findAll();
-        List<Product> matchingProducts = new ArrayList<>();
+    public List<ProductDetail> findByName(String keyWord) {
+        List<ProductDetail> allProducts = productDetailRepository.getAllDistinct();
+        List<ProductDetail> matchingProducts = new ArrayList<>();
 
-        for (Product productDetail : allProducts) {
+        for (ProductDetail productDetail : allProducts) {
             String[] keywords = keyWord.split(""); // Tách từng ký tự của từ khoá
-            String productName = productDetail.getName().toLowerCase();
+            String productName = productDetail.getProduct().getName().toLowerCase();
 
             boolean isMatch = true;
             int keywordIndex = 0;
@@ -112,40 +107,88 @@ public class ProductDetailImpl implements ProductDetailService {
         return matchingProducts;
     }
 
-    public List<ProductDetail> getSortedProducts() {
-        return productDetailRepository.findAllByOrderByProduct_NameAsc();
+    public List<ProductDetail> getSortedProducts(List<ProductDetail> detailsList ,String sortBy) {
+        // Sắp xếp danh sách dựa vào tham số sortBy
+        List<ProductDetail> sortedList = detailsList.stream()
+                .map(detail -> (ProductDetail) detail)  // Chỉ định kiểu của đối tượng
+                .sorted(getComparator(sortBy))
+                .collect(Collectors.toList());
+
+        return sortedList;
     }
 
-    @Override
-    public List<ProductDetail> getSortedProducts_priceAsc() {
-        return productDetailRepository.findAllByOrderByPriceAsc();
+    private Comparator<ProductDetail> getComparator(String sortBy) {
+        switch (sortBy) {
+            case "nameAsc":
+                return Comparator.comparing(detail -> detail.getProduct().getName());
+            case "nameDesc":
+                return Comparator.comparing(detail -> detail.getProduct().getName(), Comparator.reverseOrder());
+            case "priceAsc":
+                return Comparator.comparing(ProductDetail::getPrice);
+            case "priceDesc":
+                return Comparator.comparing(ProductDetail::getPrice).reversed();
+            case "createAtAsc":
+                return Comparator.comparing(ProductDetail::getCreatedAt);
+            case "createAtDesc":
+                return Comparator.comparing(ProductDetail::getCreatedAt).reversed();
+            // Thêm các trường hợp sắp xếp khác nếu cần
+            default:
+                // Mặc định sắp xếp theo tên tăng dần
+                return Comparator.comparing(detail -> detail.getProduct().getName());
+
+        }
     }
-
-    @Override
-    public List<ProductDetail> getSortedProducts_priceDesc() {
-        return productDetailRepository.findAllByOrderByPriceDesc();
-    }
-
-
-    @Override
-    public void updateProductSize(int productId, String newSize) {
-        // Tìm sản phẩm theo ID
-        Optional<ProductDetail> productOptional = productDetailRepository.findById(productId);
-        Optional<Size> sizeOptional = Optional.ofNullable(sizeRepository.findByName(newSize));
-        if (productOptional.isPresent()) {
-            ProductDetail product = productOptional.get();
-            // Cập nhật size của sản phẩm
-            product.setSize(sizeOptional.get());
-            productDetailRepository.save(product); // Lưu lại sản phẩm cập nhật
-        } else {
-            throw new RuntimeException("Không tìm thấy sản phẩm với ID: " + productId);
+    public List<ProductDetail> filterProductsByAttributes(ProductFilterDTO filterDTO) {
+        List<ProductDetail> detailsList = productDetailRepository.findAll();
+        List<ProductDetail> filteredProducts = new ArrayList<>(detailsList);
+        // Lọc dựa trên kích thước
+        if (filterDTO.getSizes() != null && !filterDTO.getSizes().isEmpty()) {
+            filteredProducts = filteredProducts.stream()
+                    .filter(product -> filterDTO.getSizes().contains(product.getSize() != null ? product.getSize().getId() : null))
+                    .collect(Collectors.toList());
         }
 
+        // Lọc dựa trên màu sắc
+        if (filterDTO.getColors() != null && !filterDTO.getColors().isEmpty()) {
+            filteredProducts = filteredProducts.stream()
+                    .filter(product -> filterDTO.getColors().contains(product.getColor() != null ? product.getColor().getId() : null))
+                    .collect(Collectors.toList());
+        }
+
+        // Lọc dựa trên chất liệu
+        if (filterDTO.getMaterials() != null && !filterDTO.getMaterials().isEmpty()) {
+            filteredProducts = filteredProducts.stream()
+                    .filter(product -> filterDTO.getMaterials().contains(product.getMaterial() != null ? product.getMaterial().getId() : null))
+                    .collect(Collectors.toList());
+        }
+        if (filterDTO.getBrands() != null && !filterDTO.getBrands().isEmpty()) {
+            filteredProducts = filteredProducts.stream()
+                    .filter(product -> filterDTO.getBrands().contains(product.getProduct() != null && product.getProduct().getBrands() != null ? product.getProduct().getBrands().getId() : null))
+                    .collect(Collectors.toList());
+        }
+
+        // Lọc dựa trên danh mục
+        if (filterDTO.getCategories() != null && !filterDTO.getCategories().isEmpty()) {
+            filteredProducts = filteredProducts.stream()
+                    .filter(product -> filterDTO.getCategories().contains(product.getProduct() != null && product.getProduct().getCategory() != null ? product.getProduct().getCategory().getId() : null))
+                    .collect(Collectors.toList());
+        }
+        if (filterDTO.getMinPrice() != null) {
+            filteredProducts = filteredProducts.stream()
+                    .filter(product -> product.getPrice() >= filterDTO.getMinPrice())
+                    .collect(Collectors.toList());
+        }
+        if (filterDTO.getMaxPrice() != null) {
+            filteredProducts = filteredProducts.stream()
+                    .filter(product -> product.getPrice() <= filterDTO.getMaxPrice())
+                    .collect(Collectors.toList());
+        }
+        return filteredProducts;
     }
 
     @Override
     public ProductDetail findBySize(int proId, int sizeId, int idCl) {
-        return productDetailRepository.findBySize(proId, sizeId,idCl);
+        return productDetailRepository.findBySize(proId, sizeId, idCl);
     }
 
     @Override
@@ -157,4 +200,15 @@ public class ProductDetailImpl implements ProductDetailService {
     public List<ProductDetail> getPrByColor(int idPr, int idColor) {
         return productDetailRepository.findByProductIdAndColorId(idPr, idColor);
     }
+
+    @Override
+    public List<ProductDetail> PRODUCT_DETAILS() {
+        return productDetailRepository.findAll();
+    }
+
+    @Override
+    public List<ProductDetail> findByProductName(String productName) {
+        return productDetailRepository.findByProductName(productName);
+    }
+
 }

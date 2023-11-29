@@ -26235,6 +26235,7 @@ body.avgrund-active {
   padding: 10px;
   color: #ffffff;
   font-size: 14px;
+  border: solid;
 }
 
 .expandable-table thead tr th:first-child {
@@ -26254,7 +26255,9 @@ body.avgrund-active {
   padding: 14px;
   font-size: 14px;
 }
-
+.expandable-table tr {
+  text-align: center;
+}
 .expandable-table tr td.select-checkbox {
   padding-left: 26px;
 }

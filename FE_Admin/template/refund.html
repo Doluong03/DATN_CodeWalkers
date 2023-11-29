@@ -1,0 +1,895 @@
+<link rel="stylesheet" href="css/css-layout/order.css">
+
+<div class="col-lg-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title">Quản lý đơn hàng đổi trả</h5>
+        <button type="button" class="btn btn-outline-primary mb-2" data-bs-target="#chooseBill" data-bs-toggle="modal" > Tạo mới</button>
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link position-relative z-3" id="nav-wait_acp-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#wait_acp" type="button" role="tab"
+              aria-controls="wait_acp" aria-selected="false"
+              ng-click="handleTabClick(6, 'wait_acp')"
+              ng-class="{ 'active': activeTab === 'wait_acp' }">
+              Chờ xác nhận
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ">
+                {{badgeAcp}}
+                <span class="visually-hidden">unread messages</span>
+              </span>
+            </button>
+
+            <button class="nav-link" id="nav-done-tab" data-bs-toggle="tab"
+              data-bs-target="#done" type="button"
+              role="tab" aria-controls="done" aria-selected="false"
+              ng-click="handleTabClick(4, 'done')"
+              ng-class="{ 'active': activeTab === 'done' }">Hoàn thành</button>
+
+            <button class="nav-link" id="nav-cancel-tab" data-bs-toggle="tab"
+              data-bs-target="#cancel" type="button"
+              role="tab" aria-controls="cancel" aria-selected="false"
+              ng-click="handleTabClick(5, 'cancel')"
+              ng-class="{ 'active': activeTab === 'cancel' }">Đã hủy</button>
+
+          </div>
+        </nav>
+        <!-- ---tabContent--- -->
+        <div class="tab-content" style="margin-top: -30px;" id="nav-tabContent">
+          <div class="tab-pane fade" id="wait_acp"
+            ng-class="{ 'active show': activeTab === 'wait_acp' }"
+            role="tabpanel" aria-labelledby="nav-wait_acp-tab" tabindex="0">
+            <div class="card-body">
+              <div class="search-container">
+                <input type="text" id="btn-search" ng-model="searchText"
+                  placeholder="Search a User">
+                <i class="fa-light fa-magnifying-glass"></i>
+              </div>
+              <button ng-click="UpdateStatusAll(5)" id="delete-all"
+                class="btn btn-outline-danger"><i
+                  class="fa-duotone fa-trash"></i> Hủy</button>
+              <button ng-click="UpdateStatusAll(2)" id="delete-all"
+                class="btn btn-outline-primary"><i
+                  class="fa-light fa-badge-check"></i> Xác nhận</button>
+              <div class="btn-group">
+
+                <button type="button" id="btn-icon" class="btn btn-secondary"
+                  ng-click="toggleForm()">
+                  <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
+
+                <button type="button" id="btn-icon" class="btn btn-secondary"
+                  ng-click="reLoad()">
+                  <i class="fa-solid fa-arrows-rotate "></i>
+                </button>
+                <div class="btn-group">
+                  <button type="button"
+                    class="btn btn-secondary dropdown-toggle"
+                    id="dropdownMenuIconButton3"
+                    data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-list"></i>
+                  </button>
+                  <div class="dropdown-menu"
+                    aria-labelledby="dropdownMenuIconButton3">
+                    <label class="dropdown-item">
+                      <input type="checkbox" ng-model="selectAll"
+                        ng-change="toggleAll()"> Chọn Tất Cả
+                    </label>
+                    <hr>
+                    <label class="dropdown-item" ng-repeat="column in columns">
+                      <input type="checkbox" ng-model="column.selected"
+                        ng-change="toggleColumn(column)">
+                      {{ column.name }}
+                    </label>
+                  </div>
+                </div>
+
+                <input type="file" id="input-file"
+                  onchange="angular.element(this).scope().import(this.files)"
+                  style="display:none;">
+                <button type="button" id="btn-icon" class="btn btn-secondary "
+                  onclick="triggerFileInput()">
+                  <i class="fa-sharp fa-solid fa-file-import"></i>
+                </button>
+
+                <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
+                          <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button> -->
+
+                <div class="btn-group">
+                  <button class="btn btn-secondary dropdown-toggle"
+                    type="button" id="dropdownMenuIconButton1"
+                    data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-down-to-line"></i>
+                  </button>
+                  <div class="dropdown-menu"
+                    aria-labelledby="dropdownMenuIconButton1">
+                    <a class="dropdown-item" ng-click="exportToSVG()">SVG</a>
+                    <a class="dropdown-item" ng-click="exportToExcel()">Excel</a>
+                    <a class="dropdown-item" ng-click="exportToPDF();">PDF</a>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- start table -->
+              <div class="table-responsive pt-3">
+                <table class="table expandable-table table-hover"
+                  style="width: 100%" id="UserTable">
+                  <thead>
+                    <tr>
+                      <th>
+                        <input ng-model="selectAllCheckbox"
+                          ng-change="selectAllChanged()" class="select-checkbox"
+                          type="checkbox"> #
+                      </th>
+                      <th ng-show="columns[1].selected"
+                        ng-click="sortData('name')">Mã hóa đơn<span
+                          class="{{getSortClass('name')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[2].selected"
+                        ng-click="sortData('dateOfBirth')">Khách Hàng<span
+                          class="{{getSortClass('dateOfBirth')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span>
+                      </th>
+                      <th ng-show="columns[3].selected"
+                        ng-click="sortData('gender')">Số điện thoại<span
+                          class="{{getSortClass('gender')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[4].selected"
+                        ng-click="sortData('address')">Nhân
+                        viên<span class="{{getSortClass('address')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[5].selected"
+                        ng-click="sortData('email')">Tổng tiền<span
+                          class="{{getSortClass('email')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[6].selected"
+                        ng-click="sortData('phoneNumber')">Ngày mua<span
+                          class="{{getSortClass('phoneNumber')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span>
+                      </th>
+                      <th name="Action">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      ng-repeat="item in listOrders | filter:searchText | orderBy:sortColumn:reverseSort">
+                      <td><input type="checkbox" ng-model="item.isSelected"></td>
+                      <td ng-show="columns[1].selected">{{ item.code }}</td>
+                      <td ng-show="columns[2].selected">{{item.userName}}</td>
+                      <td ng-show="columns[3].selected">{{item.userPhone }}</td>
+                      <td ng-show="columns[4].selected">{{ item.staff[0].name }}</td>
+                      <td ng-show="columns[5].selected">{{ item.totalPay |
+                        vndCurrency }}</td>
+                      <td ng-show="columns[6].selected">{{ item.createdAt
+                        |dateformat }}</td>
+                      <td>
+                        <!-- <a href="#" ng-click="toggleFormUpdate($event, item)" style="text-decoration: none; color: #1545e1;">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                          </a>
+                          <a href="#" ng-click="removeStaff($event, item)" style="text-decoration: none; color: #FC424A;">
+                            <i class="fas fa-fw fa-trash"></i>
+                          </a> -->
+                        <a href="#" ng-click="toggleFormUpdate($event, item)"
+                          data-toggle="modal"
+                          data-target="#userUpdateModal"
+                          style="text-decoration: none; color: rgb(62, 44, 165);">
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <hr>
+                <!-- phân trang -->
+                <nav id="phantrang" aria-label="Page navigation example"
+                  style="color: #000000;">
+                  <p style="margin-top: 20px;">Đang xem
+                    {{listOrders[0].code.slice(5)}} đến {{lastIndex}} trong tổng
+                    số
+                    {{sizePage}} mục</p>
+                  <!-- Phân trang -->
+                  <ul class="pagination  ">
+                    <!-- Các nút phân trang ở đây -->
+                    <li class="page-item"
+                      ng-class="{ 'disabled': pageCurrent === 0, 'hovered': hoveredPage === 'previous' }">
+                      <a class="page-link" ng-click="previousPage()"
+                        ng-class="{ 'disabled-link': pageCurrent === 0 }"
+                        ng-mouseenter="onHover('previous')"
+                        ng-mouseleave="onLeave()"><span
+                          aria-hidden="true">&laquo;</span></a>
+                    </li>
+                    <li class="page-item" ng-repeat="page in pageRange()"
+                      ng-class="{ 'active': page === pageCurrent, 'hovered': hoveredPage === page }">
+                      <a class="page-link" ng-click="PageNo(page, sizePage)"
+                        ng-mouseenter="onHover(page)"
+                        ng-mouseleave="onLeave()">{{ page }}</a>
+                    </li>
+
+                    <li class="page-item"
+                      ng-class="{ 'disabled': pageCurrent === totalPage - 1, 'hovered': hoveredPage === 'next' }">
+                      <a class="page-link" ng-click="nextPage()"
+                        ng-class="{ 'disabled-link': pageCurrent === totalPage - 1 }"
+                        ng-mouseenter="onHover('next')"
+                        ng-mouseleave="onLeave()"> <span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                  </ul>
+                </nav>
+                <div id="sizePage">
+                  <label for="itemsPerPage">Xem:</label>
+                  <select id="itemsPerPage" ng-model="sizePage"
+                    ng-init="sizePage = '5'" ng-change="onSizePageChange()">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="100">100</option>
+                  </select>
+                  <label for="itemsPerPage">mục</label>
+                </div>
+                <!-- kết thúc phân trang -->
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade " id="done"
+            ng-class="{ 'active show': activeTab === 'done' }" role="tabpanel"
+            aria-labelledby="nav-done-tab" tabindex="0">
+            <div class="card-body">
+              <div class="search-container">
+                <input type="text" id="btn-search" ng-model="searchText"
+                  placeholder="Search a User">
+                <i class="fa-light fa-magnifying-glass"></i>
+              </div>
+              <div class="btn-group">
+
+                <button type="button" id="btn-icon" class="btn btn-secondary"
+                  ng-click="toggleForm()">
+                  <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
+
+                <button type="button" id="btn-icon" class="btn btn-secondary"
+                  ng-click="reLoad()">
+                  <i class="fa-solid fa-arrows-rotate "></i>
+                </button>
+                <div class="btn-group">
+                  <button type="button"
+                    class="btn btn-secondary dropdown-toggle"
+                    id="dropdownMenuIconButton3"
+                    data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-list"></i>
+                  </button>
+                  <div class="dropdown-menu"
+                    aria-labelledby="dropdownMenuIconButton3">
+                    <label class="dropdown-item">
+                      <input type="checkbox" ng-model="selectAll"
+                        ng-change="toggleAll()"> Chọn Tất Cả
+                    </label>
+                    <hr>
+                    <label class="dropdown-item" ng-repeat="column in columns">
+                      <input type="checkbox" ng-model="column.selected"
+                        ng-change="toggleColumn(column)">
+                      {{ column.name }}
+                    </label>
+                  </div>
+                </div>
+
+                <input type="file" id="input-file"
+                  onchange="angular.element(this).scope().import(this.files)"
+                  style="display:none;">
+                <button type="button" id="btn-icon" class="btn btn-secondary "
+                  onclick="triggerFileInput()">
+                  <i class="fa-sharp fa-solid fa-file-import"></i>
+                </button>
+
+                <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
+                          <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button> -->
+
+                <div class="btn-group">
+                  <button class="btn btn-secondary dropdown-toggle"
+                    type="button" id="dropdownMenuIconButton1"
+                    data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-down-to-line"></i>
+                  </button>
+                  <div class="dropdown-menu"
+                    aria-labelledby="dropdownMenuIconButton1">
+                    <a class="dropdown-item" ng-click="exportToSVG()">SVG</a>
+                    <a class="dropdown-item" ng-click="exportToExcel()">Excel</a>
+                    <a class="dropdown-item" ng-click="exportToPDF();">PDF</a>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- start table -->
+              <div class="table-responsive pt-3">
+                <table class="table expandable-table table-hover"
+                  style="width: 100%" id="UserTable">
+                  <thead>
+                    <tr>
+                      <th>
+                        <input ng-model="selectAllCheckbox"
+                          ng-change="selectAllChanged()" class="select-checkbox"
+                          type="checkbox"> #
+                      </th>
+                      <th ng-show="columns[1].selected"
+                        ng-click="sortData('name')">Mã hóa đơn<span
+                          class="{{getSortClass('name')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[2].selected"
+                        ng-click="sortData('dateOfBirth')">Khách Hàng<span
+                          class="{{getSortClass('dateOfBirth')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span>
+                      </th>
+                      <th ng-show="columns[3].selected"
+                        ng-click="sortData('gender')">Số điện thoại<span
+                          class="{{getSortClass('gender')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[4].selected"
+                        ng-click="sortData('address')">Nhân
+                        viên<span class="{{getSortClass('address')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[5].selected"
+                        ng-click="sortData('email')">Tổng tiền<span
+                          class="{{getSortClass('email')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[6].selected"
+                        ng-click="sortData('phoneNumber')">Ngày mua<span
+                          class="{{getSortClass('phoneNumber')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span>
+                      </th>
+                      <th name="Action">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      ng-repeat="item in listOrders | filter:searchText | orderBy:sortColumn:reverseSort">
+                      <td><input type="checkbox" ng-model="item.isSelected"></td>
+                      <td ng-show="columns[1].selected">{{ item.code }}</td>
+                      <td ng-show="columns[2].selected">{{item.userName}}</td>
+                      <td ng-show="columns[3].selected">{{item.userPhone }}</td>
+                      <td ng-show="columns[4].selected">{{ item.staff[0].name }}</td>
+                      <td ng-show="columns[5].selected">{{ item.totalPay |
+                        vndCurrency }}</td>
+                      <td ng-show="columns[6].selected">{{ item.createdAt
+                        |dateformat }}</td>
+                      <td>
+                        <!-- <a href="#" ng-click="toggleFormUpdate($event, item)" style="text-decoration: none; color: #1545e1;">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                          </a>
+                          <a href="#" ng-click="removeStaff($event, item)" style="text-decoration: none; color: #FC424A;">
+                            <i class="fas fa-fw fa-trash"></i>
+                          </a> -->
+                        <a href="#" ng-click="toggleFormUpdate($event, item)"
+                          data-toggle="modal"
+                          data-target="#userUpdateModal"
+                          style="text-decoration: none; color: rgb(62, 44, 165);">
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <hr>
+                <!-- phân trang -->
+                <nav id="phantrang" aria-label="Page navigation example"
+                  style="color: #000000;">
+                  <p style="margin-top: 20px;">Đang xem
+                    {{listOrders[0].code.slice(5)}} đến {{lastIndex}} trong tổng
+                    số
+                    {{sizePage}} mục</p>
+                  <!-- Phân trang -->
+                  <ul class="pagination  ">
+                    <!-- Các nút phân trang ở đây -->
+                    <li class="page-item"
+                      ng-class="{ 'disabled': pageCurrent === 0, 'hovered': hoveredPage === 'previous' }">
+                      <a class="page-link" ng-click="previousPage()"
+                        ng-class="{ 'disabled-link': pageCurrent === 0 }"
+                        ng-mouseenter="onHover('previous')"
+                        ng-mouseleave="onLeave()"><span
+                          aria-hidden="true">&laquo;</span></a>
+                    </li>
+                    <li class="page-item" ng-repeat="page in pageRange()"
+                      ng-class="{ 'active': page === pageCurrent, 'hovered': hoveredPage === page }">
+                      <a class="page-link" ng-click="PageNo(page, sizePage)"
+                        ng-mouseenter="onHover(page)"
+                        ng-mouseleave="onLeave()">{{ page }}</a>
+                    </li>
+
+                    <li class="page-item"
+                      ng-class="{ 'disabled': pageCurrent === totalPage - 1, 'hovered': hoveredPage === 'next' }">
+                      <a class="page-link" ng-click="nextPage()"
+                        ng-class="{ 'disabled-link': pageCurrent === totalPage - 1 }"
+                        ng-mouseenter="onHover('next')"
+                        ng-mouseleave="onLeave()"> <span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                  </ul>
+                </nav>
+                <div id="sizePage">
+                  <label for="itemsPerPage">Xem:</label>
+                  <select id="itemsPerPage" ng-model="sizePage"
+                    ng-init="sizePage = '5'" ng-change="onSizePageChange()">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="100">100</option>
+                  </select>
+                  <label for="itemsPerPage">mục</label>
+                </div>
+                <!-- kết thúc phân trang -->
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="cancel"
+            ng-class="{ 'active show': activeTab === 'cancel' }" role="tabpanel"
+            aria-labelledby="nav-wait_pay-tab" tabindex="0">
+            <div class="card-body">
+              <div class="search-container">
+                <input type="text" id="btn-search" ng-model="searchText"
+                  placeholder="Search a User">
+                <i class="fa-light fa-magnifying-glass"></i>
+              </div>
+              <div class="btn-group">
+
+                <button type="button" id="btn-icon" class="btn btn-secondary"
+                  ng-click="toggleForm()">
+                  <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
+
+                <button type="button" id="btn-icon" class="btn btn-secondary"
+                  ng-click="reLoad()">
+                  <i class="fa-solid fa-arrows-rotate "></i>
+                </button>
+                <div class="btn-group">
+                  <button type="button"
+                    class="btn btn-secondary dropdown-toggle"
+                    id="dropdownMenuIconButton3"
+                    data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-list"></i>
+                  </button>
+                  <div class="dropdown-menu"
+                    aria-labelledby="dropdownMenuIconButton3">
+                    <label class="dropdown-item">
+                      <input type="checkbox" ng-model="selectAll"
+                        ng-change="toggleAll()"> Chọn Tất Cả
+                    </label>
+                    <hr>
+                    <label class="dropdown-item" ng-repeat="column in columns">
+                      <input type="checkbox" ng-model="column.selected"
+                        ng-change="toggleColumn(column)">
+                      {{ column.name }}
+                    </label>
+                  </div>
+                </div>
+
+                <input type="file" id="input-file"
+                  onchange="angular.element(this).scope().import(this.files)"
+                  style="display:none;">
+                <button type="button" id="btn-icon" class="btn btn-secondary "
+                  onclick="triggerFileInput()">
+                  <i class="fa-sharp fa-solid fa-file-import"></i>
+                </button>
+
+                <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
+                          <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button> -->
+
+                <div class="btn-group">
+                  <button class="btn btn-secondary dropdown-toggle"
+                    type="button" id="dropdownMenuIconButton1"
+                    data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-down-to-line"></i>
+                  </button>
+                  <div class="dropdown-menu"
+                    aria-labelledby="dropdownMenuIconButton1">
+                    <a class="dropdown-item" ng-click="exportToSVG()">SVG</a>
+                    <a class="dropdown-item" ng-click="exportToExcel()">Excel</a>
+                    <a class="dropdown-item" ng-click="exportToPDF();">PDF</a>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- start table -->
+              <div class="table-responsive pt-3">
+                <table class="table expandable-table table-hover"
+                  style="width: 100%" id="UserTable">
+                  <thead>
+                    <tr>
+                      <th>
+                        <input ng-model="selectAllCheckbox"
+                          ng-change="selectAllChanged()" class="select-checkbox"
+                          type="checkbox"> #
+                      </th>
+                      <th ng-show="columns[1].selected"
+                        ng-click="sortData('name')">Mã hóa đơn<span
+                          class="{{getSortClass('name')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[2].selected"
+                        ng-click="sortData('dateOfBirth')">Khách Hàng<span
+                          class="{{getSortClass('dateOfBirth')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span>
+                      </th>
+                      <th ng-show="columns[3].selected"
+                        ng-click="sortData('gender')">Số điện thoại<span
+                          class="{{getSortClass('gender')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[4].selected"
+                        ng-click="sortData('address')">Nhân
+                        viên<span class="{{getSortClass('address')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[5].selected"
+                        ng-click="sortData('email')">Tổng tiền<span
+                          class="{{getSortClass('email')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
+                      <th ng-show="columns[6].selected"
+                        ng-click="sortData('phoneNumber')">Ngày mua<span
+                          class="{{getSortClass('phoneNumber')}}"><i
+                            class="fa-solid fa-arrow-up-arrow-down"></i></span>
+                      </th>
+                      <th name="Action">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      ng-repeat="item in listOrders | filter:searchText | orderBy:sortColumn:reverseSort">
+                      <td><input type="checkbox" ng-model="item.isSelected"></td>
+                      <td ng-show="columns[1].selected">{{ item.code }}</td>
+                      <td ng-show="columns[2].selected">{{item.userName}}</td>
+                      <td ng-show="columns[3].selected">{{item.userPhone }}</td>
+                      <td ng-show="columns[4].selected">{{ item.staff[0].name }}</td>
+                      <td ng-show="columns[5].selected">{{ item.totalPay |
+                        vndCurrency }}</td>
+                      <td ng-show="columns[6].selected">{{ item.createdAt |
+                        dateformat }}</td>
+                      <td>
+                        <!-- <a href="#" ng-click="toggleFormUpdate($event, item)" style="text-decoration: none; color: #1545e1;">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                          </a>
+                          <a href="#" ng-click="removeStaff($event, item)" style="text-decoration: none; color: #FC424A;">
+                            <i class="fas fa-fw fa-trash"></i>
+                          </a> -->
+                        <a href="#" ng-click="toggleFormUpdate($event, item)"
+                          data-toggle="modal"
+                          data-target="#userUpdateModal"
+                          style="text-decoration: none; color: rgb(62, 44, 165);">
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <hr>
+                <!-- phân trang -->
+                <nav id="phantrang" aria-label="Page navigation example"
+                  style="color: #000000;">
+                  <p style="margin-top: 20px;">Đang xem
+                    {{listOrders[0].code.slice(5)}} đến {{lastIndex}} trong tổng
+                    số
+                    {{sizePage}} mục</p>
+                  <!-- Phân trang -->
+                  <ul class="pagination  ">
+                    <!-- Các nút phân trang ở đây -->
+                    <li class="page-item"
+                      ng-class="{ 'disabled': pageCurrent === 0, 'hovered': hoveredPage === 'previous' }">
+                      <a class="page-link" ng-click="previousPage()"
+                        ng-class="{ 'disabled-link': pageCurrent === 0 }"
+                        ng-mouseenter="onHover('previous')"
+                        ng-mouseleave="onLeave()"><span
+                          aria-hidden="true">&laquo;</span></a>
+                    </li>
+                    <li class="page-item" ng-repeat="page in pageRange()"
+                      ng-class="{ 'active': page === pageCurrent, 'hovered': hoveredPage === page }">
+                      <a class="page-link" ng-click="PageNo(page, sizePage)"
+                        ng-mouseenter="onHover(page)"
+                        ng-mouseleave="onLeave()">{{ page }}</a>
+                    </li>
+
+                    <li class="page-item"
+                      ng-class="{ 'disabled': pageCurrent === totalPage - 1, 'hovered': hoveredPage === 'next' }">
+                      <a class="page-link" ng-click="nextPage()"
+                        ng-class="{ 'disabled-link': pageCurrent === totalPage - 1 }"
+                        ng-mouseenter="onHover('next')"
+                        ng-mouseleave="onLeave()"> <span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                  </ul>
+                </nav>
+                <div id="sizePage">
+                  <label for="itemsPerPage">Xem:</label>
+                  <select id="itemsPerPage" ng-model="sizePage"
+                    ng-init="sizePage = '5'" ng-change="onSizePageChange()">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="100">100</option>
+                  </select>
+                  <label for="itemsPerPage">mục</label>
+                </div>
+                <!-- kết thúc phân trang -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- form update -->
+  <style>
+    .modal-dialog .modal-content2 {
+      width: 1400px;
+      margin-top: -80px;
+      right: 70%;
+    }
+
+    .scrollable-modal-body {
+      max-height: 800px;
+      /* Điều chỉnh chiều cao tối đa theo ý muốn */
+      overflow-y: auto;
+      /* Tạo thanh cuộn dọc */
+    }
+  </style>
+  <style>
+    .custom-dropdown {
+      position: relative;
+      display: inline-block;
+      z-index: 2;
+      justify-content: end;
+      margin-left: 800px;
+
+    }
+
+    #productInput {
+      width: 550px;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+      padding: 12px;
+      z-index: 3;
+      overflow-y: auto;
+      /* Enable vertical scrollbar */
+      max-height: 400px;
+      /* Set maximum height */
+
+    }
+
+    .custom-dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .prName {
+      font-weight: bold;
+    }
+  </style>
+  <div class="modal fade justify-items-center" id="userUpdateModal"
+    tabindex="-1" role="dialog"
+    aria-labelledby="userUpdateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content  modal-content2">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userUpdateModalLabel">Cập nhật đơn hàng</h5>
+          <button type="button" class="close" data-dismiss="modal"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- <div class="d-flex justify-content-end mb-4 fixed-bottom-3 "><input type="search" value=""
+              placeholder="Search...." class="input-group-text w-50 text-start " list="productList"></div>
+              <datalist id="productList" class="scrollable-datalist-body">
+                <option ng-repeat="pr in itemsBs" value="{{pr.product.name}} [{{pr.size.name}} - {{pr.color.name}}]">
+                  <span>{{pr.price | vndCurrency}}</span>
+                  <br>
+                  <span>Còn lại: {{pr.quantity}}</span>
+                </option>
+              </datalist> -->
+          <div class="custom-dropdown mb-4">
+            <input type="text" class="form-control" id="productInput"
+              onclick="showDropdown()"
+              placeholder="Search products" ng-model="productInput"
+              ng-change="filterProducts()">
+            <div id="productDropdown" class="dropdown-content w-100">
+              <!-- Product options go here -->
+              <div ng-repeat="pr in filteredItems">
+                <button ng-click="selectProduct(pr)"
+                  class=" border-0 row bg-light">
+                  <img
+                    ng-src="{{'/template/images/sp1/' + pr.product.listImage[0].link }}"
+                    class="img-fluid w-25 h-25 border rounded-4"
+                    alt="{{pr.product.listImage[0].link}}">
+                  <span class="col-8 h-25 row text-start mb-2">
+                    <span class="prName col "> {{pr.product.name}}</span>
+                    <span class="text-end col-3">{{pr.price | vndCurrency}}</span>
+                    <span class=" fw-bold">[{{pr.size.name}} -
+                      {{pr.color.name}}]</span>
+                    <span class=" ">Còn lại: {{pr.quantity}}</span>
+                  </span>
+                </button>
+                <hr class="mt-2">
+              </div>
+              <!-- Add more products as needed -->
+            </div>
+          </div>
+          <div class="row">
+         
+            <div class="col-lg scrollable-modal-body border rounded-4 z-0">
+              <div class="text-center mt-2 mb-4">
+                <h5>Giỏ hàng</h5>
+              </div>
+              <table class="table   table-hover expandable-table ">
+                <thead class="sticky-top fs-4 thead-light">
+                  <tr class="fs-1">
+                    <th>#</th>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                    <th>Ghi chú</th>
+                    <th>Hiện trạng</th>
+                    <th>Hình thức đổi trả </th>
+                  </tr>
+                </thead>
+                <tbody class="align-middle text-center table-group-divider">
+                  <tr ng-repeat="pr in listRes" varStatus="loop">
+                    <td>{{$index +1}}</td>
+                    <td>{{pr.productDetail.product.name}}
+                      [{{pr.productDetail.size.name}} -
+                      {{pr.productDetail.color.name}}]</td>
+                    <td class="h-25 align-middle ">
+                      <div class="input-group quantity-input">
+                        <div class="input-group-prepend">
+                          <button class="quantity-button border-1" type="button"
+                            ng-click="decreaseQuantity(pr)">
+                            <i class="fa-sharp fa-solid fa-minus"></i>
+                          </button>
+                        </div>
+                        <!-- Sử dụng ng-model để liên kết quantity với productInfoList.quantity -->
+                        <input type="number" class="quantity-value border-1 "
+                          aria-label="Quantity"
+                          ng-model="pr.quantity"
+                          ng-keypress="onInputKeyPress($event,pr)"
+                          ng-blur="onInputBlur(pr)">
+
+                        <div class="input-group-append">
+                          <button class="quantity-button border-1" type="button"
+                            ng-click="increaseQuantity(pr)">
+                            <i class="fa-sharp fa-solid fa-plus"></i>
+                          </button>
+                        </div>
+                      </td>
+                      <td>{{pr.productDetail.price | vndCurrency }}</td>
+                      <td>{{pr.total| vndCurrency}}</td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer" ng-show="status == '/1' || status == '/2'">
+            <button id="btn-action-cancel" type="button"
+              class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            <button id="btn-action-add" type="button" class="btn btn-primary"
+              ng-click="UpdateBillEdit($event)">Cập
+              nhật</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade " id="chooseBill"
+        tabindex="-1"
+        aria-labelledby="chooseBillLabel" aria-hidden="true">
+        <div class="modal-dialog  " style="height: 100px; ">
+            <div class="modal-content border-dark"
+                style="max-height: 700px; width: 955px; right: 40%;">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="chooseBillLabel">Danh sách đổi trả 
+                    </h1>
+                    <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="search-container ms-4 mt-3  sticky-top" style="background-color: #ffffff;">
+                    <input type="text" id="btn-search" ng-model="searchBill"
+                      placeholder="Search a bill">
+                    <i class="fa-light fa-magnifying-glass"></i>
+                  </div>
+                <div class="modal-body w-100" style="overflow-y: auto; max-height: 500px;">
+                    <table class="table table-hover ">
+                        <thead class="" >
+                          <tr>
+                            <th scope="col-1" style="width: 20px;">Mã hóa đơn</th>
+                            <th scope="col">Khách hàng</th>
+                            <th scope="col">Số điện thoại</th>
+                            <th scope="col">Nhân viên</th>
+                            <th scope="col">Tổng tiền</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr
+                            ng-repeat="item in listAll | filter:searchBill | orderBy:sortColumn:reverseSort">
+                            <td ng-show="columns[1].selected">{{ item.code }}</td>
+                            <td ng-show="columns[2].selected">{{item.userName}}</td>
+                            <td ng-show="columns[3].selected">{{item.userPhone }}</td>
+                            <td ng-show="columns[4].selected">{{ item.staff[0].name }}</td>
+                            <td ng-show="columns[5].selected">{{ item.totalPay |
+                              vndCurrency }}</td>
+                              <!-- <a href="#" ng-click="toggleFormUpdate($event, item)" style="text-decoration: none; color: #1545e1;">
+                                  <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a href="#" ng-click="removeStaff($event, item)" style="text-decoration: none; color: #FC424A;">
+                                  <i class="fas fa-fw fa-trash"></i>
+                                </a> -->
+                                <td>
+                              <a href="#" ng-click="toggleFormUpdate($event, item)"
+                                data-toggle="modal"
+                                data-target="#userUpdateModal"
+                                style="text-decoration: none; color: rgb(255, 255, 255);" class="btn btn-secondary">
+                                <i class="fa-sharp fa-solid fa-plus"></i>
+                              </a>
+                            </td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                </div>
+                <div class="modal-footer w-100">
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Dóng </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+
+
+    <style>
+    .input-group button {
+      width: 30px;
+      height: 30px;
+      align-items: center;
+      border: 1 #878b8f;
+      background-color: #ffffff;
+    }
+
+    .input-group input {
+      width: 15%;
+      height: 30px;
+      text-align: center;
+    }
+
+    .input-group {
+      text-align: center;
+      justify-content: center;
+    }
+  </style>
+    <div class="import-container">
+      <div ng-show="importing" class="import-animation"></div>
+      <p ng-show="importing">Processing...</p>
+    </div>
+    <script>
+    function triggerFileInput() {
+      // Kích hoạt sự kiện click trên input-file
+      document.getElementById('input-file').click();
+    }
+  </script>
+
+    <script>
+    $(document).ready(function () {
+      $('.dropdown-toggle').dropdown();
+    });
+  </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

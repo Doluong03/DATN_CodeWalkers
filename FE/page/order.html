@@ -4,164 +4,148 @@
         <section class="VYJdTQ" aria-role="tablist">
             <h2 class="a11y-hidden"></h2>
             <a class="OFl2GI  " title="Tất cả" aria-role="tab" aria-selected="true"
-                aria-controls="olp_panel_id-0.9746691728108972" id="olp_tab_id-0.9746691728108972" ng-init="changeTab(0)" ng-click="changeTab(0)" ng-style="tabStyles[0]"><span
-                    class="_20hgQK">Tất cả</span></a>
+                aria-controls="olp_panel_id-0.9746691728108972" id="olp_tab_id-0.9746691728108972"
+                ng-init="changeTab(0)" ng-click="changeTab(0)" ng-style="tabStyles[0]"><span
+                    class="_20hgQK">Tất
+                    cả</span></a>
             <a class="OFl2GI " title="Chờ thanh toán" aria-role="tab" aria-selected="false"
-                aria-controls="olp_panel_id-0.804252001945102" id="olp_tab_id-0.804252001945102"  ng-style="tabStyles[1]"><span class="_20hgQK"
-                    ng-click="changeTab(1)" >Chờ thanh toán </span></a>
+                aria-controls="olp_panel_id-0.804252001945102" id="olp_tab_id-0.804252001945102"
+                ng-style="tabStyles[1]"><span class="_20hgQK" ng-click="changeTab(1)">Chờ xác nhận</span></a>
             <a class="OFl2GI" title="Vận chuyển" aria-role="tab" aria-selected="false"
-                aria-controls="olp_panel_id-0.2887319911002513" id="olp_tab_id-0.2887319911002513"  ng-style="tabStyles[2]"><span class="_20hgQK"
-                    ng-click="changeTab(2)" >Vận chuyển</span></a>
+                aria-controls="olp_panel_id-0.2887319911002513" id="olp_tab_id-0.2887319911002513"
+                ng-style="tabStyles[2]"><span class="_20hgQK" ng-click="changeTab(2)">Chờ giao hàng</span></a>
             <a class="OFl2GI" title="Đang giao" aria-role="tab" aria-selected="false"
-                aria-controls="olp_panel_id-0.013584319245882215" id="olp_tab_id-0.013584319245882215" ng-style="tabStyles[3]" ><span
-                    class="_20hgQK" ng-click="changeTab(3) ">Đang
+                aria-controls="olp_panel_id-0.013584319245882215" id="olp_tab_id-0.013584319245882215"
+                ng-style="tabStyles[3]"><span class="_20hgQK" ng-click="changeTab(3) ">Đang
                     giao</span></a>
             <a class="OFl2GI" title="Hoàn thành" aria-role="tab" aria-selected="false"
-                aria-controls="olp_panel_id-0.56677864283909" id="olp_tab_id-0.56677864283909" ng-style="tabStyles[4]"><span class="_20hgQK"
-                    ng-click="changeTab(4) ">Hoàn thành</span></a>
+                aria-controls="olp_panel_id-0.56677864283909" id="olp_tab_id-0.56677864283909"
+                ng-style="tabStyles[4]"><span class="_20hgQK" ng-click="changeTab(4) ">Hoàn thành</span></a>
             <a class="OFl2GI" title="Đã hủy" aria-role="tab" aria-selected="false"
-                aria-controls="olp_panel_id-0.10972208457828492" id="olp_tab_id-0.10972208457828492" ng-style="tabStyles[5]"><span
-                    class="_20hgQK" ng-click="changeTab(5)" >Đã hủy</span></a>
+                aria-controls="olp_panel_id-0.10972208457828492" id="olp_tab_id-0.10972208457828492"
+                ng-style="tabStyles[5]"><span class="_20hgQK" ng-click="changeTab(5)">Đã hủy</span></a>
             <a class="OFl2GI" title="Trả hàng/Hoàn tiền" aria-role="tab" aria-selected="false"
-                aria-controls="olp_panel_id-0.7589534890218537" id="olp_tab_id-0.7589534890218537" ng-style="tabStyles[6]"><span class="_20hgQK"
-                    ng-click="changeTab(6)" >Trả hàng/Hoàn tiền</span></a>
+                aria-controls="olp_panel_id-0.7589534890218537" id="olp_tab_id-0.7589534890218537"
+                ng-style="tabStyles[6]"><span class="_20hgQK" ng-click="changeTab(6)">Trả hàng/Hoàn tiền</span></a>
         </section>
         <div class="VrgkXA" bis_skin_checked="1"><i class="bi bi-search fs-4 ms-3 me-3 text-secondary"></i>
-            <input aria-label="" role="search" autocomplete="on"
-                placeholder="Bạn có thể tìm kiếm theo tên Shop, ID đơn hàng hoặc Tên Sản phẩm" value="">
+            <input aria-label="" role="search" autocomplete="on" placeholder="Tìm kiếm" ng-model="productSearch"
+                ng-change="searchOrdersByProduct()">
         </div>
-        <div class="" ng-repeat="od in itemsOrder | orderBy:'-code'">
-            <div ng-if="allTabSelected ? od.status !== 0 : od.status === selectedTab">
-                <div class="" ng-repeat="pr in od.listBillDetail">
-                    <div class="card  border border-0 p-3 ">
-                        <div class="row" style="height: 200px;">
-                            <!-- <div class="col-lg-1 text-start">
-                        <input type="checkbox" ng-model="pr.checked" ng-change="check()" aria-hidden="true">
-                    </div> -->
-                            <h5 class="card-title">
-                                <div class=" text-end fs-4 text-primary">{{od.status.name}}
-                                    <hr>
-                                </div>
-                            </h5>
-                            <div class="col-lg-2">
-                                <a ng-href="#/product-detail/{{pr.productDetail.product.id}}" class="border-0">
-                                    <img ng-src="assets/img/product/sp1/{{pr.productDetail.product.listImage[0].link}}"
-                                        class="card-img-center   border border-4 rounded-4 w-100 p-2 h-75 bg-secondary bg-opacity-25"
-                                        alt="{{pr.productDetail.product.name}}">
-                                </a>
-                            </div>
-                            <div class="col-lg">
-                                <div class="card-body row">
-                                    <div class="card-text col-lg-9">
-                                        <p class="fw-bold mb-0 fs-5">{{pr.productDetail.product.name}}</p>
-                                        <p class="mb-0">{{pr.productDetail.product.category.name}}</p>
-                                        <p class="mb-0">Màu sắc: {{pr.productDetail.color.name}}</p>
-                                        <p class="mb-0">Size : {{pr.productDetail.size.name}} x {{pr.quantity}}</p>
-                                    </div>
-                                    <p class="card-text col-lg-3 text-end"> {{pr.productDetail.price | vndCurrency }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                    </div>
-                </div>
-                <div class="" style="background-color: white;">
-                    <div class="row offset-3">
-                        <h5 class="col-lg-5 offset-5 text-end">Số tiền phải trả:</h5>
-                        <h4 class="col-lg-2 text-start text-danger   ">{{od.totalPay |vndCurrency}}</h4>
-                    </div>
-                    <div class="row text-end justify-content-md-end me-3">
-                        <button class="mt-2 col-lg-2 btn btn-outline-danger ">Hủy đơn hàng</button>
-                    </div>
-                </div>
-            </div>
+        <div>
         </div>
+        <div ng-include="'page/order_all.html'" ng-show="selectedTab==0"></div>
+        <div ng-include="'page/order_waitPay.html'" ng-show="selectedTab==1"></div>
+        <div ng-include="'page/order_waitShip.html'" ng-show="selectedTab==2"></div>
+        <div ng-include="'page/order_shipping.html'" ng-show="selectedTab==3"></div>
+        <div ng-include="'page/order_done.html'" ng-show="selectedTab==4"></div>
+        <div ng-include="'page/order_cancel.html'" ng-show="selectedTab==5"></div>
+
     </div>
+</div>
 
-    <style>
-
-        .VYJdTQ {
-            /* width: 100%;
+<!-- modal -->
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-end modal-dialog-scrollable modal-fullscreen-xxl-down w-100" >
+      <div class="modal-content" style="width: 1200px; right: 15%;">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Đơn hàng chi tiết </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body bg-light">
+            <div ng-include="'page/billDetail.html'" ></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+          </div>
+      </div>
+    </div>
+  </div>
+<style>
+    .VYJdTQ {
+        /* width: 100%;
         /* margin-bottom: 12px; */
-            display: flex;
-            overflow: hidden;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            border-top-left-radius: 2px;
-            border-top-right-radius: 2px;
-            margin-top: -10px;
-            margin-bottom: -20px;
-        }
+        display: flex;
+        overflow: hidden;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        margin-top: -10px;
+        margin-bottom: -20px;
+    }
 
-        .OFl2GI {
-            cursor: pointer;
-            padding: 16px 0;
-            font-size: 16px;
-            line-height: 19px;
-            text-align: center;
-            color: rgba(0, 0, 0, .8);
-            background: #e9e7e7;
-            border-bottom: 2px solid rgba(0, 0, 0, .09);
-            display: flex;
-            flex: 1;
-            align-items: center;
-            justify-content: center;
-            transition: color .2s;
-            margin-top: -30px;
-            margin-bottom: -40px;
-            height: 60px;
-        }
+    .OFl2GI {
+        cursor: pointer;
+        padding: 16px 0;
+        font-size: 16px;
+        line-height: 19px;
+        text-align: center;
+        color: rgba(0, 0, 0, .8);
+        background: #e9e7e7;
+        border-bottom: 2px solid rgba(0, 0, 0, .09);
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        transition: color .2s;
+        margin-top: -30px;
+        margin-bottom: -40px;
+        height: 60px;
+    }
 
-        .gAImis,
-        .OFl2GI:hover {
-            color:#402dee;
-        }
-        .gAImis {
-            border-color:#402dee;
-        }
+    .gAImis,
+    .OFl2GI:hover {
+        color: #402dee;
+    }
 
-        ._20hgQK {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+    .gAImis {
+        border-color: #402dee;
+    }
 
-        .VrgkXA {
-            padding: 12px 0;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .05);
-            color: #212121;
-            background: #eaeaea;
-            border-radius: 2px;
-            height: 45px;
-            margin-bottom: 15px;
-        }
+    ._20hgQK {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
-        .VrgkXA>svg {
-            margin: 0 15px;
-            stroke: #bbb;
-        }
+    .VrgkXA {
+        padding: 12px 0;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .05);
+        color: #212121;
+        background: #eaeaea;
+        border-radius: 2px;
+        height: 45px;
+        margin-bottom: 15px;
+    }
 
-        svg:not(:root) {
-            overflow: hidden;
-        }
+    .VrgkXA>svg {
+        margin: 0 15px;
+        stroke: #bbb;
+    }
 
-        svg:not(:root) {
-            overflow-clip-margin: content-box;
-            overflow: hidden;
-        }
+    svg:not(:root) {
+        overflow: hidden;
+    }
 
-        .VrgkXA>input {
-            flex: 1;
-            font-size: 14px;
-            line-height: 16px;
-            height: 30px;
-            border: 0;
-            outline: none;
-            background-color: inherit;
-        }
-    </style>
+    svg:not(:root) {
+        overflow-clip-margin: content-box;
+        overflow: hidden;
+    }
+
+    .VrgkXA>input {
+        flex: 1;
+        font-size: 14px;
+        line-height: 16px;
+        height: 30px;
+        border: 0;
+        outline: none;
+        background-color: inherit;
+    }
+</style>
+
+
 </div>

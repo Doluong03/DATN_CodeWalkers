@@ -10,6 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BillDetailsRequest {
-    Integer prDetailId;
-    Integer quantity;
+    int prDetailId;
+    int quantity;
+    double price;
+    int idBill;
 }

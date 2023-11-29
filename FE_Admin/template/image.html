@@ -1,5 +1,37 @@
 
+<style>
+  /* Optional: Add some styles to the image */
+  .image-pr {
+    width: 180px; /* Adjust the width as needed */
+    height: 160px; /* Adjust the height as needed */
+    object-fit: cover;
+    
+  }
 
+  /* Adjust modal width and margin */
+  .modal-dialog-pr {
+    width: 80%; /* Adjust the width as needed */
+    margin: 30px auto;
+  }
+
+  /* Customize modal body to display images horizontally */
+  .modal-body-pr {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:start ;
+  }
+  .checkboxImg{
+    bottom: 20px;
+    background-color: aqua;
+  }
+
+  /* Style for each image container */
+  .image-container-pr {
+    margin: 10px;
+    text-align: left;
+
+  }
+</style>
         <!-- start table -->
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
@@ -26,9 +58,6 @@
                       <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
                       <i class="fa-solid fa-arrows-rotate "></i>                                                                  
                        </button>
-                         
-          
-          
                           <div class="btn-group">
                             <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuIconButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <i class="fa-solid fa-list"></i>
@@ -95,7 +124,7 @@
                         <td ng-show="columns[1].selected" style="text-align: center"> {{item.name}}</td>
           
                         <td ng-show="columns[2].selected" style="text-align: center"><img style="border-radius: 15%; width: 135px; height: 120px;"
-                            src="/FE/assets/img/product/sp1/{{item.link}}"> </td>
+                            src="/template/images/sp1/{{item.link}}"> </td>
                         <td ng-show="columns[3].selected" style="text-align: center">{{item.product.name}}</td>
           
                         <td style="text-align: center">
@@ -232,6 +261,43 @@
             <div ng-show="importing" class="import-animation"></div>
             <p ng-show="importing">Processing...</p>
         </div>
+  
+          <!-- Button to trigger the modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            Open Modal
+          </button>
+      
+          <!-- The Modal -->
+          <div class="modal" id="myModal">
+            <div class="modal-dialog-pr">
+              <div class="modal-content">
+      
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Select Images</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+      
+                <!-- Modal Body -->
+                <div class="modal-body-pr">
+                  <div ng-repeat="image in listCheckBox" class="image-container">
+                    <label class="label-checkbox border rounded-1 m-2">
+                      <input type="checkbox" ng-model="image.selected" ng-change="updateSelection(image)" class="checkboxImg ms-2">
+                      <img src="/template/images/sp1/{{image.link}}" alt="{{item.link}}" class="image-pr">
+                    </label>
+                  </div>
+                </div>
+      
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-outline-primary" ng-click="addImg()" >Thêm mới</button>
+                </div>
+      
+              </div>
+            </div>
+          </div>
+        <!-- The Modal -->
 
         <Script>
           function triggerFileInput() {

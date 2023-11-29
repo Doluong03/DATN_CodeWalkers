@@ -102,7 +102,7 @@
                         <tr ng-repeat="item in listStaff | filter:searchText | orderBy:sortColumn:reverseSort">
                             <td><input type="checkbox" ng-model="item.isSelected"></td>
                             <td ng-show="columns[1].selected">{{item.name}}</td>
-                            <td ng-show="columns[2].selected">{{item.dateOfBirth| date : "dd/MM/yyyy"}}</td>
+                            <td ng-show="columns[2].selected">{{item.dateOfBirth | dateformat  }}</td>
                             <td ng-show="columns[3].selected" style="text-align: center;">{{item.gender == true ? 'Nam'
                                 : 'Nữ'}}</td>
                             <td ng-show="columns[4].selected" style="text-align: center;">{{item.address}}</td>
@@ -119,12 +119,12 @@
                             </td>
                             <td ng-show="columns[8].selected"><img
                                     style="border-radius: 15%; width: 135px; height: 120px;"
-                                    src="/FE_Admin/template/images/staff/{{item.image}}" alt="{{item.image}}"> </td>
+                                    src="/template/images/staff/{{item.image}}" alt="{{item.image}}"> </td>
                             <td>
                                 <a href="#" ng-click="toggleFormUpdate($event,item)"
                                     style="text-decoration: none; color: #1545e1;" data-bs-toggle="modal"
                                     data-bs-target="#modalUpdate">
-                                    <i class="fa-solid fa-pen-to-square "></i> </a>
+                                    <i class="fa-solid fa-pen-to-square " ></i> </a>
                                 <a href="#" ng-click="removeStaff($event,item)"
                                     style="text-decoration: none; color: #FC424A;"> <i class="fas fa-fw  fa-trash "></i>
                                 </a>
@@ -184,12 +184,12 @@
 <!-- form add -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog col-12">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 1000px; right: 40%;">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm mới Nhân viên</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
                 <form name="myForm">
                     <div class="form-group">
                         <label for="validationCustom03" class="form-label">Họ và Tên</label>
@@ -259,11 +259,13 @@
                             <option value="false">Ngừng hoạt động</option>
                         </select>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" ng-click="addStaff($event)">Submit</button>
-                    </div>
+
                 </form>
+                
+            </div>
+            <div class="modal-footer sticky-bottom">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" ng-click="addStaff($event)">Submit</button>
             </div>
         </div>
     </div>
@@ -273,12 +275,12 @@
 <!-- form update -->
 <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog col-12">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 1000px; right: 40%;">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa Nhân viên</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
                 <form name="myFormUpdate">
                     <input type="hidden" class="form-control" ng-model="formStaffUpdate.id">
                     <div class="form-group">
@@ -289,8 +291,8 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputDate">Ngày Sinh</label>
-                        <input type="text" class="form-control" id="exampleInputDate" placeholder="VD : 03/10/2003"
-                            ng-model="formStaffUpdate.dateOfBirth" name="dateOfBirth">
+                        <input type="date" class="form-control" id="exampleInputDate" placeholder="VD : 03/10/2003"
+                            ng-model="formStaffUpdate.dateOfBirth " name="dateOfBirth" >
                     </div>
                     <div class="form-group">
                         <label for="exampleSelectGender">Giới Tính</label>
@@ -343,11 +345,12 @@
                             ng-options="status as (status ? 'Đang hoạt động' : 'Ngừng hoạt động') for status in [true, false]">
                         </select>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" ng-click="UpdateStaff($event)">Submit</button>
-                    </div>
+                   
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" ng-click="UpdateStaff($event)">Submit</button>
             </div>
         </div>
     </div>

@@ -1,10 +1,29 @@
 let host = "http://localhost:8080/CodeWalkers";
-window.orderManage = function ($scope, $http, $window, $timeout) {
+window.orderManage = function ($scope, $http, $window, $timeout, $document) {
     $scope.listOrders = [];
     $scope.pageNo = 0;
     $scope.sizePage = 5;
     $scope.lastIndex = 0; // phần tử cuối của mảng
-    $scope.isDeleted = false;
+    $scope.isAcp = false;
+    $scope.listRes = [];
+    $scope.showModal = true;
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "slideDown",
+        "hideMethod": "slideUp"
+    }
     //config headers
     var headers = {
         headers: {
@@ -26,7 +45,6 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
             var userData = JSON.parse(userDataString);
 
             // Bạn có thể sử dụng userData ở đây
-            console.log(userData.token);
             return userData.token;
         } else {
             // Trường hợp không có dữ liệu trong localStorage
@@ -34,30 +52,17 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
         }
     }
 
-    $scope.formUser = {
-        id: "",
-        name: "",
-        dateOfBirth: "",
-        phoneNumber: "",
-        gender: true,
-        email: "",
-        address: "",
-        createdDate: "",
-        modified: "",
-        image: "",
-    };
-
     $scope.formOrderUpdate = {
-        id: "",
-        code: "",
-        description: "",
+        idBill: "",
         address: "",
-        gender: true,
-        ward: "",
-        province: "",
-        createdDate: "",
-        modified: "",
-        image: "",
+        wardId: "",
+        provinceId: 0, // Gửi ID
+        districtId: 0,
+        userName: "",
+        phone: "",
+        fee: 0,
+        optionPay: 0,
+        totalPay: 0,
     };
 
     // phân trang start
@@ -118,6 +123,13 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
     $scope.onLeave = function () {
         $scope.hoveredPage = null;
     };
+    $scope.removeProduct = function (pr) {
+        var index = $scope.listRes.indexOf(pr); // Tìm vị trí của phần tử trong mảng
+        if (index !== -1) {
+            $scope.listRes.splice(index, 1); // Xóa phần tử từ mảng
+            console.log("tru r")
+        }
+    };
 
     // hàm thay đổi số phần tử của trang
     $scope.onSizePageChange = function () {
@@ -127,7 +139,62 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
         // Gọi các hàm khác cần thiết với giá trị mới của sizePage
     };
     // end phân trang
-//load address
+    $scope.increaseQuantity = function (pr) {
+        pr.quantity++; // Tăng số lượng cho sản phẩm cụ thể
+        if (pr.quantity > pr.productDetail.quantity) {
+            pr.quantity = pr.productDetail.quantity;
+        }
+        pr.total += pr.price;
+        $scope.updateTotalPay();
+    };
+
+    $scope.decreaseQuantity = function (pr) {
+        if (pr.quantity > 0) {
+            pr.quantity--; // Giảm số lượng cho sản phẩm cụ thể nếu lớn hơn 1
+            pr.total -= pr.price;
+        }
+        if (pr.quantity <= 0) {
+            $scope.removeProduct(pr);
+        }
+        $scope.updateTotalPay();
+    };
+
+    $scope.onInputKeyPress = function (event, pr) {
+        if (event.keyCode === 13) { // Kiểm tra nếu phím Enter (keyCode=13)
+            if (pr.quantity <= 0) {
+                $scope.removeProduct(pr);
+            }
+            if (pr.quantity > pr.productDetail.quantity) {
+                pr.quantity = pr.productDetail.quantity;
+            }
+            pr.total = pr.price * pr.quantity;
+            $scope.updateTotalPay();
+        }
+    };
+
+    $scope.onInputBlur = function (pr) {
+        if (pr.quantity <= 0) {
+            $scope.removeProduct(pr);
+        }
+        if (pr.quantity > pr.productDetail.quantity) {
+            pr.quantity = pr.productDetail.quantity;
+        }
+        console.log(pr.productDetail.quantity, "hereee")
+        pr.total = pr.price * pr.quantity;
+        $scope.updateTotalPay();
+    };
+
+    
+    $scope.address = {};
+    $scope.getAddress = function (id) {
+        var url = `${host}/get-address-by-id/`;
+        $http.get(url + id).then(function (res) {
+            $scope.address[id] = res.data;
+        }).catch(function (error) {
+            console.log("Lỗi khi tải dia chi", error);
+        });
+    };
+
     $scope.loadProvince = function () {
         var url = `${host}/get-province`;
         $http.get(url).then(function (res) {
@@ -137,6 +204,7 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
             console.log("Lỗi khi tải danh sách kích thước", error);
         });
     }
+    $scope.loadProvince();
     $scope.loadDistrict = function (province) {
         var url = `${host}/get-district/`;
         $http.get(url + province).then(function (res) {
@@ -156,21 +224,49 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
             console.log("Lỗi khi tải danh sách kích thước", error);
         });
     }
-//end load address
+    //end load address
     $scope.getByStatus = function (status) {
-        $scope.status = "/"+status;
+        $scope.status = "/" + status;
         $scope.hienThi($scope.pageNo, $scope.sizePage);
     };
 
+    $scope.getBadge = function () {
+        apiUrl = apiOrder + "/get-all-bill" + "?pageNo=" + 0 + "&sizePage=" + 10000;
+        $scope.listBadge = [];
+        $scope.badgeAcp = 0;
+        $scope.badgeShip = 0;
+        $http.get(apiUrl, headers).then(
+            function (response) {
+                // Xử lý phản hồi thành công
+                $scope.listBadge = response.data;
+
+                // Reset counts before recalculating
+                $scope.badgeAcp = 0;
+                $scope.badgeShip = 0;
+
+                for (var i = 0; i < $scope.listBadge.length; i++) {
+                    if ($scope.listBadge[i].status == 1) {
+                        $scope.badgeAcp += 1;
+                    }
+                    if ($scope.listBadge[i].status == 2) {
+                        $scope.badgeShip += 1;
+                    }
+                }
+            },
+            function (error) {
+                // Xử lý lỗi
+                console.log(error);
+            })
+    }
+
     $scope.hienThi = function (pageNo, sizePage) {
-        if(!$scope.status){
-             apiUrl = apiOrder + "/get-all-bill"+  "?pageNo=" + pageNo + "&sizePage=" + sizePage;
-        }else if($scope.status == '/0'){
-             apiUrl = apiOrder + "/get-all-bill"+  "?pageNo=" + pageNo + "&sizePage=" + sizePage;
-        }else{
-            apiUrl = apiOrder + "/get-all-bill"+$scope.status+  "?pageNo=" + pageNo + "&sizePage=" + sizePage;
-       }
-        console.log(apiUrl)
+        if (!$scope.status) {
+            apiUrl = apiOrder + "/get-all-bill" + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+        } else if ($scope.status == '/0') {
+            apiUrl = apiOrder + "/get-all-bill" + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+        } else {
+            apiUrl = apiOrder + "/get-all-bill" + $scope.status + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+        }
         $http.get(apiUrl, headers).then(
             function (response) {
                 // Xử lý phản hồi thành công
@@ -178,7 +274,7 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
                 $scope.totalPage = response.data[0].totalPages;
                 var lastIndex = $scope.listOrders[$scope.listOrders.length - 1].code;
                 $scope.lastIndex = lastIndex.slice(5);
-                console.log(response.data);
+                $scope.getBadge();
             },
             function (error) {
                 // Xử lý lỗi
@@ -232,6 +328,22 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
         });
     };
 
+    //staff
+    var data = localStorage.getItem('userData');
+    var dataStaff = JSON.parse(data);
+    $scope.getDataStaff = function () {
+        var url = 'http://localhost:8080/CodeWalkers/admin/profile/' + dataStaff.username;
+        $http.get(url).then(res => {
+            $scope.formNotEditAdmin = {
+                staffId: res.data.id,
+                staffName: res.data.name,
+                staffPhone: res.data.phoneNumber
+            }
+        }).catch(error => {
+            console.log("Error", error);
+        });
+    }
+    $scope.getDataStaff();
     // show form add
     $scope.showForm = false; // Mặc định ẩn form
     $scope.toggleForm = function () {
@@ -245,7 +357,7 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
         overlay.style.display = $scope.showForm ? 'flex' : 'none';
         $scope.formUser = {};
     };
- 
+
     // show form user and load detail
     $scope.showFormUpdate = false;
     $scope.activeItem = -1;
@@ -259,38 +371,133 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
         $scope.loadDistrict(item.province);
         $scope.loadWard(item.district);
         event.preventDefault();
-    if (item) {
-        $scope.formOrderUpdate = {};
+        if (item) {
+            $scope.formOrderUpdate = {};
             // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
             $scope.showFormUpdate = true;
             $scope.activeItem = item;
-            $scope.totalPrices=[];
+            $scope.listRes = [];
+            $scope.totalPrice= 0 ;
             // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-            item.totalPay = item.totalPay.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            // item.fee = item.fee.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
             for (var i = 0; i < item.listBillDetail.length; i++) {
-                var Price = $scope.calculateTotalPrice(item.listBillDetail[i]);
-                $scope.totalPrices.push(Price);
+                $scope.listRes.push({
+                    productDetail: item.listBillDetail[i].productDetail,
+                    quantity: item.listBillDetail[i].quantity,
+                    name: item.listBillDetail[i].productDetail.product.name,
+                    price: item.listBillDetail[i].productDetail.price,
+                    total: item.listBillDetail[i].productDetail.price * item.listBillDetail[i].quantity
+                });
             }
-            $scope.formOrderUpdate = item;
-            console.log(item.province);
-            console.log($scope.formOrderUpdate.province);
+            for (var i = 0; i < $scope.listRes.length; i++) {
+                $scope.totalPrice+= $scope.listRes[i].total;
+            }
+            $scope.formNotEdit = item;
+
+
+            $scope.formOrderUpdate = {
+                userId: item.users[0].id,
+                idBill: item.id,
+                address: item.address,
+                wardId: item.ward,
+                provinceId: item.province, // Gửi ID
+                districtId: item.district,
+                fee: item.fee,
+                optionPay: item.paymentOptions,
+                totalPay: item.totalPay,
+                status: item.status,
+                idStaff: $scope.formNotEditAdmin.staffId,
+                userName: item.userName,
+                userPhone:item.userPhone
+            };
+            $scope.promotional =  ( ($scope.totalPrice +  $scope.formOrderUpdate.fee) - $scope.formOrderUpdate.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         } else {
             // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
             $scope.showFormUpdate = false;
             $scope.activeItem = null;
             $scope.formOrderUpdate = {};
         }
-        console.log($scope.showFormUpdate,"here")
     };
-    $('#userUpdateModal').on('hidden.bs.modal', function (e) {
-        // Thực hiện hành động khi modal đóng
-        $scope.formOrderUpdate = {};
-    });
-    // update
-    $scope.UpdateUser = function (event) {
-        event.preventDefault();
-        console.log($scope.formOrderUpdate);
+    $scope.updateTotalPay = function () {
+        $scope.formOrderUpdate.totalPay = 0;
+        $scope.totalPrice= 0 ;
+        for (var i = 0; i < $scope.listRes.length; i++) {
+            $scope.formOrderUpdate.totalPay += $scope.listRes[i].total;
+        }
+        $scope.getFee();
+    }
+    $scope.getFee = function () {
+        $scope.totalQuantity = 0;
+        for (var i = 0; i < $scope.listRes.length; i++) {
+            $scope.totalQuantity += $scope.listRes[i].quantity;
+        }
+        $scope.fee = {
+            quantity: $scope.totalQuantity,
+            wardId: $scope.formOrderUpdate.wardId,
+            districtId: $scope.formOrderUpdate.districtId
+        };
+        console.log($scope.fee, "hereeee")
+        var url = `${host}/calculateFee`;
+        $http.post(url, JSON.stringify($scope.fee)).then(function (res) {
+            console.log("Phi ", res.data);
+            $scope.formOrderUpdate.fee = res.data;
+            $scope.formOrderUpdate.totalPay = Number($scope.formOrderUpdate.totalPay) + Number($scope.formOrderUpdate.fee);
+        }).catch(function (error) {
+            console.log("Lỗi khi tải ", error);
+        });
+    }
+    $scope.closeModal = function () {
+        document.getElementById('userUpdateModal').style.display = 'none';
+        $('body').removeClass('modal-open'); // Loại bỏ class 'modal-open' khỏi body
+        $('.modal-backdrop').remove(); // Loại bỏ backdrop (phần nền khi modal đang mở)
+        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+    }
 
+    $scope.listUser = []; // Tạo danh sách người dùng
+    $scope.filteredUsers = []; // Tạo danh sách người dùng lọc
+
+    $scope.loadUser = function () {
+        var url = `${host}/user/getAll`;
+        $http.get(url).then(function (res) {
+            res.data.forEach(element => {
+                if (element.status == true) {
+                    $scope.listUser.push(element);
+                }
+            });
+            $scope.filteredUsers = $scope.listUser;
+        }).catch(error => {
+            console.log("Error", error);
+        });
+    };
+    $scope.loadUser();
+    $scope.searchCustomers = function (tab) {
+        var searchText = $scope.formOrderUpdate.userName.toLowerCase();
+        $scope.filteredUsers = $scope.listUser.filter(function (user) {
+            var lowerSearchText = searchText.toLowerCase();
+            return user.name.toLowerCase().includes(lowerSearchText) || (user.phoneNumber && user.phoneNumber.includes(searchText));
+        });
+    };
+
+    $scope.selectCustomer = function (user, tab) {
+        $scope.formOrderUpdate.userName = user.name;
+        $scope.formOrderUpdate.userPhone = user.phoneNumber;
+        $scope.formOrderUpdate.userId = user.id;
+    };
+    // update
+    $scope.UpdateBillEdit = function (event) {
+        event.preventDefault();
+        if (!$scope.formOrderUpdate.userName ||
+            !$scope.formOrderUpdate.userPhone ||
+            !$scope.formOrderUpdate.provinceId ||
+            !$scope.formOrderUpdate.districtId ||
+            !$scope.formOrderUpdate.wardId ||
+            !$scope.formOrderUpdate.address ||
+            !$scope.formOrderUpdate.fee ||
+            !$scope.formOrderUpdate.totalPay) {
+            // Hiển thị thông báo lỗi
+            $scope.checkAddress = true;
+            return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
+        }
         Swal.fire({
             title: "Xác nhận",
             text: "Bạn có chắc chắn muốn thực hiện hành động này?",
@@ -302,26 +509,25 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
             if (result.isConfirmed) {
                 $http
                     .put(
-                        apiAdmin + "User/update",
-                        JSON.stringify($scope.formUserUpdate),
+                        `${host}/bill/updateBill`, $scope.formOrderUpdate,
                         headers
                     )
                     .then(function (response) {
-                        console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
+                        $scope.pay($scope.formOrderUpdate.idBill);
+                        $scope.closeModal();
                         Swal.fire({
                             icon: "success",
                             title: "Cập nhật thành công!",
-                            text: "Thông tin người dùng đã được cập nhật.",
+                            text: "Thông tin đơn hàng đã được cập nhật.",
                         });
-                        $scope.formUserUpdate = {};
-                        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+                        $scope.formOrderUpdate = {};
                     })
                     .catch(function (error) {
                         console.error("Error:", error);
                         Swal.fire({
                             icon: "error",
                             title: "Lỗi!",
-                            text: "Đã xảy ra lỗi khi cập nhật người dùng. Vui lòng thử lại sau.",
+                            text: "Đã xảy ra lỗi khi cập nhật đơn hàng. Vui lòng thử lại sau.",
                         });
                     });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -329,6 +535,91 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
             }
         });
     };
+
+    // update detail bill
+    $scope.pay = function (idBill) {
+        var dataToSend = [];
+        var url = `${host}/api/bill/updateBillDt/`;
+
+        for (var i = 0; i < $scope.listRes.length; i++) {
+            dataToSend.push({
+                prDetailId: parseInt($scope.listRes[i].productDetail.id), // Chuyển đổi sang integer nếu cần
+                quantity: parseInt($scope.listRes[i].quantity), // Chuyển đổi sang integer nếu cần
+                price: parseFloat($scope.listRes[i].price), // Chuyển đổi sang float nếu cần
+                idBill: parseInt(idBill), // Chuyển đổi sang integer nếu cần
+            });
+        }
+        console.log(dataToSend, "<---");
+        $http.put(url + idBill, dataToSend)
+            .then(function () {
+                console.log('ADD thành công');
+            })
+            .catch(function (error) {
+                console.error('ADD thất bại', error);
+            });
+        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+    };
+
+    // Create Order 
+    $scope.createOrder = function (item) {
+        $scope.listResPr = [];
+        $scope.showLoading = true;
+        $scope.quantity = 0;
+        var url = `${host}/bill/createOrder`;
+        for (var i = 0; i < item.listBillDetail.length; i++) {
+            $scope.quantity += item.listBillDetail[i].quantity;
+            $scope.listResPr.push({
+                productDetail: item.listBillDetail[i].productDetail,
+                quantity: item.listBillDetail[i].quantity,
+                name: item.listBillDetail[i].productDetail.product.name,
+                price: item.listBillDetail[i].productDetail.price
+            });
+        }
+        var dataToSend = {
+            toName: item.userName,
+            toPhone: item.userPhone,
+            toAddress: item.address,
+            districtId: item.district,
+            wardId: item.ward,
+            listItems: $scope.listResPr,
+            quantity: $scope.quantity,
+            optionsPay: item.paymentOptions,
+            totalPay: item.totalPay,
+        }
+        console.log(dataToSend, "<---")
+        $http.post(url, dataToSend).then(function (res) {
+            console.log("order ", res.data);
+            $scope.updateBill(item.id, res.data);
+        }).catch(function (error) {
+            console.log("Lỗi khi tải ", error);
+        });
+    }
+
+    $scope.updateBill = function (idBill, data) {
+        $scope.showLoading = true;
+        var url = `${host}/bill/updateBillAdmin`;
+        var dataToSend = {
+            billId: idBill,
+            code: data.order_code,
+            shipDate: data.expected_delivery_time
+        }
+        console.log("here-data", dataToSend)
+
+        // Hiển thị loading spinner
+        // Sử dụng $http.put để gửi yêu cầu cập nhật đến API
+        $http.put(url, dataToSend)
+            .then(function (res) {
+                // Xử lý khi cập nhật thành công
+                console.log('Suaw thành công');
+            })
+            .catch(function (error) {
+                // Xử lý khi cập nhật thất bại
+                console.error('Cập nhật thất bại', error);
+            }).finally(function () {
+                // Ẩn loading spinner sau khi kết thúc
+                $scope.showLoading = false;
+            });
+    }
 
     // import exel
 
@@ -413,7 +704,63 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
         reader.readAsArrayBuffer(files[0]);
         $scope.hienThi($scope.pageNo);
     };
+    $scope.loadAllPrBs = function () {
+        var url = `${host}/api/get-all-pr`;
+        $http.get(url).then(res => {
+            $scope.itemsBs = res.data;
+            // Gọi loadDetail sau khi tải dữ liệu thành công
+            //  $scope.loadDetail();
+            $scope.filteredItems = $scope.itemsBs;
+        }).catch(error => {
+            console.log("Error", error);
+        });
+    }
+    $scope.loadAllPrBs();
+    $scope.filteredItems = $scope.itemsBs;
+    $scope.filterProducts = function () {
+        var searchText = $scope.productInput.toLowerCase();
+        var searchTerms = searchText.split(' ');
 
+        $scope.filteredItems = $scope.itemsBs.filter(function (item) {
+            var nameMatch = item.product.name.toLowerCase().includes(searchText);
+            var sizeMatch = item.size.name.toLowerCase().includes(searchText);
+            var colorMatch = item.color.name.toLowerCase().includes(searchText);
+
+            // Lọc theo mỗi từ khóa trong searchTerms
+            var searchTermMatch = searchTerms.every(function (term) {
+                return (
+                    item.product.name.toLowerCase().includes(term) ||
+                    item.size.name.toLowerCase().includes(term) ||
+                    item.color.name.toLowerCase().includes(term)
+                );
+            });
+
+            return nameMatch || sizeMatch || colorMatch || searchTermMatch;
+        });
+    };
+
+    $scope.selectProduct = function (pr) {
+        // Your selection logic here
+        $scope.check = true;
+        for (var i = 0; i < $scope.listRes.length; i++) {
+            if (pr.id == $scope.listRes[i].productDetail.id) {
+                $scope.listRes[i].quantity += 1;
+                $scope.check = false;
+                $scope.listRes[i].total += $scope.listRes[i].price;
+            }
+        }
+        if ($scope.check) {
+            $scope.listRes.push({
+                productDetail: pr,
+                quantity: 1,
+                name: pr.product.name,
+                price: pr.price,
+                total: pr.price * 1
+            });
+        }
+        toastr.success('Thêm thành công!', 'Thông báo');
+        $scope.updateTotalPay();
+    };
     function formatDate(date) {
         // Giả sử ngày đang trong định dạng ISO 8601
         const isoDate = new Date(date);
@@ -530,17 +877,32 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
             item.isSelected = $scope.selectAllCheckbox;
         });
     };
+    $scope.activeTab = 'all'; // Default to the 'all' tab
+    $scope.showTab = function (tabId) {
+        $scope.getBadge();
+        $scope.activeTab = tabId;
+    };
 
-    $scope.deleteAll = function () {
+
+    $scope.handleTabClick = function (status, tabId) {
+        $scope.getByStatus(status);
+        $scope.showTab(tabId);
+    };
+
+    $scope.UpdateStatusAll = function (status) {
         var selectedItems = $scope.listOrders.filter(function (item) {
             return item.isSelected;
         });
 
         if (selectedItems.length === 0) {
-            alert("Vui lòng chọn các khách hàng bạn muốn xóa ?");
+            alert("Vui lòng chọn các đơn hàng bạn muốn thao tác ?");
             return false;
         }
 
+        showConfirmation(selectedItems, status);
+    };
+
+    function showConfirmation(selectedItems, status) {
         Swal.fire({
             title: "Xác nhận",
             text: "Bạn có chắc chắn muốn thực hiện hành động này?",
@@ -550,37 +912,68 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
             cancelButtonText: "Không",
         }).then((result) => {
             if (result.isConfirmed) {
-
-
-                selectedItems.forEach(element => {
-                    let userId = element.id;
-                    let api = apiURL + "admin/User/delete/" + userId;
-                    console.log(api)
-                    $http.delete(api, headers).then(function (response) {
-
-                        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-                        console.log(response);
-                        isDeleted = true;
-                    })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                });
-
-                if (isDeleted) {
-                    Swal.fire("Xóa thành công!", "", "success");
-                    $scope.selectAllCheckbox = false;
-
-                }
-
+                processActions(selectedItems, status);
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hành động khi người dùng ấn "Không"
                 Swal.fire("Hủy bỏ", "", "error");
             }
-        });
-        // Thực hiện xử lý xóa tất cả ở đây với mảng selectedItems
-    };
 
+        });
+    }
+    
+    function processActions(selectedItems, status) {
+        selectedItems.forEach(element => {
+            if (status == 3) {
+                $scope.createOrder(element);
+            }
+            let billId = element.id;
+            let api = apiAdmin + "Bill/updateStatus/" + billId + "?status=" + status;
+
+            $http.put(api, headers).then(function (response) {
+                // ... (xử lý thành công)
+                $scope.getByStatus(status);
+                $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+                console.log(response);
+                $scope.isAcp = true;
+                if ($scope.isAcp) {
+                    toastr.success('Xác nhận thành công!', 'Thông báo');
+                    // Switch to the tab with the updated status
+                    var tabToShow;
+
+                    switch (status) {
+                        case 0:
+                            // Tất cả
+                            tabToShow = 'all';
+                            break;
+                        case 1:
+                            // Chờ xác nhận
+                            tabToShow = 'wait_acp';
+                            break;
+                        case 2:
+                            // Chờ giao hàng
+                            tabToShow = 'wait_ship';
+                            break;
+                        case 3:
+                            // Chờ giao hàng
+                            tabToShow = 'shipping';
+                            break;
+                        case 4:
+                            // Chờ giao hàng
+                            tabToShow = 'done';
+                            break;
+                        case 5:
+                            // Chờ giao hàng
+                            tabToShow = 'cancel';
+                            break;
+                        // Add cases for other status values as needed
+                    }
+                    $scope.handleTabClick(status, tabToShow);
+                }
+            })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+    }
     // Lấy tên cột từ bảng HTML
     $scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
     $scope.columns = [];
@@ -626,7 +1019,33 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
 
         $scope.hienThi(0, 5);
     };
+    $document.on("click", function (event) {
+        // Check if the click is outside of the input and dropdown
+        if (
+            !$scope.isDescendant(document.getElementById("customerDropdown"), event.target) &&
+            !$scope.isDescendant(document.getElementById("productDropdown"), event.target) &&
+            !$scope.isDescendant(document.getElementById("productInput"), event.target)
+        ) {
+            $scope.$apply(function () {
+                // Ẩn dropdown và thực hiện các hành động khác tùy thuộc vào yêu cầu của bạn
+                $scope.dropdownOpen = false;
 
+                // Thực hiện các hành động khác (nếu cần)
+            });
+        }
+    });
+
+    // Helper function to check if an element is a descendant of another
+    $scope.isDescendant = function (parent, child) {
+        var node = child.parentNode;
+        while (node != null) {
+            if (node == parent) {
+                return true;
+            }
+            node = node.parentNode;
+        }
+        return false;
+    };
     // thu vien jQuery không đụng vào
     (function ($) {
         "use strict";
@@ -1010,4 +1429,5 @@ window.orderManage = function ($scope, $http, $window, $timeout) {
             }
         );
     })(jQuery);
+
 };

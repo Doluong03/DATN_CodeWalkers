@@ -117,8 +117,7 @@ table {
 
 th,
 td {
-  text-align: left;
-  padding: 8px;
+  text-align: center;
 }
 
 .sort-up::before,
@@ -270,7 +269,7 @@ margin-top: 34px;
 }
 
 /* Style the Modal */
-/* .modal {
+.modal {
   display: none;
   position: fixed;
   z-index: 1;
@@ -280,7 +279,7 @@ margin-top: 34px;
   height: 100%;
   overflow: auto;
   background-color: rgba(0,0,0,0.4);
-} */
+}
 
 /* Style the Modal Content */
 /* Style the Form Container */
@@ -342,6 +341,7 @@ input[type="checkbox"] {
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
+background-color: #000;
   }
 
   .size,
@@ -363,6 +363,8 @@ input[type="checkbox"] {
     height: 20px;
     border-radius: 50%;
     /* Tạo hình tròn */
+    border: 1px solid;
+
   }
 
   /* Hình vuông cho size */
@@ -374,6 +376,7 @@ input[type="checkbox"] {
     text-align: center;
     line-height: 25px;
     cursor: pointer;
+    border-radius: 3px;
   }
 
   /* Your existing color classes like .red, .blue, etc. can be used as is. */
@@ -400,6 +403,35 @@ input[type="checkbox"] {
   .pink {
     background-color: pink;
   }
-  .modal-backdrop {
-    display: none;
+  /* Thêm vào trang HTML hoặc file CSS của bạn */
+.modal-backdrop {
+    z-index: -1; /* Đặt z-index về -1 để ẩn màn hình mờ */
+}
+/* Thêm đoạn CSS sau vào phần style của bạn */
+.custom-modal .modal-dialog {
+  max-width: 80%; /* Điều chỉnh kích thước theo ý muốn */
+}
+
+.custom-modal .modal-content {
+  width: 100%;
+}
+
+/* (Tùy chỉnh thêm nếu cần) */
+.custom-modal .modal-header {
+  color: #000000; /* Màu chữ header */
+}
+
+.custom-modal .modal-body {
+  margin-top: -45px;
+  padding: 20px; /* Padding bên trong body */
+}
+
+.custom-modal .modal-footer {
+  color: #fff; /* Màu chữ footer */
+}
+
+#formModal .modal-body{
+    margin-top: 50px;
+    padding-left: 360px;
+    padding-right: 300px;
 }

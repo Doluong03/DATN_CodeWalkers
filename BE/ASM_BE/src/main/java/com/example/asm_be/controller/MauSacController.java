@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.text.ParseException;
 
 @RestController
-@CrossOrigin({"*"})
 @RequestMapping({"/CodeWalkers"})
 public class MauSacController {
 
@@ -40,7 +39,7 @@ public class MauSacController {
     }
 
     @GetMapping({"/Color"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ColorRespone getAllColor(
             @RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
             @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
@@ -54,7 +53,7 @@ public class MauSacController {
     }
 
     @PostMapping({"/admin/Color/insert"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE')")
     public ResponseEntity<ResponeObject> insertColor(@RequestBody Color color) throws ParseException {
 
 
@@ -64,7 +63,7 @@ public class MauSacController {
     }
 
     @PutMapping({"/admin/Color/update"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> UpdateColor(@RequestBody Color color) throws ParseException {
 
 
@@ -74,7 +73,7 @@ public class MauSacController {
     }
 
     @DeleteMapping({"/admin/Color/delete/{id}"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> deleteColor(@PathVariable("id") Integer idColor) {
         return ResponseEntity
                 .status(HttpStatus.OK)
