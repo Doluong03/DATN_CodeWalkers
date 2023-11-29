@@ -135,7 +135,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
         // Xử lý phản hồi thành công
         $scope.listUSers = response.data.usersList;
         $scope.totalPage = response.data.totalPages;
-        $scope.lastIndex = $scope.listUSers[$scope.listUSers.length - 1].id;
+        // $scope.lastIndex = $scope.listUSers[$scope.listUSers.length - 1].id;
 
       },
       function (error) {

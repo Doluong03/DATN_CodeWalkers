@@ -173,7 +173,7 @@
                 <div class="form-group">
                   <label for="exampleInputMiddleName">Tên Sản Phẩm</label>
                   <select class="form-control" id="exampleInputMiddleName" required ng-model="formProductDetail.product.id"
-                    ng-options="product.id as product.name for product in Product">
+                    ng-options="product.id as product.name for product in products">
                     <option value="" disabled
                       ng-selected="formProductDetail.product.id === '' || !formProductDetail.product.id">
                       -- Chọn Tên Sản Phẩm --
@@ -193,7 +193,7 @@
                 <div class="form-group">
                   <label for="exampleInputMaterial">Chất Liệu</label>
                   <select class="form-control" id="exampleInputMaterial" ng-model="formProductDetail.material.id"
-                    ng-options="material.id as material.name for material in materialProduct">
+                    ng-options="material.id as material.name for material in materials">
                     <option value="" disabled selected>-- Chọn Chất Liệu --</option>
                   </select>
                 </div>
@@ -201,7 +201,7 @@
                 <div class="form-group">
                   <label for="exampleInputSize">Kích Thước</label>
                   <select class="form-control" id="exampleInputSize" ng-model="formProductDetail.size.id"
-                    ng-options="size.id as size.name for size in sizeProduct">
+                    ng-options="size.id as size.name for size in sizes">
                     <option value="" disabled selected>-- Chọn Kích Thước --</option>
                   </select>
                 </div>
@@ -209,7 +209,7 @@
                 <div class="form-group">
                   <label for="exampleInputColor">Màu Sắc</label>
                   <select class="form-control" id="exampleInputColor" ng-model="formProductDetail.color.id"
-                    ng-options="color.id as color.name for color in colorProduct">
+                    ng-options="color.id as color.name for color in colors">
                     <option value="" disabled selected>-- Chọn Màu Sắc --</option>
                   </select>
                 </div>
@@ -217,7 +217,7 @@
                 <div class="form-group">
                   <label for="exampleInputPromotion">Khuyến Mại</label>
                   <select class="form-control" id="exampleInputPromotion" ng-model="formProductDetail.promotional.id"
-                    ng-options="promotion.id as promotion.name for promotion in promotionalProduct">
+                    ng-options="promotion.id as promotion.name for promotion in promotionals">
                     <option value="" disabled selected>-- Chọn Khuyến Mại --</option>
                   </select>
                 </div>
@@ -225,7 +225,7 @@
                 <div class="form-group">
                   <label for="exampleInputStatus">Trạng Thái</label>
                   <select class="form-control" id="exampleInputStatus" ng-model="formProductDetail.status.id"
-                    ng-options="status.id as status.name for status in statusProduct">
+                    ng-options="status.id as status.name for status in status">
                     <option value="" disabled selected>-- Chọn Trạng Thái --</option>
                   </select>
                 </div>

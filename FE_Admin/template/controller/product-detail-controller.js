@@ -103,7 +103,7 @@ window.productDetailController = function ($scope, $http, $window) {
     $http.get(apiUrl).then(
       function (response) {
         // Kiểm tra dữ liệu có được in ra không
-        console.log(response, "")
+        
         $scope.listProductDetail = response.data.productDetailList;
         $scope.totalPage = response.data.totalPages;
         $scope.lastIndex = $scope.listProductDetail[$scope.listProductDetail.length - 1].id;
@@ -114,6 +114,7 @@ window.productDetailController = function ($scope, $http, $window) {
         $scope.statusProduct = response.data.statusList;
         $scope.Product = response.data.productList;
         $scope.detail = response.data.productDetailList;
+        console.log($scope.listProductDetail)
         // Tạo một đối tượng để lưu trữ thông tin gộp
         // Hàm chuyển đổi tên màu từ tiếng Việt sang tiếng Anh
         function convertColorName(colorName) {
@@ -148,7 +149,7 @@ window.productDetailController = function ($scope, $http, $window) {
           $scope.detail.forEach(function (product) {
             var englishColorName = convertColorName(product.color.name);
 
-            if (product.status.id === 1) {
+        
               if (!mergedProducts[product.product.name]) {
                 // If the product doesn't exist, add a new entry
                 mergedProducts[product.product.name] = {
@@ -166,7 +167,7 @@ window.productDetailController = function ($scope, $http, $window) {
                   mergedProducts[product.product.name].colors.push(englishColorName);
                 }
               }
-            }
+        
           });
 
           $scope.finalMergedProducts = Object.values(mergedProducts);
