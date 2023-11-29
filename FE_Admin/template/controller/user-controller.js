@@ -130,15 +130,13 @@ window.UserController = function ($scope, $http, $window, $timeout) {
 
   $scope.hienThi = function (pageNo, sizePage) {
     let apiUrl = apiUser + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
-
     $http.get(apiUrl, headers).then(
       function (response) {
         // Xử lý phản hồi thành công
         $scope.listUSers = response.data.usersList;
         $scope.totalPage = response.data.totalPages;
         $scope.lastIndex = $scope.listUSers[$scope.listUSers.length - 1].id;
-        console.log(response.data);
-        console.log(response.data.totalPages);
+
       },
       function (error) {
         // Xử lý lỗi

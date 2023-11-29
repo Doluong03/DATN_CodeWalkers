@@ -38,7 +38,7 @@ public class ThuongHieuController {
         return brandRespone;
     }
     @PostMapping({"/admin/Brands/insert"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> insertBrands(@RequestBody Brands brands) throws ParseException {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -46,7 +46,7 @@ public class ThuongHieuController {
     }
 
     @PutMapping({"/admin/Brands/update"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> UpdateBrands(@RequestBody Brands brands) throws ParseException {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -54,7 +54,7 @@ public class ThuongHieuController {
     }
 
     @DeleteMapping({"/admin/Brands/delete/{id}"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> deleteBrands(@PathVariable("id") Integer idBrands) {
         return ResponseEntity
                 .status(HttpStatus.OK)

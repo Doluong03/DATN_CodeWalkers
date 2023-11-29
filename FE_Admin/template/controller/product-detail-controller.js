@@ -40,63 +40,61 @@ window.productDetailController = function ($scope, $http, $window) {
     status: { id: "" },
   }
 
-$scope.totalPage = 0;
-$scope.pageCurrent = 0;
-$scope.itemsPerPage = 3;
-$scope.displayedUsers = []; // Thêm mảng để hiển thị người dùng trên trang hiện tại
-$scope.finalMergedProducts = []; // Thêm mảng để lưu dữ liệu cần hiển thị
+  $scope.totalPage = 0;
+  $scope.pageCurrent = 0;
+  $scope.itemsPerPage = 3;
+  $scope.displayedUsers = []; // Thêm mảng để hiển thị người dùng trên trang hiện tại
+  $scope.finalMergedProducts = []; // Thêm mảng để lưu dữ liệu cần hiển thị
 
-$scope.pageRange = function () {
+  $scope.pageRange = function () {
     var startPage = Math.max(1, $scope.pageCurrent - Math.floor($scope.itemsPerPage / 2));
     var endPage = Math.min($scope.totalPage, startPage + $scope.itemsPerPage - 1);
     var pages = [];
 
     if ($scope.pageCurrent + Math.floor($scope.itemsPerPage / 2) > $scope.totalPage) {
-        startPage = Math.max(1, $scope.totalPage - $scope.itemsPerPage + 1);
-        endPage = $scope.totalPage;
+      startPage = Math.max(1, $scope.totalPage - $scope.itemsPerPage + 1);
+      endPage = $scope.totalPage;
     }
 
     if (startPage > 1) {
-        startPage = Math.max(1, startPage - 1);
+      startPage = Math.max(1, startPage - 1);
     }
 
     for (var i = startPage; i <= endPage; i++) {
-        pages.push(i);
+      pages.push(i);
     }
 
     return pages;
-};
+  };
 
-$scope.nextPage = function () {
+  $scope.nextPage = function () {
     if ($scope.pageCurrent < $scope.totalPage - 1) {
-        $scope.pageCurrent++;
-        $scope.loadPage();
+      $scope.pageCurrent++;
+      $scope.loadPage();
     }
-};
+  };
 
-$scope.previousPage = function () {
+  $scope.previousPage = function () {
     if ($scope.pageCurrent > 0) {
-        $scope.pageCurrent--;
-        $scope.loadPage();
+      $scope.pageCurrent--;
+      $scope.loadPage();
     }
-};
+  };
 
-$scope.onHover = function (index) {
+  $scope.onHover = function (index) {
     $scope.hoveredPage = index;
-};
+  };
 
-$scope.onLeave = function () {
+  $scope.onLeave = function () {
     $scope.hoveredPage = null;
-};
+  };
 
-$scope.loadPage = function () {
+  $scope.loadPage = function () {
     var startIndex = $scope.pageCurrent * $scope.itemsPerPage;
     var endIndex = ($scope.pageCurrent + 1) * $scope.itemsPerPage - 1;
     $scope.displayedUsers = $scope.finalMergedProducts.slice(startIndex, endIndex + 1);
     $scope.updateFinalMergedProducts();
-};
-
-
+  };
 
   // end phân trang
 
@@ -105,7 +103,7 @@ $scope.loadPage = function () {
     $http.get(apiUrl).then(
       function (response) {
         // Kiểm tra dữ liệu có được in ra không
-        console.log(response,"")
+        console.log(response, "")
         $scope.listProductDetail = response.data.productDetailList;
         $scope.totalPage = response.data.totalPages;
         $scope.lastIndex = $scope.listProductDetail[$scope.listProductDetail.length - 1].id;
@@ -367,7 +365,43 @@ $scope.loadPage = function () {
     });
   };
 
+  $scope.loadMaterial = function () {
+    var url = `${host}/api/product/material`;
+    $http.get(url).then(res => {
+      $scope.materials = res.data;
+    }).catch(error => {
+      console.log("Error", error);
+    });
+  }
+  $scope.loadColor = function () {
+    var url = `${host}/api/product/color`;
+    $http.get(url).then(res => {
+      $scope.colors = res.data;
 
+    }).catch(error => {
+      console.log("Error", error);
+    });
+  }
+  $scope.loadSize = function () {
+    var url = `${host}/api/detail/size`;
+    $http.get(url).then(res => {
+      $scope.sizes = res.data;
+    }).catch(error => {
+      console.log("Error", error);
+    });
+  }
+  $scope.loadPr = function () {
+    var url = `${host}/api/product`;
+    $http.get(url).then(res => {
+      $scope.products = res.data;
+    }).catch(error => {
+      console.log("Error", error);
+    });
+  }
+  $scope.loadPr();
+  $scope.loadSize();
+  $scope.loadColor();
+  $scope.loadMaterial();
   // import exel
 
   $scope.importing = false; // Biến để theo dõi trạng thái của animation
@@ -390,41 +424,53 @@ $scope.loadPage = function () {
       try {
         var workbook = new ExcelJS.Workbook();
         await workbook.xlsx.load(reader.result);
-        const worksheet = workbook.getWorksheet('Sheet1');
+        const worksheet = workbook.getWorksheet("Sheet1");
         worksheet.eachRow((row, index) => {
+          $scope.checkSl = 0;
+          console.log(row.getCell(3).value)
           if (index > 1) {
             let productDt = {
-              quantity: rơw.getCell(1).getValue,
-              price: rơw.getCell(2).getValue,
-              product: { id: rơw.getCell(3).getValue },
-              material: { id: rơw.getCell(4).getValue },
-              size: { id: rơw.getCell(5).getValue },
-              color: { id: rơw.getCell(6).getValue },
-              promotional: { id: rơw.getCell(7).getValue },
+              product: {
+                id: $scope.products.filter(pr => pr.name.toLowerCase() === (row.getCell(1).value).toLowerCase().trim())[0]?.id
+              },
+              material: { id: $scope.materials.filter(sz => sz.name === (row.getCell(2).value).trim())[0]?.id },
+              size: { id: $scope.sizes.filter(sz => sz.name === String(row.getCell(3).value).trim())[0]?.id },
+              color: { id: $scope.colors.filter(sz => sz.name.toLowerCase() === (row.getCell(4).value).toLowerCase().trim())[0]?.id },
+              promotional: { id: 1 },
+              quantity: row.getCell(6).value,
+              price: row.getCell(7).value,
               status: { id: 1 },
-
             };
-            $http.post(apiProductDetails + "/insert", JSON.stringify(productDt))
-              .then(function (response) {
-                if (!$scope.errorShown) {
-                  Swal.fire({
-                    icon: "success",
-                    title: "Ok",
-                    text: "Đã import thành công",
-                  });
-                }
-              })
-              .catch(function (error) {
-                if (!$scope.errorShown) {
-                  Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Đã xảy ra lỗi!",
-                  });
-                  console.log(error);
-                  $scope.errorShown = true; // Set the error flag
-                }
-              });
+            if (!$scope.listProductDetail.some(pr => pr.product.id === productDt.product.id && pr.size.id === productDt.size.id && pr.color.id === productDt.color.id)) {
+              console.log($scope.checkSl)
+              console.log($scope.listProductDetail);
+              $http.post(apiProductDetails + "/insert", JSON.stringify(productDt))
+                .then(function (response) {
+                  if (response) {
+                    $scope.checkSl += 1;
+                    $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+                  }
+                  console.log($scope.checkSl);
+                  if (!$scope.errorShown) {
+                    Swal.fire({
+                      icon: "success",
+                      title: "Ok",
+                      text: "Đã import sản phẩm thành công",
+                    });
+                  }
+                })
+                .catch(function (error) {
+                  if (!$scope.errorShown) {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Oops...",
+                      text: "Đã xảy ra lỗi!",
+                    });
+                    console.log(error);
+                    $scope.errorShown = true; // Set the error flag
+                  }
+                });
+            }
           }
         });
       } catch (error) {
@@ -446,7 +492,6 @@ $scope.loadPage = function () {
       }
     };
     reader.readAsArrayBuffer(files[0]);
-    $scope.hienThi($scope.pageNo);
   };
 
 

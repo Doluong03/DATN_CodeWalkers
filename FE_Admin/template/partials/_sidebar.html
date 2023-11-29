@@ -42,13 +42,13 @@
       </div>
     </li>
 
- <!-- tài khoản -->
- <li class="nav-item">
-  <a class="nav-link" href="#tai-khoan">
-    <i class="fa-regular fa-user-large menu-icon"></i>
-    <span class="menu-title">Tài Khoản</span>
-  </a>
-</li>
+    <!-- tài khoản -->
+    <li class="nav-item">
+      <a class="nav-link" href="#tai-khoan">
+        <i class="fa-regular fa-user-large menu-icon"></i>
+        <span class="menu-title">Tài Khoản</span>
+      </a>
+    </li>
     <!-- nhân viên -->
     <li class="nav-item">
       <a class="nav-link" href="#nhan-vien">
@@ -148,19 +148,28 @@
       <div class="collapse" id="ui-basic">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item">
-            <a class="nav-link" href="#kich-thuoc">Kích Thước</a>
+            <a class="nav-link" href="#kich-thuoc">Kích thước</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#chat-lieu">Chất Liệu</a>
+            <a class="nav-link" href="#material">Chất liệu</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#phan-loai">Phân Loại</a>
+            <a class="nav-link" href="#color">Màu sắc</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#thuong-hieu">Thương Hiệu</a>
+            <a class="nav-link" href="#category">Phân loại</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#product-detail">Product Details</a>
+            <a class="nav-link" href="#brand">Thương hiệu</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#nsx"> Nhà sản xuất </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#product">Sản phẩm</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#product-detail">Sản phẩm chi tiết</a>
           </li>
         </ul>
       </div>
@@ -168,44 +177,31 @@
 
 
     <!-- Đánh Giá -->
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link" data-toggle="collapse" href="#danh-gia">
         <i class="fa-regular fa-thumbs-up menu-icon"></i>
         <span class="menu-title">Đánh Giá</span>
       </a>
-    </li>
+    </li> -->
     <!-- Hóa Đơn -->
     <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="#hoa-don">
+      <a class="nav-link" data-toggle="collapse" href="#sell-admin">
         <i class="fa-regular fa-scroll menu-icon"></i>
         <span class="menu-title">Hóa Đơn</span>
       </a>
     </li>
-
     <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="#nsx">
+      <a class="nav-link" data-toggle="collapse" href="#order">
+        <i class="fa-regular fa-truck menu-icon"></i>
+        <span class="menu-title">Đơn Hàng</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="/template/forgot-password.html">
         <i class="fa-solid fa-poo fa-beat menu-icon"></i>
-        <span class="menu-title">Nhà sản xuất </span>
+        <span class="menu-title">Sun sun </span>
       </a>
     </li>
-
-    
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="/FE_Admin/template/forgot-password.html">
-        <i class="fa-solid fa-poo fa-beat menu-icon" ></i>     
-           <span class="menu-title">Sun sun  </span>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="#nsx">
-        <i class="fa-solid fa-poo fa-beat menu-icon" ></i>     
-           <span class="menu-title">Nhà sản xuất  </span>
-      </a>
-    </li>
-
-    
-
   </ul>
 </nav>
 
@@ -236,13 +232,13 @@
 
   // Kiểm tra và xử lý các vai trò
   if (role_admin) {
-    console.log('Người dùng có vai trò ROLE_EMPLOYEE');
+    console.log('Người dùng có vai trò ROLE_ADMIN');
     // Thực hiện các hành động hoặc hiển thị menu cho ROLE_EMPLOYEE
 
     document.getElementById('employeeMenu').style.display = 'block';
     document.getElementById('adminMenu').style.display = 'none';
   } else if (role_employee) {
-    console.log('Người dùng có vai trò ROLE_ADMIN');
+    console.log('Người dùng có vai trò ROLE_EMPLOYEE');
     // Thực hiện các hành động hoặc hiển thị menu cho ROLE_ADMIN
     document.getElementById('employeeMenu').style.display = 'none';
     document.getElementById('adminMenu').style.display = 'block';

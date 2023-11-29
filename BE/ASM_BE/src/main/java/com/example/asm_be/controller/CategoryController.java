@@ -45,19 +45,19 @@ public CategoryRespone getAllCategory(@RequestParam(value = "pageNo",defaultValu
 }
 
     @PostMapping({"/Category/insert"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponObject> insertCategory(@RequestBody Category categoryRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Add thanh cong", this.categoryService.save(categoryRequest)));
     }
 
     @PutMapping({"/Category/update"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponObject> updateCategory(@RequestBody Category category) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Update thanh cong", this.categoryService.update(category)));
     }
 
     @DeleteMapping({"/Category/delete/{id}"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponObject> deleteStaff(@PathVariable("id") Integer idCategory) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Delete thanh cong", this.categoryService.delete(idCategory)));
     }

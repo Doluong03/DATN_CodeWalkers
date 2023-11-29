@@ -55,7 +55,6 @@ public class ProductdetailController {
 
     @PostMapping({"/admin/ProductDetails/insert"})
     public ResponseEntity<ResponeObject> insertProductDetail(@RequestBody ProductDetail ProductDetail) throws ParseException {
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", productDetailService.save(ProductDetail)));

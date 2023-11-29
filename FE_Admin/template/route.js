@@ -41,6 +41,7 @@ myApp.factory('DataService', function ($location, $q) {
 
       return tokenAuthen().then(function (token) {
         // Check if the token is available
+        
         if (token !== null) {
           dataAvailable = true;
         } else {
@@ -208,8 +209,17 @@ myApp.config(function ($routeProvider, $locationProvider) {
       }
     })
     .when("/tai-khoan", {
-      templateUrl: "/FE_Admin/template/account.html",
+      templateUrl: "/template/account.html",
       controller: AccountController,
+      resolve: {
+        checkData: function (DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })
+    .when("/refund", {
+      templateUrl: "/template/refund.html",
+      controller: RefundController,
       resolve: {
         checkData: function (DataService) {
           return DataService.fetchData();

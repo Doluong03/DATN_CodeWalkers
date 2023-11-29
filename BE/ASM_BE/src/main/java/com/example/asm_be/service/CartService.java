@@ -12,6 +12,6 @@ public interface CartService {
     public Cart getOne(int id);
     public Cart save( Cart cart);
     public Cart update( Cart cart);
-    public void delete( Cart cart);
+    public boolean delete( int cartId);
 
 }

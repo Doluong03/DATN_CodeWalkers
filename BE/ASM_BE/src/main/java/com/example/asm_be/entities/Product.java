@@ -1,5 +1,6 @@
 package com.example.asm_be.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -55,7 +56,4 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Image> listImage;
 
-//
-//    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-//    private List<ProductDetail> listProduct;
 }

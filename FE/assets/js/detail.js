@@ -58,6 +58,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     });
   };
   $scope.totalQuantity = 0;
+  
   $scope.check = function (idColor) {
     $scope.checkPrice = false; // Mặc định, không tìm thấy giá
     $scope.price = 0; // Đặt giá thành 0
@@ -86,6 +87,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       console.log(url, config);
       $scope.totalQuantity = 0;
       $scope.selectedValue = '';
+      $scope.quantity = 1;
       for (var i = 0; i < $scope.list.length; i++) {
         if ($scope.selectedValue === '') {
           $scope.totalQuantity += $scope.list[i].quantity;
@@ -276,6 +278,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   $scope.selectedValue = '';
   // Hàm để cập nhật giá trị đã chọn
   $scope.selectSize = function (size) {
+    $scope.quantity = 1;
     $scope.totalQuantity = 0;
     $scope.selectedValue = size;
     if ($scope.selectedColor === 0) {
@@ -381,6 +384,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   $scope.quantity = 1;
   $scope.increaseQuantity = function (quantity) {
     $scope.quantity++;
+    if($scope.quantity > $scope.totalQuantity){
+      $scope.quantity = $scope.totalQuantity;
+    }
   };
 
   // Hàm xử lý khi người dùng giảm số lượng
@@ -396,6 +402,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       } else {
         $scope.quantity = quantity;
       }
+      if($scope.quantity > $scope.totalQuantity){
+        $scope.quantity = $scope.totalQuantity;
+      }
     }
   };
   $scope.onInputBlur = function (quantity) {
@@ -403,6 +412,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       $scope.quantity = 1;
     } else {
       $scope.quantity = quantity;
+    }
+      if($scope.quantity > $scope.totalQuantity){
+      $scope.quantity = $scope.totalQuantity;
     }
   };
   $scope.loadAllPrCart = function (id) {

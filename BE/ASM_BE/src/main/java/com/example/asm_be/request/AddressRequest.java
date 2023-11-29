@@ -18,17 +18,12 @@ import org.hibernate.Hibernate;
 @Getter
 @Setter
 public class AddressRequest {
-    @NotEmpty(message = "Vui lòng nhập địa chỉ cụ thể")
+    private int id;
     private String addressDetail;
-    @NotBlank(message = "Vui lòng nhập chọn Phường/Xã ")
     private String ward;
-    @NotNull(message = "Vui lòng nhập chọn Tỉnh/Thành phố")
     private int province;
-    @NotNull(message = "Vui lòng nhập chọn Quận/Huyện")
     private int district;
-    @NotBlank(message = "Vui lòng nhập họ tên")
     private String userName;
-    @NotBlank(message = "Vui lòng nhập số điện thoại")
     private String phoneNumber;
     private String email;
     private Integer quantity;

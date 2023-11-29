@@ -1,5 +1,6 @@
 package com.example.asm_be.service;
 
+import com.example.asm_be.dto.ProductFilterDTO;
 import com.example.asm_be.entities.BillDetails;
 import com.example.asm_be.entities.Product;
 import com.example.asm_be.entities.ProductDetail;
@@ -8,12 +9,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+
 @Service
 public interface ProductDetailService {
 
-    public Page<ProductDetail> getAllPage(Integer pageNo,Integer sizePage);
+    public Page<ProductDetail> getAllPage(Integer pageNo, Integer sizePage);
 
     public List<ProductDetail> getAllDistinct();
+
     public List<ProductDetail> getAll();
 
     public ProductDetail getOne(int id);
@@ -24,20 +27,19 @@ public interface ProductDetailService {
 
     public boolean delete(Integer idProductDt);
 
-    public List<Product> getPrBetsSl();
-    public List<Product> findByName(String keyWord);
-    public List<ProductDetail> getSortedProducts();
-    public List<ProductDetail> getSortedProducts_priceAsc();
-    public List<ProductDetail> getSortedProducts_priceDesc();
+    public List<ProductDetail> findByName(String keyWord);
+
+    List<ProductDetail> getSortedProducts(List<ProductDetail> list ,String sortBy);
+
     public List<ProductDetail> getPrByColor(int idPr, int idColor);
-    public void updateProductSize(int  productId, String newSize);
-    public ProductDetail  findBySize(int proId, int sizeId, int idCl);
+
+    public ProductDetail findBySize(int proId, int sizeId, int idCl);
+
     public List<ProductDetail> findByPrId(int proId);
 
-    public  List<ProductDetail> PRODUCT_DETAILS();
+    public List<ProductDetail> PRODUCT_DETAILS();
 
     List<ProductDetail> findByProductName(String productName);
 
-    boolean updateDetail(Integer idDetails);
-
+    public List<ProductDetail> filterProductsByAttributes(ProductFilterDTO filterDTO);
 }

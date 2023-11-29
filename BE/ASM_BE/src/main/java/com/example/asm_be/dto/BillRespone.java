@@ -28,6 +28,8 @@ public class BillRespone {
     private Double totalPay;
     private int paymentOptions;
     private Date createdAt;
+    private String userName;
+    private String userPhone;
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private List<Users> users;
     private int status;

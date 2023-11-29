@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,16 +45,38 @@ public class BillDetailImpl implements BillDetailService {
                 billDetail.setBill(bill);
                 billDetail.setProductDetail(cartDetails.getProductDetail());
                 billDetail.setQuantity(cartDetails.getQuantity());
-                Optional<ProductDetail> productDetail = productDetailRepository.findById(cartDetails.getProductDetail().getId());
-                ProductDetail prDtOut = productDetail.get();
-                prDtOut.setQuantity(prDtOut.getQuantity() - cartDetails.getQuantity());
-                productDetailRepository.save(prDtOut);
                 billDetail.setPrice(cartDetails.getProductDetail().getPrice());
                 billDetailsRepository.save(billDetail);
                 billDetailsList.add(billDetail);
             }
         }
         return billDetailsList;
+    }
+
+    @Override
+    @Transactional
+    public List<BillDetails> saveSl(int idBill, List<CartDetails> detailsList) {
+        Bill bill = billRepository.findById(idBill).orElse(null);
+        // Kiểm tra xem hóa đơn có tồn tại không
+        if (bill != null) {
+            // Xóa tất cả chi tiết hóa đơn cũ
+            billDetailsRepository.deleteAllByBillId(idBill);
+            // Thêm mới chi tiết hóa đơn từ danh sách chi tiết giỏ hàng
+            List<BillDetails> billDetailsList = new ArrayList<>();
+            for (CartDetails cartDetails : detailsList) {
+                BillDetails billDetail = new BillDetails();
+                billDetail.setBill(bill);
+                billDetail.setProductDetail(cartDetails.getProductDetail());
+                billDetail.setQuantity(cartDetails.getQuantity());
+                billDetail.setPrice(cartDetails.getProductDetail().getPrice());
+                billDetailsRepository.save(billDetail);
+                billDetailsList.add(billDetail);
+            }
+            // Trả về danh sách chi tiết hóa đơn mới
+            return billDetailsList;
+        }
+        // Trả về danh sách rỗng nếu hóa đơn không tồn tại
+        return Collections.emptyList();
     }
 
     @Override
@@ -76,7 +99,7 @@ public class BillDetailImpl implements BillDetailService {
 
     @Override
     @Transactional
-    public void update(int idBill , List<BillDetailsRequest> requestList) {
+    public void update(int idBill, List<BillDetailsRequest> requestList) {
         try {
             billDetailsRepository.deleteAllByBillId(idBill);
             for (BillDetailsRequest x : requestList) {

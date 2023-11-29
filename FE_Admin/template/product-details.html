@@ -56,12 +56,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in finalMergedProducts | filter:searchText | orderBy:sortColumn:reverseSort">
+            <tr ng-repeat="item in finalMergedProducts | filter:searchText | orderBy:sortColumn:reverseSort" ng-click="openModal(item.name)">
               <td>{{$index+1}}</td>
               <td>{{item.name}}</td>
               <td class="text-start">
                 <span class="sizes" style="margin-left: 50px;">
-                  <span ng-repeat="size in item.sizes track by $index" class="size">{{ removeSizeText(size) }}</span>
+                  <span ng-repeat="size in item.sizes  | orderBy:size.name" class="size">{{ removeSizeText(size) }}</span>
                 </span>
               </td>
               <td>
@@ -249,7 +249,7 @@
   <div class="modal-dialog" >
     <div class="modal-content " style="width: 1000px; right: 40%;" >
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="formUpdateModalLabel">Thêm chi tiết sản phẩm </h1>
+        <h1 class="modal-title fs-5" id="formUpdateModalLabel">Cập nhật chi tiết sản phẩm </h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body w-100">

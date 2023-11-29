@@ -61,7 +61,7 @@ public class SanPhamController {
 
 
     @PostMapping({"/admin/Product/insert"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> insertProduct(@RequestBody Product product) throws ParseException {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -69,7 +69,7 @@ public class SanPhamController {
     }
 
     @PutMapping({"/admin/Product/update"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> UpdateProduct(@RequestBody Product product) throws ParseException {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -77,7 +77,7 @@ public class SanPhamController {
     }
 
     @DeleteMapping({"/admin/Product/delete/{id}"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> deleteProduct(@PathVariable("id") Integer idProduct) {
         return ResponseEntity
                 .status(HttpStatus.OK)

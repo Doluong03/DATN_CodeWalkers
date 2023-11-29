@@ -1,0 +1,20 @@
+| Mã KM | Tên KM                                 | Chi tiết                                                | Giảm Giá | Ngày Bắt Đầu | Ngày Kết Thúc | Trạng Thái |
+|-------|----------------------------------------|---------------------------------------------------------|----------|--------------|---------------|------------|
+| KM001 | Giảm giá 10%                           | Áp dụng cho sản phẩm A                                | 10       | 2023-01-05   | 2023-06-15    | True       |
+| KM002 | Mua 1 tặng 1                           | Cho sản phẩm B                                          | 12       | 2023-02-10   | 2023-07-20    | True       |
+| KM003 | Thanh toán ví Momo giảm 15%            | Cho tất cả sản phẩm                                    | 15       | 2023-03-15   | 2023-08-25    | True       |
+| KM004 | Flash Sale 20%                         | Chỉ trong 3 giờ đầu ngày                               | 20       | 2023-04-20   | 2023-09-30    | True       |
+| KM005 | Tặng voucher 100,000 VND              | Áp dụng cho hóa đơn từ 500,000 VND                    | 18       | 2023-05-25   | 2023-10-05    | True       |
+| KM006 | Combo giá 500,000 VND                  | Chọn 3 sản phẩm                                        | 16       | 2023-06-30   | 2023-11-10    | True       |
+| KM007 | Freeship cho đơn hàng trên 1,000,000 VND | Không áp dụng cho sản phẩm giảm giá                 | 14       | 2023-07-05   | 2023-12-15    | True       |
+| KM008 | Giảm 12% cho đơn hàng trên 800,000 VND | Áp dụng cho sản phẩm D                                | 12       | 2023-08-10   | 2024-01-20    | True       |
+| KM009 | Quà tặng kèm theo mỗi sản phẩm         | Chọn từ danh sách quà                                  | 10       | 2023-09-15   | 2024-02-25    | True       |
+| KM010 | Mua 2 giảm 25%                         | Áp dụng cho sản phẩm E                                | 25       | 2023-10-20   | 2024-03-30    | True       |
+| KM011 | Combo gia đình giảm 18%                | Bao gồm 4 sản phẩm                                    | 18       | 2023-11-25   | 2024-04-05    | True       |
+| KM012 | Giảm 30% cho khách hàng VIP            | Có thẻ thành viên                                      | 30       | 2023-12-30   | 2024-05-15    | True       |
+| KM013 | Tặng kèm sách hướng dẫn sử dụng       | Cho sản phẩm F                                        | 15       | 2024-01-04   | 2024-06-20    | True       |
+| KM014 | Mua 3 tặng thêm 1                      | Chọn từ danh sách sản phẩm khuyến mãi                 | 10       | 2024-02-09   | 2024-07-25    | True       |
+| KM015 | Coupon giảm 50,000 VND                | Áp dụng cho đơn hàng trên 300,000 VND                | 12       | 2024-03-16   | 2024-08-30    | True       |
+| KM016 | Thanh toán bằng thẻ tín dụng giảm 10% | Cho đơn hàng từ 1,000,000 VND                          | 10       | 2024-04-20   | 2024-09-10    | True       |
+| KM017 | Giảm 22% cho đơn hàng trên 1,500,000 VND | Áp dụng cho sản phẩm G                              | 22       | 2024-05-25   | 2024-10-20    | True       |
+| KM018 | Quà tặng hấp dẫn                      | Chọn ngẫu nhiên từ danh sách                           | 10       | 2024-06-30   | 2024-11-30    | True       |

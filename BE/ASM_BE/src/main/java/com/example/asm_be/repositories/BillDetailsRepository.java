@@ -18,7 +18,6 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT SUM(hd.totalPay)
                 FROM HoaDon hd
-                JOIN HoaDonChiTiet hdct ON hd.id = hdct.bill.id
                 WHERE YEAR(hd.createdAt) = :year
             """)
     List<Double> getTotalPayByYear(@Param("year") int year);
@@ -27,7 +26,6 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT SUM(hd.totalPay)
                 FROM HoaDon hd
-                JOIN HoaDonChiTiet hdct ON hd.id = hdct.bill.id
                 WHERE MONTH(hd.createdAt) = (:date1) AND YEAR(hd.createdAt) = (:date2)
             """)
     List<Double> getTotalPayByMonth(@Param("date1") int date1, @Param("date2") int date2);
@@ -36,7 +34,6 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT SUM(hd.totalPay)
                 FROM HoaDon hd
-                JOIN HoaDonChiTiet hdct ON hd.id = hdct.bill.id
                 WHERE hd.createdAt = :day
             """)
     List<Double> getTotalPayByDay(@Param("day") Date day);

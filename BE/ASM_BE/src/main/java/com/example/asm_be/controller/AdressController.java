@@ -96,7 +96,7 @@ public class AdressController {
                         addressService.save(address);
                         cart.setUsers(users.get());
                         cartService.save(cart);
-                    }else {
+                    } else {
                         usersRes.setName(addressRequest.getUserName());
                         usersRes.setPhoneNumber(addressRequest.getPhoneNumber());
                         usersRes.setEmail(addressRequest.getEmail());
@@ -128,6 +128,12 @@ public class AdressController {
         return ResponseEntity.ok(address);
     }
 
+    @PostMapping("/update-address")
+    public ResponseEntity<?> updateAddress(@RequestBody AddressRequest addressRequest) {
+        addressService.update(addressRequest);
+        return ResponseEntity.ok(addressRequest);
+    }
+
     @GetMapping({"/get-address/{idUser}"})
     public ResponseEntity<?> getAddressByUser(@PathVariable("idUser") int idUser) {
         List<Address> listOut = addressService.getAllByUser(idUser);
@@ -138,5 +144,18 @@ public class AdressController {
             listRes.add(addressResponse);
         }
         return ResponseEntity.ok(listRes);
+    }
+
+    @GetMapping({"/get-address-by-id/{id}"})
+    public ResponseEntity<?> getAddressById(@PathVariable("id") int id) {
+        Address address = addressService.getOne(id);
+        return ResponseEntity.ok(address);
+    }
+
+    @DeleteMapping({"/delete-address-by-id/{id}"})
+    public ResponseEntity<?> deleteAdrById(@PathVariable("id") int id) {
+        Address address = addressService.getOne(id);
+        addressService.delete(address);
+        return ResponseEntity.ok().build();
     }
 }

@@ -15,7 +15,6 @@ public class SignUpRequest {
 
     private String name;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dateOfBirth;
 
     private String phoneNumber;

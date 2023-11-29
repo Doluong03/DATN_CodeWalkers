@@ -57,7 +57,7 @@ public class StaffIplm implements StaffService {
             staffRepository.save(staff);
             return true;
         } catch (Exception var3) {
-            var3.getMessage();
+            var3.printStackTrace();
             return false;
         }
     }
@@ -195,14 +195,8 @@ public class StaffIplm implements StaffService {
         staff.setEmail(signUpRequest.getEmail());
         staff.setAddress(signUpRequest.getAddress());
         staff.setGender(signUpRequest.getGender());
-
-        try {
-            Date birthDayFormat = new SimpleDateFormat("dd/MM/yyyy")
-                    .parse(signUpRequest.getDateOfBirth().toString());
-            staff.setDateOfBirth(birthDayFormat);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        System.out.println(signUpRequest.getDateOfBirth()+"datteeee");
+        staff.setDateOfBirth(signUpRequest.getDateOfBirth());
 
         // Thiết lập giá trị mặc định cho username và password
         String randomId = generateRandomId();

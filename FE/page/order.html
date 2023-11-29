@@ -10,10 +10,10 @@
                     cả</span></a>
             <a class="OFl2GI " title="Chờ thanh toán" aria-role="tab" aria-selected="false"
                 aria-controls="olp_panel_id-0.804252001945102" id="olp_tab_id-0.804252001945102"
-                ng-style="tabStyles[1]"><span class="_20hgQK" ng-click="changeTab(1)">Chờ thanh toán </span></a>
+                ng-style="tabStyles[1]"><span class="_20hgQK" ng-click="changeTab(1)">Chờ xác nhận</span></a>
             <a class="OFl2GI" title="Vận chuyển" aria-role="tab" aria-selected="false"
                 aria-controls="olp_panel_id-0.2887319911002513" id="olp_tab_id-0.2887319911002513"
-                ng-style="tabStyles[2]"><span class="_20hgQK" ng-click="changeTab(2)">Vận chuyển</span></a>
+                ng-style="tabStyles[2]"><span class="_20hgQK" ng-click="changeTab(2)">Chờ giao hàng</span></a>
             <a class="OFl2GI" title="Đang giao" aria-role="tab" aria-selected="false"
                 aria-controls="olp_panel_id-0.013584319245882215" id="olp_tab_id-0.013584319245882215"
                 ng-style="tabStyles[3]"><span class="_20hgQK" ng-click="changeTab(3) ">Đang
@@ -34,7 +34,7 @@
         </div>
         <div>
         </div>
-        <div ng-include="'page/order_waitPay.html'" ng-show="selectedTab==0"></div>
+        <div ng-include="'page/order_all.html'" ng-show="selectedTab==0"></div>
         <div ng-include="'page/order_waitPay.html'" ng-show="selectedTab==1"></div>
         <div ng-include="'page/order_waitShip.html'" ng-show="selectedTab==2"></div>
         <div ng-include="'page/order_shipping.html'" ng-show="selectedTab==3"></div>
@@ -43,6 +43,24 @@
 
     </div>
 </div>
+
+<!-- modal -->
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-end modal-dialog-scrollable modal-fullscreen-xxl-down w-100" >
+      <div class="modal-content" style="width: 1200px; right: 15%;">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Đơn hàng chi tiết </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body bg-light">
+            <div ng-include="'page/billDetail.html'" ></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+          </div>
+      </div>
+    </div>
+  </div>
 <style>
     .VYJdTQ {
         /* width: 100%;
@@ -128,4 +146,6 @@
         background-color: inherit;
     }
 </style>
+
+
 </div>
