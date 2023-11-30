@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class NhanVienController {
 
 
     @GetMapping({"/admin/Staff"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public StaffReponse getAllStaff(@RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo
             , @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         StaffReponse staffReponse = new StaffReponse();
@@ -54,7 +56,9 @@ public class NhanVienController {
          return (staffList.get());
     }
     @PostMapping({"/admin/Staff/insert"})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponeObject> insertStaff(@RequestBody SignUpRequest signUpRequest) {
+        System.out.println(signUpRequest +"asdlasdkljaskldjak");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", this.staffService.saveStaff(signUpRequest)));
@@ -67,6 +71,13 @@ public class NhanVienController {
                 .body(new ResponeObject("success", "Update thanh cong", this.staffService.update(staff)));
     }
 
+    @PutMapping({"/admin/Staff/updateAccount"})
+    public ResponseEntity<ResponeObject> UpdateAccount(@RequestBody Staff staff) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Update thanh cong", this.staffService.updateAccount(staff)));
+    }
+
     @DeleteMapping({"/admin/Staff/delete/{id}"})
     public ResponseEntity<ResponeObject> deleteStaff(@PathVariable("id") Integer idStaff) {
         return ResponseEntity
@@ -74,10 +85,5 @@ public class NhanVienController {
                 .body(new ResponeObject("success", "Delete thanh cong", this.staffService.delete(idStaff)));
     }
 
-//    @GetMapping({"/admin/profile/{username}"})
-//    public Staff getProfile(@PathVariable("username") String  username) {
-//         Optional<Staff> staffList = staffService.findByUserName(username);
-//         return (staffList.get());
-//    }
 }
 

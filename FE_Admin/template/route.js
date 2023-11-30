@@ -41,6 +41,7 @@ myApp.factory('DataService', function ($location, $q) {
 
       return tokenAuthen().then(function (token) {
         // Check if the token is available
+        
         if (token !== null) {
           dataAvailable = true;
         } else {
@@ -207,6 +208,24 @@ myApp.config(function ($routeProvider, $locationProvider) {
         }
       }
     })
+    .when("/tai-khoan", {
+      templateUrl: "/template/account.html",
+      controller: AccountController,
+      resolve: {
+        checkData: function (DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })
+    .when("/refund", {
+      templateUrl: "/template/refund.html",
+      controller: RefundController,
+      resolve: {
+        checkData: function (DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })
     .otherwise({
       redirectTo: "/trang-chu",
     });
@@ -217,6 +236,7 @@ myApp.filter('vndCurrency', function () {
     return input.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
   };
 });
+
 myApp.filter('dateformat', function () {
   return function (input) {
     if (input) {
@@ -239,42 +259,43 @@ myApp.filter('dateformat', function () {
   };
 });
 
+
 myApp.service('DateService', function () {
   var dateList = [];
   var dayList = [];
 
   function formatDate(date) {
-      var day = date.getDate();
-      var month = date.getMonth() + 1;
-      var year = date.getFullYear();
-      return day + '-' + month + '-' + year;
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    return day + '-' + month + '-' + year;
   }
 
   return {
-      setDateList: function (newDateList) {
-          dateList = newDateList;
-      },
-      setDayList: function (newDayList) {
-          dayList = newDayList;
-      },
-      getDateList: function () {
-          return dateList;
-      },
-      getDayList: function () {
-          return dayList;
-      },
-      generateLists: function (startDate, endDate) {
-          // Xóa danh sách ngày và chỉ chứa phần ngày trước khi thêm ngày mới
-          dateList.splice(0, dateList.length);
-          dayList.splice(0, dayList.length);
+    setDateList: function (newDateList) {
+      dateList = newDateList;
+    },
+    setDayList: function (newDayList) {
+      dayList = newDayList;
+    },
+    getDateList: function () {
+      return dateList;
+    },
+    getDayList: function () {
+      return dayList;
+    },
+    generateLists: function (startDate, endDate) {
+      // Xóa danh sách ngày và chỉ chứa phần ngày trước khi thêm ngày mới
+      dateList.splice(0, dateList.length);
+      dayList.splice(0, dayList.length);
 
-          var currentDate = new Date(startDate);
-          while (currentDate <= endDate) {
-              dateList.push(formatDate(new Date(currentDate)));
-              dayList.push(currentDate.getDate());
-              currentDate.setDate(currentDate.getDate() + 1);
-          }
+      var currentDate = new Date(startDate);
+      while (currentDate <= endDate) {
+        dateList.push(formatDate(new Date(currentDate)));
+        dayList.push(currentDate.getDate());
+        currentDate.setDate(currentDate.getDate() + 1);
       }
+    }
   };
 });
 
@@ -283,18 +304,18 @@ myApp.service('YearService', function () {
   var yearList = [];
 
   return {
-      setYearList: function (newYearList) {
-          yearList = newYearList;
-      },
-      getYearList: function () {
-          return yearList;
-      },
-      generateYearList: function (year1, year2) {
-          yearList = [];
-          for (var i = year1; i <= year2; i++) {
-              yearList.push(i);
-          }
+    setYearList: function (newYearList) {
+      yearList = newYearList;
+    },
+    getYearList: function () {
+      return yearList;
+    },
+    generateYearList: function (year1, year2) {
+      yearList = [];
+      for (var i = year1; i <= year2; i++) {
+        yearList.push(i);
       }
+    }
   };
 });
 
@@ -302,35 +323,35 @@ myApp.service('YearService', function () {
 myApp.service('MonthService', function () {
   // Hàm lấy danh sách tháng trong khoảng từ month1 đến month2
   this.getDateRanges = function (start, end) {
-      var dateRanges = [];
-      var startDate = new Date(start.year, start.month - 1); // Adjust month to 0-based index
-      var endDate = new Date(end.year, end.month - 1);
+    var dateRanges = [];
+    var startDate = new Date(start.year, start.month - 1); // Adjust month to 0-based index
+    var endDate = new Date(end.year, end.month - 1);
 
-      while (startDate <= endDate) {
-          var year = startDate.getFullYear().toString();
-          var month = (startDate.getMonth() + 1).toString(); // Adjust month to 1-based index
+    while (startDate <= endDate) {
+      var year = startDate.getFullYear().toString();
+      var month = (startDate.getMonth() + 1).toString(); // Adjust month to 1-based index
 
-          dateRanges.push({ year: year, month: month });
+      dateRanges.push({ year: year, month: month });
 
-          startDate.setMonth(startDate.getMonth() + 1);
-      }
+      startDate.setMonth(startDate.getMonth() + 1);
+    }
 
-      return dateRanges;
+    return dateRanges;
   };
 
   this.getMMYYYYDates = function (yearMonthObjects) {
     var mmYYYYDates = [];
 
     yearMonthObjects.forEach(function (item) {
-        var year = item.year;
-        var month = item.month;
+      var year = item.year;
+      var month = item.month;
 
-        // Định dạng mm/yyyy
-        var formattedDate = (month < 10 ? '0' : '') + month + '/' + year;
+      // Định dạng mm/yyyy
+      var formattedDate = (month < 10 ? '0' : '') + month + '/' + year;
 
-        mmYYYYDates.push(formattedDate);
+      mmYYYYDates.push(formattedDate);
     });
 
     return mmYYYYDates;
-};
+  };
 });

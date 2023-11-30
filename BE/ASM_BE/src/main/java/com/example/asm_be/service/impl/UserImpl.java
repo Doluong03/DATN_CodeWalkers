@@ -2,6 +2,7 @@ package com.example.asm_be.service.impl;
 
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.repositories.UserRepository;
+import com.example.asm_be.request.UserRequest;
 import com.example.asm_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,18 +39,20 @@ public class UserImpl implements UserService {
         return userRepository.findByCartId(id);
     }
 
-    public boolean save(Users users) {
+    public Users save(Users users) {
         try {
             this.userRepository.save(users);
-            return true;
+            return users;
         } catch (Exception var3) {
             var3.getMessage();
-            return false;
+            return null;
         }
     }
 
-    public boolean update(Users users) {
+    public boolean update(UserRequest userRequest) {
         try {
+            Users users = userRepository.findById(userRequest.getId()).get();
+            userRequest.map(users);
             this.userRepository.save(users);
             return true;
         } catch (Exception var4) {

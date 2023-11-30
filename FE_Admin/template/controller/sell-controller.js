@@ -1,4 +1,4 @@
-window.SellAdminController = function ($scope, $http, $document, $timeout) {
+window.SellAdminController = function ($scope, $http, $document, $window) {
   var headers = {
     headers: {
       'Authorization': 'Bearer ' + tokenAuthen(),
@@ -44,8 +44,9 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     }
     if (pr.quantity <= 0) {
       $scope.removeProduct(tab, pr);
+    } else {
+      $scope.updateTotalPay(tab, pr);
     }
-    $scope.updateTotalPay(tab, pr);
   };
 
   $scope.onInputKeyPress = function (event, tab, pr) {
@@ -61,9 +62,10 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
   $scope.onInputBlur = function (tab, pr) {
     if (pr.quantity <= 0) {
       $scope.removeProduct(tab, pr);
+    } else {
+      pr.total = pr.price * pr.quantity;
+      $scope.updateTotalPay(tab, pr);
     }
-    pr.total = pr.price * pr.quantity;
-    $scope.updateTotalPay(tab, pr);
   };
 
 
@@ -71,6 +73,7 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     $scope.confirmDelete(pr.productDetail.id, pr.cart.id, tab);
   };
   $scope.confirmDelete = function (productDtId, cartId, tab) {
+    console.log(productDtId, 'praaaa')
     var url = `${host}/api/cart/delete/`;
     return swal.fire({
       title: "Xác nhận xóa",
@@ -87,6 +90,7 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
         $http.delete(url + productDtId + "/" + cartId)
           .then(function () {
             toastr.success('Xóa sản phẩm thành công!', 'Thông báo')
+            $scope.getFee(tab);
             return $scope.getCart(tab);
           })
           .catch(function (error) {
@@ -98,7 +102,7 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       } else {
         // Xử lý khi người dùng không xác nhận xóa ở đây
         console.log("Xóa bị hủy bỏ.");
-        return Promise.reject("Xóa bị hủy bỏ");
+        return $scope.getCart(tab);
       }
     });
   };
@@ -111,6 +115,7 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     $http.put(url + idCartdt, updateData, headers)
       .then(function (response) {
         console.log('Cập nhật số lượng thành công');
+        $scope.getFee(tab);
         $scope.activateTab(tab);
         $scope.activateTab(tab);
       })
@@ -121,13 +126,14 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     console.log('Giá trị đã thay đổi:', quantity);
   }
   $scope.updateTotalPay = function (tab, pr) {
-    $scope.updateProductQuantity(pr.id, pr.quantity, tab);
+    if (pr.quantity !== 0) {
+      $scope.updateProductQuantity(pr.id, pr.quantity, tab);
+    }
     tab.formData.totalPay = 0;
     for (var i = 0; i < tab.formData.listPrByCart.length; i++) {
       tab.formData.totalPay += $scope.calculateTotalPrice(tab.formData.listPrByCart[i]);
       $scope.saveTabsToLocalStorage();
     }
-    
   }
   $scope.getFee = function (tab) {
     $scope.totalQuantity = 0;
@@ -225,7 +231,6 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     for (var i = 0; i < tab.formData.listPrByCart.length; i++) {
       tab.formData.totalPay += $scope.calculateTotalPrice(tab.formData.listPrByCart[i]);
     }
-
   }
   // sell tai quay 
   var data = localStorage.getItem('userData');
@@ -252,7 +257,7 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       $scope.bill = res.data; // Gán dữ liệu từ API vào $scope.bill
       tab.formData.code = $scope.bill.code;
       tab.formData.id = $scope.bill.id;
-      tab.formData.userID = $scope.bill.users.id;
+      tab.formData.userIDNew = $scope.bill.users.id;
       // Cập nhật title của tab thành mã hóa đơn vừa tạo
       tab.title = 'Hóa đơn ' + $scope.bill.code.slice(5);
       $scope.saveTabsToLocalStorage();
@@ -285,6 +290,8 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
         tab.formData.listPrByCart = res.data;
         tab.formData.totalPay = 0;
         for (var i = 0; i < tab.formData.listPrByCart.length; i++) {
+          tab.formData.totalPrice += $scope.calculateTotalPrice(tab.formData.listPrByCart[i]);
+
           tab.formData.totalPay += $scope.calculateTotalPrice(tab.formData.listPrByCart[i]);
           $scope.saveTabsToLocalStorage();
         }
@@ -373,7 +380,6 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
 
   function loadTabsFromLocalStorage() {
     var tabsData = localStorage.getItem('tabs');
-    console.log(tabsData, "tab")
     if (tabsData) {
       $scope.tabs = JSON.parse(tabsData);
     }
@@ -390,7 +396,6 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
     var tabIndex = $scope.tabs.indexOf(tabToRemove);
     var previousTabIndex = (tabIndex === $scope.tabs.length - 1) ? tabIndex - 1 : tabIndex;
     // Kích hoạt tab trước đó
-    console.log(previousTabIndex, "_----")
     if (previousTabIndex < 0) {
       $scope.clear();
     } else {
@@ -428,7 +433,6 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
         }
       });
       $scope.filteredUsers = $scope.listUser;
-      console.log($scope.filteredUsers, 'aaa')
     }).catch(error => {
       console.log("Error", error);
     });
@@ -453,22 +457,41 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
 
   $scope.selectCustomer = function (user, tab) {
     tab.formData.userName = user.name;
-    tab.formData.phoneNumber = user.phoneNumber; // Replace 'phoneNumber' with the actual property name in your user object
+    tab.formData.userPhone = user.phoneNumber; // Replace 'phoneNumber' with the actual property name in your user object
     tab.formData.userID = user.id;
+    console.log(tab.formData.userID, 'iddddd select');
+
     $scope.saveTabsToLocalStorage();
   };
 
-  $scope.searchPhone = function(tab) {
+  $scope.searchPhone = function (tab) {
+    var checkPhone = false;
+    if ($scope.listUser.includes(tab.formData.userPhone)) {
+    }
     $scope.listUser.forEach(x => {
-        // Kiểm tra điều kiện để đảm bảo chỉ cập nhật khi số điện thoại khác nhau
-        if (tab.formData.phoneNumber !== x.phoneNumber) {
-            let api = apiAdmin + "Bill/updateUser/" + tab.formData.userID + "?name=" + tab.formData.userName + "&phone=" + tab.formData.phoneNumber;
-            $http.put(api, headers).then(function(response) {
-                console.log("update User success");
-            });
-        }
+      // Kiểm tra điều kiện để đảm bảo chỉ cập nhật khi số điện thoại khác nhau
+      if (tab.formData.userPhone == x.phoneNumber) {
+        checkPhone = true;
+        return;
+      }
     });
-};
+    if (!checkPhone) {
+      tab.formData.userID = tab.formData.userIDNew;
+      let api = apiAdmin + "Bill/updateUser/" + tab.formData.userIDNew + "?name=" + tab.formData.userName + "&phone=" + tab.formData.userPhone;
+      $http.put(api, headers).then(function (response) {
+        console.log("update User success");
+      });
+    }
+    console.log(checkPhone, 'check')
+
+  };
+  $scope.deleteUser = function (id) {
+    let api = apiAdmin + "Bill/deleteUser/" + id;
+    $http.delete(api, headers).then(function (response) {
+      console.log("delete User success");
+    });
+
+  }
 
   $scope.removeBill = function (tab) {
     let billId = tab.formData.id;
@@ -494,17 +517,46 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hành động khi người dùng ấn "Không"
         Swal.fire('Hủy bỏ', '', 'error');
-      } tab.formData
+      }
     });
   };
-  $scope.pay = function (idBill,idCart) {
+  $scope.pay = function (idBill, idCart) {
     var url = `${host}/api/addBillDt/`;
     $http.post(url + idBill + "/" + idCart).then(function () {
-        console.log('ADD thành công');
+      console.log('ADD thành công');
     }).catch(function (error) {
-        console.error('ADD thất bại', error);
+      console.error('ADD thất bại', error);
     });
-}
+  }
+  $scope.deleteCartDt = function (cart) {
+    var url = `${host}/api/cart/deleteCart/` + cart;
+    // Gửi yêu cầu xóa đến server hoặc thực hiện xóa trên giao diện
+    $http.delete(url, headers)
+      .then(function () {
+        let api = apiAdmin + "Bill/deleteCart/" + cart;
+        $http.delete(api, headers).then(function (response) {
+          console.log("delete cart success");
+        });
+        // Xử lý khi Delete thành công
+        console.log('Delete cart dt thành công');
+      })
+      .catch(function (error) {
+        // Xử lý khi Delete thất bại
+        console.error('Delete thất bại', error);
+      });
+  }
+  $scope.resetDH = function (tab) {
+    tab.formData.provinceId = '',
+      tab.formData.districtId = ''
+    tab.formData.wardId = '',
+      tab.formData.address = '',
+      tab.formData.fee = 0;
+    tab.formData.totalPay = 0;
+    for (var i = 0; i < tab.formData.listPrByCart.length; i++) {
+      tab.formData.totalPay += $scope.calculateTotalPrice(tab.formData.listPrByCart[i]);
+      $scope.saveTabsToLocalStorage();
+    }
+  }
   $scope.submitForm = function (event, tab) {
     event.preventDefault();
     $scope.checkDone = false;
@@ -513,7 +565,7 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       return;
     }
     var dataToSend = {
-      userName: tab.formData.userID,
+      userId: tab.formData.userID,
       idBill: tab.formData.id,
       provinceId: tab.formData.provinceId || 0,
       districtId: tab.formData.districtId || 0,
@@ -525,6 +577,8 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       totalPay: tab.formData.totalPay,
       shipDate: new Date,
       status: 6,
+      userName: tab.formData.userName || "Khách lẻ",
+      userPhone: tab.formData.userPhone || "None",
       idStaff: $scope.formNotEditAdmin.staffId,
     }
     if (tab.formData.checkAct) {
@@ -543,8 +597,7 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
         return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
       }
     }
-    if (!tab.formData.userName ||
-      !tab.formData.phoneNumber ||
+    if (
       !tab.formData.totalPay) {
       // Hiển thị thông báo lỗi
       $scope.checkAddress = true;
@@ -559,22 +612,29 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       cancelButtonText: "Không",
     }).then((result) => {
       if (result.isConfirmed) {
+        $scope.searchPhone(tab);
+        dataToSend.userId = tab.formData.userID;
+        console.log(dataToSend, 'data')
         $http.put(
           `${host}/bill/updateBill`, dataToSend,
           headers
         ).then(function (response) {
-            if(response){
-              Swal.fire({
-                icon: "success",
-                title: "Cập nhật thành công!",
-                text: "Thông tin đơn hàng đã được cập nhật.",
-              });
-              $scope.searchPhone(tab);
-              $scope.pay(tab.formData.id,tab.formData.cart);
-              $scope.checkDone = true;
-              $scope.removeTab(tab);
+          if (response) {
+            Swal.fire({
+              icon: "success",
+              title: "Cập nhật thành công!",
+              text: "Thông tin đơn hàng đã được cập nhật.",
+            });
+            if (dataToSend.userId !== tab.formData.userIDNew) {
+              $scope.deleteUser(tab.formData.userIDNew);
             }
-          })
+            $scope.generatePDF(tab);
+            $scope.deleteCartDt(tab.formData.cart);
+            $scope.pay(tab.formData.id, tab.formData.cart);
+            $scope.checkDone = true;
+            $scope.removeTab(tab);
+          }
+        })
           .catch(function (error) {
             console.error("Error:", error);
             Swal.fire({
@@ -588,6 +648,244 @@ window.SellAdminController = function ($scope, $http, $document, $timeout) {
       }
     });
   };
+
+  $scope.changCurrency = function (tab) {
+    tab.formData.userPay = tab.formData.userPay.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    tab.formData.moneyBack = (tab.formData.userPay - tab.formData.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+  }
+  $scope.changeSelect = function (tab) {
+    if( tab.formData.optionPay === "1"){
+      tab.formData.userPay = (tab.formData.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    }else{
+      tab.formData.userPay = 0;
+    }
+    $scope.saveTabsToLocalStorage();
+  }
+
+  $scope.getSelectedProvinceName = function (id) {
+    if (id && $scope.provinces) {
+      const selectedProvince = $scope.provinces.find(province => province.ProvinceID === id);
+      return selectedProvince ? selectedProvince.ProvinceName : '';
+    } else {
+      return '';
+    }
+  };
+
+  $scope.getSelectedDistrictName = function (id) {
+    if (id && $scope.districts) {
+      const selectedDistrict = $scope.districts.find(district => district.DistrictID === id);
+      return selectedDistrict ? selectedDistrict.DistrictName : '';
+    } else {
+      return '';
+    }
+  };
+
+  $scope.getSelectedWardName = function (id) {
+    if (id && $scope.wards) {
+      const selectedWard = $scope.wards.find(ward => ward.WardCode === id);
+      return selectedWard ? selectedWard.WardName : '';
+    } else {
+      return '';
+    }
+  };
+
+  $scope.generatePDF = function (tab) {
+    // Tạo nội dung PDF
+    // Khai báo biến totalAmount để lưu tổng tiền sản phẩm
+    var totalAmount = 0;
+
+    // Thêm dòng cho mỗi sản phẩm
+    var tableBody = tab.formData.listPrByCart.map((product, index) => {
+      // Tính giá trị cho cột "Thành tiền" của sản phẩm
+      var productTotal = product.quantity * product.productDetail.price;
+
+      // Thêm vào tổng tiền sản phẩm
+      totalAmount += productTotal;
+
+      // Trả về mảng mô tả hàng của bảng
+      return [
+        index + 1,
+        product.productDetail.product.name + ' [' + product.productDetail.size.name + ' - ' + product.productDetail.color.name + ']',
+        product.quantity,
+        product.productDetail.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }),
+        productTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+      ];
+    });
+    // Thêm dòng tổng tiền sản phẩm vào cuối mảng
+    tableBody.push([
+      '', '', '', 'Tổng tiền:',
+      totalAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+    ]);
+
+    var documentDefinition = {
+      content: [
+        { text: 'CodeWalkers', style: 'header' },
+        { text: 'Số điện thoại: 0865683753', style: 'subheader' },
+        { text: 'Email: CodeWalkers2003@gmail.com', style: 'subheader' },
+        { text: 'Địa chỉ: Phú Đô, Nam Từ Liêm, Hà Nội', style: 'subheader' },
+        { text: 'HÓA ĐƠN BÁN HÀNG', style: 'title' },
+        { text: tab.formData.code, style: 'subtitle' },
+        { text: 'Ngày mua: ' + (tab.formData.purchaseDate || moment(new Date()).format('DD/MM/yyyy   hh:mm')), style: 'subtext' },
+        { text: 'Khách hàng: ' + (tab.formData.userName || 'Khách lẻ'), style: 'subtext' },
+        getAddressString(tab.formData),
+        { text: 'Số điện thoại: ' + (tab.formData.userPhone || 'None'), style: 'subtext' },
+        { text: 'Nhân viên bán hàng: ' + ($scope.formNotEditAdmin.staffName || 'None'), style: 'subtext' },
+        { text: 'Danh sách sản phẩm', style: 'tableHeader', },
+        {
+          table: {
+            headerRows: 1,
+            widths: [30, '*', 65, 65, 80],
+            body: [
+              ['STT', 'Sản Phẩm', 'Số Lượng', 'Đơn giá', 'Thành tiền'],
+              // Thêm dòng cho mỗi sản phẩm
+              ...tableBody
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: [220, 280], // Có thể điều chỉnh chiều rộng cột theo nhu cầu
+            body: [
+              tab.formData.fee !== undefined && tab.formData.fee !== 0
+                ? ['Phí vận chuyển:', { text: tab.formData.fee.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }), alignment: 'right', margin: [0, 0, 10, 0], bold: true }]
+                : ['', { text: '' }],
+              ['Tổng tiền phải thanh toán:', { text: (parseFloat(tab.formData.totalPay) || 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }), alignment: 'right', margin: [0, 0, 10, 0], bold: true }],
+              tab.formData.optionPay == 0 && !tab.formData.checkAct
+                ? ['Tiền khách trả:', { text: (parseFloat(tab.formData.userPay) || 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }), alignment: 'right', margin: [0, 0, 10, 0], bold: true }]
+                : ['', { text: '' }],
+              tab.formData.optionPay == 0 && !tab.formData.checkAct
+                ? ['Tiền trả lại:', { text: ((tab.formData.moneyBack) || 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }), alignment: 'right', margin: [0, 0, 10, 0], bold: true }]
+                : ['', { text: '' }],
+              ['Phương thức thanh toán:', { text: tab.formData.optionPay == 0 ? "Thanh toán bằng tiền mặt" : "Thanh toán online" || 'None', alignment: 'right', margin: [0, 0, 10, 0], bold: true }]
+            ]
+          },
+          margin: [0, 10, 0, 0],
+          layout: 'noBorders' // Xóa đường biên để tránh đường biên trắng xung quanh bảng
+        },
+        { text: '---- Cảm ơn quý khách ----', margin: [0, 20, 0, 5], alignment: 'center', italics: true },
+
+      ],
+      styles: {
+        header: {
+          fontSize: 20,
+          alignment: 'center',
+          margin: [0, 0, 0, 10]
+        },
+        subheader: {
+          fontSize: 12,
+          alignment: 'center',
+          margin: [0, 0, 0, 5]
+        },
+        subtext: {
+          fontSize: 12,
+          margin: [0, 0, 0, 5]
+        },
+        title: {
+          fontSize: 16,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 20, 0, 5]
+        },
+        subtitle: {
+          fontSize: 12,
+          alignment: 'center',
+          margin: [0, 0, 0, 10]
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 13,
+          alignment: 'center',
+          margin: [0, 10, 0, 15],
+          color: 'black'
+        }
+      }
+    };
+
+    function getAddressString(formData) {
+      const province = $scope.getSelectedProvinceName(formData.provinceId) || 'None';
+      const district = $scope.getSelectedDistrictName(formData.districtId) || 'None';
+      const ward = $scope.getSelectedWardName(formData.wardId) || 'None';
+      const address = formData.address || 'None';
+
+      const fullAddress = `${address}, ${ward}, ${district}, ${province}`;
+
+      // Kiểm tra xem có dữ liệu nào không
+      if (fullAddress !== 'None, None, None, None') {
+        return { text: 'Địa chỉ: ' + fullAddress, style: 'subtext' };
+      }
+
+      // Nếu không có dữ liệu, trả về một mảng trống
+      return [];
+    }
+    pdfMake.createPdf(documentDefinition).download('invoice_' + tab.formData.code + '.pdf');
+
+    // --Auto Print --
+    // var pdfDoc = pdfMake.createPdf(documentDefinition);
+    // pdfDoc.getBuffer((buffer) => {
+    //     var blob = new Blob([buffer], { type: 'application/pdf' });
+    //     var url = URL.createObjectURL(blob);
+
+    //     var iframe = document.createElement('iframe');
+    //     iframe.style.display = 'none';
+    //     iframe.src = url;
+
+    //     document.body.appendChild(iframe);
+    //     iframe.contentWindow.print();
+    // });
+  };
+
+  // end ep 
+
+  //QR
+  var video = document.getElementById("scanner");
+  var scanner = new Instascan.Scanner({ video: video });
+
+  $scope.showScanner = true;
+  $scope.detectedCode = '';
+
+  $scope.startCam = function (tab) {
+    Instascan.Camera.getCameras().then(function (cameras) {
+      if (cameras.length > 0) {
+        scanner.start(cameras[0]);
+      } else {
+        console.error('No cameras found.');
+      }
+    }).catch(function (e) {
+      console.error(e);
+    });
+
+    // Create a closure to capture the 'tab' value
+    function onScan(content) {
+      $scope.$apply(function () {
+        $scope.detectedCode = content;
+        var checkSp = 0;
+        for (var i = 0; i < $scope.itemsBs.length; i++) {
+          if (parseInt($scope.detectedCode) === $scope.itemsBs[i].id) {
+            console.log(tab.formData.cart);
+            $scope.sendDetailAddRequest(tab, $scope.itemsBs[i]);
+            checkSp +=1;
+          }
+        }
+        if(checkSp===0){
+          toastr.info('Sản phẩm không tồn tại!', 'Thông báo')
+        }
+      });
+    }
+
+    // Attach the closure to the scan event
+    scanner.addListener('scan', onScan);
+    // Clean up the listener when no longer needed (e.g., leaving the page)
+    $scope.$on('$destroy', function () {
+      scanner.removeListener('scan', onScan);
+    });
+  };
+
+  //end Qr
+
+
+
 
   $document.on("click", function (event) {
     // Check if the click is outside of the input and dropdown

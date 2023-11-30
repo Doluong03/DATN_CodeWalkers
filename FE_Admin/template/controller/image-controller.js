@@ -189,7 +189,10 @@ window.ImageController = function ($scope, $http, $window, $timeout) {
       $scope.showFormUpdate = false;
     }
     $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
-    $scope.formUser = {};
+    // Tìm và thêm lớp overlay
+    var overlay = document.getElementById('overlay');
+    overlay.style.display = $scope.showForm ? 'flex' : 'none';
+    $scope.formImage = {};
   };
   // add one product
   $scope.formImage.link = null;
@@ -266,7 +269,9 @@ window.ImageController = function ($scope, $http, $window, $timeout) {
       $scope.showFormUpdate = true;
       $scope.activeItem = item;
 
-      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
+                // Tìm và thêm lớp overlay
+                var overlay = document.getElementById('overlay');
+                overlay.style.display = $scope.showFormUpdate ? 'flex' : 'none';
       // Nạp dữ liệu của dòng được chọn vào biểu mẫu
       $scope.updateFileInput = function () {
         document.getElementById('updateInput').click();
@@ -590,6 +595,23 @@ window.ImageController = function ($scope, $http, $window, $timeout) {
     angular.forEach($scope.columns, function (column) {
       column.selected = $scope.selectAll;
     });
+  };
+
+  $scope.toggleColumn = function (column) {
+    if (!column.selected) {
+      $scope.selectAll = $scope.columns.some(function (column) {
+        return column.selected;
+      });
+    } else {
+      $scope.selectAll = $scope.columns.every(function (column) {
+        return column.selected;
+      });
+    }
+  };
+
+  $scope.reLoad = function () {
+
+    $scope.hienThi(0, 5);
   };
 
   $scope.toggleColumn = function (column) {

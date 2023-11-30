@@ -1,4 +1,5 @@
 package com.example.asm_be.controller;
+
 import com.example.asm_be.entities.*;
 import com.example.asm_be.request.*;
 import com.example.asm_be.service.*;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+
 import com.example.asm_be.dto.BillResponeAdmin;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,23 +36,23 @@ public class BillController {
     @Autowired
     StaffService staffService;
 
-//    @GetMapping("/get/Staff")
-//    public List<Staff> getStaff() {
-//        return staffService.getList();
-//    }
-    @GetMapping("/get/User")
+    @GetMapping("/admin/get/Staff")
+    public List<Staff> getStaff() {
+        return staffService.getList();
+    }
+
+    @GetMapping("/admin/get/User")
     public List<Users> getUser() {
         return userService.getList();
     }
+
     @GetMapping({"/admin/Bill/select"})
-    public BillResponeAdmin getAllBill(@RequestParam(value = "pageNo",defaultValue = "0")Integer pageNo,
+    public BillResponeAdmin getAllBill(@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
                                        @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         BillResponeAdmin billResponeAdmin = new BillResponeAdmin();
-        Page<Bill> billPage = billService.getAll(pageNo,sizePage);
-
+        Page<Bill> billPage = billService.getAll(pageNo, sizePage);
         billResponeAdmin.setBillList(billPage.getContent());
         billResponeAdmin.setTotalPages(billPage.getTotalPages());
-
         return billResponeAdmin;
     }
 
@@ -86,26 +88,34 @@ public class BillController {
 
     @PostMapping("/api/addBill/{idUser}")
     public ResponseEntity<?> CreateBill(@PathVariable("idUser") int idUser) {
-        if(idUser==0){
+        if (idUser == 0) {
             Users usersNew = new Users();
             userService.save(usersNew);
-            return ResponseEntity.ok(billService.save(new Bill(),usersNew));
-        }else{
+            return ResponseEntity.ok(billService.save(new Bill(), usersNew));
+        } else {
             Users users = userService.getOne(idUser);
 
-            return ResponseEntity.ok(billService.save(new Bill(),users));
+            return ResponseEntity.ok(billService.save(new Bill(), users));
         }
     }
 
     @PostMapping("/api/addBillDt/{idBill}/{idCart}")
     public ResponseEntity<?> addBillDt(@PathVariable("idCart") int idCart, @PathVariable("idBill") int idBill) {
-        return ResponseEntity.ok(billDetailService.save( idBill, idCart));
+        return ResponseEntity.ok(billDetailService.save(idBill, idCart));
     }
+
+    @PostMapping("/api/addBillDtSl/{idBill}")
+    public ResponseEntity<?> addBillDtSl(@PathVariable("idBill") int idBill, @RequestBody List<CartDetails> cartDetailsList) {
+        return ResponseEntity.ok(billDetailService.saveSl(idBill, cartDetailsList));
+    }
+
+
     @PutMapping("/api/bill/updateBillDt/{idBill}")
-    public ResponseEntity<?> updateBillDt(@PathVariable("idBill") int idBill, @RequestBody List<BillDetailsRequest> detailsRequests ) {
-        billDetailService.update(idBill,detailsRequests);
+    public ResponseEntity<?> updateBillDt(@PathVariable("idBill") int idBill, @RequestBody List<BillDetailsRequest> detailsRequests) {
+        billDetailService.update(idBill, detailsRequests);
         return ResponseEntity.ok().build();
     }
+
     @PostMapping({"/calculateFee"})
     public ResponseEntity<?> getFeeShip(@RequestBody FeeRequest phiVanChuyenRequest) {
         try {
@@ -119,30 +129,32 @@ public class BillController {
     @PostMapping("/bill/createOrder")
     public ResponseEntity<?> createOrder(@RequestBody CreateOrder createOrder) {
         try {
-         Object obj = billService.createOrder(createOrder);
+            Object obj = billService.createOrder(createOrder);
             return ResponseEntity.ok(obj);
         } catch (Exception var) {
             var.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(var.getMessage());
         }
     }
+
     @PutMapping("/bill/updateBill")
     public ResponseEntity<?> updateBill(@RequestBody AddBillRequest billRequest) {
         try {
-            System.out.println(billRequest.toString() + "<---");
-          String url =  billService.update(billRequest);
-          return ResponseEntity.ok(url);
+            System.out.println(billRequest.getIdStaff() + "<---");
+            String url = billService.update(billRequest);
+            return ResponseEntity.ok(url);
         } catch (Exception var) {
             var.printStackTrace();
         }
         return null;
     }
+
     @PutMapping("/bill/updateBillAdmin")
     public ResponseEntity<?> updateBillAdmin(@RequestBody BillRequest billRequest) {
         try {
             System.out.println(billRequest + "<---");
             Bill bill = billService.getOne(billRequest.getBillId());
-            if(bill!= null){
+            if (bill != null) {
                 bill.setShipDate(billRequest.getShipDate());
                 bill.setDescription(billRequest.getCode());
             }

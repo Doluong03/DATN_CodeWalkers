@@ -35,6 +35,10 @@ public class BillDetails {
     @JoinColumn(name = "hoa_don_id")
     @JsonBackReference
     private Bill bill;
+
+    @Column(name = "ngay_lap")
+    private Date createdAt;
+
     @ManyToOne
     @JoinColumn(name = "chi_tiet_san_pham_id")
     private ProductDetail productDetail;

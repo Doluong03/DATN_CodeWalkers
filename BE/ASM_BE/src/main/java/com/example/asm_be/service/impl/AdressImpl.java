@@ -3,6 +3,7 @@ package com.example.asm_be.service.impl;
 import com.example.asm_be.cache.DiaChiCache;
 import com.example.asm_be.entities.Address;
 import com.example.asm_be.repositories.AddressRepository;
+import com.example.asm_be.request.AddressRequest;
 import com.example.asm_be.response.BaseResponse;
 import com.example.asm_be.response.DistrictResponse;
 import com.example.asm_be.response.ProvineResponse;
@@ -42,7 +43,11 @@ public class AdressImpl implements AddressService {
     }
 
     @Override
-    public Address update(Address address) {
+    public Address update(AddressRequest addressRequest) {
+        Address address = addressRepository.findById(addressRequest.getId()).get();
+        addressRequest.map(address);
+        address.setUserName(addressRequest.getUserName());
+        address.setUserPhone(addressRequest.getPhoneNumber());
         return addressRepository.save(address);
     }
 

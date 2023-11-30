@@ -14,10 +14,12 @@ public interface StaffService {
     Page<Staff> getAll(Integer pageNo, Integer sizePage);
 
     Staff getOne(Integer idStaff);
-
+List getList();
     boolean save(Staff staff);
 
     boolean update(Staff staff);
+
+    boolean updateAccount(Staff staff);
 
     boolean delete(Integer idStaff);
 

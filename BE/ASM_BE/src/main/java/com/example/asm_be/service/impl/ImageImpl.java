@@ -21,9 +21,8 @@ public class ImageImpl implements ImageService {
     private ImageRepository imageRepository;
 
     @Override
-    public Page<Image> getAll(Integer pageNo, Integer sizePage) {
-        Pageable imagePageable = PageRequest.of(pageNo,sizePage);
-        return imageRepository.findAll(imagePageable) ;
+    public List<Image> getAll() {
+        return imageRepository.findAllByProductIsNull() ;
     }
 
     @Override

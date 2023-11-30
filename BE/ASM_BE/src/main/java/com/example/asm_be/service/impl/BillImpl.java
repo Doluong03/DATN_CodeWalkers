@@ -6,6 +6,7 @@ import com.example.asm_be.entities.ProductDetail;
 import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.repositories.BillRepository;
+import com.example.asm_be.repositories.ProductDetailRepository;
 import com.example.asm_be.repositories.StaffRepository;
 import com.example.asm_be.repositories.UserRepository;
 import com.example.asm_be.request.*;
@@ -27,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
@@ -42,9 +44,10 @@ public class BillImpl implements BillService {
     private BillRepository billRepository;
     @Autowired
     private StaffRepository staffRepository;
-    // API
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
     // API
     private static final String FeeAPI = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee";
     private static final String CreateOrderAPI = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create";
@@ -67,28 +70,26 @@ public class BillImpl implements BillService {
     @Override
     public Page<Bill> getAllPage(Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo, sizePage);
-        return billRepository.findAllByStatusNotOrderByIdDesc(0, pageable);
+        return billRepository.findAllByStatusNotOrderByCodeDesc(0, pageable);
     }
 
     @Override
     public Page<Bill> getAllPageByStatsus(Integer pageNo, Integer sizePage, int status) {
         Pageable pageable = PageRequest.of(pageNo, sizePage);
-        return billRepository.findAllByStatusOrderByIdDesc(status, pageable);
+        return billRepository.findAllByStatusOrderByCodeDesc(status, pageable);
     }
 
     @Override
     public Bill getOne(int id) {
         return billRepository.findById(id).get();
     }
-
+    @Transactional
     @Override
     public Bill save(Bill bill, Users user) {
         bill.setCreatedAt(new Date());
         String invoiceCode = generateInvoiceCode();
         bill.setCode("HD" + invoiceCode);
         bill.setDescription("Khách lẻ");
-        Staff staff = staffRepository.findById(1).get();
-        bill.setStaff(staff);
         // Users usersRes = new Users();
         // usersRes.setName("Khách lẻ");
         // userRepository.save(usersRes);
@@ -108,17 +109,19 @@ public class BillImpl implements BillService {
             return false;
         }
     }
-
+    @Transactional
     @Override
     public String update(AddBillRequest billRequest) {
         Optional<Bill> bill = billRepository.findById(billRequest.getIdBill());
         try {
             if (bill.isPresent()) {
-                Optional<Users> users = userRepository.findById(Integer.valueOf(billRequest.getUserName()));
+                Optional<Users> users = userRepository.findById(Integer.valueOf(billRequest.getUserId()));
                 if (users.isPresent()) {
                     bill.get().setUsers(users.get());
                 }
                 billRequest.map(bill.get());
+                Staff staff = staffRepository.findById(billRequest.getIdStaff()).get();
+                bill.get().setStaff(staff);
                 billRepository.save(bill.get());
                 if (bill.get().getPaymentOptions() == Invariable.VNPAY) {
                     try {
@@ -159,7 +162,7 @@ public class BillImpl implements BillService {
         // Kiểm tra xem có hóa đơn nào trong cơ sở dữ liệu hay không
         long nextUniqueNumber = 1000; // Giá trị mặc định khi không có hóa đơn
 
-        Optional<Bill> lastBill = billRepository.findTopByOrderByIdDesc();
+        Optional<Bill> lastBill = billRepository.findTopByOrderByCodeDesc();
         if (lastBill.isPresent()) {
             // Nếu có hóa đơn trong cơ sở dữ liệu, sử dụng số cuối cùng trong mã hóa đơn
             String lastBillCode = lastBill.get().getCode();
@@ -237,6 +240,10 @@ public class BillImpl implements BillService {
                 covertJO.addProperty("quantity", item.getQuantity());
                 covertJO.addProperty("price", item.getPrice().intValue());
                 covertJO.addProperty("id", item.getProductDetail().getId());
+                Optional<ProductDetail> productDetail = productDetailRepository.findById(item.getProductDetail().getId());
+                ProductDetail prDtOut = productDetail.get();
+                prDtOut.setQuantity(prDtOut.getQuantity() - item.getQuantity());
+                productDetailRepository.save(prDtOut);
                 items.add(covertJO);
             });
             body.add("items", items);

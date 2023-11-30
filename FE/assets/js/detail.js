@@ -1,4 +1,4 @@
-app.controller("DetailController", function ($scope, $http, $routeParams, CookieService, $cookies, $anchorScroll, $filter) {
+app.controller("DetailController", function ($scope, $http, $routeParams, CookieService, $cookies, $anchorScroll, $filter,$sce) {
   $anchorScroll("pageContent");
   $scope.items = [];
   $scope.itemsBs = [];
@@ -26,6 +26,13 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     'Nâu': 'brown'
     /* Thêm các ánh xạ màu khác ở đây */
   };
+  $scope.removeSizeText = function (size) {
+    // Assuming size is a string
+    return size.replace('Size', '').trim();
+  };
+  $scope.trustedHtml = function(html) {
+    return $sce.trustAsHtml(html);
+};
   // Hàm để thay đổi nguồn ảnh
   $scope.changeImage = function (newSource) {
     $scope.currentImageSource = `assets/img/product/sp1/${newSource}`;
@@ -38,7 +45,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       $scope.totalQuantity = 0;
       $scope.itemDetail = res.data;
       console.log($scope.itemDetail, "here ")
-      $scope.img = $scope.itemDetail[0].product.listImage;
+      $scope.img = res.data[0].product.listImage;
       $scope.productId = $scope.itemDetail[0].product.id;
       $scope.currentImageSource = `assets/img/product/sp1/${$scope.itemDetail[0].product.listImage[0].link}`;
       for (var i = 0; i < $scope.itemDetail.length; i++) {
@@ -58,6 +65,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     });
   };
   $scope.totalQuantity = 0;
+  
   $scope.check = function (idColor) {
     $scope.checkPrice = false; // Mặc định, không tìm thấy giá
     $scope.price = 0; // Đặt giá thành 0
@@ -86,6 +94,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       console.log(url, config);
       $scope.totalQuantity = 0;
       $scope.selectedValue = '';
+      $scope.quantity = 1;
       for (var i = 0; i < $scope.list.length; i++) {
         if ($scope.selectedValue === '') {
           $scope.totalQuantity += $scope.list[i].quantity;
@@ -276,6 +285,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   $scope.selectedValue = '';
   // Hàm để cập nhật giá trị đã chọn
   $scope.selectSize = function (size) {
+    $scope.quantity = 1;
     $scope.totalQuantity = 0;
     $scope.selectedValue = size;
     if ($scope.selectedColor === 0) {
@@ -381,6 +391,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   $scope.quantity = 1;
   $scope.increaseQuantity = function (quantity) {
     $scope.quantity++;
+    if($scope.quantity > $scope.totalQuantity){
+      $scope.quantity = $scope.totalQuantity;
+    }
   };
 
   // Hàm xử lý khi người dùng giảm số lượng
@@ -396,6 +409,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       } else {
         $scope.quantity = quantity;
       }
+      if($scope.quantity > $scope.totalQuantity){
+        $scope.quantity = $scope.totalQuantity;
+      }
     }
   };
   $scope.onInputBlur = function (quantity) {
@@ -403,6 +419,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       $scope.quantity = 1;
     } else {
       $scope.quantity = quantity;
+    }
+      if($scope.quantity > $scope.totalQuantity){
+      $scope.quantity = $scope.totalQuantity;
     }
   };
   $scope.loadAllPrCart = function (id) {

@@ -1,11 +1,9 @@
 package com.example.asm_be.entities;
 
+import com.example.asm_be.request.UserRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import jakarta.persistence.*;
 import java.util.Date;
@@ -17,6 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Table(name = "KhachHang")
 public class Users {
     @Id
@@ -27,7 +26,6 @@ public class Users {
     @Column(name = "ten_khach_hang")
     private String name;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "ngay_sinh")
     private Date dateOfBirth;
 
@@ -64,4 +62,6 @@ public class Users {
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Cart cart;
+
+
 }

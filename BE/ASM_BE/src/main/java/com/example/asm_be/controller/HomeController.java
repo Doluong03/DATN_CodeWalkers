@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 @RestController()
 @RequestMapping("/CodeWalkers")
@@ -34,7 +35,7 @@ public class HomeController {
 //    }
 
     @GetMapping("/api/product/{id}")
-    public ResponseEntity<Collection<ProductDetail>> getProduct(@PathVariable("id") int id) {
+    public ResponseEntity<List<ProductDetail>> getProduct(@PathVariable("id") int id) {
         return ResponseEntity.ok(productDetailService.findByPrId(id));
     }
 

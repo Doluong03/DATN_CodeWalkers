@@ -38,17 +38,14 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
 }
 
   $scope.formStaff = {
-    id: "",
     name: "",
     dateOfBirth: "",
     phoneNumber: "",
-    gender: true,
+    gender: "",
     email: "",
     address: "",
-    userName : "",
-    status : true,
-    password:"",
-    image : "",
+    status : "",
+    image : ""
     // roles: {id},
   };
 
@@ -57,13 +54,11 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
     name: "",
     dateOfBirth: "",
     phoneNumber: "",
-    gender: true,
+    gender: "",
     email: "",
     address: "",
-    userName : "",
-    status : true,
-    image : "",
-    password: "",
+    status : "",
+    image : ""
     // roles: {id},
   };
 
@@ -199,16 +194,6 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
     
   };
 
-  // show form add
-  $scope.showForm = false; // Mặc định ẩn form
-  $scope.toggleForm = function () {
-    if ($scope.showFormUpdate) {
-      // Nếu form cập nhật đang mở, đóng nó trước khi mở form thêm mới
-      $scope.showFormUpdate = false;
-    }
-    $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
-    $scope.formStaff={};
-  };
   // add one product
   $scope.formStaff.image = null;
   $scope.openFileInput = function () {
@@ -218,12 +203,47 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
   $scope.fileChanged = function (element) {
     $scope.$apply(function () {
       var fileInput = document.getElementById('fileInput');
-      $scope.formStaff.image = fileInput.files[0].name;
+      if (fileInput.files.length > 0) { // Kiểm tra nếu đã chọn tệp
+        $scope.formStaff.image = fileInput.files[0].name;
+      }
     });
   };
+  $scope.convertDateFormat = function (inputDate) {
+    // Chuyển đổi chuỗi ngày thành đối tượng Date
+    var dateObject = new Date(inputDate);
+
+    // Kiểm tra xem dateObject có hợp lệ không
+    if (isNaN(dateObject.getTime())) {
+        return "Invalid Date";
+    }
+
+    // Lấy ngày, tháng và năm
+    var day = dateObject.getDate();
+    var month = dateObject.getMonth() + 1; // Tháng bắt đầu từ 0
+    var year = dateObject.getFullYear();
+
+    // Định dạng lại ngày thành "DD/MM/YYYY"
+    var formattedDate = (day < 10 ? '0' : '') + day + '/' +
+        (month < 10 ? '0' : '') + month + '/' +
+        year;
+
+    return formattedDate;
+};
+
+
   $scope.addStaff = function (event) {
     event.preventDefault();
-    console.log($scope.formStaff);
+// Kiểm tra xem form có hợp lệ không
+if (!$scope.formStaff.name
+  ||!$scope.formStaff.phoneNumber
+  ||!$scope.formStaff.gender
+  ||!$scope.formStaff.email
+  ||!$scope.formStaff.status) {
+  // Nếu form không hợp lệ, thông báo lỗi và ngăn chặn việc thực hiện tiếp
+  // console.log("Vui lòng điền đầy đủ thông tin cần thiết.");
+$scope.checkAdd=true;
+  return;
+}    console.log($scope.formStaff.dateOfBirth);
   
     Swal.fire({
       title: 'Xác nhận',
@@ -234,6 +254,7 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
+     
         $http.post(apiAdmin+"Staff" + "/insert", JSON.stringify($scope.formStaff),headers)
           .then(function (response) {
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
@@ -241,6 +262,9 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
               icon: 'success',
               title: 'Thêm thành công!',
               text: 'Thông tin nhân viên đã được thêm.'
+            }).then(() => {
+              $('#exampleModal').modal('hide'); // Đóng modal khi thông báo thành công hiển thị và người dùng ấn OK
+              $('.modal-backdrop').hide();
             });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
             $scope.formStaff = {};
@@ -267,18 +291,6 @@ $scope.formStaffUpdate = {};
 
 $scope.toggleFormUpdate = function (event, item) {
   event.preventDefault();
- 
-  if ($scope.showForm) {
-    // Nếu form thêm mới đang mở, đóng nó trước khi mở form cập nhật
-    $scope.showForm = false;
-  }
-
-  if (item && $scope.activeItem === item && $scope.showFormUpdate) {
-    // Trường hợp ấn lại dòng đã chọn và form đang hiển thị, đóng form và xóa dữ liệu
-    $scope.showFormUpdate = false;
-    $scope.activeItem = -1;
-    $scope.formStaffUpdate = {};
-  } else if (item) {
     // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
     $scope.showFormUpdate = true;
     $scope.activeItem = item;
@@ -298,27 +310,27 @@ $scope.toggleFormUpdate = function (event, item) {
    $scope.formStaffUpdate = {
     id: item.id,
     name: item.name,
-    dateOfBirth: item.dateOfBirth,
+    dateOfBirth: new Date(item.dateOfBirth ),
     phoneNumber: item.phoneNumber,
     gender: item.gender,
     email: item.email,
     address: item.address,
     image: item.image,
     status: item.status,
-    userName: item.userName,
-    password: item.password
   };
-  } else {
-    // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
-    $scope.showFormUpdate = false;
-    $scope.activeItem = null;
-    $scope.formStaffUpdate = {};
-  }
 };
 
   // update
   $scope.UpdateStaff = function (event) {
     event.preventDefault();
+    if (!$scope.formStaffUpdate.name
+      ||!$scope.formStaffUpdate.phoneNumber
+      ||!$scope.formStaffUpdate.email) {
+      // Nếu form không hợp lệ, thông báo lỗi và ngăn chặn việc thực hiện tiếp
+      // console.log("Vui lòng điền đầy đủ thông tin cần thiết.");
+    $scope.checkUpdate=true;
+      return;
+    }
     console.log($scope.formStaffUpdate);
   
     Swal.fire({
@@ -337,6 +349,9 @@ $scope.toggleFormUpdate = function (event, item) {
               icon: 'success',
               title: 'Cập nhật thành công!',
               text: 'Thông tin nhân viên đã được cập nhật.'
+            }).then(() => {
+              $('#modalUpdate').modal('hide'); // Đóng modal khi thông báo thành công hiển thị và người dùng ấn OK
+              $('.modal-backdrop').hide();
             });
             $scope.formStaffUpdate = {};
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
@@ -487,31 +502,48 @@ $scope.exportToPDF = function () {
 };
 
 $scope.exportToExcel = function () {
-  // Lấy bảng theo ID
-  var table = document.getElementById("StaffTable"); // Thay id table bảng của bạn vào đây
-
-  // Lấy dữ liệu từ bảng
+  var table = document.getElementById("StaffTable");
   var data = [];
-  for (var i = 0; i < table.rows.length; i++) {
-    var rowData = [];
-    for (var j = 0; j < table.rows[i].cells.length; j++) {
-      rowData.push(table.rows[i].cells[j].innerText);
-    }
-    data.push(rowData);
+
+  // Tạo một hàng tiêu đề với tên các cột
+  var headerRow = [];
+  for (var k = 1; k < table.rows[0].cells.length - 1; k++) {
+      if (k === 8) {
+          headerRow.push("Hình ảnh"); // Thêm tên cột hình ảnh vào hàng đầu tiên
+      } else {
+          headerRow.push(table.rows[0].cells[k].innerText);
+      }
+  }
+  data.push(headerRow);
+
+  for (var i = 1; i < table.rows.length; i++) {
+      var rowData = [];
+
+      for (var j = 1; j < table.rows[i].cells.length - 1; j++) {
+          if (j === 8) {
+              var imgElement = table.rows[i].cells[j].querySelector('img');
+              var altText = imgElement ? imgElement.alt : '';
+              rowData.push(altText);
+          } else {
+              rowData.push(table.rows[i].cells[j].innerText);
+          }
+      }
+
+      data.push(rowData);
   }
 
-  // Tạo một workbook và một worksheet
   var ws = XLSX.utils.aoa_to_sheet(data);
   var wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+  XLSX.utils.book_append_sheet(wb, ws, "Danh sách Nhân viên");
 
-  // Xuất file Excel
-  XLSX.writeFile(wb, "exported_data.xlsx");
+  XLSX.writeFile(wb, "Danh sách Nhân viên.xlsx");
 };
+
+
 
 $scope.exportToSVG = function () {
   // Lấy bảng theo ID
-  var table = document.getElementById("UserTable"); // Thay id table bảng của bạn vào đây
+  var table = document.getElementById("StaffTable"); // Thay id table bảng của bạn vào đây
 
   // Tạo một đối tượng SVG
   var svg = SVG().size(2000, 1500); // Kích thước SVG

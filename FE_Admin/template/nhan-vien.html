@@ -23,7 +23,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr ng-repeat="item in listStaff | filter:searchText">
+                        <tr ng-repeat="item in listStaff | filter:searchText" class="align-middle text-center">
                           <td>{{item.id}}</td>
                           <td>{{item.fname}} {{item.middleName}} {{item.name}}</td>
                           <td>{{ item.dateOfBirth.substring(0, 10) }}</td>

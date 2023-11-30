@@ -1,69 +1,69 @@
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Staff table</h4>
+            <h4 class="card-title">Quản lý nhân viên</h4>
 
             <div class="search-container">
-                <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a Size">
+                <input type="text" id="btn-search" ng-model="searchText" placeholder="Tìm kiếm nhân viên">
                 <i class="fa-light fa-magnifying-glass"></i>
-              </div>
-        
-        
-              <button ng-click="deleteAll()" id="delete-all" class="btn btn-danger mt-3"><i class="fa-duotone fa-trash"></i> Xoá
+            </div>
+
+
+            <button ng-click="deleteAll()" id="delete-all" class="btn btn-danger mt-3"><i
+                    class="fa-duotone fa-trash"></i> Xoá
                 Nhiều</button>
-        
-        
-              <div class="btn-group">
-        
-                 <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="toggleForm()">
-                  <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
-        
-                    <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
-                    <i class="fa-solid fa-arrows-rotate "></i>                                                                  
-                     </button>
-                       
-        
-        
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuIconButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa-solid fa-list"></i>
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton3">
-                            <label class="dropdown-item">
-                              <input type="checkbox" ng-model="selectAll" ng-change="toggleAll()"> Chọn Tất Cả
-                            </label>
-                            <hr>
-                            <label class="dropdown-item" ng-repeat="column in columns">
-                              <input type="checkbox" ng-model="column.selected" ng-change="toggleColumn(column)">
-                              {{ column.name }}
-                            </label>
-                          </div>
-                        </div>
-        
-        
-                <input type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)"
-                  style="display:none;">
-                <button type="button" id="btn-icon" class="btn btn-secondary " onclick="triggerFileInput()">
-                  <i class="fa-sharp fa-solid fa-file-import"></i>
+
+
+            <div class="btn-group">
+
+                <button type="button" id="btn-icon" class="btn btn-secondary" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
+
+                <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
+                    <i class="fa-solid fa-arrows-rotate "></i>
                 </button>
-        
-                <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
-                        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button> -->
-        
-        
+
+
+
                 <div class="btn-group">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuIconButton1"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa-solid fa-down-to-line"></i>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
-                    <a class="dropdown-item" ng-click="exportToSVG()">SVG</a>
-                    <a class="dropdown-item" ng-click="exportToExcel()">Excel</a>
-                    <a class="dropdown-item" ng-click="exportToPDF();">PDF</a>
-                  </div>
+                    <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuIconButton3"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-list"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton3">
+                        <label class="dropdown-item">
+                            <input type="checkbox" ng-model="selectAll" ng-change="toggleAll()"> Chọn Tất Cả
+                        </label>
+                        <hr>
+                        <label class="dropdown-item" ng-repeat="column in columns">
+                            <input type="checkbox" ng-model="column.selected" ng-change="toggleColumn(column)">
+                            {{ column.name }}
+                        </label>
+                    </div>
                 </div>
-        
-              </div>
+
+
+                <input type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)"
+                    style="display:none;">
+                <button type="button" id="btn-icon" class="btn btn-secondary " onclick="triggerFileInput()">
+                    <i class="fa-sharp fa-solid fa-file-import"></i>
+                </button>
+
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuIconButton1"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-down-to-line"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+                        <a class="dropdown-item" ng-click="exportToSVG()">SVG</a>
+                        <a class="dropdown-item" ng-click="exportToExcel()">Excel</a>
+                        <a class="dropdown-item" ng-click="exportToPDF();">PDF</a>
+                    </div>
+                </div>
+
+            </div>
 
 
             <!-- start table -->
@@ -72,42 +72,43 @@
                     <thead>
                         <tr>
                             <th>
-                                <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox" type="checkbox"> #
-                              </th>
-                            <th ng-show="columns[1].selected" ng-click="sortData('name')">Họ và Tên<span class="{{getSortClass('name')}}"></span></th>
+                                <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()"
+                                    class="select-checkbox" type="checkbox"> 
+                            </th>
+                            <th ng-show="columns[1].selected" ng-click="sortData('name')">Họ và Tên<span
+                                    class="{{getSortClass('name')}}"></span></th>
                             <th ng-show="columns[2].selected" ng-click="sortData('dateOfBirth')">Ngày Sinh<span
                                     class="{{getSortClass('dateOfBirth')}}"></span></th>
-                            <th ng-show="columns[3].selected" ng-click="sortData('gender')">Giới Tính<span class="{{getSortClass('gender')}}"></span>
+                            <th ng-show="columns[3].selected" ng-click="sortData('gender')">Giới Tính<span
+                                    class="{{getSortClass('gender')}}"></span>
                             </th>
-                            <th ng-show="columns[4].selected" style="text-align: center;" ng-click="sortData('address')">Địa Chỉ<span
-                                    class="{{getSortClass('address')}}"></span></th>
-                            <th ng-show="columns[5].selected" ng-click="sortData('email')">Email<span class="{{getSortClass('email')}}"></span></th>
+                            <th ng-show="columns[4].selected" style="text-align: center;"
+                                ng-click="sortData('address')">Địa Chỉ<span class="{{getSortClass('address')}}"></span>
+                            </th>
+                            <th ng-show="columns[5].selected" ng-click="sortData('email')">Email<span
+                                    class="{{getSortClass('email')}}"></span></th>
                             <th ng-show="columns[6].selected" ng-click="sortData('phoneNumber')">Số Điện Thoại<span
                                     class="{{getSortClass('phoneNumber')}}"></span></th>
-                            <th ng-show="columns[7].selected" ng-click="sortData('userName')">Username<span
-                                    class="{{getSortClass('userName')}}"></span></th>
-                            <th ng-show="columns[8].selected" ng-click="sortData('password')">Password<span
-                                    class="{{getSortClass('password')}}"></span></th>
-                            <th ng-show="columns[9].selected" ng-click="sortData('status')">Trạng Thái<span class="{{getSortClass('status')}}"></span>
+                            <th ng-show="columns[7].selected" ng-click="sortData('status')">Trạng Thái<span
+                                    class="{{getSortClass('status')}}"></span>
                             </th>
-                            <th ng-show="columns[10].selected" ng-click="sortData('image')">Hình Ảnh<span class="{{getSortClass('image')}}"></span>
+                            <th ng-show="columns[8].selected" ng-click="sortData('image')">Hình Ảnh<span
+                                    class="{{getSortClass('image')}}"></span>
                             </th>
-                            <th ng-show="columns[11].selected" ng-click="sortData('roles')">Vai trò<span class="{{getSortClass('roles')}}"></span></th>
-                            <th name="Action">Action</th>
+                            <th name="Action">Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="item in listStaff | filter:searchText | orderBy:sortColumn:reverseSort">
                             <td><input type="checkbox" ng-model="item.isSelected"></td>
                             <td ng-show="columns[1].selected">{{item.name}}</td>
-                            <td ng-show="columns[2].selected">{{item.dateOfBirth| date : "dd/MM/yyyy"}}</td>
-                            <td ng-show="columns[3].selected" style="text-align: center;">{{item.gender == true ? 'nam' : 'nữ'}}</td>
+                            <td ng-show="columns[2].selected">{{item.dateOfBirth | dateformat  }}</td>
+                            <td ng-show="columns[3].selected" style="text-align: center;">{{item.gender == true ? 'Nam'
+                                : 'Nữ'}}</td>
                             <td ng-show="columns[4].selected" style="text-align: center;">{{item.address}}</td>
                             <td ng-show="columns[5].selected">{{item.email}}</td>
                             <td ng-show="columns[6].selected">{{item.phoneNumber}}</td>
-                            <td ng-show="columns[7].selected">{{item.userName}}</td>
-                            <td ng-show="columns[8].selected">{{item.password}}</td>
-                            <td ng-show="columns[9].selected">
+                            <td ng-show="columns[7].selected">
                                 <span ng-if="item.status == true" style="margin-left: -9px;">
                                     <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i>
                                     Active
@@ -116,14 +117,14 @@
                                     <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Disable
                                 </span>
                             </td>
-                            <td ng-show="columns[10].selected" style="text-align: center"><img style="border-radius: 15%; width: 135px; height: 120px;"
-                                    src="/FE_Admin/template/images/staff/{{item.image}}" alt="{{item.image}}"> </td>
-                            <!-- <td style="text-align: center">{{item.image}}</td> -->
-                            <td ng-show="columns[11].selected">{{item.roles.nameRole}}</td>
+                            <td ng-show="columns[8].selected"><img
+                                    style="border-radius: 15%; width: 135px; height: 120px;"
+                                    src="/template/images/staff/{{item.image}}" alt="{{item.image}}"> </td>
                             <td>
                                 <a href="#" ng-click="toggleFormUpdate($event,item)"
-                                    style="text-decoration: none; color: #1545e1;"><i
-                                        class="fa-solid fa-pen-to-square "></i> </a>
+                                    style="text-decoration: none; color: #1545e1;" data-bs-toggle="modal"
+                                    data-bs-target="#modalUpdate">
+                                    <i class="fa-solid fa-pen-to-square " ></i> </a>
                                 <a href="#" ng-click="removeStaff($event,item)"
                                     style="text-decoration: none; color: #FC424A;"> <i class="fas fa-fw  fa-trash "></i>
                                 </a>
@@ -181,132 +182,151 @@
 <!-- end table -->
 
 <!-- form add -->
-<div class="col-12 grid-margin stretch-card" ng-if="showForm">
-    <div class="card">
-        <div class="card-body">
-            <form class="forms-sample">
-                <input type="hidden" class="form-control" ng-model="formStaff.id">
-                <div class="form-group">
-                    <label for="exampleInputMiddleName">Tên</label>
-                    <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Tên" required
-                        ng-model="formStaff.name">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputDate">Ngày Sinh</label>
-                    <form name="myForm" ng-controller="DateController">
-                        <input type="text" class="form-control" id="exampleInputDate"  name="dateOfBirth"
-                        ng-model="formStaff.dateOfBirth">
-                    </form>
-                    
-                </div>
-                <div class="form-group">
-                    <label for="exampleSelectGender">Giới Tính</label>
-                    <select class="form-control" id="exampleSelectGender" ng-model="formStaff.gender">
-                        <option value="" disabled>-- Chọn Giới Tính --</option>
-                        <option value="true" ng-selected="formUser.gender === 'true'">Nam</option>
-                        <option value="false" ng-selected="formUser.gender === 'false'">Nữ</option>
-                    </select>
-                </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog col-12">
+        <div class="modal-content" style="width: 1000px; right: 40%;">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm mới Nhân viên</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                <form name="myForm">
+                    <div class="form-group">
+                        <label for="validationCustom03" class="form-label">Họ và Tên</label>
+                        <input type="text" class="form-control" id="validationCustom03" ng-model="formStaff.name"
+                            name="name" maxlength="30" placeholder="Họ và Tên"
+                            ng-class="{'is-invalid': checkAdd && !formStaff.name}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputDate">Ngày Sinh</label>
+                        <input type="date" class="form-control" id="exampleInputDate" name="dateOfBirth"
+                            ng-model="formStaff.dateOfBirth">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleSelectGender">Giới Tính</label>
+                        <select class="form-select" id="exampleSelectGender" ng-model="formStaff.gender" name="gender"
+                            ng-class="{'is-invalid': checkAdd && !formStaff.gender}" required>
+                            <option value="" disabled selected hidden>Chọn giới tính</option>
+                            <option value="true" ng-selected="formStaff.gender === 'true'">Nam</option>
+                            <option value="false" ng-selected="formStaff.gender === 'false'">Nữ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail">Email</label>
+                        <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email"
+                            ng-model="formStaff.email" name="email"
+                            ng-class="{'is-invalid': checkAdd && !formStaff.email}" required>
+                        <span class="error-message text-danger form-text"
+                            ng-show="myForm.email.$error.email && (myForm.email.$dirty || myForm.$submitted)">
+                            Hãy nhập địa chỉ Email hợp lệ.
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputSDT">Số Điện Thoại</label>
+                        <input type="tel" class="form-control" id="exampleInputSDT" placeholder="Phone Number"
+                            ng-model="formStaff.phoneNumber" name="phoneNumber"
+                            ng-class="{'is-invalid': checkAdd && !formStaff.phoneNumber}" required
+                            ng-pattern="/^[0-9]{10}$/">
+                        <span class="error-message text-danger form-text"
+                            ng-show="myForm.phoneNumber.$error.pattern && (myForm.phoneNumber.$dirty || myForm.$submitted)">
+                            Hãy nhập Số điện thoại hợp lệ.
+                        </span>
+                    </div>
 
-                <div class="form-group">
-                    <label for="exampleInputEmail">Email</label>
-                    <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email" required
-                        ng-model="formStaff.email">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputSDT">Số Điện Thoại</label>
-                    <input type="text" class="form-control" id="exampleInputSDT" placeholder="Phone Number"
-                        ng-model="formStaff.phoneNumber">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputAddress">Địa Chỉ</label>
-                    <input type="text" class="form-control" id="exampleInputAddress"
-                        placeholder="VD : 123 Đường ABC, Quận 1, TP.HCM" ng-model="formStaff.address">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputMiddleName">User name</label>
-                    <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="User name" required
-                        ng-model="formStaff.userName">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword4">Mật khẩu</label>
-                    <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password"
-                        ng-model="formStaff.password">
-                </div>
-                <div class="form-group">
-                    <label for="exampleSelectGender">Ảnh</label>
-                    <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <button ng-click="openFileInput()">Choose File</button>
-                            <input type="file" id="fileInput" style="display:none"
-                                onchange="angular.element(this).scope().fileChanged(this)" />
-                            <input type="text" style="border: none ;" ng-model="formStaff.image" readonly />
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleSelectGender">Trạng Thái</label>
-                            <select class="form-control" ng-model="formSize.status">
-                                <option value=true>Đang hoạt động</option>
-                                <option value=false>Ngừng hoạt động</option>
-                            </select>
-                        </div>
-                        <button id="btn-action-add" ng-click="addStaff($event)">Submit</button>
-                        <button id="btn-action-cancel" ng-click="toggleForm()">Cancel</button>
-                    </form>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <label for="exampleInputAddress">Địa Chỉ</label>
+                        <input type="text" class="form-control" id="exampleInputAddress"
+                            placeholder="VD : 123 Đường ABC, Quận 1, TP.HCM" ng-model="formStaff.address"
+                            maxlength="200">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleSelectGender">Ảnh</label>
+                        <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <button ng-click="openFileInput()">Choose File</button>
+                                <input type="file" id="fileInput" style="display:none"
+                                    onchange="angular.element(this).scope().fileChanged(this)" />
+                                <input type="text" style="border: none ;" ng-model="formStaff.image" readonly />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleSelectGender">Trạng Thái</label>
+                        <select class="form-select" ng-model="formStaff.status"
+                            ng-class="{'is-invalid': checkAdd && !formStaff.status}" name="status" required>
+                            <option value="" disabled selected hidden>Select status</option>
+                            <option value="true">Đang hoạt động</option>
+                            <option value="false">Ngừng hoạt động</option>
+                        </select>
+                    </div>
+
+                </form>
+                
+            </div>
+            <div class="modal-footer sticky-bottom">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" ng-click="addStaff($event)">Submit</button>
+            </div>
         </div>
     </div>
 </div>
 
 
 <!-- form update -->
-<div class="col-12 grid-margin stretch-card" ng-show="showFormUpdate">
-    <div class="card">
-        <div class="card-body">
-            <form class="forms-sample">
-                <div class="form-group">
+<div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog col-12">
+        <div class="modal-content" style="width: 1000px; right: 40%;">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa Nhân viên</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                <form name="myFormUpdate">
                     <input type="hidden" class="form-control" ng-model="formStaffUpdate.id">
                     <div class="form-group">
-                        <label for="exampleInputMiddleName">Tên</label>
-                        <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Tên" required
-                            ng-model="formStaffUpdate.name">
+                        <label for="validationCustom03" class="form-label">Họ và Tên</label>
+                        <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên"
+                            ng-model="formStaffUpdate.name"
+                            ng-class="{'is-invalid': checkUpdate && !formStaffUpdate.name}" name="name" required>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputDate">Ngày Sinh</label>
-                        <input type="text" class="form-control" id="exampleInputDate" placeholder="VD : 03/10/2003"
-                            ng-model="formStaffUpdate.dateOfBirth">
+                        <input type="date" class="form-control" id="exampleInputDate" placeholder="VD : 03/10/2003"
+                            ng-model="formStaffUpdate.dateOfBirth " name="dateOfBirth" >
                     </div>
                     <div class="form-group">
                         <label for="exampleSelectGender">Giới Tính</label>
                         <select class="form-control" id="exampleSelectGender" ng-model="formStaffUpdate.gender"
-                            ng-options="gender as (gender ? 'Nam' : 'Nữ') for gender in [true, false]">
+                            ng-options="gender as (gender ? 'Nam' : 'Nữ') for gender in [true, false]" name="gender">
                         </select>
-                    </div>
 
+                    </div>
                     <div class="form-group">
                         <label for="exampleInputEmail">Email</label>
-                        <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email" required
-                            ng-model="formStaffUpdate.email">
+                        <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email"
+                            ng-model="formStaffUpdate.email" name="email"
+                            ng-class="{'is-invalid': checkUpdate && !formStaffUpdate.email}" required>
+                        <span class="error-message text-danger form-text"
+                            ng-show="myFormUpdate.email.$error.email && (myFormUpdate.email.$dirty || myFormUpdate.$submitted)">
+                            Hãy nhập địa chỉ Email hợp lệ.
+                        </span>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputSDT">Số Điện Thoại</label>
-                        <input type="text" class="form-control" id="exampleInputSDT" placeholder="Phone Number"
-                            ng-model="formStaffUpdate.phoneNumber">
+                        <input type="tel" class="form-control" id="exampleInputSDT" placeholder="Phone Number"
+                            ng-model="formStaffUpdate.phoneNumber" name="phoneNumber"
+                            ng-class="{'is-invalid': checkUpdate && !formStaffUpdate.phoneNumber}"
+                            ng-pattern="/^[0-9]{10}$/" required>
+                        <span class="error-message text-danger form-text"
+                            ng-show="myFormUpdate.phoneNumber.$error.pattern && (myFormUpdate.phoneNumber.$dirty || myFormUpdate.$submitted)">
+                            Hãy nhập Số điện thoại hợp lệ.
+                        </span>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputAddress">Địa Chỉ</label>
                         <input type="text" class="form-control" id="exampleInputAddress"
-                            placeholder="VD : 123 Đường ABC, Quận 1, TP.HCM" ng-model="formStaffUpdate.address">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputMiddleName">User name</label>
-                        <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Username"
-                            required ng-model="formStaffUpdate.userName">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword4">Mật khẩu</label>
-                        <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password"
-                            ng-model="formStaffUpdate.password">
+                            placeholder="VD : 123 Đường ABC, Quận 1, TP.HCM" ng-model="formStaffUpdate.address"
+                            maxlength="200">
                     </div>
                     <div class="form-group">
                         <label for="exampleSelectGender">Ảnh</label>
@@ -317,21 +337,25 @@
                                     onchange="angular.element(this).scope().fileChanged(this)" />
                                 <input type="text" style="border: none ;" ng-model="formStaffUpdate.image" readonly />
                             </div>
-                            <div class="form-group">
-                                <label for="exampleSelectGender">Trạng Thái</label>
-                                <select class="form-control" id="exampleSelectGender" ng-model="formStaffUpdate.status"
-                                    ng-options="status as (status ? 'Đang hoạt động' : 'Ngừng hoạt động') for status in [true, false]">
-                                </select>
-                            </div>
-                            <button id="btn-action-add" ng-click="UpdateStaff($event)">Submit</button>
-                            <button id="btn-action-cancel" ng-click="toggleFormUpdate($event, null)">Cancel</button>
                         </form>
                     </div>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <label for="exampleSelectGender">Trạng Thái</label>
+                        <select class="form-control" id="exampleSelectGender" ng-model="formStaffUpdate.status"
+                            ng-options="status as (status ? 'Đang hoạt động' : 'Ngừng hoạt động') for status in [true, false]">
+                        </select>
+                    </div>
+                   
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" ng-click="UpdateStaff($event)">Submit</button>
+            </div>
         </div>
     </div>
 </div>
+
 
 <div class="import-container">
     <div ng-show="importing" class="import-animation"></div>
@@ -347,8 +371,7 @@
 </Script>
 <script>
     angular.module('myapp', [])
-        .controller('DateController', ['$scope', function($scope) {
+        .controller('DateController', ['$scope', function ($scope) {
             $scope.formStaff.dateOfBirth = new Date();
         }]);
 </script>
-

@@ -27,12 +27,31 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: "page/order.html",
             controller: "OrderController"
         })
+        .when("/profile", {
+            templateUrl: "page/profile.html",
+            controller: "ProfileController"
+        })
         .otherwise({
             redirectTo: "/home",
         });
 
 })
-app.controller("LayOutController", function ($scope, $http, $window, $cookies, $anchorScroll) {
+app.run(function ($rootScope, $timeout) {
+    $rootScope.showLoading = false;
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
+        // Trước khi chuyển trang, hiển thị loading
+        $rootScope.showLoading = true;
+    });
+
+    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+        // Sau khi chuyển trang thành công, ẩn loading sau 3 giây
+        $timeout(function () {
+            $rootScope.showLoading = false;
+        }, 200);
+    });
+});
+
+app.controller("LayOutController", function ($scope, $http, $window, $cookies, $anchorScroll, CookieService) {
     // Logic của controller ở đây
     $anchorScroll("pageContent");
     $scope.items = [];
@@ -42,7 +61,14 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
     $scope.imgProfile = "";
     var dataUser = localStorage.getItem('userData');
     var dataUserJson = JSON.parse(dataUser);
+    $scope.onKeyPress = function (event) {
+        if (event.key === 'Enter') {
+            // Gọi hàm tìm kiếm tại đây
 
+
+            $window.location.href = "http://127.0.0.1:5501/layoutUser.html#/product";
+        }
+    };
     $scope.loadAllPrBs = function () {
         var url = `${host}/api/product_bs`;
         $http.get(url).then(res => {
@@ -54,9 +80,6 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
             console.log("Error", error);
         });
     }
-    var cartId = $cookies.get('cartId');
-    console.log("hereCook", cartId)
-
     $scope.updateCartByUser = function (idUser) {
         var url = `${host}/api/UpdateCartByUser/`;
         return $http.post(url + idUser).then(function (response) {
@@ -83,6 +106,7 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
             console.log(url + username, updateData)
             $http.post(url + username, updateData).then(function (res) {
                 $scope.imgProfile = res.data.image;
+                localStorage.setItem('userProfile', JSON.stringify(res.data));
                 localStorage.setItem('userIdData', res.data.id);
                 if (!res.data.cart) {
                     $scope.updateCartByUser(res.data.id)
@@ -104,14 +128,14 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
         var config = {
             params: { idCart: id }
         };
-
+        if (!id) {
+            return;
+        }
         $http.get(url, config).then(function (res) {
             $scope.items = res.data;
-            console.log("------>ád", $scope.items.length)
             var badge = document.querySelector(".badge");
             badge.textContent = $scope.items.length;
             // Thay đổi số trên biểu tượng
-            console.log("------>ád", $scope.items.length)
         }).catch(function (error) {
             console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
         })
@@ -137,6 +161,7 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
 
     $scope.loadAllPr = function (cartId) {
         var cartIdReq = $cookies.get('cartId');
+        if (!cartIdReq) { return }
         var url = `${host}/api/cart`;
         var config = {
             params: { idCart: cartIdReq }
@@ -177,7 +202,7 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
                     // Clear the JWT from local storage or cookies
                     clearToken();
                     // Redirect or perform other actions after successful logout
-                    window.location.href = "http://127.0.0.1:5501/login.html";
+                    window.location.href = "http://127.0.0.1:5501/sign_up.html";
                 } else {
                     console.error('Logout failed:', response.statusText);
                 }
@@ -197,6 +222,10 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
         localStorage.removeItem('userData');
         localStorage.removeItem('userCartData');
         localStorage.removeItem('userIdData');
+        CookieService.delete('billId');
+        CookieService.delete('cartId');
+        CookieService.delete('idUser');
+
 
     }
     $scope.getInfoPayment = function () {
@@ -314,6 +343,9 @@ app.factory('AuthService', function () {
 });
 app.filter('findProvinceNameById', function () {
     return function (provinces, id) {
+        if (!provinces) {
+            return
+        }
         var matchedProvince = provinces.find(function (province) {
             return province.ProvinceID === id;
         });
@@ -350,3 +382,17 @@ app.filter('findWardNameById', function () {
     };
 });
 
+// Trong AngularJS module
+app.filter('orderStatus', function () {
+    return function (input) {
+        var statusMapping = {
+            1: 'Chờ xác nhận',
+            2: 'Chờ giao hàng',
+            3: 'Đang giao hàng',
+            4: 'Hoàn thành',
+            5: 'Đã hủy'
+        };
+
+        return statusMapping[input] || 'Không xác định';
+    };
+});

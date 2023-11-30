@@ -45,7 +45,6 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             var userData = JSON.parse(userDataString);
 
             // Bạn có thể sử dụng userData ở đây
-            console.log(userData.token);
             return userData.token;
         } else {
             // Trường hợp không có dữ liệu trong localStorage
@@ -142,6 +141,9 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
     // end phân trang
     $scope.increaseQuantity = function (pr) {
         pr.quantity++; // Tăng số lượng cho sản phẩm cụ thể
+        if (pr.quantity > pr.productDetail.quantity) {
+            pr.quantity = pr.productDetail.quantity;
+        }
         pr.total += pr.price;
         $scope.updateTotalPay();
     };
@@ -162,6 +164,9 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             if (pr.quantity <= 0) {
                 $scope.removeProduct(pr);
             }
+            if (pr.quantity > pr.productDetail.quantity) {
+                pr.quantity = pr.productDetail.quantity;
+            }
             pr.total = pr.price * pr.quantity;
             $scope.updateTotalPay();
         }
@@ -171,11 +176,25 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
         if (pr.quantity <= 0) {
             $scope.removeProduct(pr);
         }
+        if (pr.quantity > pr.productDetail.quantity) {
+            pr.quantity = pr.productDetail.quantity;
+        }
+        console.log(pr.productDetail.quantity, "hereee")
         pr.total = pr.price * pr.quantity;
         $scope.updateTotalPay();
     };
 
-    //load address
+    
+    $scope.address = {};
+    $scope.getAddress = function (id) {
+        var url = `${host}/get-address-by-id/`;
+        $http.get(url + id).then(function (res) {
+            $scope.address[id] = res.data;
+        }).catch(function (error) {
+            console.log("Lỗi khi tải dia chi", error);
+        });
+    };
+
     $scope.loadProvince = function () {
         var url = `${host}/get-province`;
         $http.get(url).then(function (res) {
@@ -248,7 +267,6 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
         } else {
             apiUrl = apiOrder + "/get-all-bill" + $scope.status + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
         }
-        console.log(apiUrl)
         $http.get(apiUrl, headers).then(
             function (response) {
                 // Xử lý phản hồi thành công
@@ -256,7 +274,6 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
                 $scope.totalPage = response.data[0].totalPages;
                 var lastIndex = $scope.listOrders[$scope.listOrders.length - 1].code;
                 $scope.lastIndex = lastIndex.slice(5);
-                console.log(response.data);
                 $scope.getBadge();
             },
             function (error) {
@@ -359,8 +376,8 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
             $scope.showFormUpdate = true;
             $scope.activeItem = item;
-            $scope.totalPrices = [];
             $scope.listRes = [];
+            $scope.totalPrice= 0 ;
             // Nạp dữ liệu của dòng được chọn vào biểu mẫu
             // item.fee = item.fee.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
             for (var i = 0; i < item.listBillDetail.length; i++) {
@@ -372,9 +389,14 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
                     total: item.listBillDetail[i].productDetail.price * item.listBillDetail[i].quantity
                 });
             }
+            for (var i = 0; i < $scope.listRes.length; i++) {
+                $scope.totalPrice+= $scope.listRes[i].total;
+            }
             $scope.formNotEdit = item;
+
+
             $scope.formOrderUpdate = {
-                userName: item.users[0].id,
+                userId: item.users[0].id,
                 idBill: item.id,
                 address: item.address,
                 wardId: item.ward,
@@ -385,7 +407,10 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
                 totalPay: item.totalPay,
                 status: item.status,
                 idStaff: $scope.formNotEditAdmin.staffId,
+                userName: item.userName,
+                userPhone:item.userPhone
             };
+            $scope.promotional =  ( ($scope.totalPrice +  $scope.formOrderUpdate.fee) - $scope.formOrderUpdate.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         } else {
             // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
             $scope.showFormUpdate = false;
@@ -395,6 +420,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
     };
     $scope.updateTotalPay = function () {
         $scope.formOrderUpdate.totalPay = 0;
+        $scope.totalPrice= 0 ;
         for (var i = 0; i < $scope.listRes.length; i++) {
             $scope.formOrderUpdate.totalPay += $scope.listRes[i].total;
         }
@@ -439,14 +465,13 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
                 }
             });
             $scope.filteredUsers = $scope.listUser;
-            console.log($scope.filteredUsers, 'aaa')
         }).catch(error => {
             console.log("Error", error);
         });
     };
     $scope.loadUser();
     $scope.searchCustomers = function (tab) {
-        var searchText = $scope.formNotEdit.users[0].name.toLowerCase();
+        var searchText = $scope.formOrderUpdate.userName.toLowerCase();
         $scope.filteredUsers = $scope.listUser.filter(function (user) {
             var lowerSearchText = searchText.toLowerCase();
             return user.name.toLowerCase().includes(lowerSearchText) || (user.phoneNumber && user.phoneNumber.includes(searchText));
@@ -454,14 +479,15 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
     };
 
     $scope.selectCustomer = function (user, tab) {
-        $scope.formNotEdit.users[0].name = user.name;
-        $scope.formNotEdit.users[0].phoneNumber = user.phoneNumber;
-        $scope.formOrderUpdate.userName = user.id;
+        $scope.formOrderUpdate.userName = user.name;
+        $scope.formOrderUpdate.userPhone = user.phoneNumber;
+        $scope.formOrderUpdate.userId = user.id;
     };
     // update
     $scope.UpdateBillEdit = function (event) {
         event.preventDefault();
         if (!$scope.formOrderUpdate.userName ||
+            !$scope.formOrderUpdate.userPhone ||
             !$scope.formOrderUpdate.provinceId ||
             !$scope.formOrderUpdate.districtId ||
             !$scope.formOrderUpdate.wardId ||
@@ -550,8 +576,8 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             });
         }
         var dataToSend = {
-            toName: item.users[0].name,
-            toPhone: item.users[0].phoneNumber,
+            toName: item.userName,
+            toPhone: item.userPhone,
             toAddress: item.address,
             districtId: item.district,
             wardId: item.ward,
@@ -852,12 +878,15 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
         });
     };
     $scope.activeTab = 'all'; // Default to the 'all' tab
-
     $scope.showTab = function (tabId) {
         $scope.getBadge();
         $scope.activeTab = tabId;
-        var tab = new bootstrap.Tab(document.getElementById(tabId));
-        tab.show();
+    };
+
+
+    $scope.handleTabClick = function (status, tabId) {
+        $scope.getByStatus(status);
+        $scope.showTab(tabId);
     };
 
     $scope.UpdateStatusAll = function (status) {
@@ -870,6 +899,10 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             return false;
         }
 
+        showConfirmation(selectedItems, status);
+    };
+
+    function showConfirmation(selectedItems, status) {
         Swal.fire({
             title: "Xác nhận",
             text: "Bạn có chắc chắn muốn thực hiện hành động này?",
@@ -879,63 +912,68 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             cancelButtonText: "Không",
         }).then((result) => {
             if (result.isConfirmed) {
-                selectedItems.forEach(element => {
-                    if (status == 2) {
-                        $scope.createOrder(element);
-                    }
-                    let billId = element.id;
-                    let api = apiAdmin + "Bill/updateStatus/" + billId + "?status=" + status;
-                    console.log(element, "here item")
-                    $http.put(api, headers).then(function (response) {
-                        $scope.getByStatus(status);
-                        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-                        console.log(response);
-                        isAcp = true;
-
-                        // Switch to the tab with the updated status
-                        switch (status) {
-                            case 0:
-                                // Tất cả
-                                $scope.showTab('all');
-                                break;
-                            case 1:
-                                // Chờ xác nhận
-                                $scope.showTab('wait_acp');
-                                break;
-                            case 2:
-                                // Chờ giao hàng
-                                $scope.showTab('wait_ship');
-                                break;
-                            case 3:
-                                // Chờ giao hàng
-                                $scope.showTab('shipping');
-                                break;
-                            case 4:
-                                // Chờ giao hàng
-                                $scope.showTab('done');
-                                break;
-                            case 5:
-                                // Chờ giao hàng
-                                $scope.showTab('cancel');
-                                break;
-                            // Add cases for other status values as needed
-                        }
-                    })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                    if (isAcp) {
-                        toastr.success('Xác nhận thành công!', 'Thông báo');
-                    }
-                });
+                processActions(selectedItems, status);
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hành động khi người dùng ấn "Không"
                 Swal.fire("Hủy bỏ", "", "error");
             }
-        });
-        // Thực hiện xử lý xóa tất cả ở đây với mảng selectedItems
-    };
 
+        });
+    }
+    
+    function processActions(selectedItems, status) {
+        selectedItems.forEach(element => {
+            if (status == 3) {
+                $scope.createOrder(element);
+            }
+            let billId = element.id;
+            let api = apiAdmin + "Bill/updateStatus/" + billId + "?status=" + status;
+
+            $http.put(api, headers).then(function (response) {
+                // ... (xử lý thành công)
+                $scope.getByStatus(status);
+                $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+                console.log(response);
+                $scope.isAcp = true;
+                if ($scope.isAcp) {
+                    toastr.success('Xác nhận thành công!', 'Thông báo');
+                    // Switch to the tab with the updated status
+                    var tabToShow;
+
+                    switch (status) {
+                        case 0:
+                            // Tất cả
+                            tabToShow = 'all';
+                            break;
+                        case 1:
+                            // Chờ xác nhận
+                            tabToShow = 'wait_acp';
+                            break;
+                        case 2:
+                            // Chờ giao hàng
+                            tabToShow = 'wait_ship';
+                            break;
+                        case 3:
+                            // Chờ giao hàng
+                            tabToShow = 'shipping';
+                            break;
+                        case 4:
+                            // Chờ giao hàng
+                            tabToShow = 'done';
+                            break;
+                        case 5:
+                            // Chờ giao hàng
+                            tabToShow = 'cancel';
+                            break;
+                        // Add cases for other status values as needed
+                    }
+                    $scope.handleTabClick(status, tabToShow);
+                }
+            })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+    }
     // Lấy tên cột từ bảng HTML
     $scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
     $scope.columns = [];

@@ -66,11 +66,7 @@ public class CartController {
 
     @DeleteMapping("/api/cart/deleteCart/{cartId}")
     public ResponseEntity<?> delete(@PathVariable("cartId") int cartId) {
-        if (cartDetailService.deleteByCart(cartId)) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi xóa sản phẩm");
-        }
+        return ResponseEntity.ok(cartDetailService.deleteByCart(cartId));
     }
 
     @PutMapping("/api/updateCart")

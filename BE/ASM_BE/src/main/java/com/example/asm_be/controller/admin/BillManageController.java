@@ -2,11 +2,9 @@ package com.example.asm_be.controller.admin;
 
 import com.example.asm_be.dto.BillRespone;
 import com.example.asm_be.dto.ProductDetailsRespone;
-import com.example.asm_be.entities.Bill;
-import com.example.asm_be.entities.ProductDetail;
-import com.example.asm_be.entities.ResponObject;
-import com.example.asm_be.entities.Users;
+import com.example.asm_be.entities.*;
 import com.example.asm_be.service.BillService;
+import com.example.asm_be.service.CartService;
 import com.example.asm_be.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -29,6 +27,8 @@ public class BillManageController {
     BillService billService;
     @Autowired
     UserService userService;
+    @Autowired
+    CartService cartService;
     @Autowired
     ObjectMapper objectMapper;
 
@@ -80,12 +80,30 @@ public class BillManageController {
             Users users = userService.getOne(idUser);
             users.setName(name);
             users.setPhoneNumber(phone);
-            userService.update(users);
-        }catch (Exception e){
+            users.setStatus(true);
+            userService.save(users);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return ResponseEntity.status(HttpStatus.OK)
                 .build();
     }
+
+    @DeleteMapping({"/admin/Bill/deleteUser/{id}"})
+    public ResponseEntity<ResponeObject> deleteUser(@PathVariable("id") Integer idUsers) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Delete thanh cong", this.userService.delete(idUsers)));
+    }
+
+    @DeleteMapping("/admin/Bill/deleteCart/{cartId}")
+    public ResponseEntity<?> deleteCart(@PathVariable("cartId") int cartId) {
+        if (cartService.delete(cartId)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi xóa gio hang");
+        }
+    }
+
 }

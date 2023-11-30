@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping({"/CodeWalkers/admin"})
@@ -23,15 +24,11 @@ public class ImageController {
     private ProductService productService;
 
     @GetMapping({"/Image"})
-    public ImageRespone getAllImage(
-            @RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo
-            , @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
+    public ImageRespone getAllImage() {
         ImageRespone imageRespone = new ImageRespone();
-        Page<Image> imagePage = imageService.getAll(pageNo, sizePage);
+        List<Image> imagePage = imageService.getAll();
+        imageRespone.setImageList(imagePage);
         imageRespone.setProductList(productService.getAll());
-        imageRespone.setImageList(imagePage.getContent());
-        imageRespone.setTotalPages(imagePage.getTotalPages());
-
         return imageRespone;
     }
 
@@ -79,5 +76,4 @@ public class ImageController {
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.imageService.update(imageRes)));
     }
-
 }

@@ -117,8 +117,7 @@ table {
 
 th,
 td {
-  text-align: left;
-  padding: 8px;
+  text-align: center;
 }
 
 .sort-up::before,
@@ -342,6 +341,7 @@ input[type="checkbox"] {
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
+background-color: #000;
   }
 
   .size,
@@ -363,6 +363,8 @@ input[type="checkbox"] {
     height: 20px;
     border-radius: 50%;
     /* Tạo hình tròn */
+    border: 1px solid;
+
   }
 
   /* Hình vuông cho size */
@@ -374,6 +376,7 @@ input[type="checkbox"] {
     text-align: center;
     line-height: 25px;
     cursor: pointer;
+    border-radius: 3px;
   }
 
   /* Your existing color classes like .red, .blue, etc. can be used as is. */

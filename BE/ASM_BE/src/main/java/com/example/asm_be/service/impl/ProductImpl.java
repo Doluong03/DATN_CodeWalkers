@@ -37,13 +37,12 @@ public class ProductImpl implements ProductService {
 
 
     @Override
-    public boolean save(Product product) {
+    public Product save(Product product) {
         try {
-            this.productRepository.save(product);
-            return true;
+            return  this.productRepository.save(product);
         } catch (Exception var3) {
             var3.printStackTrace();
-            return false;
+            return null;
         }
     }
 

@@ -1,7 +1,7 @@
 <div class="col-lg-12 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Size table</h4>
+      <h4 class="card-title">Quản lý Kích Cỡ</h4>
 
 
 
@@ -17,30 +17,32 @@
 
       <div class="btn-group">
 
-         <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="toggleForm()">
+        <button type="button" id="btn-icon" class="btn btn-secondary" data-bs-toggle="modal"
+          data-bs-target="#exampleModal">
           <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
 
-            <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
-            <i class="fa-solid fa-arrows-rotate "></i>                                                                  
-             </button>
-               
+        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
+          <i class="fa-solid fa-arrows-rotate "></i>
+        </button>
 
 
-                <div class="btn-group">
-                  <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuIconButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa-solid fa-list"></i>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton3">
-                    <label class="dropdown-item">
-                      <input type="checkbox" ng-model="selectAll" ng-change="toggleAll()"> Chọn Tất Cả
-                    </label>
-                    <hr>
-                    <label class="dropdown-item" ng-repeat="column in columns">
-                      <input type="checkbox" ng-model="column.selected" ng-change="toggleColumn(column)">
-                      {{ column.name }}
-                    </label>
-                  </div>
-                </div>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuIconButton3"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-list"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton3">
+            <label class="dropdown-item">
+              <input type="checkbox" ng-model="selectAll" ng-change="toggleAll()"> Chọn Tất Cả
+            </label>
+            <hr>
+            <label class="dropdown-item" ng-repeat="column in columns">
+              <input type="checkbox" ng-model="column.selected" ng-change="toggleColumn(column)">
+              {{ column.name }}
+            </label>
+          </div>
+        </div>
 
 
         <input type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)"
@@ -49,8 +51,6 @@
           <i class="fa-sharp fa-solid fa-file-import"></i>
         </button>
 
-        <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
-                <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button> -->
 
 
         <div class="btn-group">
@@ -74,12 +74,16 @@
           <thead>
             <tr>
               <th>
-                <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox" type="checkbox"> #
+                <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox"
+                  type="checkbox">
               </th>
-              <th ng-show="columns[1].selected" ng-click="sortData('name')">Tên Kích cỡ<span class="{{getSortClass('name')}}"></span></th>
-              <th ng-show="columns[2].selected" ng-click="sortData('description')">Mô Tả<span class="{{getSortClass('description')}}"></span></th>
-              <th ng-show="columns[3].selected" ng-click="sortData('status')">Trạng Thái<span class="{{getSortClass('status')}}"></span></th>    
-              <th name="Action">Action</th>
+              <th ng-show="columns[1].selected" ng-click="sortData('name')">Tên Kích cỡ<span
+                  class="{{getSortClass('name')}}"></span></th>
+              <th ng-show="columns[2].selected" ng-click="sortData('description')">Mô Tả<span
+                  class="{{getSortClass('description')}}"></span></th>
+              <th ng-show="columns[3].selected" ng-click="sortData('status')">Trạng Thái<span
+                  class="{{getSortClass('status')}}"></span></th>
+              <th name="Action">Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -89,14 +93,15 @@
               <td ng-show="columns[2].selected" style="text-align: center;">{{item.description}}</td>
               <td ng-show="columns[3].selected" style="text-align: center;">
                 <span ng-if="item.status == true" style="margin-left: -9px;">
-                    <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i> Active
+                  <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i> Hoạt động
                 </span>
                 <span ng-if="item.status != true">
-                    <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Disable
+                  <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Ngừng hoạt động
                 </span>
-            </td>
-              <td>
-                <a href="#" ng-click="toggleFormUpdate($event, item)" style="text-decoration: none; color: #1545e1;">
+              </td>
+              <td style="text-align: center;">
+                <a href="#" ng-click="toggleFormUpdate($event, item)" style="text-decoration: none; color: #1545e1;"
+                  data-bs-toggle="modal" data-bs-target="#modalUpdate">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </a>
                 <a href="#" ng-click="removeSize($event, item)" style="text-decoration: none; color: #FC424A;">
@@ -104,11 +109,10 @@
                 </a>
               </td>
             </tr>
-            
+
           </tbody>
         </table>
-        
-        <hr>
+
         <!-- phân trang -->
         <nav id="phantrang" aria-label="Page navigation example" style="color: #000000;">
 
@@ -154,73 +158,79 @@
 <!-- end table -->
 
 <!-- form add -->
-<div class="modal-add" id="overlay">
-  <div class="col-6 grid-margin stretch-card" ng-if="showForm">
-    <div class="card">
-      <div class="card-body">
-        <form class="forms-sample" >
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog col-12">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm mới Kích cỡ</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form name="myForm">
           <div class="form-group">
-            <label for="exampleSelectGender">Tên Kích Cỡ</label>
-            <input type="text" class="form-control" ng-model="formSize.name">
+            <label for="validationCustom03" class="form-label">Tên Kích Cỡ</label>
+            <input type="text" class="form-control" id="validationCustom03" ng-model="formSize.name" name="name"
+              maxlength="20" ng-class="{'is-invalid': checkAdd && !formSize.name}" required>
           </div>
-          
           <div class="form-group">
             <label for="exampleSelectGender">Mô Tả</label>
-            <input type="text" class="form-control"  ng-model="formSize.description">
+            <input type="text" class="form-control" ng-model="formSize.description" name="description" maxlength="100">
           </div>
-      
+
           <div class="form-group">
             <label for="exampleSelectGender">Trạng Thái</label>
-            <select class="form-control" ng-model="formSize.status">
-                <option value=true>Đang hoạt động</option>
-                <option value=false>Ngừng hoạt động</option>
+            <select class="form-select" ng-model="formSize.status"
+              ng-class="{'is-invalid': checkAdd && !formSize.status}" name="status" required>
+              <option value="" disabled selected hidden>Select status</option>
+              <option value="true">Đang hoạt động</option>
+              <option value="false">Ngừng hoạt động</option>
             </select>
-        </div>
-        
-          
-
-          <button id="btn-action-add" type="submit"  ng-click="addSize($event)">Submit</button>
-          <button id="btn-action-cancel"  ng-click="toggleForm()">Cancel</button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" ng-click="addSize($event)">Submit</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-
-
-
 <!-- form update -->
-
-<div class="col-12 grid-margin stretch-card" ng-show="showFormUpdate">
-  <div class="card">
-    <div class="card-body">
-      <form class="forms-sample" >
-        <div class="form-group">
-          <input type="hidden" class="form-control" ng-model="formSizeUpdate.id">
-        </div>
-        
-        <div class="form-group">
-          <label for="exampleSelectGender">Tên Kích cỡ</label>
-          <input type="text" class="form-control" ng-model="formSizeUpdate.name">
-        </div>
-        
-        <div class="form-group">
-          <label for="exampleSelectGender">Mô Tả</label>
-          <input type="text" class="form-control" ng-model="formSizeUpdate.description">
-        </div>
-        
-        <div class="form-group">
-          <label for="exampleSelectGender">Trạng Thái</label>
-          <select class="form-control" id="exampleSelectGender" ng-model="formSizeUpdate.status"
-          ng-options="status as (status ? 'Đang hoạt động' : 'Ngừng hoạt động') for status in [true, false]">
-        </select>
+<div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog col-12">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa Kích cỡ</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        
-      <button id="btn-action-add" ng-click="UpdateSize($event)">Submit</button>
-      <button id="btn-action-cancel" ng-click="toggleFormUpdate($event, null)">Cancel</button>
+      <div class="modal-body">
+        <form name="myFormUpdate">
+          <div class="form-group">
+            <input type="hidden" class="form-control" ng-model="formSizeUpdate.id">
+          </div>
+          <div class="form-group">
+            <label for="validationCustom03" class="form-label">Tên Kích Cỡ</label>
+            <input type="text" class="form-control" ng-model="formSizeUpdate.name"
+              ng-class="{'is-invalid': checkUpdate && !formSizeUpdate.name}" name="name" maxlength="20" required>
+          </div>
+          <div class="form-group">
+            <label for="exampleSelectGender">Mô Tả</label>
+            <input type="text" class="form-control" ng-model="formSizeUpdate.description" maxlength="100">
+          </div>
 
-    </form>
+          <div class="form-group">
+            <label for="exampleSelectGender">Trạng Thái</label>
+            <select class="form-control" id="exampleSelectGender" ng-model="formSizeUpdate.status"
+              ng-options="status as (status ? 'Đang hoạt động' : 'Ngừng hoạt động') for status in [true, false]">
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" ng-click="UpdateSize($event)">Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
@@ -239,8 +249,3 @@
 </Script>
 
 
-<Script>
-  $(document).ready(function () {
-    $('.dropdown-toggle').dropdown();
-  });
-</Script>
