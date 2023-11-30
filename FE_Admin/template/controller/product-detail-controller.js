@@ -106,7 +106,7 @@ window.productDetailController = function ($scope, $http, $window) {
         console.log(response, "")
         $scope.listProductDetail = response.data.productDetailList;
         $scope.totalPage = response.data.totalPages;
-        $scope.lastIndex = $scope.listProductDetail[$scope.listProductDetail.length - 1].id;
+        // $scope.lastIndex = $scope.listProductDetail[$scope.listProductDetail.length - 1].id;
         $scope.sizeProduct = response.data.sizeList;
         $scope.colorProduct = response.data.colorList;
         $scope.materialProduct = response.data.materialList;
@@ -373,6 +373,7 @@ window.productDetailController = function ($scope, $http, $window) {
       console.log("Error", error);
     });
   }
+
   $scope.loadColor = function () {
     var url = `${host}/api/product/color`;
     $http.get(url).then(res => {
@@ -431,19 +432,19 @@ window.productDetailController = function ($scope, $http, $window) {
           if (index > 1) {
             let productDt = {
               product: {
-                id: $scope.products.filter(pr => pr.name.toLowerCase() === (row.getCell(1).value).toLowerCase().trim())[0]?.id
+                id: $scope.products.filter(pr => pr.name.toLowerCase().trim() === (row.getCell(1).value).toLowerCase().trim())[0]?.id
               },
-              material: { id: $scope.materials.filter(sz => sz.name === (row.getCell(2).value).trim())[0]?.id },
+              material: { id: $scope.materials.filter(sz => sz.name.toLowerCase().trim() === (row.getCell(2).value).toLowerCase().trim())[0]?.id },
               size: { id: $scope.sizes.filter(sz => sz.name === String(row.getCell(3).value).trim())[0]?.id },
-              color: { id: $scope.colors.filter(sz => sz.name.toLowerCase() === (row.getCell(4).value).toLowerCase().trim())[0]?.id },
+              color: { id: $scope.colors.filter(sz => sz.name.toLowerCase().trim() === (row.getCell(4).value).toLowerCase().trim())[0]?.id },
               promotional: { id: 1 },
               quantity: row.getCell(6).value,
               price: row.getCell(7).value,
               status: { id: 1 },
             };
+            console.log(productDt, '2')
             if (!$scope.listProductDetail.some(pr => pr.product.id === productDt.product.id && pr.size.id === productDt.size.id && pr.color.id === productDt.color.id)) {
               console.log($scope.checkSl)
-              console.log($scope.listProductDetail);
               $http.post(apiProductDetails + "/insert", JSON.stringify(productDt))
                 .then(function (response) {
                   if (response) {
@@ -661,8 +662,10 @@ window.productDetailController = function ($scope, $http, $window) {
   };
 
   $scope.Reload = function (itemName) {
-    let api = "http://localhost:8080/CodeWalkers/admin/ProductDetails/details?productName=" + itemName;
+    let api = "http://localhost:8080/CodeWalkers/admin/ProductDetails/details?productName=" + itemName.trim();
+    console.log(api)
     $http.get(api).then(function (res) {
+      console.log(res.data)
       $scope.data = res.data;
     });
   };

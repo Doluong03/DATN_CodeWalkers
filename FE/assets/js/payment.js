@@ -121,6 +121,9 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         $scope.loadAllPr = function () {
             var url = `${host}/api/billDt`;
             var billDt = $cookies.get('billId');
+            if(!billDt){
+                return;
+            }
             if (!dataUserCart) {
                 $scope.showOption = false;
                 var config = {
@@ -143,7 +146,6 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                 for (var i = 0; i < $scope.listBillDt.length; i++) {
                     $scope.totalPrice += $scope.calculateTotalPrice($scope.listBillDt[i]);
                     $scope.totalQuantity += $scope.listBillDt[i].quantity;
-
                 }
                 if (dataUserJson) {
                     $scope.getFeeUser();
@@ -157,13 +159,6 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         $scope.loadAllPr();
 
         $scope.totalQuantity = 0;
-        // Hàm này sẽ thực hiện sau 1 giây
-        // Tạo một hàm trả về một Promise để lấy idBillIP từ API
-
-
-        // Sử dụng Promise để lấy idBillIP và sau đó gọi hàm loadBillDt
-
-        // Các dòng code sau đây sẽ thực hiện trước khi có kết quả từ Promise
         console.log("Chờ ID Bill IP...");
         console.log('Hàm này được gọi sau 1 giây');
 

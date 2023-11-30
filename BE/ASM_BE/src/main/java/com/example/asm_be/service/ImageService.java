@@ -9,7 +9,7 @@ import java.util.UUID;
 @Service
 public interface ImageService {
 
-    Page<Image> getAll(Integer pageNo, Integer sizePage);
+    List<Image> getAll();
 
     Image getOne(Integer idImage);
 

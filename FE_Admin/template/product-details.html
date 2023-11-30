@@ -173,7 +173,7 @@
                 <div class="form-group">
                   <label for="exampleInputMiddleName">Tên Sản Phẩm</label>
                   <select class="form-control" id="exampleInputMiddleName" required ng-model="formProductDetail.product.id"
-                    ng-options="product.id as product.name for product in Product">
+                    ng-options="product.id as product.name for product in products">
                     <option value="" disabled
                       ng-selected="formProductDetail.product.id === '' || !formProductDetail.product.id">
                       -- Chọn Tên Sản Phẩm --
@@ -394,7 +394,7 @@
               </thead>
               <tbody class="table-hover">
                 <tr ng-repeat="item in data | filter:searchText | orderBy:sortColumn:reverseSort"
-                  ng-if="item.status.name === 'Đang hoạt động'">
+                 >
                   <td>{{item.id}}</td>
                   <td>{{item.product.name}}</td>
                   <td>{{item.quantity}}</td>

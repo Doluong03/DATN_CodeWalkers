@@ -132,9 +132,6 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
         // Xử lý phản hồi thành công
         $scope.listProduct = response.data.productList;
         $scope.totalPage = response.data.totalPages;
-        $scope.lastIndex = $scope.istProduct[$scope.listProduct.length - 1].id;
-        console.log(response.data);
-        console.log(response.data.totalPages);
       },
       function (error) {
         // Xử lý lỗi
@@ -289,6 +286,22 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
   $scope.activeItem = -1;
   $scope.formProductUpdate = {};
 
+  $scope.changeImg = function () {
+
+        $scope.selectedImages.forEach(element => {
+            $scope.listCheckBox.push(element);
+            // Use map instead of filter to create a new array with updated selected property
+            $scope.listCheckBox = $scope.listCheckBox.map(img => {
+                if (img.id === element.id) {
+                    img.selected = true;
+                }
+                return img;
+            });
+        });
+
+};
+
+
   $scope.toggleFormUpdate = function (event, item) {
     event.preventDefault();
 
@@ -355,6 +368,11 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       if (result.isConfirmed) {
         $http.put(apiAdmin + "Product/update", JSON.stringify($scope.formProductUpdate), headers)
           .then(function (response) {
+            $scope.selectedImages.forEach(element => {
+              let imageId = element.id;
+              $scope.UpdateImage(imageId, $scope.formProductUpdate.id);
+              isDeleted = true;
+            });
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
             Swal.fire({
               icon: 'success',
@@ -384,12 +402,14 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
 
 
   $scope.hienThiCheckBox = function () {
-    let apiUrl = apiImage + "?pageNo=" + 0 + "&sizePage=" + 1000;
+    let apiUrl = apiImage;
     $http.get(apiUrl, headers).then(
       function (response) {
+
         // Xử lý phản hồi thành công
         $scope.listCheckBox = response.data.imageList;
-        console.log("here",)
+        console.log("here1",$scope.listCheckBox)
+
       },
       function (error) {
         // Xử lý lỗi
@@ -473,10 +493,14 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
         worksheet.eachRow((row, index) => {
           if (index > 1) {
             let product = {
-              name: row.getCell(1).value,
-              description: row.getCell(2).value,
-              status: row.getCell(3).value,
+              code: row.getCell(1).value,
+              name: row.getCell(2).value,
+              description: row.getCell(3).value,
+              brands: { id: $scope.brands.filter(sz => sz.name.toLowerCase().trim() === (row.getCell(4).value).toLowerCase().trim())[0]?.id },
+              category: { id: $scope.category.filter(sz => sz.name.toLowerCase().trim() === (row.getCell(5).value).toLowerCase().trim())[0]?.id },
+              status:1,
             };
+            console.log(product)
             $http
               .post(
                 apiAdmin + "Product" + "/insert",
@@ -484,6 +508,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
                 headers
               )
               .then(function (response) {
+                console.log(response)
                 if (!$scope.errorShown) {
                   Swal.fire({
                     icon: "success",
@@ -525,7 +550,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       }
     };
     reader.readAsArrayBuffer(files[0]);
-    $scope.hienThi($scope.pageNo);
+    $scope.hienThi($scope.pageNo, $scope.sizePage);
   };
 
   function formatDate(date) {

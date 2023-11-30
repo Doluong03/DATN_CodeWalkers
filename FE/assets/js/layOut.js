@@ -80,9 +80,6 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
             console.log("Error", error);
         });
     }
-    var cartId = $cookies.get('cartId');
-    console.log("hereCook", cartId)
-
     $scope.updateCartByUser = function (idUser) {
         var url = `${host}/api/UpdateCartByUser/`;
         return $http.post(url + idUser).then(function (response) {
@@ -164,6 +161,7 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
 
     $scope.loadAllPr = function (cartId) {
         var cartIdReq = $cookies.get('cartId');
+        if (!cartIdReq) { return }
         var url = `${host}/api/cart`;
         var config = {
             params: { idCart: cartIdReq }
@@ -201,11 +199,10 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
         })
             .then(response => {
                 if (response.ok) {
-                    CookieService.delete('billId');
                     // Clear the JWT from local storage or cookies
                     clearToken();
                     // Redirect or perform other actions after successful logout
-                    window.location.href = "http://127.0.0.1:5501/login.html";
+                    window.location.href = "http://127.0.0.1:5501/sign_up.html";
                 } else {
                     console.error('Logout failed:', response.statusText);
                 }
@@ -225,6 +222,10 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
         localStorage.removeItem('userData');
         localStorage.removeItem('userCartData');
         localStorage.removeItem('userIdData');
+        CookieService.delete('billId');
+        CookieService.delete('cartId');
+        CookieService.delete('idUser');
+
 
     }
     $scope.getInfoPayment = function () {

@@ -91,6 +91,7 @@ app.controller(
                 console.log("Lỗi khi tải danh sách kích thước", error);
             });
         }
+        $scope.loadProvince();
         $scope.districtsByProvince = {};
         $scope.loadDistrictUser = function (id) {
             var url = `${host}/get-district/`;
@@ -142,13 +143,18 @@ app.controller(
         $scope.getAddressUser = function () {
             var url = `${host}/get-address/`;
             var idUser = dataUserJson;
+
             $http.get(url + idUser).then(function (res) {
                 $scope.addressUser = res.data;
-                console.log($scope.addressUser, 'dc');
-                if (!$scope.selectedAddress) {
-                    $scope.selectedAddress = $scope.addressUser[$scope.addressUser.length - 1];
-                    $scope.idAddressUser = $scope.selectedAddress.Id;
+                if($scope.addressUser.length === 0){
+                    return;
                 }
+                console.log($scope.addressUser, 'dc');
+                    if (!$scope.selectedAddress) {
+                        $scope.selectedAddress = $scope.addressUser[$scope.addressUser.length - 1];
+                        $scope.idAddressUser = $scope.selectedAddress.Id;
+                    }
+                
             }).catch(function (error) {
                 console.log("Lỗi khi tải Danh sách địa chỉ", error);
             });
@@ -268,12 +274,12 @@ app.controller(
 
         $scope.saveAddress = function () {
             if (
-                !$scope.formAddress.userName || 
-                !$scope.formAddress.phoneNumber || 
+                !$scope.formAddress.userName ||
+                !$scope.formAddress.phoneNumber ||
                 !$scope.formAddress.addressDetail ||
-                !$scope.formAddress.ward || 
-                !$scope.formAddress.province || 
-                !$scope.formAddress.district 
+                !$scope.formAddress.ward ||
+                !$scope.formAddress.province ||
+                !$scope.formAddress.district
             ) {
                 $scope.checkAddress = true;
                 return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
@@ -384,7 +390,7 @@ app.directive('fileInput', ['$parse', function ($parse) {
                 event.preventDefault(); // Ngăn chặn hành vi mặc định
                 var files = event.target.files;
                 ngModelCtrl.$setViewValue(files[0].name);
-                scope.uploadImage(files[0], event);
+                // scope.uploadImage(files[0], event);
             });
         }
     };
