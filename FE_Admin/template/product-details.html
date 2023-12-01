@@ -214,21 +214,6 @@
                   </select>
                 </div>
     
-                <div class="form-group">
-                  <label for="exampleInputPromotion">Khuyến Mại</label>
-                  <select class="form-control" id="exampleInputPromotion" ng-model="formProductDetail.promotional.id"
-                    ng-options="promotion.id as promotion.name for promotion in promotionalProduct">
-                    <option value="" disabled selected>-- Chọn Khuyến Mại --</option>
-                  </select>
-                </div>
-    
-                <div class="form-group">
-                  <label for="exampleInputStatus">Trạng Thái</label>
-                  <select class="form-control" id="exampleInputStatus" ng-model="formProductDetail.status.id"
-                    ng-options="status.id as status.name for status in statusProduct">
-                    <option value="" disabled selected>-- Chọn Trạng Thái --</option>
-                  </select>
-                </div>
     
                 <button id="btn-action-add" ng-click="addUser($event)">Submit</button>
                 <button id="btn-action-cancel" ng-click="toggleForm()">Cancel</button>
@@ -301,13 +286,6 @@
                   </select>
                 </div>
     
-                <div class="form-group">
-                  <label for="exampleInputPromotion">Khuyến Mại</label>
-                  <select class="form-control" id="exampleInputPromotion" ng-model="formPdDetailUpdate.promotional.id"
-                    ng-options="promotion.id as promotion.name for promotion in promotionalProduct">
-                    <option value="" disabled selected>-- Chọn Khuyến Mại --</option>
-                  </select>
-                </div>
     
                 <div class="form-group">
                   <label for="exampleInputStatus">Trạng Thái</label>

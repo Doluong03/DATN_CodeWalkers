@@ -24,7 +24,6 @@ window.productDetailController = function ($scope, $http, $window) {
     material: { id: "" },
     size: { id: "" },
     color: { id: "" },
-    promotional: { id: "" },
     status: { id: "" },
   };
 
@@ -425,7 +424,7 @@ window.productDetailController = function ($scope, $http, $window) {
       try {
         var workbook = new ExcelJS.Workbook();
         await workbook.xlsx.load(reader.result);
-        const worksheet = workbook.getWorksheet("Sheet1");
+        const worksheet = workbook.getWorksheet("Sheet2");
         worksheet.eachRow((row, index) => {
           $scope.checkSl = 0;
           console.log(row.getCell(3).value)
@@ -437,11 +436,13 @@ window.productDetailController = function ($scope, $http, $window) {
               material: { id: $scope.materials.filter(sz => sz.name.toLowerCase().trim() === (row.getCell(2).value).toLowerCase().trim())[0]?.id },
               size: { id: $scope.sizes.filter(sz => sz.name === String(row.getCell(3).value).trim())[0]?.id },
               color: { id: $scope.colors.filter(sz => sz.name.toLowerCase().trim() === (row.getCell(4).value).toLowerCase().trim())[0]?.id },
-              promotional: { id: 1 },
               quantity: row.getCell(6).value,
               price: row.getCell(7).value,
               status: { id: 1 },
             };
+            if (!productDt.product || !productDt.material || !productDt.size || !productDt.color) {
+              productDt.statusstatus.id = 0;
+            }
             console.log(productDt, '2')
             if (!$scope.listProductDetail.some(pr => pr.product.id === productDt.product.id && pr.size.id === productDt.size.id && pr.color.id === productDt.color.id)) {
               console.log($scope.checkSl)

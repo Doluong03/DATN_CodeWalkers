@@ -2,6 +2,7 @@
   <div class="card">
     <div class="card-body">
       <h4 class="card-title">Quản lý sản phẩm </h4>
+      <img src="../" class="image-pr">
 
       <!-- <button class="btn-primary"  id="add-icon" ng-click="toggleForm()" >
                   <i class="fa-solid fa-plus fa-sx" style="color: #ffffff;"></i>
@@ -415,9 +416,15 @@
             <input type="checkbox" ng-model="image.selected" ng-change="updateSelection(image)"
               class="checkboxImg ms-2">
             <img src="/template/images/sp1/{{image.link}}" alt="{{item.link}}" class="image-pr">
+
           </label>
           <p>{{item.link}}</p>
         </div>
+        <form id="imageUploadForm">
+          <input type="file" id="image" name="image" accept="image/*" multiple style="display:none;">
+          <br>
+          <button type="button" ng-click="openFilePicker()" class="btn btn-uotline-primary ">Upload Image</button>
+      </form>
       </div>
 
       <!-- Modal Footer -->

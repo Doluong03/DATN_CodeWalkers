@@ -11,7 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
 
@@ -76,4 +81,19 @@ public class ImageController {
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.imageService.update(imageRes)));
     }
+
+    @PostMapping("/uploadImg")
+    public ResponseEntity<String> handleFileUpload(@RequestPart("images") MultipartFile[] files) throws IOException {
+        if (files != null && files.length > 0) {
+            imageService.processImageDirectory(files);
+
+            // Return a success response
+            return ResponseEntity.ok("Images uploaded successfully");
+        } else {
+            // Handle the case where no file is provided
+            return ResponseEntity.badRequest().body("No files provided");
+        }
+    }
+
+
 }

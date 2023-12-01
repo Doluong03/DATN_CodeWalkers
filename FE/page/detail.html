@@ -1,6 +1,6 @@
 <!-- Feature Tabs -->
 
-<div class="row feture-tabs offset-2 mt-5" data-aos="fade-up">
+<div class="row feture-tabs offset-1 mt-5" data-aos="fade-up">
   <div class="col-lg-1">
     <div data-testid="ThumbnailListContainer" class="css-r3as8n" ng-repeat="item in img">
       <div data-testid="Thumbnail-0" class="d-sm-flx flx-jc-sm-fs flx-ai-sm-fe css-1mhv7vq">
@@ -17,8 +17,8 @@
       </div>
     </div>
   </div>
-  <div class="col-lg-4 prImg">
-    <img ng-src="{{ currentImageSource }}" class="img-fluid " alt="{{currentImageSource}}" data-bs-toggle="modal"
+  <div class="col-lg-5  prImg">
+    <img ng-src="{{ currentImageSource }}" class="img-fluid " alt="{{itemDetail[0].product.name}}" data-bs-toggle="modal"
       data-bs-target="#exampleModal">
   </div>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -48,7 +48,7 @@
       </div>
     </div>
   </div>
-  <div class="col-lg-5 mt-2">
+  <div class="col-lg mt-2">
     <h3>{{itemDetail[0].product.name}}</h3>
     <!-- <h5>{{itemDetail.category.name}}</h5> -->
     <br>
@@ -177,7 +177,7 @@
 
 
 </div>
-<div class="like mb-5 " style="width: 83%;margin-left: 200px;">
+<div class="like mb-5 " style="width: 1400px;margin-left: 100px;">
   <div class="row">
     <div class="col-lg">You Might Also Like</div>
     <div class="col-lg text-end">

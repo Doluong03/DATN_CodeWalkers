@@ -5,166 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89fb8e46-4ef5-470f-91b8-dd71389cb16c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/admin/test.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/payload/request/userSignUpRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/AccountImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ProductdetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ProductdetailController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/SanPhamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/SanPhamController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ImageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ImageRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/ImageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/admin/test.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/admin/test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/CartDetailsId.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Staff_Role.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ImageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/ImageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/RoleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/RoleService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/AuthServiceIplm.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/AuthServiceIplm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ImageImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ImageImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/LoginController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/ProductdetailController.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/ProductdetailController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/SanPhamController.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/SanPhamController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/ImageRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/ImageRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/AuthService.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/AuthService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/ImageService.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/ImageService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/AuthServiceIplm.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/AuthServiceIplm.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ImageImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ImageImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/assets/img/product/sp1/1w_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/assets/js/detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/detail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/assets/js/layOut.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/layOut.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/assets/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/assets/js/payment.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/payment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/assets/js/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/layoutUser.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/layoutUser.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/page/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/page/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/color-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/color-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/product-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/product-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/product-detail-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/product-detail-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/1w_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/af_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/af_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/af_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/af_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/am97by_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/am97by_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/am97by_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/bm77v_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/bm77v_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/bm77v_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/bm77v_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/cmft2_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/cmft2_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dl_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dl_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dl_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dl_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dlby_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dlby_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dlby_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dlby_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dlr_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dlr_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dlr_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/dlr_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/efo107_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/efo107_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/efo107_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/efo107_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/efo1_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/efo1_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/efo1_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/efo1_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/ehse_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/ehse_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/ehse_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/ehse_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/flm_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/flm_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/flm_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/flm_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/gf_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/gf_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/gf_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/gf_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/gt_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/gt_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/gt_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/hmm_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/hmm_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/jb_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/jb_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/jb_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/jb_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/jd1l_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/jd1l_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/jd1m_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/jdst90_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/kd_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/kd_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/kd_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/lv8_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/lv8_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/lv8_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/lv8_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/m1_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/m1_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/m1_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/m1_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/m270_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/m270_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/m270_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/m270_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/m97_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/m97_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/md_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/md_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/md_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/md_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/ogg_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/ogg_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/ogg_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/ogg_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/progt_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/progt_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/progt_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/rvlt6_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/s25_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/s25_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/s25_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/s25_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/sd_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/sd_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/sd_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/sd_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/se_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/se_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/se_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/se_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/sf_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/sf_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/sf_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/sf_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/swdc_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/swdc_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/swdc_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/swdc_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/th_1.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/th_2.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/th_3.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/th_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/images/sp1/zgm_4.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/order_manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/order_manage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/product-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/product-details.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/product.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dataExcel/imp_chat_lieu.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dataExcel/imp_chat_lieu.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dataExcel/imp_chi_tiet_san_pham.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dataExcel/imp_chi_tiet_san_pham.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dataExcel/imp_kich_thuoc.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dataExcel/imp_kich_thuoc.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dataExcel/imp_nhà_sản_suất.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dataExcel/imp_nhà_sản_suất.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dataExcel/imp_phan_loai.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dataExcel/imp_phan_loai.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dataExcel/imp_san_pham.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dataExcel/imp_san_pham.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dataExcel/imp_thuong_hieu.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dataExcel/imp_thuong_hieu.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../database_v2.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../database_v2.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/RoleIplm.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/RoleIplm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -507,7 +359,8 @@
       <workItem from="1701286073457" duration="758000" />
       <workItem from="1701289019601" duration="2940000" />
       <workItem from="1701292742049" duration="10053000" />
-      <workItem from="1701334462759" duration="949000" />
+      <workItem from="1701334462759" duration="2140000" />
+      <workItem from="1701395668016" duration="14595000" />
     </task>
     <servers />
   </component>

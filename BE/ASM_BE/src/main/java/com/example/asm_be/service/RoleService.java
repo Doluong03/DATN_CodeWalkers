@@ -16,4 +16,5 @@ public interface RoleService {
 
     Optional<Role> findByNameRole(String roleName);
 
+    boolean save(Role role);
 }

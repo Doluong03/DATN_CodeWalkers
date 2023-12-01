@@ -47,7 +47,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       console.log($scope.itemDetail, "here ")
       $scope.img = res.data[0].product.listImage;
       $scope.productId = $scope.itemDetail[0].product.id;
-      $scope.currentImageSource = `assets/img/product/sp1/${$scope.itemDetail[0].product.listImage[0].link}`;
+      $scope.currentImageSource = `assets/img/product/sp1/${$scope.itemDetail[0].product.mainImg}`;
       for (var i = 0; i < $scope.itemDetail.length; i++) {
         $scope.sizesPr.push({
           name: $scope.itemDetail[i].size.name,
