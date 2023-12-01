@@ -1,4 +1,4 @@
-app.controller("DetailController", function ($scope, $http, $routeParams, CookieService, $cookies, $anchorScroll, $filter) {
+app.controller("DetailController", function ($scope, $http, $routeParams, CookieService, $cookies, $anchorScroll, $filter,$sce) {
   $anchorScroll("pageContent");
   $scope.items = [];
   $scope.itemsBs = [];
@@ -26,6 +26,13 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     'Nâu': 'brown'
     /* Thêm các ánh xạ màu khác ở đây */
   };
+  $scope.removeSizeText = function (size) {
+    // Assuming size is a string
+    return size.replace('Size', '').trim();
+  };
+  $scope.trustedHtml = function(html) {
+    return $sce.trustAsHtml(html);
+};
   // Hàm để thay đổi nguồn ảnh
   $scope.changeImage = function (newSource) {
     $scope.currentImageSource = `assets/img/product/sp1/${newSource}`;
@@ -38,9 +45,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       $scope.totalQuantity = 0;
       $scope.itemDetail = res.data;
       console.log($scope.itemDetail, "here ")
-      $scope.img = $scope.itemDetail[0].product.listImage;
+      $scope.img = res.data[0].product.listImage;
       $scope.productId = $scope.itemDetail[0].product.id;
-      $scope.currentImageSource = `assets/img/product/sp1/${$scope.itemDetail[0].product.listImage[0].link}`;
+      $scope.currentImageSource = `assets/img/product/sp1/${$scope.itemDetail[0].product.mainImg}`;
       for (var i = 0; i < $scope.itemDetail.length; i++) {
         $scope.sizesPr.push({
           name: $scope.itemDetail[i].size.name,

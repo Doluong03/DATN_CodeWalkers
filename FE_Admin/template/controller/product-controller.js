@@ -132,9 +132,6 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
         // Xử lý phản hồi thành công
         $scope.listProduct = response.data.productList;
         $scope.totalPage = response.data.totalPages;
-        $scope.lastIndex = $scope.istProduct[$scope.listProduct.length - 1].id;
-        console.log(response.data);
-        console.log(response.data.totalPages);
       },
       function (error) {
         // Xử lý lỗi
@@ -289,6 +286,22 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
   $scope.activeItem = -1;
   $scope.formProductUpdate = {};
 
+  $scope.changeImg = function () {
+
+    $scope.selectedImages.forEach(element => {
+      $scope.listCheckBox.push(element);
+      // Use map instead of filter to create a new array with updated selected property
+      $scope.listCheckBox = $scope.listCheckBox.map(img => {
+        if (img.id === element.id) {
+          img.selected = true;
+        }
+        return img;
+      });
+    });
+
+  };
+
+
   $scope.toggleFormUpdate = function (event, item) {
     event.preventDefault();
 
@@ -355,6 +368,11 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       if (result.isConfirmed) {
         $http.put(apiAdmin + "Product/update", JSON.stringify($scope.formProductUpdate), headers)
           .then(function (response) {
+            $scope.selectedImages.forEach(element => {
+              let imageId = element.id;
+              $scope.UpdateImage(imageId, $scope.formProductUpdate.id);
+              isDeleted = true;
+            });
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
             Swal.fire({
               icon: 'success',
@@ -384,12 +402,14 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
 
 
   $scope.hienThiCheckBox = function () {
-    let apiUrl = apiImage + "?pageNo=" + 0 + "&sizePage=" + 1000;
+    let apiUrl = apiImage;
     $http.get(apiUrl, headers).then(
       function (response) {
+
         // Xử lý phản hồi thành công
         $scope.listCheckBox = response.data.imageList;
-        console.log("here",)
+        console.log("here1", $scope.listCheckBox)
+
       },
       function (error) {
         // Xử lý lỗi
@@ -443,7 +463,37 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
   };
   // end update
 
+  $scope.fileInput = [];
 
+  $scope.openFilePicker = function () {
+      document.getElementById('image').click();
+  };
+
+  document.getElementById('image').addEventListener('change', function () {
+      const fileInput = document.getElementById('image');
+      for (let i = 0; i < fileInput.files.length; i++) {
+          const formData = new FormData();
+          if (fileInput.files.length > 0) {
+              formData.append('images', fileInput.files[i]);
+              // You can also append other data to the formData if needed
+              // formData.append('name', document.getElementById('name').value);
+              $http.post('http://localhost:8080/CodeWalkers/admin/uploadImg', formData, {
+                  transformRequest: angular.identity,
+                  headers: {
+                      'Content-Type': undefined
+                  }
+              })
+                  .then(function (response) {
+                      console.log('Success:', response);
+                  })
+                  .catch(function (error) {
+                      console.error('Error:', error.data);
+                  });
+          } else {
+              console.error('No file selected');
+          }
+      }
+  });
 
 
 
@@ -460,8 +510,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
     }
 
     $scope.importInProgress = true; // Set the flag to true
-
-    $scope.importing = true; // Bắt đầu animation
+    $scope.importing = true; // Start animation
     $scope.errorShown = false; // Reset the error flag
 
     var reader = new FileReader();
@@ -471,41 +520,66 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
         await workbook.xlsx.load(reader.result);
         const worksheet = workbook.getWorksheet("Sheet1");
         worksheet.eachRow((row, index) => {
-          if (index > 1) {
-            let product = {
-              name: row.getCell(1).value,
-              description: row.getCell(2).value,
-              status: row.getCell(3).value,
-            };
-            $http
-              .post(
-                apiAdmin + "Product" + "/insert",
-                JSON.stringify(product),
-                headers
-              )
-              .then(function (response) {
-                if (!$scope.errorShown) {
-                  Swal.fire({
-                    icon: "success",
-                    title: "Ok",
-                    text: "Đã import thành công",
-                  });
-                }
-                $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-              })
-              .catch(function (error) {
-                if (!$scope.errorShown) {
-                  Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Đã xảy ra lỗi!",
-                  });
-                  console.log(error);
-                  $scope.errorShown = true; // Set the error flag
-                }
-              });
+          if (index <= 1) {
+            // Skip the header row
+            return;
           }
+
+          let product = {
+            code: row.getCell(1).value,
+            name: row.getCell(2).value,
+            description: row.getCell(3).value,
+            brands: { id: findBrandId(row.getCell(4).value) || null},
+            category: { id: findCategoryId(row.getCell(5).value) || null },
+            status: 1,
+          };
+
+          console.log(product);
+
+          if (!product.brands || !product.category) {
+            product.status = 0;
+          }
+
+          $http.post(apiAdmin + "Product" + "/insert", JSON.stringify(product), headers)
+            .then(handleSuccess)
+            .catch(handleError);
         });
+
+        function findBrandId(brandName) {
+          return $scope.brands.find(sz => sz.name.toLowerCase().trim() === brandName.toLowerCase().trim())?.id;
+        }
+
+        function findCategoryId(categoryName) {
+          return $scope.category.find(sz => sz.name.toLowerCase().trim() === categoryName.toLowerCase().trim())?.id;
+        }
+
+        function handleSuccess(response) {
+          console.log(response);
+
+          if (!$scope.errorShown) {
+            Swal.fire({
+              icon: "success",
+              title: "Ok",
+              text: "Đã import thành công",
+            });
+          }
+
+          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+        }
+
+        function handleError(error) {
+          if (!$scope.errorShown) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Đã xảy ra lỗi!",
+            });
+
+            console.log(error);
+            $scope.errorShown = true; // Set the error flag
+          }
+        }
+
       } catch (error) {
         if (!$scope.errorShown) {
           Swal.fire({
@@ -517,16 +591,18 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
           $scope.errorShown = true; // Set the error flag
         }
       } finally {
-        $scope.importing = false; // Kết thúc animation
+        $scope.importing = false; // End animation
         $scope.importInProgress = false; // Reset the flag
-        $scope.$apply(); // Cập nhật scope
-        // Xóa file sau khi đã xử lý xong
+        $scope.$apply(); // Update scope
+        // Clear the file input after processing
         document.getElementById("input-file").value = "";
       }
     };
+
     reader.readAsArrayBuffer(files[0]);
-    $scope.hienThi($scope.pageNo);
+    $scope.hienThi($scope.pageNo, $scope.sizePage);
   };
+
 
   function formatDate(date) {
     // Giả sử ngày đang trong định dạng ISO 8601

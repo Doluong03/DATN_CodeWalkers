@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Webleb</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/sign_up.css">
+</head>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<body ng-app="login" ng-controller="loginController">
+<div id="stars"></div>
+<div id="stars2"></div>
+<div id="stars3"></div>
+<div class="section">
+  <div class="container">
+    <div class="row full-height justify-content-center">
+      <div class="col-12 text-center align-self-center py-5">
+        <div class="section pb-5 pt-5 pt-sm-2 text-center">
+          <h6 class="mb-0 pb-3"><span>Đăng nhập </span><span>Đăng ký</span></h6>
+                <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+                <label for="reg-log"></label>
+          <div class="card-3d-wrap mx-auto">
+            <div class="card-3d-wrapper">
+              <div class="card-front">
+                <div class="center-wrap">
+                  <div class="section text-center">
+                    <h4 class="mb-4 pb-3">Đăng nhập</h4>
+                    <div class="form-group">
+                      <input type="text" class="form-style" placeholder="Tên đăng nhập"ng-model="loginRequest.userName" >
+                      <i class="input-icon uil uil-at"></i>
+                    </div>	
+                    <div class="form-group mt-2">
+                      <input type="password" class="form-style" placeholder="Mật khẩu"  ng-model="loginRequest.password">
+                      <i class="input-icon uil uil-lock-alt"></i>
+                    </div>
+                    <a href="" ng-click="login($event,loginRequest)" class="btn mt-4 " >Đăng nhập</a>
+                    <p class="mb-0 mt-4 text-center"><a href="https://www.web-leb.com/code" class="link">Quên mật khẩu?</a></p>
+                      </div>
+                    </div>
+                  </div>
+              <div class="card-back">
+                <div class="center-wrap">
+                  <div class="section text-center">
+                    <h4 class="mb-3 pb-3">Đăng ký </h4>
+                    <div class="form-group " >
+                      <input type="text" class="form-style " placeholder="Tên đăng nhập" ng-model="signUpRequest.userName" required ng-class="{'is-invalid': checkSignup && !signUpRequest.userName}">
+                      <i class="input-icon uil uil-user"></i>
+                    </div>	
+                    <div class="form-group mt-2">
+                      <input type="text" class="form-style" placeholder="Họ và tên" ng-model="signUpRequest.fullName" ng-class="{'is-invalid': checkSignup && !signUpRequest.fullName}">
+                      <i class="input-icon uil uil-at"></i>
+                    </div>
+                    <div class="form-group mt-2">
+                      <input type="tel" class="form-style" placeholder="Số điện thoại" ng-model="signUpRequest.phoneNumber" ng-class="{'is-invalid': checkSignup && !signUpRequest.phoneNumber}">
+                      <i class="input-icon uil uil-phone"></i>
+                    </div>	
+                    <div class="form-group mt-2">
+                      <input type="password" class="form-style" placeholder="Mật khẩu" ng-model="signUpRequest.password" ng-class="{'is-invalid': checkSignup && !signUpRequest.password}">
+                      <i class="input-icon uil uil-lock-alt"></i>
+                    </div>
+                    <a href="" ng-click="signUp($event)" class="btn mt-4">Đăng ký</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+<style>
+  .is-invalid {
+  border-color: red;
+}
+</style>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="js/angular-route.js"></script>
+
+<script src="assets/js/login.js"></script>
+</body>
+</html>

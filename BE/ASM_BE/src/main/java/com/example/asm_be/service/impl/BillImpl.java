@@ -163,7 +163,6 @@ public class BillImpl implements BillService {
         long nextUniqueNumber = 1000; // Giá trị mặc định khi không có hóa đơn
 
         Optional<Bill> lastBill = billRepository.findTopByOrderByCodeDesc();
-        System.out.println(lastBill.get().getCode()+"<--------------");
         if (lastBill.isPresent()) {
             // Nếu có hóa đơn trong cơ sở dữ liệu, sử dụng số cuối cùng trong mã hóa đơn
             String lastBillCode = lastBill.get().getCode();

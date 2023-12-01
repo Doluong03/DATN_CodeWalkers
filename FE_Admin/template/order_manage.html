@@ -761,7 +761,9 @@
                   </thead>
                   <tbody>
                     <tr
-                      ng-repeat="item in listOrders | filter:searchText | orderBy:sortColumn:reverseSort">
+                      ng-repeat="item in listOrders | filter:searchText | orderBy:sortColumn:reverseSort" ng-click="toggleFormUpdate($event, item)"
+                      data-toggle="modal"
+                      data-target="#userUpdateModal">
                       <td><input type="checkbox" ng-model="item.isSelected"></td>
                       <td ng-show="columns[1].selected">{{ item.code }}</td>
                       <td ng-show="columns[2].selected">{{item.userName}}</td>

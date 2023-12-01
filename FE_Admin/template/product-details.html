@@ -193,7 +193,7 @@
                 <div class="form-group">
                   <label for="exampleInputMaterial">Chất Liệu</label>
                   <select class="form-control" id="exampleInputMaterial" ng-model="formProductDetail.material.id"
-                    ng-options="material.id as material.name for material in materials">
+                    ng-options="material.id as material.name for material in materialProduct">
                     <option value="" disabled selected>-- Chọn Chất Liệu --</option>
                   </select>
                 </div>
@@ -201,7 +201,7 @@
                 <div class="form-group">
                   <label for="exampleInputSize">Kích Thước</label>
                   <select class="form-control" id="exampleInputSize" ng-model="formProductDetail.size.id"
-                    ng-options="size.id as size.name for size in sizes">
+                    ng-options="size.id as size.name for size in sizeProduct">
                     <option value="" disabled selected>-- Chọn Kích Thước --</option>
                   </select>
                 </div>
@@ -209,26 +209,11 @@
                 <div class="form-group">
                   <label for="exampleInputColor">Màu Sắc</label>
                   <select class="form-control" id="exampleInputColor" ng-model="formProductDetail.color.id"
-                    ng-options="color.id as color.name for color in colors">
+                    ng-options="color.id as color.name for color in colorProduct">
                     <option value="" disabled selected>-- Chọn Màu Sắc --</option>
                   </select>
                 </div>
     
-                <div class="form-group">
-                  <label for="exampleInputPromotion">Khuyến Mại</label>
-                  <select class="form-control" id="exampleInputPromotion" ng-model="formProductDetail.promotional.id"
-                    ng-options="promotion.id as promotion.name for promotion in promotionals">
-                    <option value="" disabled selected>-- Chọn Khuyến Mại --</option>
-                  </select>
-                </div>
-    
-                <div class="form-group">
-                  <label for="exampleInputStatus">Trạng Thái</label>
-                  <select class="form-control" id="exampleInputStatus" ng-model="formProductDetail.status.id"
-                    ng-options="status.id as status.name for status in status">
-                    <option value="" disabled selected>-- Chọn Trạng Thái --</option>
-                  </select>
-                </div>
     
                 <button id="btn-action-add" ng-click="addUser($event)">Submit</button>
                 <button id="btn-action-cancel" ng-click="toggleForm()">Cancel</button>
@@ -301,13 +286,6 @@
                   </select>
                 </div>
     
-                <div class="form-group">
-                  <label for="exampleInputPromotion">Khuyến Mại</label>
-                  <select class="form-control" id="exampleInputPromotion" ng-model="formPdDetailUpdate.promotional.id"
-                    ng-options="promotion.id as promotion.name for promotion in promotionalProduct">
-                    <option value="" disabled selected>-- Chọn Khuyến Mại --</option>
-                  </select>
-                </div>
     
                 <div class="form-group">
                   <label for="exampleInputStatus">Trạng Thái</label>
@@ -394,7 +372,7 @@
               </thead>
               <tbody class="table-hover">
                 <tr ng-repeat="item in data | filter:searchText | orderBy:sortColumn:reverseSort"
-                  ng-if="item.status.name === 'Đang hoạt động'">
+                 >
                   <td>{{item.id}}</td>
                   <td>{{item.product.name}}</td>
                   <td>{{item.quantity}}</td>
