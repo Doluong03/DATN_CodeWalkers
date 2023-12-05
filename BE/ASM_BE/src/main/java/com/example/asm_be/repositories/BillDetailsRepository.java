@@ -42,7 +42,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                  select count(hd.id)
                  from HoaDon hd
-                 where hd.status = 1
+                 where hd.status = 4
             """)
     List<Integer> getSuccessfulInvoices();
 
@@ -50,7 +50,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                  select count(hd.id)
                  from HoaDon hd
-                 where hd.status = 0
+                 where hd.status = 5
             """)
     List<Integer> getTotalFailedInvoices();
 
@@ -58,7 +58,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                  select count(hd.id)
                  from HoaDon hd
-                 where hd.status = 3
+                 where hd.status between 1 and 3
             """)
     List<Integer> getPendingInvoices();
     // doanh số sản phẩm

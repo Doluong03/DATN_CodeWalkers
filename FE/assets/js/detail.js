@@ -99,6 +99,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       }
     }
   };
+  
   $scope.loadSizeByCl = function (productId, clId) {
     var url = `${host}/api/getSizeBycolor`;
     var config = {

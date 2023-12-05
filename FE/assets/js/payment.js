@@ -14,23 +14,6 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
     $scope.showOption = false;
     $scope.selectedAddress = null;
 
-    function tokenAuthen() {
-        // Lấy dữ liệu từ localStorage
-        var userDataString = localStorage.getItem("userData");
-
-        // Kiểm tra xem dữ liệu có tồn tại không
-        if (userDataString) {
-            // Chuyển đổi dữ liệu từ chuỗi JSON sang đối tượng JavaScript
-            var userData = JSON.parse(userDataString);
-
-            // Bạn có thể sử dụng userData ở đây
-            console.log(userData.token);
-            return userData.token;
-        } else {
-            // Trường hợp không có dữ liệu trong localStorage
-            console.log("Không có dữ liệu đăng nhập trong localStorage.");
-        }
-    }
     $scope.note = ""; // Đặt lại trường nội dung
     var dataUserJson = localStorage.getItem('userIdData');
     var dataUserCart = localStorage.getItem('userCartData');
@@ -177,11 +160,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                     $scope.totalPrice += $scope.calculateTotalPrice($scope.listBillDt[i]);
                     $scope.totalQuantity += $scope.listBillDt[i].quantity;
                 }
-                if (dataUserJson) {
                     $scope.getFeeUser();
-                } else {
-                    $scope.totalPay = $scope.totalPrice;
-                }
             }).catch(function (error) {
                 console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
             });
@@ -297,6 +276,8 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                     $scope.idAddressUser = $scope.selectedAddress.Id;
                     $scope.getFeeUser();
                 }
+                $scope.getFeeUser();
+
             }).catch(function (error) {
                 console.log("Lỗi khi tải Danh sách địa chỉ", error);
             });
@@ -423,7 +404,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                 $scope.getFee($scope.fee);
                 $scope.getAddressUser();
 
-                $('#exampleModal').modal('hide');
+                $('#addressModal').modal('hide');
                 console.log($scope.fee, "1---");
                 Swal.fire({
                     icon: 'success',
@@ -523,7 +504,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
             $http.put(url, dataToSend)
                 .then(function (res) {
                     // Xử lý khi cập nhật thành công
-                    if (res) {
+                    if (res.data) {
                         Swal.fire({
                             icon: 'success',
                             title: 'Đặt hàng thành công!',
@@ -532,8 +513,15 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                             $scope.deleteCart();
                             localStorage.removeItem('dataToSend');
                             console.log(res.data);
+                            $window.location.href = "http://127.0.0.1:5501/index.html#/orderOverview"
                         });
                         console.log('Suaw thành công');
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Đặt hàng thất bại!',
+                            text: 'Thông tin đơn hàng không được cập nhật.'
+                        })
                     }
                 })
                 .catch(function (error) {
@@ -568,31 +556,14 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
    
         $scope.createPay = function (totalPay) {
             var billId = $cookies.get('billId');
-            if (!dataUserJson) {
-                var idUser = $cookies.get('idUser');
-                var dataToSend = {
-                    idBill: billId,
-                    address: $scope.formAddress.addressDetail,
-                    wardId: $scope.formAddress.ward.WardCode,
-                    provinceId: $scope.formAddress.province.ProvinceID, // Gửi ID
-                    districtId: $scope.formAddress.district.DistrictID,
-                    userId: idUser,
-                    fee: $scope.feeShip,
-                    optionPay: $scope.CreateOrder.optionPay,
-                    totalPay: $scope.totalPay,
-                    status: 1,
-                    idStaff: 1,
-                    userName: $scope.formAddress.userName,
-                    userPhone: $scope.formAddress.phoneNumber,
-                }
-            } else {
+            var idUser = $cookies.get('idUser');
                 var dataToSend = {
                     idBill: billId,
                     address: $scope.selectedAddress.AddressDetail,
                     wardId: $scope.selectedAddress.WardCode,
                     provinceId: $scope.selectedAddress.ProvinceID, // Gửi ID
                     districtId: $scope.selectedAddress.DistrictID,
-                    userId: dataUserJson,
+                    userId: dataUserJson || idUser,
                     fee: $scope.feeShip,
                     optionPay: $scope.CreateOrder.optionPay,
                     totalPay: $scope.totalPay,
@@ -601,24 +572,28 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                     userName: $scope.selectedAddress.UserName,
                     userPhone: $scope.selectedAddress.PhoneNumber,
                 }
-            }
+            
             localStorage.setItem('dataToSend', JSON.stringify(dataToSend));
-
-            // Sử dụng $http.put để gửi yêu cầu cập nhật đến API
-            console.log(dataToSend, "here");
-            // Hiển thị loading spinner
-            var url = `${host}/createPay`;
-            var config = {
-                params: {
-                    totalPay: totalPay,
-                }
-            };
-            $http.get(url, config).then(function (res) {
-                console.log('Create thành công');
-                $window.location.href=res.data;
-            }).catch(function (error) {
-                console.error('Create thất bại', error);
-            });
+            if( $scope.CreateOrder.optionPay==0){
+                $scope.updateBill();
+            }else{
+                console.log(dataToSend, "here");
+                // Hiển thị loading spinner
+                var url = `${host}/createPay`;
+                var config = {
+                    params: {
+                        totalPay: totalPay,
+                    }
+                };
+                $http.get(url, config).then(function (res) {
+                    console.log('Create thành công');
+                    $scope.updateBill();
+                    $window.location.href=res.data;
+                }).catch(function (error) {
+                    console.error('Create thất bại', error);
+                });
+            }
+            
         }
         $scope.getInfoPayment = function () {
             // Lấy toàn bộ URL
@@ -629,10 +604,9 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
             var vnp_TransactionStatus = urlParams.get('vnp_TransactionStatus');
             if (vnp_TransactionStatus == "00") {
                 $scope.updateBill();
-                $window.location.href = "http://127.0.0.1:5501/index.html#/orderOverview"
             }
             else if (vnp_TransactionStatus == null) {
-
+                $window.location.href = "http://127.0.0.1:5501/index.html#/payment"
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -644,5 +618,5 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
 
         }
         $scope.getInfoPayment();
-    }, 100); // 1000 milliseconds = 1 giây
+    }, 300); // 1000 milliseconds = 1 giây
 });

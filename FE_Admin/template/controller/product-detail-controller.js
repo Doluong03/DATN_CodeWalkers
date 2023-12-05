@@ -24,7 +24,7 @@ window.productDetailController = function ($scope, $http, $window) {
     material: { id: "" },
     size: { id: "" },
     color: { id: "" },
-    status: { id: "" },
+    status: { id: 1 },
   };
 
   $scope.formPdDetailUpdate = {
@@ -241,6 +241,18 @@ window.productDetailController = function ($scope, $http, $window) {
   // add one product
 
   $scope.addUser = function (event) {
+    if (!$scope.formProductDetail.quantity ||
+      !$scope.formProductDetail.price ||
+      !$scope.formProductDetail.product.id ||
+      !$scope.formProductDetail.material.id ||
+      !$scope.formProductDetail.size.id ||
+      !$scope.formProductDetail.color.id) {
+      // Hiển thị thông báo lỗi
+      // Assuming you have a variable named checkProductDetail to handle the error message
+      $scope.checkProductDetail = true;
+      return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
+  }
+  
     event.preventDefault();
     console.log($scope.formProductDetail);
 
@@ -253,7 +265,16 @@ window.productDetailController = function ($scope, $http, $window) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        $http.post(apiProductDetails + "/insert", JSON.stringify($scope.formProductDetail))
+       var checkExist= $scope.listProductDetail.find(prDt => prDt.product.id === $scope.formProductDetail.product.id && prDt.color.id === $scope.formProductDetail.color.id && prDt.size.id === $scope.formProductDetail.size.id)
+       if(checkExist){
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi!",
+          text: "sản phẩm đã tồn tại. Vui lòng thử lại."
+        });
+        return
+       }
+       $http.post(apiProductDetails + "/insert", JSON.stringify($scope.formProductDetail))
           .then(function (response) {
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
             Swal.fire({
@@ -263,6 +284,7 @@ window.productDetailController = function ($scope, $http, $window) {
             });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
             $scope.formProductDetail = {};
+            $scope.closeModal('formAddModal');
           })
           .catch(function (error) {
             console.error("Error:", error);
@@ -301,7 +323,7 @@ window.productDetailController = function ($scope, $http, $window) {
       // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
       $scope.showFormUpdate = true;
       $scope.activeItem = item;
-      $('#formModal').modal('toggle');
+      // $('#formModal').modal('toggle');
 
       // Nạp dữ liệu của dòng được chọn vào biểu mẫu
       // Nạp dữ liệu của dòng được chọn vào biểu mẫu
@@ -324,9 +346,25 @@ window.productDetailController = function ($scope, $http, $window) {
       $scope.formPdDetailUpdate = {};
     }
   };
-
-  // update
-  $scope.UpdateUser = function (event) {
+  $scope.closeModal = function (id) {
+    document.getElementById(id).style.display = ('none')
+    $('body').removeClass('modal-open'); // Loại bỏ class 'modal-open' khỏi body
+    $('.modal-backdrop').remove();
+  };
+  // update pr
+  $scope.UpdatePr = function (event) {
+    if (
+      !$scope.formPdDetailUpdate.quantity ||
+      !$scope.formPdDetailUpdate.price ||
+      !$scope.formPdDetailUpdate.product.id ||
+      !$scope.formPdDetailUpdate.material.id ||
+      !$scope.formPdDetailUpdate.size.id ||
+      !$scope.formPdDetailUpdate.color.id ||
+      !$scope.formPdDetailUpdate.status.id) {
+      // Hiển thị thông báo lỗi
+      $scope.checkPdDetailUpdate = true;
+      return ; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
+  }
     event.preventDefault();
     console.log($scope.formPdDetailUpdate);
 
@@ -345,17 +383,18 @@ window.productDetailController = function ($scope, $http, $window) {
             Swal.fire({
               icon: 'success',
               title: 'Cập nhật thành công!',
-              text: 'Thông tin người dùng đã được cập nhật.'
+              text: 'Thông tin sản phẩm đã được cập nhật.'
             });
             $scope.formPdDetailUpdate = {};
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            $scope.closeModal('formUpdateModal');
           })
           .catch(function (error) {
             console.error("Error:", error);
             Swal.fire({
               icon: "error",
               title: "Lỗi!",
-              text: "Đã xảy ra lỗi khi cập nhật người dùng. Vui lòng thử lại sau."
+              text: "Đã xảy ra lỗi khi cập nhật sản phẩm. Vui lòng thử lại sau."
             });
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {

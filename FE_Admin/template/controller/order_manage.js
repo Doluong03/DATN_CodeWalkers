@@ -586,9 +586,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             optionsPay: item.paymentOptions,
             totalPay: item.totalPay,
         }
-        console.log(dataToSend, "<---")
         $http.post(url, dataToSend).then(function (res) {
-            console.log("order ", res.data);
             $scope.updateBill(item.id, res.data);
         }).catch(function (error) {
             console.log("Lỗi khi tải ", error);
@@ -603,8 +601,6 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             code: data.order_code,
             shipDate: data.expected_delivery_time
         }
-        console.log("here-data", dataToSend)
-
         // Hiển thị loading spinner
         // Sử dụng $http.put để gửi yêu cầu cập nhật đến API
         $http.put(url, dataToSend)
@@ -931,7 +927,6 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             $http.put(api, headers).then(function (response) {
                 // ... (xử lý thành công)
                 $scope.getByStatus(status);
-                $scope.hienThi($scope.pageCurrent, $scope.sizePage);
                 console.log(response);
                 $scope.isAcp = true;
                 if ($scope.isAcp) {
@@ -968,11 +963,14 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
                     }
                     $scope.handleTabClick(status, tabToShow);
                 }
-            })
+            }
+            
+            )
                 .catch(function (error) {
                     console.log(error);
                 });
         });
+        // $scope.hienThi($scope.pageCurrent, $scope.sizePage);
     }
     // Lấy tên cột từ bảng HTML
     $scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"

@@ -289,7 +289,7 @@
 
         <div class="row me-5">
             <h5 class="col-lg-4 offset-5">Tổng tiền hàng: </h5>
-            <h5 class="col-lg-3 text-end ">{{totalPrice | vndCurrency}} </h5>
+            <h5 class="col-lg-3 text-end ">{{!totalPrice ?"0đ": totalPrice | vndCurrency}} </h5>
         </div>
         <div class="row me-5" ng-show="isVoucher">
             <h5 class="col-lg-4 offset-5">Voucher Giảm giá:</h5>
@@ -310,8 +310,7 @@
         </div>
         <div class="row me-5">
             <h5 class="col-lg-4 offset-5">Tổng thanh toán: </h5>
-            <h4 class="col-lg-3 text-end text-danger  ">{{totalPay |
-                vndCurrency}}</h4>
+            <h4 class="col-lg-3 text-end text-danger  ">{{ !totalPay ?"0đ":totalPay | vndCurrency}}</h4>
         </div>
         <div class="text-end col-lg-8 offset-3 mt-1">
             <a class="btn btn-danger w-50 me-5" ng-click="createPay(totalPay)">Đặt hàng</a>

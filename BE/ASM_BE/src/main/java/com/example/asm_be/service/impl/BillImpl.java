@@ -143,6 +143,8 @@ public class BillImpl implements BillService {
 //                    return jsonString;
 //                }
             }
+            Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
+            return gson.toJson("success");
         } catch (Exception e) {
             e.printStackTrace();
         }
