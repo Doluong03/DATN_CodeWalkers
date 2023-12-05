@@ -36,7 +36,7 @@
             <a class="nav-link" href="#product">Sản phẩm</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#product-detail">Product Details</a>
+            <a class="nav-link" href="#product-detail">Sản phẩm chi tiết</a>
           </li>
         </ul>
       </div>
@@ -69,14 +69,14 @@
     <li class="nav-item">
       <a class="nav-link" data-toggle="collapse" href="#bieu-do">
         <i class="icon-bar-graph menu-icon"></i>
-        <span class="menu-title">Biểu Đồ</span>
+        <span class="menu-title">Thống Kê</span>
       </a>
     </li>
 
     <!-- khuyến mại -->
     <li class="nav-item">
       <a class="nav-link" data-toggle="collapse" href="#khuyen-mai">
-        <i class="mdi mdi-sale menu-icon"></i>
+        <i class="fa-solid fa-tag menu-icon"></i>
         <span class="menu-title">Khuyến Mại</span>
       </a>
     </li>
@@ -103,30 +103,22 @@
       </a>
     </li>
 
+ 
     <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="/FE_Admin/template/register.html">
-        <i class="fa-regular fa-toilet menu-icon"></i>
-        <span class="menu-title">Nhà vệ xinh xấu ra ngoài </span>
-      </a>
-    </li>
-
-
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="/FE_Admin/template/forgot-password.html">
-        <i class="fa-solid fa-poo fa-beat menu-icon"></i>
-        <span class="menu-title">Sun sun </span>
+      <a class="nav-link" data-toggle="collapse" href="#voucher">
+        <i class="mdi mdi-sale menu-icon"></i>
+        <span class="menu-title">Voucher </span>
       </a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link" data-toggle="collapse" href="#nsx">
-        <i class="fa-solid fa-poo fa-beat menu-icon"></i>
-        <span class="menu-title">Nhà sản xuất </span>
+        <i class="fa-duotone fa-industry-windows menu-icon"></i>
+        <span class="menu-title ">Nhà sản xuất </span>
       </a>
     </li>
 
-
-
+    
   </ul>
 </nav>
 
@@ -176,6 +168,14 @@
     </li>
 
 
+    <!-- Đơn Hàng -->
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#order">
+        <i class="fa-regular fa-truck menu-icon"></i>
+        <span class="menu-title">Đơn Hàng</span>
+      </a>
+    </li>
+
     <!-- Đánh Giá -->
     <!-- <li class="nav-item">
       <a class="nav-link" data-toggle="collapse" href="#danh-gia">
@@ -202,6 +202,24 @@
         <span class="menu-title">Sun sun </span>
       </a>
     </li>
+
+<!-- 
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="/FE_Admin/template/forgot-password.html">
+        <i class="fa-solid fa-poo fa-beat menu-icon"></i>
+        <span class="menu-title">Sun sun </span>
+      </a>
+    </li> -->
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#nsx">
+        <i class="fa-duotone fa-industry-windows"></i>
+        <span class="menu-title">Nhà sản xuất </span>
+      </a>
+    </li>
+
+
+
   </ul>
 </nav>
 
@@ -243,8 +261,6 @@
     document.getElementById('employeeMenu').style.display = 'none';
     document.getElementById('adminMenu').style.display = 'block';
   } else {
-    console.log('Người dùng không có vai trò hoặc có vai trò khác');
-    // Thực hiện các hành động mặc định hoặc hiển thị menu mặc định
     document.getElementById('employeeMenu').style.display = 'none';
     document.getElementById('adminMenu').style.display = 'none';
   }

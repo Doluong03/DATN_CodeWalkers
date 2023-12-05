@@ -217,6 +217,27 @@
                             </a>
                         </div>
                     </div>
+            <!-- <div class="col-lg">
+                <div class="row ms-5 ">
+                    <div class="col-lg-4 mb-4 " data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in items">
+                        <div class="box_product">
+                           
+                            <a ng-href="#/product-detail/{{pr.product.id}}{{pr.hasPromotion ? '/' + pr.promotionId : ''}}" class="border-0">
+                                <img ng-src="assets/img/product/sp1/{{pr.product.listImage[0].link}}" class="img-fluid" alt="{{pr.product.listImage[0].link}}">
+                                <h5 class="align-items-left">{{pr.product.name}}</h5>
+                                <p>{{pr.product.category.name}}</p>
+                                <p>Còn lại: {{pr.quantity}}</p>
+                                <p class="col text-dark" ng-show="!pr.hasPromotion">{{pr.price  | vndCurrency  }} -->
+                                    <!-- gia khuyến mại -->
+                                    <!-- <div class="row" ng-show="pr.hasPromotion">
+                                        <p class="col text-danger">{{pr.priceWithPromo | vndCurrency}}</p>
+                                        <p class="col text-decoration-line-through">{{pr.price | vndCurrency }}</p>
+                                    </div>
+                                </p>
+                            </a>
+                        </div>
+                        
+                </div> -->
                 </div>
             </div>
         </div>

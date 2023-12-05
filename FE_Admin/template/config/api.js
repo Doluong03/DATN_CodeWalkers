@@ -14,6 +14,9 @@ window.apiImage = apiURL + "admin/Image";
 window.apiStaff = apiURL + "admin/Staff";
 window.apiManufacture = apiURL + "admin/Manufacture";
 window.apiProductDetails = apiURL + "admin/ProductDetails";
+window.apiVoucher = apiURL+"admin/voucher";
+window.apiPromotion = apiURL+"admin/promotion";
+
   
 
 

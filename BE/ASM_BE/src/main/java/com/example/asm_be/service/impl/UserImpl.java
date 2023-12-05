@@ -91,4 +91,14 @@ public class UserImpl implements UserService {
     public Optional<Users> findByAcc(String userName, String password) {
         return userRepository.findByUserNameAndPassword(userName,password);
     }
+
+    @Override
+    public List<Users> getUserOld() {
+        return userRepository.getUserOld();
+    }
+
+    @Override
+    public List<Users> getUserNew() {
+        return userRepository.getUserNew();
+    }
 }

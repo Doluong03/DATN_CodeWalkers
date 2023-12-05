@@ -125,8 +125,38 @@
             <div class="owl-carousel owl-theme">
                 <!-- Carousel items will be dynamically added here -->
             </div>
+  <!-- </div>
+
+</section>End About Section -->
+<!-- Product -->
+<!-- ======= Values Section ======= -->
+<!-- <section id="values" class="values">
+  <div class="container" data-aos="fade-up">
+    <header class="section-header">
+      <p class="text-dark">BEST SELLER</p>
+    </header>
+    
+    <div class="row ms-5">
+      <div class="col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in itemsBs">
+        <div class="box">
+          <a ng-href="#/product-detail/{{pr.product.id}}{{pr.hasPromotion ? '/' + pr.promotionId : ''}}" class="image-container">
+            <img ng-src="{{'assets/img/product/sp1/' + pr.product.listImage[0].link }}" class="img-fluid w-100" alt="{{pr.product.listImage[0].link}}">
+        </a>
+        
+        <a ng-href="#/product-detail/{{pr.product.id}}{{pr.hasPromotion ? '/' + pr.promotionId : ''}}" class="image-container">
+            <h5 class="align-items-left">{{pr.product.name}}</h5>
+            <p>{{pr.product.category.name}}</p>
+            <p class="col text-dark mb-1" ng-show="!pr.hasPromotion">{{pr.price | vndCurrency }}</p>
+            <div class="row" ng-show="pr.hasPromotion">
+                <p class="col text-danger">{{pr.priceWithPromo| vndCurrency}}</p>
+                <p class="col text-decoration-line-through">{{pr.price | vndCurrency }}</p>
+            </div>
+        </a>
+         -->
+
         </div>
     </div>
+    
 
     <!-- Prev/Next Buttons -->
     <div class="row mt-3">

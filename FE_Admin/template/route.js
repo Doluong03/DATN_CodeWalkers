@@ -1,4 +1,4 @@
-var myApp = angular.module("myApp", ["ngRoute"]);
+var myApp = angular.module("myApp",["ngRoute","ui.bootstrap"]);
 
 myApp.filter('dateFormat', function ($filter) {
   return function (input, format) {
@@ -22,12 +22,10 @@ myApp.factory('DataService', function ($location, $q) {
         return $q(function (resolve) {
           // Lấy dữ liệu từ localStorage
           var userDataString = localStorage.getItem('userData');
-
           // Kiểm tra xem dữ liệu có tồn tại không
           if (userDataString) {
             // Chuyển đổi dữ liệu từ chuỗi JSON sang đối tượng JavaScript
             var userData = JSON.parse(userDataString);
-
             // Bạn có thể sử dụng userData ở đây
             console.log(userData.token);
             resolve(userData.token);
@@ -217,6 +215,15 @@ myApp.config(function ($routeProvider, $locationProvider) {
         }
       }
     })
+    .when("/voucher", {
+      templateUrl: "/template/voucher.html",
+      controller: VoucherController,
+      resolve: {
+        checkData: function (DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })
     .when("/refund", {
       templateUrl: "/template/refund.html",
       controller: RefundController,
@@ -226,9 +233,57 @@ myApp.config(function ($routeProvider, $locationProvider) {
         }
       }
     })
+    .when("/add-voucher", {
+      templateUrl: "/template/add-voucher.html",
+      controller: VoucherController,
+      resolve: {
+        checkData: function (DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })
+    .when("/update-voucher", {
+      templateUrl: "/template/update-voucher.html",
+      controller: VoucherController,
+      resolve: {
+        checkData: function (DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })
+    .when("/khuyen-mai", {
+      templateUrl: "/template/promotion.html",
+      controller: promotionController,
+      resolve: {
+        checkData: function (DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })
+    .when("/create-promotion", {
+      templateUrl: "/template/add-promotion.html",
+      controller: promotionController,
+      resolve: {
+        checkData: function (DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })
+    .when("/update-promotion/:idPromotion", {
+      templateUrl: "/template/update-promotion.html",
+      controller: promotionController,
+      resolve: {
+        checkData: function (DataService) {
+          return DataService.fetchData();
+        }
+      }
+    })
+
     .otherwise({
       redirectTo: "/trang-chu",
     });
+
+
 });
 myApp.filter('vndCurrency', function () {
   return function (input) {
@@ -355,3 +410,44 @@ myApp.service('MonthService', function () {
     return mmYYYYDates;
   };
 });
+// Assume you have a service named 'VoucherService'
+myApp.service('VoucherService', function () {
+  var formUpdateVoucher = {};
+
+  return {
+      getFormUpdateVoucher: function () {
+          return formUpdateVoucher;
+      },
+      setFormUpdateVoucher: function (data) {
+          formUpdateVoucher = data;
+      }
+  };
+});
+
+
+myApp.filter('customFilter', function() {
+  return function(input, searchName, searchDiscountType, searchStatus, searchDate) {
+      return input.filter(function(item) {
+        console.log('input:', input);
+        console.log('searchName:', searchName);
+        console.log('searchDiscountType:', searchDiscountType);
+        console.log('searchStatus:', searchStatus);
+        console.log('searchDate:', searchDate);
+          
+          // Kiểm tra sự khớp dựa trên tất cả các trường dữ liệu
+          var nameMatch = !searchName || (item.name && item.name.toLowerCase().includes(searchName.toLowerCase()));
+          var discountTypeMatch = !searchDiscountType || (item.typeDiscount.trim() && item.typeDiscount.trim() === searchDiscountType.trim());
+          var statusMatch = !searchStatus || (item.status !== undefined && item.status === searchStatus);
+          var dateMatch = !searchDate || (item.startDate && item.endDate && (item.startDate <= searchDate && item.endDate >= searchDate));
+
+          // Trả về true nếu bất kỳ tiêu chí nào khớp
+          return  discountTypeMatch || statusMatch || dateMatch;
+      });
+  };
+});
+
+
+
+
+
+

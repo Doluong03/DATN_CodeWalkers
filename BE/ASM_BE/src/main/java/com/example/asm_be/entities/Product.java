@@ -28,7 +28,6 @@ public class Product {
     @Column(name = "ten_san_pham")
     private String name;
 
-
     @Column(name = "anh_chinh")
     private String mainImg;
 

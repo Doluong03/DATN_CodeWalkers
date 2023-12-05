@@ -211,7 +211,7 @@
         .address-info {
             width: 75%;
         }
-        
+
         .address-info-show {
             width: 85%;
         }
@@ -225,6 +225,7 @@
                     <th>Đơn giá </th>
                     <th>Số lượng </th>
                     <th>Thành tiền</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -247,12 +248,20 @@
                             </div>
                         </div>
                     </td>
-                    <td class="align-middle text-center">{{bill.productDetail.price
+                    <!-- <td class="align-middle text-center">{{bill.productDetail.price
                         | vndCurrency }}</td>
                     <td id="totalPrice" class="ps-4 align-middle text-center ">{{bill.quantity}}</td>
                     <td id="totalPrice" class="ps-4 align-middle text-center ">
                         {{bill.productDetail.price * bill.quantity |
-                        vndCurrency}}
+                        vndCurrency}} -->
+                    <td class="align-middle text-center" ng-show="!bill.hasPromotion">{{bill.productDetail.price | vndCurrency }}</td>
+                    <td class="row"> <p class="ps-4 align-middle text-center text-danger" ng-show="bill.hasPromotion">{{bill.priceWithPromo| vndCurrency}}</p> 
+                       <p  class="ps-4 align-middle text-center text-decoration-line-through" ng-show="bill.hasPromotion">{{bill.productDetail.price| vndCurrency}}</p> </td>
+                    <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="!bill.hasPromotion">{{bill.quantity}}</td>
+                    <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="!bill.hasPromotion"> {{bill.productDetail.price *bill.quantity | vndCurrency}}
+                        <!-- // giá khi có khuyến mại -->
+                        <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="bill.hasPromotion">{{bill.quantity}}</td>
+                        <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="bill.hasPromotion"> {{bill.priceWithPromo *bill.quantity | vndCurrency}}
                     </td>
                 </tr>
             </tbody>
@@ -307,6 +316,19 @@
             <h5 class="col-lg-4 offset-5">Phí vận chuyển: </h5>
             <h5 class="col-lg-3 text-end ">{{feeShip == 0 ?"0đ":feeShip |
                 vndCurrency }}</h5>
+        </div>
+        <div class="row me-5" ng-show="isFeeShip">
+            <h5 class="col-lg-4 offset-5">Voucher Giảm giá:</h5>
+            <h5 class="col-lg-3 text-end">
+                - {{reduceFee| vndCurrency }}
+            </h5>
+        </div>
+        
+        <div class="row me-5" ng-show="isFeeShip">
+            <h5 class="col-lg-4 offset-5">Phí sau khi giảm:</h5>
+            <h5 class="col-lg-3 text-end">
+                {{totalFee| vndCurrency }}
+            </h5>
         </div>
         <div class="row me-5">
             <h5 class="col-lg-4 offset-5">Tổng thanh toán: </h5>
@@ -426,7 +448,7 @@
         }
 
         .voucher-quantity {
-            font-family:"Helvetica Neue";
+            font-family: "Helvetica Neue";
             font-size: 16px;
             font-weight: 800;
             position: absolute;
@@ -474,19 +496,17 @@
                 </div>
                 <div class="modal-body modal-body-vch">
                     <div ng-repeat="item in listVouchers" id="vouchers">
-                        <div class="voucher-card"
-                            ng-click="selectVoucher(item.id)">
-                            <b class="voucher-quantity">x{{item.quantity}}</b>
-                            <img src="/assets/img/Voucher/{{item.image}}"
-                                alt="Voucher Image" />
+                        <div class="voucher-card" ng-click="selectVoucher(item.id,item.usageCount)">
+                            <b class="voucher-quantity">x{{item.usageCount}}</b>
+                            <img src="/assets/img/Voucher/{{item.image}}" alt="Voucher Image" />
                             <div class="details">
-                                <p>Giảm {{item.value}}%</p>
-                                <p>Giảm tối đa:{{item.maxReduction}}k</p>
-                                <p>Đơn tối thiểu :{{item.condition|vndCurrency
-                                    }}</p>
-                                <p><input type="radio"
-                                        ng-model="$parent.selectedVoucher"
-                                        ng-value="item.id"></p>
+                                <p ng-show="item.discountType=='Phần Trăm'">Giảm {{item.value}}%</p>
+                                <p ng-show="item.discountType=='VND'">Giảm {{item.value/1000}}k</p>
+                                <p ng-show="item.discountType=='Phần Trăm'">Giảm tối đa:{{item.maxReduction}}k</p>
+                                <p  ng-show="item.discountType=='VND'">Giảm tối đa:{{item.maxReduction/1000}}k</p>
+                                <p>Đơn tối thiểu :{{item.condition|vndCurrency }}</p>
+                                <p>HSD :{{item.endDate}}</p>
+                                <p><input type="radio" ng-model="$parent.selectedVoucher" ng-value="item.id"></p>
                             </div>
                         </div>
                     </div>

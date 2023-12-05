@@ -1,12 +1,16 @@
 package com.example.asm_be.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "KhuyenMai")
 @NoArgsConstructor
@@ -20,13 +24,15 @@ public class Promotional {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "ma_khuyen_mai")
-    private String code;
     @Column(name = "ten_khuyen_mai")
     private String name;
 
     @Column(name = "mo_ta_khuyen_mai")
     private String description;
+
+    @Column(name = "loai_giam_gia")
+    private String typeDiscount;
+
     @Column(name = "gia_tri")
     private double value;
 
@@ -35,5 +41,21 @@ public class Promotional {
 
     @Column(name = "ngay_ket_thuc")
     private Date endDate;
+
+    @Column(name = "dieu_kien_giam")
+    private double condition;
+
+    @CreationTimestamp
+    @Column(name = "ngay_tao", updatable = false)
+    private Date createdDate;
+
+    @Column(name = "trang_thai")
+    private int status;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "promotion", cascade = CascadeType.REMOVE)
+    private List<PromotionDetails> promotionDetailsList;
+
+
 
 }

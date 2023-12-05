@@ -23,6 +23,10 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: "page/detail.html",
             controller: "DetailController"
         })
+        .when("/product-detail/:productId/:promotionId", {
+            templateUrl: "page/detail.html",
+            controller: "DetailController"
+        })
         .when("/cart", {
             templateUrl: "page/cart-item.html",
             controller: "CartController"
@@ -81,13 +85,101 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
         }
     };
 
+
     $scope.loadAllPrBs = function () {
         var url = `${host}/api/product_bs`;
         $http.get(url).then(res => {
             $scope.itemsBs = res.data;
-            // Gọi loadDetail sau khi tải dữ liệu thành công
-            //  $scope.loadDetail();
-            $scope.numVisibleItems = 4;
+
+            // Bước 1: Lấy thông tin chương trình khuyến mãi đang hoạt động
+            var promoUrl = `${host}/api/active_promotions`;
+            $http.get(promoUrl).then((promoRes) => {
+                var activePromotions = promoRes.data;
+            
+                // Kiểm tra xem có chương trình khuyến mãi hay không
+                if (activePromotions && activePromotions.length > 0) {
+                    // Bước 2: Tạo một đối tượng để ánh xạ id sản phẩm với mảng thông tin khuyến mãi
+                    var productPromotionsMap = {};
+            
+                    // Bước 3: Lặp qua các chương trình khuyến mãi
+                    activePromotions.forEach((promo) => {
+                        if (
+                            promo.promotionDetailsList &&
+                            promo.promotionDetailsList.length > 0
+                        ) {
+                            // Lặp qua từng chi tiết khuyến mãi của chương trình
+                            promo.promotionDetailsList.forEach((promoDetail) => {
+                                // Kiểm tra xem có thông tin productDetail và id hay không
+                                if (
+                                    promoDetail.productDetail &&
+                                    promoDetail.productDetail.id
+                                ) {
+                                    // Nếu chưa có thông tin khuyến mãi cho sản phẩm, tạo một mảng để lưu
+                                    if (!productPromotionsMap[promoDetail.productDetail.id]) {
+                                        productPromotionsMap[promoDetail.productDetail.id] = [];
+                                    }
+            
+                                    // Thêm thông tin khuyến mãi vào mảng
+                                    productPromotionsMap[promoDetail.productDetail.id].push(
+                                        promoDetail
+                                    );
+            
+                                    // Thêm trường promotionId vào chi tiết khuyến mãi
+                                    promoDetail.promotionId = promo.id;
+                                }
+                            });
+                        }
+                    });
+            
+                    // In ra để kiểm tra
+                    console.log(productPromotionsMap);
+            
+                    // Bước 4: Kiểm tra và áp dụng giảm giá cho từng sản phẩm
+                    $scope.itemsBs.forEach((item) => {
+                        // Tìm thông tin khuyến mãi áp dụng cho sản phẩm
+                        var productPromotion = productPromotionsMap[item.id];
+            
+                        if (productPromotion && productPromotion.length > 0) {
+                            // Bước 5: Sắp xếp chi tiết khuyến mãi theo thời gian giảm dần
+                            productPromotion.sort((a, b) => b.createdDate - a.createdDate);
+            
+                            // Bước 6: Lấy chi tiết khuyến mãi mới nhất
+                            var latestPromoDetail = productPromotion[0];
+            
+                            // Thêm trường priceWithPromo vào item
+                            item.priceWithPromo = latestPromoDetail
+                                ? latestPromoDetail.discount
+                                : item.price;
+            
+                            // Thêm trường promotionId vào item
+                            item.promotionId = latestPromoDetail ? latestPromoDetail.promotionId : null;
+            
+                            // Đánh dấu sản phẩm có chương trình khuyến mãi
+                            item.hasPromotion = true;
+                        } else {
+                            // Nếu không có chương trình khuyến mãi, giá giữ nguyên
+                            // Đánh dấu sản phẩm không có chương trình khuyến mãi
+                            item.hasPromotion = false;
+                            // Thêm trường priceWithPromo vào item
+                            item.priceWithPromo = item.price;
+                        }
+                    });
+                } else {
+                    // Nếu không có chương trình khuyến mãi, giá giữ nguyên cho tất cả sản phẩm
+                    $scope.itemsBs.forEach((item) => {
+                        // Đánh dấu sản phẩm không có chương trình khuyến mãi
+                        item.hasPromotion = false;
+                        // Thêm trường priceWithPromo vào item
+                        item.priceWithPromo = item.price;
+                    });
+                }
+            
+                console.log($scope.itemsBs);
+                $scope.numVisibleItems = 4;
+            }).catch((error) => {
+                console.log("Error", error);
+            });
+            
         }).catch(error => {
             console.log("Error", error);
         });
@@ -370,8 +462,6 @@ app.filter('findDistrictNameById', function () {
         return 'Không tìm thấy';
     };
 });
-
-
 
 app.filter('findWardNameById', function () {
     return function (wards, id) {

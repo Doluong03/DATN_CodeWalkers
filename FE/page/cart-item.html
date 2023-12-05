@@ -129,9 +129,11 @@
                                         </span>
                                     </div>
 
-                                    <p class="card-text col-lg-3 text-end fs-5">
-                                        {{pr.productDetail.price | vndCurrency
-                                        }}
+                                    <p class="card-text col-lg-3 text-end" ng-show="!pr.hasPromotion"> {{pr.productDetail.price | vndCurrency }}
+                                        <div class="row card-text col-lg-3 text-end" ng-show="pr.hasPromotion">
+                                            <p class="col text-danger">{{pr.priceWithPromo| vndCurrency}}</p>
+                                            <p class="col text-decoration-line-through">{{pr.productDetail.price | vndCurrency }}</p>
+                                        </div>
                                     </p>
                                 </div>
                             </div>
@@ -174,6 +176,44 @@
                             <a ng-click="addBill()" href="#payment" class="btn btn-dark rounded-3"> Thanh toán</a>
                         </div>
                     </div>
+        <!-- <div class="col-lg-3  ms-5">
+            <div>
+                <h4 class=""> Đơn hàng </h4>
+            </div>
+            <div class="promotional">
+                <div class=" mt-4">
+                    <div class="row align-items-center">
+                        <h5 class="col-lg-10">Áp dụng mã khuyến mãi ?</h5>
+                        <button class="border-0  col-lg-2" style="background-color: white;" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false"
+                            aria-controls="collapseWidthExample">
+                            <i class="bi bi-caret-down fs-3" title="Mở"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div style="min-height: 0px;">
+                    <div class="collapse " id="collapseWidthExample">
+                        <input type="text" name="promotional_code" id="" class="ms-3 rounded-3 border-1 col-lg"
+                            style="height: 38px;">
+                        <a href="#apply_code" class="btn btn-secondary col-lg-3 rounded-3 "> Apply</a>
+                    </div>
+                </div>
+            </div>
+            <div class="bill mt-1">
+                <div class="row">
+                    <h5 class="col-lg">Tổng tiền </h5>
+                    <h5 class="col-lg text-end  ">{{ totalPrice==0 ?"0đ":totalPrice | vndCurrency }}</h5>
+                </div>
+            
+                <hr>
+                <div class="row">
+                    <h5 class="col-lg">Tổng thanh toán </h5>
+                    <h5 class="col-lg text-end ">{{totalPay==0 ?"0đ": totalPrice | vndCurrency}}</h5>
+                </div>
+                <hr>
+                <div class="pay text-center">
+                    <a ng-click="addBill()" href="#payment" class="btn btn-dark rounded-3 col-lg-8"> Thanh toán</a> -->
                 </div>
             </div>
         </div>

@@ -60,7 +60,7 @@
                   <img src="assets/img/product/sp1/{{item.link}}" class="d-block" alt="...">
                 </div>
               </div>
-              <button class="carousel-control-prev " type="button" data-bs-target="#carouselExample2"
+              <button class="carousel-control-prev " type="button" dbata-bs-target="#carouselExample2"
                 data-bs-slide="prev" style="margin-left: -50px;">
                 <i class="bi bi-caret-left-fill fs-1 text-dark ms-0"></i>
                 <span class="visually-hidden">Previous</span>
@@ -82,7 +82,12 @@
     <br>
     <h5>
       <span ng-show="!checkPrice"> {{ getPriceDisplay() | vndCurrency }}</span>
-      <span ng-show="checkPrice">{{price | vndCurrency}}</span>
+      <span ng-show="checkPrice && !isHasPromo">{{price | vndCurrency}}</span>
+      <div class="row" ng-show="isHasPromo">
+        <p class="col text-danger">{{price| vndCurrency}}</p>
+        <p class="col text-decoration-line-through">{{pricePromotion | vndCurrency }}</p>
+    </div>
+
     </h5>
     <br>
     <h5>Màu sắc</h5>
