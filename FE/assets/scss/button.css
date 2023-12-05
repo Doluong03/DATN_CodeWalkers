@@ -11,6 +11,7 @@
   font-family: "Open Sans";
   text-transform: uppercase;
   width: 100%;
+  border: 0px;
 }
 
 .btn-flip:hover:after {
@@ -18,12 +19,12 @@
   transform: translateY(0) rotateX(0);
 }
 
-.values .box:hover .btn-flip:after {
+.card:hover .btn-flip:after {
   opacity: 1;
   transform: translateY(0) rotateX(0);
 }
 
-.values .box:hover .btn-flip:before {
+.card:hover .btn-flip:before {
   opacity: 0;
   transform: translateY(50%) rotateX(90deg);
 }
@@ -33,7 +34,7 @@
   left: 0;
   opacity: 0;
   width: 100%;
-  color: #323237;
+  color: rgb(177, 27, 27);
   display: block;
   transition: 0.5s;
   position: absolute;

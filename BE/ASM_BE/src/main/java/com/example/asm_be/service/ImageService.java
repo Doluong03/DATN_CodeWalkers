@@ -22,4 +22,5 @@ public interface ImageService {
     boolean delete(Integer idImage);
 
      void processImageDirectory(MultipartFile[] imageFiles);
+     List<Image> findByIdPr(int idpr);
 }

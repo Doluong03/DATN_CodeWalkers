@@ -1,5 +1,5 @@
 
-app.controller("CartController", function ($scope, $http, $cookies, CookieService, $anchorScroll) {
+app.controller("CartController", function ($scope, $http, $cookies, CookieService, $anchorScroll, $interval) {
     // Scroll đến phần tử có id "pageContent"
     $anchorScroll("pageContent");
     // Khởi tạo biến $scope.items là một mảng rỗng
@@ -91,54 +91,42 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
         }
     };
 
-    
 
-    $scope.loadAllPrSelected = function () {
-        var url = `${host}/api/billDt`;
-        var billDt = $cookies.get('billId');
-        var config = {
-            params: { idBill: billDt }
-        };
-        $http.get(url, config).then(function (res) {
-            $scope.listBillDt = res.data;
-            console.log($scope.listBillDt, 'lb')
-        });
-    }
-    
+
     $scope.loadAllPrByCart = function (cartId) {
         var url = `${host}/api/detail`;
         var config = {
             params: { idCart: cartId }
         };
-        var idBill = $cookies.get('billId');
-        console.log(idBill, 'idbill');
-    
         $http.get(url, config).then(function (res) {
             $scope.items = res.data;
             var badge = document.querySelector(".badge");
             badge.textContent = $scope.items.length;
+            $scope.loadAllPrSelected();
             $scope.check();
+            console.log($scope.items,'cart')
         }).catch(function (error) {
             console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
         });
     };
+    $scope.selectAllChecked = false;
+
+    $scope.checkAll = function () {
+        var newState = $scope.selectAllChecked; // Toggle the state
+        for (var i = 0; i < $scope.items.length; i++) {
+            $scope.items[i].checked = newState;
+        }
+        $scope.check();
+    }
 
     $scope.check = function () {
+        $scope.itemSelected = [];
         $scope.totalPrice = 0;
-        $scope.randomValue = 0;
-        $scope.randomValue1 = 0;
-        $scope.randomValue2 = 0;
         $scope.countItem = $scope.items.length;
         $scope.totalPay = 0;
-    
         for (var i = 0; i < $scope.items.length; i++) {
             var currentItem = $scope.items[i];
-            var isSelected = $scope.itemSelected.some(function (selectedItem) {
-                return selectedItem.id === currentItem.id;
-            });
-    
             if (currentItem.checked) {
-                if (!isSelected) {
                     $scope.itemSelected.push({
                         id: currentItem.id,
                         cart: currentItem.cart,
@@ -147,27 +135,79 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
                         description: currentItem.description,
                         status: currentItem.status,
                     });
-                }
-    
+                
+
                 $scope.idCart = currentItem.cart.id;
                 $scope.totalPrice += $scope.calculateTotalPrice(currentItem);
-                $scope.randomValue1 += $scope.testRd;
-                $scope.randomValue2 = $scope.testRd2;
-                $scope.randomValue = $scope.randomValue1 + $scope.randomValue2;
-                $scope.totalPay = ($scope.totalPrice + $scope.randomValue) - $scope.promotinalValue;
-            } else {
-                if (isSelected) {
-                    $scope.itemSelected = $scope.itemSelected.filter(function (selectedItem) {
-                        return selectedItem.id !== currentItem.id;
-                    });
-                }
             }
         }
-    
+
         console.log($scope.itemSelected, 'list');
     };
 
+    $scope.loadAllPrSelected = function () {
+        var url = `${host}/api/billDt`;
+        var billDt = $cookies.get('billId');
+        var config = {
+            params: { idBill: billDt }
+        };
+        if(!billDt){
+            return
+        }
+        $http.get(url, config).then(function (res) {
+            $scope.listBillDt = res.data;
+            for (var i = 0; i < $scope.listBillDt.length; i++) {
+                var matchingItem = $scope.items.find(item => item.productDetail.id === $scope.listBillDt[i].productDetail.id);
+                if (matchingItem) {
+                    matchingItem.checked = true; // or any other condition to set the 'checked' property
+                }
+            }    
+            $scope.check();
+        });
+    }
+    $scope.deleteItems = function () {
+        if ($scope.itemSelected.length == 0) {
+            toastr.warning('Vui lòng chọn sản phẩm muốn xóa!', 'Thông báo')
+            return;
+        }
+        swal.fire({
+            title: "Xác nhận xóa",
+            text: "Bạn có chắc muốn xóa sản phẩm khỏi giỏ hàng?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3f51b5",
+            cancelButtonColor: "#ff4081",
+            confirmButtonText: "Có",
+            cancelButtonText: "Hủy",
+            buttons: {
+                cancel: {
+                    text: "Hủy",
+                    value: null,
+                    visible: true,
+                    className: "btn btn-danger",
+                    closeModal: true,
+                },
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "btn btn-primary",
+                    closeModal: true,
+                },
+            },
+        }).then((result) => {
+            if (result.value) {
+                for (var i = 0; i < $scope.itemSelected.length; i++) {
+                    $scope.selectAllChecked = false;
+                    $scope.delete($scope.itemSelected[i].productDetail.id, $scope.itemSelected[i].cart.id)
+                }
+            } else {
+                // Xử lý khi người dùng không xác nhận xóa ở đây
+                console.log("Xóa bị hủy bỏ.");
+            }
+        });
 
+    }
     $scope.getDataUser2(function (cartIdCall) {
         console.log(cartIdCall, "here");
         $scope.loadAllPrByCart(cartIdCall);
@@ -228,7 +268,19 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
             $scope.updateProductQuantity(product.id, product.quantity);
         }
     };
-
+    $scope.loadAllPrKm = function () {
+        var url = `${host}/api/product`;
+        $http.get(url).then(res => {
+            $scope.itemsPromotion = res.data;
+            console.log(res.data);
+            console.log("Success", res);
+            $scope.numVisibleItems = 4;
+            $scope.slides = $scope.splitIntoSlides($scope.itemsPromotion, $scope.numVisibleItems);
+        }).catch(error => {
+            console.log("Error", error);
+        });
+    }
+    $scope.loadAllPrKm();
     $scope.updateProductQuantity = function (idPr, quantity) {
         var url = `${host}/api/updateQuantity/`;
         var updateData = { quantity: quantity };
@@ -238,6 +290,7 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
             .then(function (response) {
                 // Xử lý khi cập nhật thành công
                 $scope.loadAllPrByCart($scope.idCartFinal);
+                $scope.check();
                 console.log('Cập nhật số lượng thành công');
             })
             .catch(function (error) {
@@ -271,7 +324,6 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
     };
 
     $scope.confirmDelete = function (productId, cartId) {
-        var url = `${host}/api/cart/delete/`;
         swal.fire({
             title: "Xác nhận xóa",
             text: "Bạn có chắc muốn xóa sản phẩm khỏi giỏ hàng?",
@@ -300,27 +352,27 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
         }).then((result) => {
             if (result.value) {
                 // Xử lý khi người dùng xác nhận xóa ở đây
-                $http.delete(url + productId + "/" + cartId)
-                    .then(function () {
-                        // Xử lý khi Delete thành công
-                        $anchorScroll("pageContent");
-                        $scope.getDataUser(function (cartIdCall) {
-                            console.log(cartIdCall);
-                            $scope.loadAllPrByCart(cartIdCall);
-                            // $scope.loadAllPrCart(cartIdCall);
-                        })
-                        toastr.success('Xóa sản phẩm thành công!', 'Thông báo')
-                    })
-                    .catch(function (error) {
-                        // Xử lý khi Delete thất bại
-                        console.error('Delete thất bại', error);
-                    });
+                $scope.delete(productId, cartId);
             } else {
                 // Xử lý khi người dùng không xác nhận xóa ở đây
                 console.log("Xóa bị hủy bỏ.");
             }
         });
     };
+    $scope.delete = function (productId, cartId) {
+        var url = `${host}/api/cart/delete/`;
+        $http.delete(url + productId + "/" + cartId)
+            .then(function () {
+                // Xử lý khi Delete thành công
+                $anchorScroll("pageContent");
+                $scope.loadAllPrByCart(cartId);
+                toastr.success('Xóa sản phẩm thành công!', 'Thông báo')
+            })
+            .catch(function (error) {
+                // Xử lý khi Delete thất bại
+                console.error('Delete thất bại', error);
+            });
+    }
 
     $scope.idBill = 0;
     $scope.billJson = {};
@@ -363,6 +415,51 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
     // Gọi hàm để tải danh sách sản phẩm trong giỏ hàng
 
 
+    // Hàm để thay đổi chỉ mục slide
+    $scope.splitIntoSlides = function (itemsPromotion, numItemsPerSlide) {
+        var slides = [];
+        for (var i = 0; i < itemsPromotion.length - numItemsPerSlide + 1; i++) {
+            slides.push(itemsPromotion.slice(i, i + numItemsPerSlide));
+        }
+        return slides;
+    };
+    $scope.activeSlideIndex = 0;
+
+    $scope.nextSlide = function () {
+        if ($scope.activeSlideIndex < $scope.slides.length - 1) {
+            $scope.activeSlideIndex++;
+        } else {
+            $scope.activeSlideIndex = 0;
+        }
+    };
+
+    $scope.prevSlide = function () {
+        if ($scope.activeSlideIndex > 0) {
+            $scope.activeSlideIndex--;
+        } else {
+            $scope.activeSlideIndex = $scope.slides.length - 1;
+        }
+    };
+    function startAutoSlide() {
+        autoSlideInterval = $interval(function () {
+            $scope.nextSlide();
+        }, 2000); // Đặt khoảng thời gian ở đây, ví dụ 3000ms (3 giây)
+    }
+
+    function stopAutoSlide() {
+        if (angular.isDefined(autoSlideInterval)) {
+            $interval.cancel(autoSlideInterval);
+            autoSlideInterval = undefined;
+        }
+    }
+
+    // Bắt đầu chạy tự động khi controller được khởi tạo
+    startAutoSlide();
+
+    // Ngừng chạy tự động khi controller bị hủy
+    $scope.$on('$destroy', function () {
+        stopAutoSlide();
+    });
 });
 
 

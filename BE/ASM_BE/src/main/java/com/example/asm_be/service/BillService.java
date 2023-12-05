@@ -9,6 +9,7 @@ import com.example.asm_be.request.FeeRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Service
@@ -27,5 +28,6 @@ public interface BillService {
     void updateStatus( Integer idBill,int status);
     public  Integer getFee(FeeRequest feeRequest);
     public Object createOrder(CreateOrder createOrder);
+    public String paymentVnPay(int totalPay) throws UnsupportedEncodingException;
 
 }

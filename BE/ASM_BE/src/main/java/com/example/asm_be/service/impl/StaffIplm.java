@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
@@ -37,8 +38,8 @@ public class StaffIplm implements StaffService {
 
     @Override
     public Page<Staff> getAll(Integer pageNo, Integer sizePage) {
-        Pageable staffPageable = PageRequest.of(pageNo, sizePage);
-        return staffRepository.findAll(staffPageable);
+        Pageable pageable = PageRequest.of(pageNo, sizePage, Sort.by(Sort.Order.desc("id")));
+        return staffRepository.findAll(pageable);
     }
 
     @Override

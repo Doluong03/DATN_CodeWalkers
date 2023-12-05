@@ -85,6 +85,11 @@ public class ImageImpl implements ImageService {
         }
     }
 
+    @Override
+    public List<Image> findByIdPr(int idpr) {
+        return imageRepository.findAllByProductId(idpr);
+    }
+
     public void processImageFile(MultipartFile imageFile) {
         try {
             String imageName = imageFile.getOriginalFilename();

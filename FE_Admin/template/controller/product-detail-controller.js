@@ -424,7 +424,7 @@ window.productDetailController = function ($scope, $http, $window) {
       try {
         var workbook = new ExcelJS.Workbook();
         await workbook.xlsx.load(reader.result);
-        const worksheet = workbook.getWorksheet("Sheet2");
+        const worksheet = workbook.getWorksheet("Sheet4");
         worksheet.eachRow((row, index) => {
           $scope.checkSl = 0;
           console.log(row.getCell(3).value)

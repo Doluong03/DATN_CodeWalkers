@@ -45,11 +45,16 @@ public class ImageController {
                 .body(new ResponeObject("success", "Add thanh cong", imageService.save(image)));
     }
 
-    @PutMapping({"/Image/update"})
-    public ResponseEntity<ResponeObject> UpdateImage(@RequestBody Image image) throws ParseException {
+    @PutMapping({"/Image/updateById/{idPr}"})
+    public ResponseEntity<ResponeObject> UpdateImage(@PathVariable("idPr") int idPr) throws ParseException {
+        List<Image> list = imageService.findByIdPr(idPr);
+        for (Image x: list) {
+            x.setProduct(null);
+            this.imageService.save(x);
+        }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponeObject("success", "Update thanh cong", this.imageService.update(image)));
+                .build();
     }
 
     @DeleteMapping({"/Image/delete/{id}"})

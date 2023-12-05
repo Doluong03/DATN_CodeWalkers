@@ -18,7 +18,7 @@ public interface CartDetailService {
     public Boolean deleteByCart( int cartId);
     public void updateProductQuantity(int  productId, int newQuantity);
     public void updateProductSize(int cartDetailsId, int idProduct,int colorId, String newSize ,String idCart);
-    public void addOrUpdateCartItem(Cart cart, ProductDetail productDetail, int quantity);
+    public CartDetails addOrUpdateCartItem(Cart cart, ProductDetail productDetail, int quantity);
     public void updateCart(List<CartDetails> list, int cartId);
 
 }

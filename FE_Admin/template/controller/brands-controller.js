@@ -117,7 +117,7 @@ window.BrandsController = function ($scope, $http, $window, $timeout) {
   // end phân trang
 
   $scope.hienThi = function (pageNo, sizePage) {
-    let apiUrl = apiBrands + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+    let apiUrl = "http://localhost:8080/CodeWalkers/Brands" + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
 
     $http.get(apiUrl, headers).then(
       function (response) {

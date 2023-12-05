@@ -5,7 +5,19 @@ app.config(function ($routeProvider, $locationProvider) {
     $routeProvider
         .when("/home", {
             templateUrl: "page/home.html",
-            controller: "LayOutController"
+            controller: "HomeController"
+        })
+        .when("/about", {
+            templateUrl: "page/about.html",
+            controller: "BlogController"
+        })
+        .when("/contact", {
+            templateUrl: "page/contact.html",
+            controller: "BlogController"
+        })
+        .when("/new", {
+            templateUrl: "page/home.html",
+            controller: "BlogController"
         })
         .when("/product-detail/:productId", {
             templateUrl: "page/detail.html",
@@ -19,7 +31,7 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: "page/payment.html",
             controller: "PaymentController"
         })
-        .when("/product", {
+        .when("/product/:brandName", {
             templateUrl: "page/product.html",
             controller: "ProductController"
         })
@@ -51,7 +63,7 @@ app.run(function ($rootScope, $timeout) {
     });
 });
 
-app.controller("LayOutController", function ($scope, $http, $window, $cookies, $anchorScroll, CookieService) {
+app.controller("LayOutController", function ($scope, $http, $window, $cookies, $anchorScroll, CookieService, $timeout) {
     // Logic của controller ở đây
     $anchorScroll("pageContent");
     $scope.items = [];
@@ -69,6 +81,7 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
             $window.location.href = "http://127.0.0.1:5501/layoutUser.html#/product";
         }
     };
+
     $scope.loadAllPrBs = function () {
         var url = `${host}/api/product_bs`;
         $http.get(url).then(res => {
@@ -228,30 +241,7 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
 
 
     }
-    $scope.getInfoPayment = function () {
-        // Lấy toàn bộ URL
-        var fullUrl = window.location.href;
-        // Tạo một URLSearchParams object từ URL query string
-        var urlParams = new URLSearchParams(fullUrl);
-        // Lấy giá trị của tham số 'vnp_TransactionStatus'
-        var vnp_TransactionStatus = urlParams.get('vnp_TransactionStatus');
-        if (vnp_TransactionStatus == "00") {
-            $window.location.href = "http://127.0.0.1:5501/layoutUser.html#/orderOverview"
 
-        }
-        else if (vnp_TransactionStatus == null) {
-            // $window.location.href = "http://127.0.0.1:5501/FE/layoutUser.html#/home"
-        } else {
-            $window.location.href = "http://127.0.0.1:5501/layoutUser.html#/product"
-            Swal.fire({
-                icon: 'warning',
-                title: 'Đang chờ thanh toán!',
-                text: 'Vui lòng thanh toán trong vòng 24h'
-            }).then(function () {
-            });
-        }
-
-    }
     $scope.addCart = function () {
         Swal.fire({
             icon: 'warning',
@@ -260,11 +250,27 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
         }).then(function () {
         });
     }
-    $scope.getInfoPayment();
     // Lấy phần tử span có class "badge"
     // Đặt số muốn hiển thị
     $scope.loadAllPrBs();
 
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "slideDown",
+        "hideMethod": "slideUp"
+    }
 });
 app.filter('vndCurrency', function () {
     return function (input) {
@@ -396,3 +402,4 @@ app.filter('orderStatus', function () {
         return statusMapping[input] || 'Không xác định';
     };
 });
+

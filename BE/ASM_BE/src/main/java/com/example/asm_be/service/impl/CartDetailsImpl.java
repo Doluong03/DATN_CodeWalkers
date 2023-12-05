@@ -40,17 +40,17 @@ public class CartDetailsImpl implements CartDetailService {
 
 
     @Override
-    public void addOrUpdateCartItem(Cart cart, ProductDetail productDetail, int quantity) {
+    public CartDetails addOrUpdateCartItem(Cart cart, ProductDetail productDetail, int quantity) {
         Optional<CartDetails> cartDetailExist = cartDetailsRepository.findBy2Id(cart.getId(), productDetail.getId());
         if (cartDetailExist.isEmpty()) {
             CartDetails cartDetails = new CartDetails();
             cartDetails.setProductDetail(productDetail);
             cartDetails.setCart(cart);
             cartDetails.setQuantity(quantity);
-            cartDetailsRepository.save(cartDetails);
+           return cartDetailsRepository.save(cartDetails);
         } else {
             cartDetailExist.get().setQuantity(cartDetailExist.get().getQuantity() + quantity);
-            cartDetailsRepository.save(cartDetailExist.get());
+           return cartDetailsRepository.save(cartDetailExist.get());
         }
     }
 

@@ -83,6 +83,7 @@ public class BillImpl implements BillService {
     public Bill getOne(int id) {
         return billRepository.findById(id).get();
     }
+
     @Transactional
     @Override
     public Bill save(Bill bill, Users user) {
@@ -109,6 +110,7 @@ public class BillImpl implements BillService {
             return false;
         }
     }
+
     @Transactional
     @Override
     public String update(AddBillRequest billRequest) {
@@ -123,23 +125,23 @@ public class BillImpl implements BillService {
                 Staff staff = staffRepository.findById(billRequest.getIdStaff()).get();
                 bill.get().setStaff(staff);
                 billRepository.save(bill.get());
-                if (bill.get().getPaymentOptions() == Invariable.VNPAY) {
-                    try {
-                        int amount = bill.get().getTotalPay().intValue();
-                        Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
-                        String jsonString = gson.toJson(paymentVnPay(amount));
-                        System.out.println(jsonString);
-                        return jsonString;
-                    } catch (UnsupportedEncodingException e) {
-                        // Xử lý ngoại lệ một cách thích hợp ở đây
-                        e.printStackTrace(); // Hoặc ghi log, hoặc trả về thông báo lỗi
-                    }
-                } else {
-                    Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
-                    String jsonString = gson.toJson("http://127.0.0.1:5501/layoutUser.html#/orderOverview");
-                    System.out.println(jsonString);
-                    return jsonString;
-                }
+//                if (bill.get().getPaymentOptions() == Invariable.VNPAY) {
+//                    try {
+//                        int amount = bill.get().getTotalPay().intValue();
+//                        Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
+//                        String jsonString = gson.toJson(paymentVnPay(amount));
+//                        System.out.println(jsonString);
+//                        return jsonString;
+//                    } catch (UnsupportedEncodingException e) {
+//                        // Xử lý ngoại lệ một cách thích hợp ở đây
+//                        e.printStackTrace(); // Hoặc ghi log, hoặc trả về thông báo lỗi
+//                    }
+//                } else {
+//                    Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
+//                    String jsonString = gson.toJson("http://127.0.0.1:5501/index.html#/orderOverview");
+//                    System.out.println(jsonString);
+//                    return jsonString;
+//                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -263,6 +265,7 @@ public class BillImpl implements BillService {
         return null;
     }
 
+    @Override
     public String paymentVnPay(int totalPay) throws UnsupportedEncodingException {
         String orderType = "other";
         totalPay = totalPay * 100;
@@ -318,7 +321,10 @@ public class BillImpl implements BillService {
         String vnp_SecureHash = VNpayConfig.hmacSHA512(VNpayConfig.secretKey, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = VNpayConfig.vnp_PayUrl + "?" + queryUrl;
-        return paymentUrl;
+        Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
+        String jsonString = gson.toJson(paymentUrl);
+        System.out.println(jsonString);
+        return jsonString;
     }
 
     @Override

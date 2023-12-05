@@ -9,16 +9,35 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
     $scope.itemsSort = [];
     $scope.brands = [];
     $scope.itemsBs = [];
+
     $scope.loadBrand = function () {
         var url = `${host}/api/product/brand`;
         $http.get(url).then(res => {
             $scope.brands = res.data;
             console.log(res.data);
             console.log("Success", res);
+    
+            // Check if brandName is provided in the URL
+            var brandNameFromUrl = $routeParams.brandName;
+            if (brandNameFromUrl) {
+
+                // Your logic to select the brand based on brandNameFromUrl
+                // For example, mark the brand as selected
+                var selectedBrand = $scope.brands.find(function (brand) {
+                    console.log(brandNameFromUrl,brand,'here');
+
+                    return brand.name === brandNameFromUrl;
+                });
+    
+                if (selectedBrand) {
+                    $scope.chooseBr(selectedBrand);
+                }
+            }
         }).catch(error => {
             console.log("Error", error);
         });
-    }
+    };
+    
     $scope.loadCategory = function () {
         var url = `${host}/api/product/category`;
         $http.get(url).then(res => {
@@ -185,14 +204,11 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
             .then(function (response) {
                 // Xử lý dữ liệu phản hồi ở đây
                 $scope.filteredProducts = response.data;
-                console.log($scope.filteredProducts, 'fuckup')
-                console.log($scope.items, 'fuckup2')
                 $scope.filteredItems = $scope.items.filter(item => {
                     // Kiểm tra xem có bất kỳ phần tử nào trong filteredProducts có cùng product.id không
                     return $scope.filteredProducts.some(filteredItem => filteredItem.product.id === item.product.id);
                 });
 
-                console.log($scope.filteredProducts, 'fuckup')
             })
             .catch(function (error) {
                 console.log("Error", error);

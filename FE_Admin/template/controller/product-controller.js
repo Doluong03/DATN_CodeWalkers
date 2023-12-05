@@ -155,7 +155,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
   $scope.hienThi1 = function () {
     var url = apiBrands;
     $http.get(url).then(res => {
-      $scope.brands = res.data.brandsList;
+      $scope.brands = res.data;
       console.log("Success", res);
     }).catch(error => {
       console.log("Error", error);
@@ -258,12 +258,8 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
               $scope.UpdateImage(imageId, response.data.data.id);
               isDeleted = true;
             });
-            Swal.fire({
-              icon: 'success',
-              title: 'Thêm thành công!',
-              text: 'Thông tin sản phẩm đã được thêm.'
-            });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            $('#productAddModal').modal('hide');
             $scope.selectedImages = [];
             $scope.formproduct = {};
           })
@@ -368,18 +364,16 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       if (result.isConfirmed) {
         $http.put(apiAdmin + "Product/update", JSON.stringify($scope.formProductUpdate), headers)
           .then(function (response) {
-            $scope.selectedImages.forEach(element => {
-              let imageId = element.id;
-              $scope.UpdateImage(imageId, $scope.formProductUpdate.id);
-              isDeleted = true;
-            });
+            $scope.UpdateImageNull($scope.formProductUpdate.id);
             console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
             Swal.fire({
               icon: 'success',
               title: 'Cập nhật thành công!',
               text: 'Thông tin sản phẩm đã được cập nhật.'
             });
+            $('#productUpdateModal').modal('hide');
             $scope.formProductUpdate = {};
+
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
           })
           .catch(function (error) {
@@ -423,8 +417,9 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       if ($scope.selectedImages.length < 4) {
         $scope.selectedImages.push(image);
         console.log($scope.selectedImages);
-
+        $scope.formProductUpdate.mainImg = $scope.selectedImages[0].link;
         $scope.formproduct.mainImg = $scope.selectedImages[0].link;
+
       } else {
         image.selected = false; // Prevent selecting more than 4 images
       }
@@ -444,12 +439,8 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
     $http.put(apiAdmin + "Image/updateImgCb/" + idImg + `?idPr=${idPr}`, headers)
       .then(function (response) {
         console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
-        Swal.fire({
-          icon: 'success',
-          title: 'Cập nhật thành công!',
-          text: 'Thông tin người dùng đã được cập nhật.'
-        });
         $scope.formImageUpdate = {};
+        $scope.hienThiCheckBox();
         $scope.hienThi($scope.pageCurrent, $scope.sizePage);
       })
       .catch(function (error) {
@@ -461,38 +452,54 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
         });
       });
   };
+  $scope.UpdateImageNull = function (idPr) {
+    console.log(apiAdmin + "Image/updateById/" + idPr);
+
+    $http.put(apiAdmin + "Image/updateById/" + idPr, headers)
+      .then(function (response) {
+        $scope.selectedImages.forEach(element => {
+          let imageId = element.id;
+          $scope.UpdateImage(imageId, idPr);
+          isDeleted = true;
+        });
+        console.log("response:", response);
+      })
+      .catch(function (error) {
+        console.error("Error:", error);
+      });
+  };
   // end update
 
   $scope.fileInput = [];
 
   $scope.openFilePicker = function () {
-      document.getElementById('image').click();
+    document.getElementById('image').click();
   };
 
   document.getElementById('image').addEventListener('change', function () {
-      const fileInput = document.getElementById('image');
-      for (let i = 0; i < fileInput.files.length; i++) {
-          const formData = new FormData();
-          if (fileInput.files.length > 0) {
-              formData.append('images', fileInput.files[i]);
-              // You can also append other data to the formData if needed
-              // formData.append('name', document.getElementById('name').value);
-              $http.post('http://localhost:8080/CodeWalkers/admin/uploadImg', formData, {
-                  transformRequest: angular.identity,
-                  headers: {
-                      'Content-Type': undefined
-                  }
-              })
-                  .then(function (response) {
-                      console.log('Success:', response);
-                  })
-                  .catch(function (error) {
-                      console.error('Error:', error.data);
-                  });
-          } else {
-              console.error('No file selected');
+    const fileInput = document.getElementById('image');
+    for (let i = 0; i < fileInput.files.length; i++) {
+      const formData = new FormData();
+      if (fileInput.files.length > 0) {
+        formData.append('images', fileInput.files[i]);
+        // You can also append other data to the formData if needed
+        // formData.append('name', document.getElementById('name').value);
+        $http.post('http://localhost:8080/CodeWalkers/admin/uploadImg', formData, {
+          transformRequest: angular.identity,
+          headers: {
+            'Content-Type': undefined
           }
+        })
+          .then(function (response) {
+            console.log('Success:', response);
+          })
+          .catch(function (error) {
+            console.error('Error:', error.data);
+          });
+      } else {
+        console.error('No file selected');
       }
+    }
   });
 
 
@@ -529,7 +536,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
             code: row.getCell(1).value,
             name: row.getCell(2).value,
             description: row.getCell(3).value,
-            brands: { id: findBrandId(row.getCell(4).value) || null},
+            brands: { id: findBrandId(row.getCell(4).value) || null },
             category: { id: findCategoryId(row.getCell(5).value) || null },
             status: 1,
           };

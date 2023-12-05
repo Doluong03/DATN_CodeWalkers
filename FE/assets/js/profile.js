@@ -331,7 +331,7 @@ app.controller(
         $scope.updateAddress = function () {
             var url = `${host}/update-address`;
             var dataToSend = {
-                id: $scope.formAddress.id,
+                id: $scope.formAddress.id, 
                 addressDetail: $scope.formAddress.addressDetail,
                 ward: $scope.formAddress.ward,
                 province: $scope.formAddress.province, // Gửi ID

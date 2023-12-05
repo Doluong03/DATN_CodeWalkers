@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class UserImpl implements UserService {
 
     @Override
     public Page<Users> getAll(Integer pageNo, Integer sizePage) {
-        Pageable pageable = PageRequest.of(pageNo, sizePage);
+        Pageable pageable = PageRequest.of(pageNo, sizePage, Sort.by(Sort.Order.desc("id")));
         return userRepository.findAll(pageable);
     }
     @Override

@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface ImageRepository extends JpaRepository<Image, Integer> {
     @Query("SELECT i FROM HinhAnh i WHERE i.product IS NULL")
     List<Image> findAllByProductIsNull();
-
+    List<Image> findAllByProductId(int id);
 }

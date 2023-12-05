@@ -1,7 +1,6 @@
 app.controller("PaymentController", function ($scope, $window, $cookies, $http, $anchorScroll, CookieService) {
-    // Scroll đến phần tử có id "pageContent"
+    // Store original pushState
     $anchorScroll("pageContent");
-
     $scope.listBillDt = [];
     $scope.totalPrices = [];
     $scope.idBillIP = 0;
@@ -14,114 +13,145 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
     $scope.optionPay = "0";
     $scope.showOption = false;
     $scope.selectedAddress = null;
+
+    function tokenAuthen() {
+        // Lấy dữ liệu từ localStorage
+        var userDataString = localStorage.getItem("userData");
+
+        // Kiểm tra xem dữ liệu có tồn tại không
+        if (userDataString) {
+            // Chuyển đổi dữ liệu từ chuỗi JSON sang đối tượng JavaScript
+            var userData = JSON.parse(userDataString);
+
+            // Bạn có thể sử dụng userData ở đây
+            console.log(userData.token);
+            return userData.token;
+        } else {
+            // Trường hợp không có dữ liệu trong localStorage
+            console.log("Không có dữ liệu đăng nhập trong localStorage.");
+        }
+    }
+    $scope.note = ""; // Đặt lại trường nội dung
     var dataUserJson = localStorage.getItem('userIdData');
     var dataUserCart = localStorage.getItem('userCartData');
-      // voucher 
-      var dataUser = localStorage.getItem('userData');
-      var dataJson = JSON.parse(dataUser);
-      if(!dataJson){
+    // voucher 
+    var dataUser = localStorage.getItem('userData');
+    var dataJson = JSON.parse(dataUser);
+    if (!dataJson) {
         var url = `${host}/user-voucher?username=0`;
 
-    }else{
+    } else {
         var url = `${host}/user-voucher?username=${dataJson.username}`;
     }
-      //get voucher
-      $http.get(url).then(function (res) {
-          $scope.listVouchers = res.data;
-          console.log(" khi tải voucher: " + $scope.listVouchers);
+    //get voucher
+    $http.get(url).then(function (res) {
+        $scope.listVouchers = res.data;
+        console.log(" khi tải voucher: " + $scope.listVouchers);
 
-      }).catch(function (err) {
-          console.log("Lỗi khi tải voucher: " + err);
-      });
+    }).catch(function (err) {
+        console.log("Lỗi khi tải voucher: " + err);
+    });
 
-      $scope.showFormVoucher = function () {
-          $('#exampleModalVoucher').modal('show');
-      }
-      $scope.selectedVoucher = null;
-      $scope.isVoucher = false;
-      $scope.reducePrice = 0;
+    $scope.showFormVoucher = function () {
+        $('#exampleModalVoucher').modal('show');
+    }
+    $scope.selectedVoucher = null;
+    $scope.isVoucher = false;
+    $scope.reducePrice = 0;
 
 
 
-      $scope.selectVoucher = function (voucherId) {
-          // Kiểm tra nếu voucher đã được sử dụng thì không thực hiện gì cả
-          if ($scope.isVoucher && $scope.selectedVoucher === voucherId) {
-              $scope.selectedVoucher = null;
-              $scope.isVoucher = false;
-              $scope.loadAllPr(); //load lại giá sản phẩm khi đổi voucher
-              return;
-          }
+    $scope.selectVoucher = function (voucherId) {
+        // Kiểm tra nếu voucher đã được sử dụng thì không thực hiện gì cả
+        if ($scope.isVoucher && $scope.selectedVoucher === voucherId) {
+            $scope.selectedVoucher = null;
+            $scope.isVoucher = false;
+            $scope.loadAllPr(); //load lại giá sản phẩm khi đổi voucher
+            return;
+        }
 
         //   $scope.loadAllPr(); //load lại giá sản phẩm khi đổi voucher
 
-          var urlFindVch = `${host}/find-voucher`;
-          var idVoucher = { id: voucherId };
-          $scope.selectedVoucher = voucherId;
-          console.log("Selected Voucher ID:", voucherId);
+        var urlFindVch = `${host}/find-voucher`;
+        var idVoucher = { id: voucherId };
+        $scope.selectedVoucher = voucherId;
+        console.log("Selected Voucher ID:", voucherId);
 
-          // Thực hiện các hành động khác tùy thuộc vào ID được chọn
-          $http.post(urlFindVch, idVoucher).then(function (res) {
-              console.log("day la voucher theo id : " + res.data);
-              var vouchers = res.data;
+        // Thực hiện các hành động khác tùy thuộc vào ID được chọn
+        $http.post(urlFindVch, idVoucher).then(function (res) {
+            console.log("day la voucher theo id : " + res.data);
+            var vouchers = res.data;
 
-              // tính lại tổng tiền
-              console.log("day la gia san pham :" + $scope.totalPrice);
-              console.log("dieu kien:" + vouchers[0].condition);
+            // tính lại tổng tiền
+            console.log("day la gia san pham :" + $scope.totalPrice);
+            console.log("dieu kien:" + vouchers[0].condition);
 
-              if ($scope.totalPrice >= vouchers[0].condition) {
-                  var discount = ($scope.totalPrice * vouchers[0].value * 0.01);
+            if ($scope.totalPrice >= vouchers[0].condition) {
+                var discount = ($scope.totalPrice * vouchers[0].value * 0.01);
 
-                  if (discount > vouchers[0].maxReduction * 1000) {
-                      console.log("day la gia giam :" + discount)
-                      $scope.reducePrice = (vouchers[0].maxReduction * 1000);
-                      console.log("dieu kien :" + vouchers[0].maxReduction * 1000)
-                      $scope.totalPrice2 = ($scope.totalPrice - vouchers[0].maxReduction * 1000);
-                      $scope.feeAndVoucher($scope.fee, $scope.totalPrice2);
+                if (discount > vouchers[0].maxReduction * 1000) {
+                    console.log("day la gia giam :" + discount)
+                    $scope.reducePrice = (vouchers[0].maxReduction * 1000);
+                    console.log("dieu kien :" + vouchers[0].maxReduction * 1000)
+                    $scope.totalPrice2 = ($scope.totalPrice - vouchers[0].maxReduction * 1000);
+                    $scope.feeAndVoucher($scope.fee, $scope.totalPrice2);
 
-                  } else {
-                      $scope.totalPrice2 = $scope.totalPrice - ($scope.totalPrice * vouchers[0].value * 0.01);
-                      $scope.reducePrice = ($scope.totalPrice * vouchers[0].value * 0.01);
-                      $scope.feeAndVoucher($scope.fee, $scope.totalPrice2);
-                  }
+                } else {
+                    $scope.totalPrice2 = $scope.totalPrice - ($scope.totalPrice * vouchers[0].value * 0.01);
+                    $scope.reducePrice = ($scope.totalPrice * vouchers[0].value * 0.01);
+                    $scope.feeAndVoucher($scope.fee, $scope.totalPrice2);
+                }
 
-                  $scope.isVoucher = true;
-              } else {
-                  $scope.isVoucher = false;
-                  alert("ban khong du dieu kien");
-              }
-          }).catch(function (err) {
-              console.log("Lỗi khi tìm voucher" + err);
-          });
-      };
-      // hàm cập nhật lại tổng tiền khi có voucher
-      $scope.feeAndVoucher = function (fee, frice) {
-    
-        console.log($scope.fee,"here")
-          var url = `${host}/calculateFee`;
-          $http.post(url, JSON.stringify(fee)).then(function (res) {
-              console.log("Phi voucher ", res.data);
-              $scope.feeShip = res.data;
-              $scope.totalPay = (frice + $scope.feeShip);
-          }).catch(function (error) {
-              console.log("Lỗi khi tải ", error);
-          });
-      }
+                $scope.isVoucher = true;
+            } else {
+                $scope.isVoucher = false;
+                alert("ban khong du dieu kien");
+            }
+        }).catch(function (err) {
+            console.log("Lỗi khi tìm voucher" + err);
+        });
+    };
+    // hàm cập nhật lại tổng tiền khi có voucher
+    $scope.feeAndVoucher = function (fee, frice) {
 
-      // end voucher
+        console.log($scope.fee, "here")
+        var url = `${host}/calculateFee`;
+        $http.post(url, JSON.stringify(fee)).then(function (res) {
+            console.log("Phi voucher ", res.data);
+            $scope.feeShip = res.data;
+            $scope.totalPay = (frice + $scope.feeShip);
+        }).catch(function (error) {
+            console.log("Lỗi khi tải ", error);
+        });
+    }
+
+    // end voucher
     setTimeout(function () {
         $scope.calculateTotalPrice = function (item) {
             // Tính tổng giá trị của sản phẩm (price * quantity)
             return item.productDetail.price * item.quantity;
         };
-
+        $scope.cancelAddr = function () {
+            history.back();
+        }
         $scope.showFormAddress = function () {
-            $('#exampleModal').modal('show');
+            $scope.formAddress = {
+                addressDetail: "",
+                ward: '',
+                province: '',
+                district: '',
+                userName: "",
+                phoneNumber: "",
+                email: ""
+            };
+            $('#addressModal').modal('show');
         }
 
         $scope.loadAllPr = function () {
+
             var url = `${host}/api/billDt`;
             var billDt = $cookies.get('billId');
-            if(!billDt){
+            if (!billDt) {
                 return;
             }
             if (!dataUserCart) {
@@ -141,7 +171,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                 $scope.totalPrice = 0;
                 $scope.countItem = $scope.listBillDt.length;
                 $scope.totalPay = 0;
-                $scope.totalQuantity= 0;
+                $scope.totalQuantity = 0;
                 // Lặp qua danh sách sản phẩm và tính tổng tiền cho các sản phẩm được tích chọn
                 for (var i = 0; i < $scope.listBillDt.length; i++) {
                     $scope.totalPrice += $scope.calculateTotalPrice($scope.listBillDt[i]);
@@ -190,7 +220,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         $scope.loadDistrict = function (province) {
             var url = `${host}/get-district/`;
             var idProvince = province.ProvinceID;
-            $http.get(url + idProvince).then(function (res) {
+            $http.get(url + province).then(function (res) {
                 $scope.districts = res.data;
                 console.log("Danh sách Quận huyện ", res.data);
                 return res.data;
@@ -201,7 +231,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         $scope.loadWard = function (district) {
             var url = `${host}/get-Ward/`;
             var idDistrict = district.DistrictID;
-            $http.get(url + idDistrict).then(function (res) {
+            $http.get(url + district).then(function (res) {
                 $scope.wards = res.data;
                 console.log("Danh sách Phường xã ", res.data);
             }).catch(function (error) {
@@ -246,9 +276,14 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
 
         $scope.getAddressUser = function () {
             var url = `${host}/get-address/`;
-            var idUser = dataUserJson;
+            var idUser;
             if (!dataUserJson) {
-                $scope.showFormAddress();
+                idUser = $cookies.get('idUser');
+            } else {
+                idUser = dataUserJson;
+            }
+            if (!idUser) {
+                window.location.href = "http://127.0.0.1:5501/index.html#/home";
             }
             $http.get(url + idUser).then(function (res) {
                 $scope.addressUser = res.data;
@@ -294,11 +329,11 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         $scope.resetModalContent = function () {
             $scope.formAddress = {
                 addressDetail: "",
-                ward: "",
-                province: "",
-                district: "",
-                userName: "",
-                phoneNumber: "",
+                ward: '',
+                province: '',
+                district: '',
+                userName: $scope.selectedAddress.UserName,
+                phoneNumber: $scope.selectedAddress.PhoneNumber,
                 email: ""
             };
             $scope.note = ""; // Đặt lại trường nội dung
@@ -374,9 +409,9 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
 
             var dataToSend = {
                 addressDetail: $scope.formAddress.addressDetail,
-                ward: $scope.formAddress.ward.WardCode,
-                province: $scope.formAddress.province.ProvinceID, // Gửi ID
-                district: $scope.formAddress.district.DistrictID,
+                ward: $scope.formAddress.ward,
+                province: $scope.formAddress.province, // Gửi ID
+                district: $scope.formAddress.district,
                 userName: $scope.formAddress.userName,
                 phoneNumber: $scope.formAddress.phoneNumber,
                 email: $scope.formAddress.email
@@ -406,6 +441,54 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                 return false;
             });
         };
+        $scope.checkAction = false;
+        $scope.nameAction = "Thêm mới";
+
+        $scope.getUpdate = function (item) {
+            $scope.checkAction = true;
+            $scope.nameAction = "Cập nhật";
+            $scope.loadDistrict(item.ProvinceID);
+            $scope.loadWard(item.DistrictID);
+            $scope.formAddress = {
+                id: item.Id,
+                addressDetail: item.AddressDetail,
+                ward: item.WardCode,
+                province: item.ProvinceID,
+                district: item.DistrictID,
+                userName: item.UserName,
+                phoneNumber: item.PhoneNumber,
+            }
+            console.log($scope.formAddress, "here")
+        }
+
+        $scope.updateAddress = function () {
+            var url = `${host}/update-address`;
+            var dataToSend = {
+                id: $scope.formAddress.id,
+                addressDetail: $scope.formAddress.addressDetail,
+                ward: $scope.formAddress.ward,
+                province: $scope.formAddress.province, // Gửi ID
+                district: $scope.formAddress.district,
+                userName: $scope.formAddress.userName,
+                phoneNumber: $scope.formAddress.phoneNumber,
+            };
+            return $http.post(url, JSON.stringify(dataToSend)).then(function (res) {
+                $('#addressModal').modal('hide');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thêm thành công!',
+                    text: 'Thông tin địa chỉ đã được thêm.'
+                }).then(function () {
+                    $scope.getAddressUser();
+                    $('#exampleAddress').modal('show');
+                });
+                return true;
+            }).catch(function (error) {
+                console.error('update adr thất bại', error);
+                return false;
+            });
+        }
+
 
         $scope.getFee = function (fee) {
             $scope.feeShip = 0;
@@ -433,44 +516,10 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         $scope.updateBill = function () {
             $scope.showLoading = true;
             var url = `${host}/bill/updateBill`;
-            var billId = $cookies.get('billId');
-            if (!dataUserJson) {
-                var idUser = $cookies.get('idUser');
-                var dataToSend = {
-                    idBill: billId,
-                    address: $scope.formAddress.addressDetail,
-                    wardId: $scope.formAddress.ward.WardCode,
-                    provinceId: $scope.formAddress.province.ProvinceID, // Gửi ID
-                    districtId: $scope.formAddress.district.DistrictID,
-                    userId: idUser,
-                    fee: $scope.feeShip,
-                    optionPay: $scope.CreateOrder.optionPay,
-                    totalPay: $scope.totalPay,
-                    status: 1,
-                    idStaff: 1,
-                    userName: $scope.formAddress.userName,
-                    userPhone:$scope.formAddress.phoneNumber,
-                }
-            } else {
-                var dataToSend = {
-                    idBill: billId,
-                    address: $scope.selectedAddress.AddressDetail,
-                    wardId: $scope.selectedAddress.WardCode,
-                    provinceId: $scope.selectedAddress.ProvinceID, // Gửi ID
-                    districtId: $scope.selectedAddress.DistrictID,
-                    userId: dataUserJson,
-                    fee: $scope.feeShip,
-                    optionPay: $scope.CreateOrder.optionPay,
-                    totalPay: $scope.totalPay,
-                    status: 1,
-                    idStaff: 1,
-                    userName: $scope.selectedAddress.UserName,
-                    userPhone:$scope.selectedAddress.PhoneNumber,
-                }
-            }
-            console.log("here-data", dataToSend)
-            // Hiển thị loading spinner
+            var dataToSend = localStorage.getItem('dataToSend');
+
             // Sử dụng $http.put để gửi yêu cầu cập nhật đến API
+            console.log(dataToSend, "here");
             $http.put(url, dataToSend)
                 .then(function (res) {
                     // Xử lý khi cập nhật thành công
@@ -481,7 +530,8 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                             text: 'Thông tin đơn hàng đã được thêm.'
                         }).then(function () {
                             $scope.deleteCart();
-                            $window.location.href = res.data;
+                            localStorage.removeItem('dataToSend');
+                            console.log(res.data);
                         });
                         console.log('Suaw thành công');
                     }
@@ -504,10 +554,10 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
             // Gửi yêu cầu xóa đến server hoặc thực hiện xóa trên giao diện
             for (var i = 0; i < $scope.listBillDt.length; i++) {
                 $http.delete(url + $scope.listBillDt[i].productDetail.id + "/" + cartId)
-                .then(function () {
+                    .then(function () {
                         // Xử lý khi Delete thành công
-                        CookieService.delete('billId');
                         console.log('Delete thành công');
+                        CookieService.delete('billId');
                     })
                     .catch(function (error) {
                         // Xử lý khi Delete thất bại
@@ -515,6 +565,84 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                     });
             }
         }
-      
+   
+        $scope.createPay = function (totalPay) {
+            var billId = $cookies.get('billId');
+            if (!dataUserJson) {
+                var idUser = $cookies.get('idUser');
+                var dataToSend = {
+                    idBill: billId,
+                    address: $scope.formAddress.addressDetail,
+                    wardId: $scope.formAddress.ward.WardCode,
+                    provinceId: $scope.formAddress.province.ProvinceID, // Gửi ID
+                    districtId: $scope.formAddress.district.DistrictID,
+                    userId: idUser,
+                    fee: $scope.feeShip,
+                    optionPay: $scope.CreateOrder.optionPay,
+                    totalPay: $scope.totalPay,
+                    status: 1,
+                    idStaff: 1,
+                    userName: $scope.formAddress.userName,
+                    userPhone: $scope.formAddress.phoneNumber,
+                }
+            } else {
+                var dataToSend = {
+                    idBill: billId,
+                    address: $scope.selectedAddress.AddressDetail,
+                    wardId: $scope.selectedAddress.WardCode,
+                    provinceId: $scope.selectedAddress.ProvinceID, // Gửi ID
+                    districtId: $scope.selectedAddress.DistrictID,
+                    userId: dataUserJson,
+                    fee: $scope.feeShip,
+                    optionPay: $scope.CreateOrder.optionPay,
+                    totalPay: $scope.totalPay,
+                    status: 1,
+                    idStaff: 1,
+                    userName: $scope.selectedAddress.UserName,
+                    userPhone: $scope.selectedAddress.PhoneNumber,
+                }
+            }
+            localStorage.setItem('dataToSend', JSON.stringify(dataToSend));
+
+            // Sử dụng $http.put để gửi yêu cầu cập nhật đến API
+            console.log(dataToSend, "here");
+            // Hiển thị loading spinner
+            var url = `${host}/createPay`;
+            var config = {
+                params: {
+                    totalPay: totalPay,
+                }
+            };
+            $http.get(url, config).then(function (res) {
+                console.log('Create thành công');
+                $window.location.href=res.data;
+            }).catch(function (error) {
+                console.error('Create thất bại', error);
+            });
+        }
+        $scope.getInfoPayment = function () {
+            // Lấy toàn bộ URL
+            var fullUrl = window.location.href;
+            // Tạo một URLSearchParams object từ URL query string
+            var urlParams = new URLSearchParams(fullUrl);
+            // Lấy giá trị của tham số 'vnp_TransactionStatus'
+            var vnp_TransactionStatus = urlParams.get('vnp_TransactionStatus');
+            if (vnp_TransactionStatus == "00") {
+                $scope.updateBill();
+                $window.location.href = "http://127.0.0.1:5501/index.html#/orderOverview"
+            }
+            else if (vnp_TransactionStatus == null) {
+
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Giao dịch thất bại!',
+                    text: 'Vui lòng thanh toán đơn hàng'
+                })
+                $window.location.href = "http://127.0.0.1:5501/index.html#/payment"
+            }
+
+        }
+        $scope.getInfoPayment();
     }, 100); // 1000 milliseconds = 1 giây
 });

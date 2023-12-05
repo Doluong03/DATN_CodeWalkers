@@ -41,7 +41,7 @@ public class ProductDetailImpl implements ProductDetailService {
 
     @Override
     public Page<ProductDetail> getAllPage(Integer pageNo, Integer sizePage) {
-        Pageable pageable = PageRequest.of(pageNo, sizePage);
+        Pageable pageable = PageRequest.of(pageNo, sizePage, Sort.by(Sort.Order.desc("id")));
         return productDetailRepository.findAll(pageable);
     }
 

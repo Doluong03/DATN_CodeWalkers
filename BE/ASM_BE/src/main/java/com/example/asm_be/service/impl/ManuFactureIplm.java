@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,8 +18,8 @@ public class ManuFactureIplm implements ManuFactureService {
 
     @Override
     public Page<Manufacture> getAll(Integer pageNo,Integer sizePage) {
-        Pageable manufacturePageable = PageRequest.of(pageNo,sizePage);
-        return manuFactureRepository.findAll(manufacturePageable) ;
+        Pageable pageable = PageRequest.of(pageNo, sizePage, Sort.by(Sort.Order.desc("id")));
+        return manuFactureRepository.findAll(pageable) ;
     }
 
     @Override

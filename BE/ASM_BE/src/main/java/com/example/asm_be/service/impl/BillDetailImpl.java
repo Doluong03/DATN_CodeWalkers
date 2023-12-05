@@ -36,44 +36,56 @@ public class BillDetailImpl implements BillDetailService {
 
     @Override
     public List<BillDetails> save(int idBill, int idCart) {
-        List<CartDetails> listCartDt = cartDetailsRepository.findByCartId(idCart);
-        Bill bill = billRepository.findById(idBill).orElse(null);
         List<BillDetails> billDetailsList = new ArrayList<>();
-        if (bill != null) {
-            for (CartDetails cartDetails : listCartDt) {
-                BillDetails billDetail = new BillDetails();
-                billDetail.setBill(bill);
-                billDetail.setProductDetail(cartDetails.getProductDetail());
-                billDetail.setQuantity(cartDetails.getQuantity());
-                billDetail.setPrice(cartDetails.getProductDetail().getPrice());
-                billDetailsRepository.save(billDetail);
-                billDetailsList.add(billDetail);
+        try {
+            List<CartDetails> listCartDt = cartDetailsRepository.findByCartId(idCart);
+            Bill bill = billRepository.findById(idBill).orElse(null);
+            if (bill != null) {
+                for (CartDetails cartDetails : listCartDt) {
+                    BillDetails billDetail = new BillDetails();
+                    billDetail.setBill(bill);
+                    billDetail.setProductDetail(cartDetails.getProductDetail());
+                    billDetail.setQuantity(cartDetails.getQuantity());
+                    billDetail.setPrice(cartDetails.getProductDetail().getPrice());
+                    billDetailsRepository.save(billDetail);
+                    billDetailsList.add(billDetail);
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
         return billDetailsList;
     }
 
     @Override
     @Transactional
     public List<BillDetails> saveSl(int idBill, List<CartDetails> detailsList) {
-        Bill bill = billRepository.findById(idBill).orElse(null);
-        // Kiểm tra xem hóa đơn có tồn tại không
-        if (bill != null) {
-            // Xóa tất cả chi tiết hóa đơn cũ
-            billDetailsRepository.deleteAllByBillId(idBill);
-            // Thêm mới chi tiết hóa đơn từ danh sách chi tiết giỏ hàng
-            List<BillDetails> billDetailsList = new ArrayList<>();
-            for (CartDetails cartDetails : detailsList) {
-                BillDetails billDetail = new BillDetails();
-                billDetail.setBill(bill);
-                billDetail.setProductDetail(cartDetails.getProductDetail());
-                billDetail.setQuantity(cartDetails.getQuantity());
-                billDetail.setPrice(cartDetails.getProductDetail().getPrice());
-                billDetailsRepository.save(billDetail);
-                billDetailsList.add(billDetail);
+        try {
+            Bill bill = billRepository.findById(idBill).orElse(null);
+            // Kiểm tra xem hóa đơn có tồn tại không
+            if (bill != null) {
+                // Xóa tất cả chi tiết hóa đơn cũ
+                billDetailsRepository.deleteAllByBillId(idBill);
+                // Thêm mới chi tiết hóa đơn từ danh sách chi tiết giỏ hàng
+                List<BillDetails> billDetailsList = new ArrayList<>();
+                for (CartDetails cartDetails : detailsList) {
+                    System.out.println(cartDetails.toString()+"aaaaaaaa111111");
+                    BillDetails billDetail = new BillDetails();
+                    billDetail.setBill(bill);
+                    billDetail.setProductDetail(cartDetails.getProductDetail());
+                    billDetail.setQuantity(cartDetails.getQuantity());
+                    billDetail.setPrice(cartDetails.getProductDetail().getPrice());
+                    billDetailsRepository.save(billDetail);
+                    billDetailsList.add(billDetail);
+                }
+                // Trả về danh sách chi tiết hóa đơn mới
+                return billDetailsList;
+            }else {
+                System.out.println("ko co");
             }
-            // Trả về danh sách chi tiết hóa đơn mới
-            return billDetailsList;
+        }catch (Exception e){
+            e.printStackTrace();
         }
         // Trả về danh sách rỗng nếu hóa đơn không tồn tại
         return Collections.emptyList();
