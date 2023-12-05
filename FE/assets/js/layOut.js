@@ -76,9 +76,8 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
     $scope.onKeyPress = function (event) {
         if (event.key === 'Enter') {
             // Gọi hàm tìm kiếm tại đây
-
-
-            $window.location.href = "http://127.0.0.1:5501/layoutUser.html#/product";
+            console.log("hererereererererererer")
+            $window.location.href = "http://127.0.0.1:5501/index.html#/product/all";
         }
     };
 

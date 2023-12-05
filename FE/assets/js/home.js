@@ -2,14 +2,12 @@
 app.controller("HomeController", function ($scope, $http, $window, $cookies, $anchorScroll, CookieService, $timeout) {
     $scope.now = new Date(); // Lấy ngày và thời gian hiện tại
     // Giảm đi 5 ngày
-    $scope.now.setDate($scope.now.getDate() - 4);
+    $scope.now.setDate($scope.now.getDate() - 7);
     console.log($scope.now)
     $scope.loadAllPrBs = function () {
         var url = `${host}/api/product_bs`;
         $http.get(url).then(res => {
             $scope.itemsBs = res.data;
-            // Gọi loadDetail sau khi tải dữ liệu thành công
-            //  $scope.loadDetail();
             $scope.numVisibleItems = 4;
         }).catch(error => {
             console.log("Error", error);
@@ -79,6 +77,6 @@ app.controller("HomeController", function ($scope, $http, $window, $cookies, $an
             });
         });
         
-    }, 150)
+    }, 250)
 
 });

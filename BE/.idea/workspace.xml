@@ -6,19 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="89fb8e46-4ef5-470f-91b8-dd71389cb16c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/BillDetailsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/BillDetailsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/BillDetailsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/BillDetailsRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/assets/js/payment.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/payment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/page/payment.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/page/payment.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/page/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/page/product.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/order_manage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/order_manage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/AccountImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/AccountImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/product-detail-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/product-detail-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/order_manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/order_manage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/product-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/product-details.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,6 +111,17 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -369,7 +369,7 @@
       <workItem from="1701655721747" duration="4226000" />
       <workItem from="1701705690141" duration="9469000" />
       <workItem from="1701742610773" duration="4817000" />
-      <workItem from="1701788282221" duration="1848000" />
+      <workItem from="1701788282221" duration="5055000" />
     </task>
     <servers />
   </component>

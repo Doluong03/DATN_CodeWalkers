@@ -376,10 +376,13 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
 
     $scope.idBill = 0;
     $scope.billJson = {};
+    var idBill = $cookies.get('billId');
+    console.log(idBill,'bill')
     $scope.addBill = function () {
         var url = `${host}/api/addBill/${$scope.idUserFinal}`;
         console.log(url, "url");
         var idBill = $cookies.get('billId');
+        console.log(idBill,'bill')
         if (!idBill) {
             return $http.post(url).then(function (res) {
                 $scope.bill = res.data; // Gán dữ liệu từ API vào $scope.bill
