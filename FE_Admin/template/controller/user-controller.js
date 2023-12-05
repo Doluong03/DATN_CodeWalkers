@@ -2,7 +2,7 @@
 window.UserController = function ($scope, $http, $window,$rootScope) {
 
   $scope.listUSers = [];
-  $scope.pageNo = 0;
+  $scope.pageNo = 1;
   $scope.sizePage = 5;
   $scope.lastIndex =0; // phần tử cuối của mảng
   
@@ -64,7 +64,7 @@ window.UserController = function ($scope, $http, $window,$rootScope) {
 
   // phân trang start
   $scope.totalPage = 0;
-  $scope.pageCurrent = 0;
+  $scope.pageCurrent = 1;
   $scope.itemsPerPage = 3; // Số lượng trang bạn muốn hiển thị
   
   $scope.pageRange = function () {
@@ -89,17 +89,15 @@ window.UserController = function ($scope, $http, $window,$rootScope) {
     return pages;
   };
   
-  
-  
   $scope.nextPage = function () {
-    if ($scope.pageCurrent < $scope.totalPage - 1) {
+    if ($scope.pageCurrent < $scope.totalPage) {
       $scope.pageCurrent++;
       $scope.hienThi($scope.pageCurrent,$scope.sizePage);
     }
   };
   
   $scope.previousPage = function () {
-    if ($scope.pageCurrent > 0) {
+    if ($scope.pageCurrent > 1) {
       $scope.pageCurrent--;
     }
       $scope.hienThi($scope.pageCurrent,$scope.sizePage);
@@ -117,10 +115,8 @@ window.UserController = function ($scope, $http, $window,$rootScope) {
 
   // hàm thay đổi số phần tử của trang
   $scope.onSizePageChange = function () {
-    // Làm cái gì đó với giá trị mới của sizePage
     console.log("New Size Page: " + $scope.sizePage);
-    $scope.hienThi($scope.pageNo,$scope.sizePage);
-    // Gọi các hàm khác cần thiết với giá trị mới của sizePage
+    $scope.hienThi($scope.pageCurrent,$scope.sizePage);
 };
   // end phân trang
 

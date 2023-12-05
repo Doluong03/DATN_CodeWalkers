@@ -35,4 +35,9 @@ public interface UserService {
     Optional<Users> findByUserName(String userName);
 
     Optional<Users> findByAcc(String userName, String password);
+
+    List<Users> getUserOld();
+
+    List<Users> getUserNew();
+
 }

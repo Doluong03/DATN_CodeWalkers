@@ -1,0 +1,186 @@
+<style>
+    #create-promotion {
+        color: rgb(255, 255, 255);
+        background-color: #0251d9;
+        padding: 5px 15px;
+        border-radius: 20px;
+        display: inline-block;
+        float: right;
+        cursor: pointer;
+    }
+
+    #search-promotion {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: bisque;
+    }
+
+    #search-promotion input[type=text],
+    #search-promotion select,
+    #search-promotion input[type=date] {
+        margin-top: 10px;
+        height: 50px;
+        border-radius: 5px;
+    }
+
+    #search-promotion .custom-date-picker {
+        position: relative;
+    }
+
+    #search-promotion .custom-date-picker input[type=text] {
+        padding-right: 10px;
+    }
+
+    #search-promotion .custom-date-picker .input-group-btn {
+        position: absolute;
+        margin-top: 15px;
+        right: 0;
+    }
+
+    #search-promotion .custom-date-picker .btn {
+        height: 40px;
+
+    }
+
+    #search-promotion .btn-primary {
+        padding: 5px 10px;
+        margin-left: -10px;
+        width: 200px;
+    }
+
+    .table tr {
+        height: 50px;
+    }
+
+    .table tr th {
+        vertical-align: middle;
+        font-size: 15px;
+    }
+
+    .table tr td {
+        font-size: 15px;
+        text-align: center;
+    }
+    .form-select{
+         padding: 10px;
+    }
+   
+</style>
+
+<div class="row d-flex align-items-center justify-content-between">
+    <div class="col-lg-6">
+        <i class="fas fa-file-lines fa-lg" style="color: #0251d9;"></i> DANH SÁCH CHƯƠNG TRÌNH KHUYẾN MẠI
+    </div>
+    <div class="col-lg-6">
+        <a href="#create-promotion">
+            <div id="create-promotion">
+                <i class="fas fa-circle-plus" style="color: #f1f1f1;"></i> TẠO CHƯƠNG TRÌNH KHUYẾN MẠI
+            </div>
+        </a>
+      
+    </div>
+</div>
+
+<div class="row" id="search-promotion">
+    <div class="input-group">
+        <!-- Bind input fields to model variables -->
+        <input type="text" class="form-control" placeholder="Nhập tên chương trình khuyến mãi" ng-model="searchName">
+
+        <div class="col-md-3">
+            <select class="form-select" ng-model="searchDiscountType" ng-change="selectedDiscountType">
+                <option value="" selected >Loại Chương Trình</option>
+                <option value="Phần Trăm">Phần Trăm</option>
+                <option value="Đồng giá">Đồng giá</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <select class="form-select" ng-model="searchStatus" ng-change="selectedStatuss">
+                <option value="" selected >Loại Trạng Thái</option>
+                <option value="1">Đang hoạt động</option>
+                <option value="0">Ngừng hoạt động</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <div class="custom-date-picker input-group">
+                <input type="text" class="form-control" id="hiddenDateInput" ng-model="searchDate"
+                    uib-datepicker-popup="{{datePickerFormat}}" is-open="datePickerOpened" ng-required="true"
+                    close-text="Đóng" alt-input-formats="altInputFormats" ng-click="openDatePicker()"
+                    placeholder="Ngày diễn ra" />
+
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openDatePicker()">
+                        <img src="./images/clock_10314522.png" alt="calender img">
+                    </button>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-md-3 mt-3">
+            <!-- Use ng-click to trigger the search -->
+            <button type="button" class="btn btn-primary" ng-click="searchButton()">
+                <i class="fas fa-search"></i> Tìm kiếm
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive pt-4">
+    <table class="table table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th>STT</th>
+                <th>TÊN CHƯƠNG TRÌNH</th>
+                <th>LOẠI CTKM</th>
+                <th>THỜI GIAN KHUYẾN MÃI</th>
+                <th>TRẠNG THÁI</th>
+                <th>NGÀY TẠO</th>
+                <th>HÀNH ĐỘNG</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Use filteredPromotions in ng-repeat -->
+            <tr ng-repeat="item in listPromotions | customFilter:searchName:searchDiscountType:searchStatus:searchDate">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.typeDiscount}}</td>
+                <td>Từ {{ item.startDate | date:'dd/MM/yyyy HH:mm' }}<br><br> đến {{ item.endDate | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td ng-click="toggleStatus(item)">
+                    <i ng-if="item.status==1" class="fa-2xl fa fa-toggle-on" style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
+                    <i ng-if="item.status!=1" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
+                </td>
+                <td>{{item.createdDate | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>
+                    <a ng-href="#/update-promotion/{{item.id}}"  style="text-decoration: none; color: rgb(62, 44, 165);">
+                        <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" ng-click="removePromotion($event, item)" style="text-decoration: none; color: #FC424A;">
+                        <i class="fas fa-fw fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- phân trang -->
+    <nav id="phantrang" aria-label="Page navigation example" style="color: #000000;">
+        <p style="margin-top: 20px;"></p>
+        <ul class="pagination justify-content-end" style="margin-top: 20px;">
+            <li class="page-item" ng-class="{ 'disabled': pageCurrent === 1, 'hovered': hoveredPage === 'previous' }">
+                <a class="page-link" ng-click="previousPage()" ng-class="{ 'disabled-link': pageCurrent === 1 }"
+                    ng-mouseenter="onHover('previous')" ng-mouseleave="onLeave()"><span aria-hidden="true">&laquo;</span></a>
+            </li>
+            <li class="page-item" ng-repeat="page in pageRange()" ng-class="{ 'active': page === pageCurrent, 'hovered': hoveredPage === page }">
+                <a class="page-link" ng-click="PageNo(page, sizePage)" ng-mouseenter="onHover(page)" ng-mouseleave="onLeave()">{{ page }}</a>
+            </li>
+            <li class="page-item" ng-class="{ 'disabled': pageCurrent === totalPage, 'hovered': hoveredPage === 'next' }">
+                <a class="page-link" ng-click="nextPage()" ng-class="{ 'disabled-link': pageCurrent === totalPage - 1 }"
+                    ng-mouseenter="onHover('next')" ng-mouseleave="onLeave()"> <span aria-hidden="true">&raquo;</span></a>
+            </li>
+        </ul>
+    </nav>
+    <hr>
+</div>
+
+

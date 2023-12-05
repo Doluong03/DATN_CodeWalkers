@@ -1,12 +1,15 @@
 package com.example.asm_be.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "ChiTietSanPham")
@@ -38,11 +41,13 @@ public class ProductDetail {
     @ManyToOne()
     @JoinColumn(name = "mau_sac_id")
     private Color color;
-    @ManyToOne()
-    @JoinColumn(name = "khuyen_mai_id")
-    private Promotional promotional;
 
     @ManyToOne
-    @JoinColumn(name = "trang_thai")
+    @JoinColumn(name = "trang_thai_id")
     private Status status;
+
+
+
+
+
 }

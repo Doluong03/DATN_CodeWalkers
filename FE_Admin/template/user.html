@@ -80,14 +80,14 @@
                     <!-- Phân trang -->
                     <ul class="pagination justify-content-end" style="margin-top: 20px;">
                         <!-- Các nút phân trang ở đây -->
-                        <li class="page-item" ng-class="{ 'disabled': pageCurrent === 0, 'hovered': hoveredPage === 'previous' }">
+                        <li class="page-item" ng-class="{ 'disabled': pageCurrent === 1, 'hovered': hoveredPage === 'previous' }">
                           <a class="page-link" ng-click="previousPage()" ng-class="{ 'disabled-link': pageCurrent === 0 }" ng-mouseenter="onHover('previous')" ng-mouseleave="onLeave()"><span aria-hidden="true">&laquo;</span></a>
                         </li>
                         <li class="page-item" ng-repeat="page in pageRange()" ng-class="{ 'active': page === pageCurrent, 'hovered': hoveredPage === page }">
                           <a class="page-link" ng-click="PageNo(page, sizePage)" ng-mouseenter="onHover(page)" ng-mouseleave="onLeave()">{{ page }}</a>
                       </li>
                       
-                        <li class="page-item" ng-class="{ 'disabled': pageCurrent === totalPage - 1, 'hovered': hoveredPage === 'next' }">
+                        <li class="page-item" ng-class="{ 'disabled': pageCurrent === totalPage, 'hovered': hoveredPage === 'next' }">
                           <a class="page-link" ng-click="nextPage()" ng-class="{ 'disabled-link': pageCurrent === totalPage - 1 }" ng-mouseenter="onHover('next')" ng-mouseleave="onLeave()"> <span aria-hidden="true">&raquo;</span></a>
                         </li>
                     </ul>

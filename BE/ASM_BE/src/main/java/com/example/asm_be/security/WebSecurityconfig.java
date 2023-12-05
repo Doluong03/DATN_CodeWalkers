@@ -87,11 +87,11 @@ public class WebSecurityconfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/test/**").authenticated()
                                 .requestMatchers("/admin/User/insert").authenticated()
                                 .requestMatchers("/admin/User/update").authenticated()
                                 .requestMatchers("/CodeWalkers/User").permitAll()
-
+                                .requestMatchers("/CodeWalkers/admin/voucher").permitAll()
+//                                .requestMatchers("/CodeWalkers/admin/voucher/**").authenticated()
                                 .requestMatchers("/CodeWalkers/admin/Material/select").permitAll()
                                 .requestMatchers("/CodeWalkers/admin/Material/insert").authenticated()
                                 .requestMatchers("/CodeWalkers/admin/Material/update").authenticated()
@@ -119,17 +119,11 @@ public class WebSecurityconfig {
     }
 
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-//        return configuration.getAuthenticationManager();
-//    }
-
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE","PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

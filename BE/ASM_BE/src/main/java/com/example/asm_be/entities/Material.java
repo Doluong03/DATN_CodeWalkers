@@ -25,6 +25,7 @@ public class Material {
 
     @Column(name = "mo_ta")
     private String moTa;
+
     @Column(name = "trang_thai")
     private boolean status;
 

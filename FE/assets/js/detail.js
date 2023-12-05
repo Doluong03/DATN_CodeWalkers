@@ -31,9 +31,12 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     $scope.currentImageSource = `assets/img/product/sp1/${newSource}`;
   };
   $scope.productDTId = $routeParams.productId;
+  $scope.promotionId = $routeParams.promotionId;
   $scope.currentImageSource = null;
+
   $scope.loadDetail = function () {
     var url = `${host}/api/product/${$scope.productDTId}`;
+
     $http.get(url).then(res => {
       $scope.totalQuantity = 0;
       $scope.itemDetail = res.data;
@@ -57,21 +60,63 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       console.log("Error", error);
     });
   };
+
+
+  var listPromoDetail = [];
+  $scope.loadPromotionDetail = function(){
+    console.log($scope.promotionId)
+    console.log($scope.productDTId)
+    var promoUrl = `${host}/api/promotion/${$scope.promotionId}/${$scope.productDTId}`;
+  
+    $http.get(promoUrl).then(res => {
+        listPromoDetail = res.data;
+        console.log(listPromoDetail, 'Data is available for use.');
+      })
+      .catch(error => console.error("Error fetching promotional information", error));
+  };
+  
+  // Usage:
+  $scope.loadPromotionDetail();
+  
+  
+  
   $scope.totalQuantity = 0;
   $scope.check = function (idColor) {
     $scope.checkPrice = false; // Mặc định, không tìm thấy giá
+    $scope.isHasPromo = false;
     $scope.price = 0; // Đặt giá thành 0
+    $scope.pricePromotion =0;
     $scope.totalQuantity = 0;
     $scope.loadSizeByCl($scope.productDTId, idColor)
-    for (var i = 0; i < $scope.itemDetail.length; i++) {
-      if ($scope.itemDetail[i].color.id === idColor) {
-        $scope.checkPrice = true;
-        $scope.price = $scope.itemDetail[i].price; // Gán giá của sản phẩm đó
-        $scope.selectedColor = idColor;
-        break; // Dừng vòng lặp khi đã tìm thấy sản phẩm
+  
+
+
+    if(listPromoDetail.length >0){
+      for (var i = 0; i <listPromoDetail.length; i++) {
+        if (listPromoDetail[i].colorId === idColor) {
+          $scope.checkPrice = true;
+          $scope.isHasPromo = true;
+          $scope.pricePromotion = listPromoDetail[i].price;
+          $scope.price = listPromoDetail[i].reducePrice; // Gán giá của sản phẩm đó
+          $scope.selectedColor = idColor;
+          break; // Dừng vòng lặp khi đã tìm thấy sản phẩm
+        }
+      }
+    }else{
+      for (var i = 0; i < $scope.itemDetail.length; i++) {
+        if ($scope.itemDetail[i].color.id === idColor) {
+          $scope.checkPrice = true;
+          $scope.isHasPromo = false;
+          $scope.price = $scope.itemDetail[i].price; // Gán giá của sản phẩm đó
+          $scope.selectedColor = idColor;
+          break; // Dừng vòng lặp khi đã tìm thấy sản phẩm
+        }
       }
     }
+
+ 
   };
+
   $scope.loadSizeByCl = function (productId, clId) {
     var url = `${host}/api/getSizeBycolor`;
     var config = {

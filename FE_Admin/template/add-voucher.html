@@ -1,0 +1,224 @@
+<style>
+    .input-group button {
+        width: 30px;
+        height: 30px;
+        align-items: center;
+        border: 1 #878b8f;
+        background-color: #ffffff;
+    }
+
+    .input-group input {
+        width: 15%;
+        height: 30px;
+        text-align: center;
+    }
+
+    .input-group {
+        text-align: center;
+        justify-content: center;
+    }
+
+    #btn-action-add {
+        width: 200px;
+        font-size: 20px;
+    }
+</style>
+<div class="row" style="background-color: white;height: 1000px;">
+    <form class="forms-sample col-lg-12 border rounded-4 h-100">
+        <div class="form-group text-center">
+            <h5 style="margin-top: 15px;margin-bottom: 15px;">Thông tin phiếu giảm giá</h5>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-6 justify-items-end ">
+                <label for="exampleInputMiddleName">Hình Thức Áp Dụng *</label>
+                <select id="select1" class="form-select col" ng-model="formVoucher.useForm" style="height: 45px;"
+                    ng-change="loadUseForm()">
+                    <option value="Đơn Hàng" selected>Đơn Hàng</option>
+                    <option value="Phí Vận Chuyển">Phí Vận Chuyển</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-6 justify-items-end">
+                <label for="exampleInputMiddleName">Mã giảm giá *</label>
+                <input type="text" class="form-control" id="exampleInputDate" placeholder="Nhập mã giảm giá"
+                    ng-model="formVoucher.code">
+            </div>
+        </div>
+        <div class="col-lg-12" style="margin-top: -15px;margin-left: -30px;margin-bottom: 12px;">
+            <label class="form-check form-check-inline" style="margin-left: -7px;font-size: 14px;">Loai giảm
+                giá:</label>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                    value="Phần Trăm" ng-model="formVoucher.discountType" ng-change="updateMaxReduction()">
+                <p> Theo Phần Trăm</p>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="VND"
+                    ng-model="formVoucher.discountType" ng-change="updateMaxReduction()">
+                <p> Theo VND</p>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="form-group col-lg ">
+                <label for="exampleInputDate">Tên mã *</label>
+                <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Nhập tên mã" required
+                    ng-model="formVoucher.name">
+            </div>
+            <div class="form-group col-lg justify-items-end">
+                <label for="exampleInputMiddleName">Tiêu đề *</label>
+                <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Nhập tiêu đề" required
+                    ng-model="formVoucher.description">
+            </div>
+        </div>
+        <div class="row ">
+            <div class="form-group col-lg ">
+                <label for="exampleInputDate">Giá trị giảm</label>
+                <input type="number" class="form-control" id="exampleInputMiddleName" placeholder="Nhập giá trị giảm"
+                    ng-model="formVoucher.value" ng-change="updateMaxReduction()">
+            </div>
+            <div class="form-group col-lg justify-items-end" ng-show="formVoucher.discountType === 'Phần Trăm'">
+                <label for="exampleInputMiddleName">Tiền giảm tối đa</label>
+                <input type="number" class="form-control" id="exampleInputMiddleName"
+                    ng-model="formVoucher.maxReduction">
+            </div>
+            <div class="form-group col-lg justify-items-end" ng-show="formVoucher.discountType === 'VND'">
+                <label for="exampleInputMiddleName">Tiền giảm tối đa</label>
+                <input type="number" class="form-control" id="exampleInputMiddleName"
+                    ng-model="formVoucher.maxReduction" readonly>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="form-group col-lg ">
+                <label for="exampleInputDate">Giá trị đơn hàng tối thiểu</label>
+                <input type="text" class="form-control" id="exampleInputMiddleName"
+                    placeholder="Nhập giá trị đơn hàng tối thiểu"
+                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.fee}" ng-model="formVoucher.condition"
+                    ng-value="formOrderUpdate.fee == 0 ? 'Mua hàng tại quầy': formOrderUpdate.fee | vndCurrency">
+            </div>
+
+            <div class="form-group col-lg justify-items-end">
+                <label for="exampleInputMiddleName">Hình ảnh</label>
+                <input type="file" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên"
+                    ng-model="formVoucher.image" onchange="angular.element(this).scope().setFile(this)">
+            </div>
+        </div>
+
+        <div class="row ">
+        
+
+
+            <div class="form-group col-lg justify-items-end">
+                <label for="exampleInputMiddleName">Ngày hết hạn</label>
+                <input type="date" class="form-control" id="exampleInputMiddleName" placeholder="Ngày hết hạn"
+                    ng-model="formattedEndDate" ng-model-options="{ updateOn: 'blur' }"
+                    ng-change="updateEndDateDisplay()">
+            </div>
+
+            <div class="form-group col-lg-6">
+                <label class="label" for="selectStatus">Nhóm khách hàng áp dụng</label>
+                <select class="form-control select2" id="selectStatus" ng-model="selectedStatus"
+                    ng-options="option as option.value for option in statusOptions track by option.id" multiple>
+                </select>
+            </div>
+
+            <div class="form-group col-lg-6 ">
+                <label for="exampleInputMiddleName">Số Lượng 1 khách hàng đựơc sử dụng</label>
+                <input type="number" class="form-control" id="exampleInputMiddleName"
+                    placeholder="Nhập số lượng sử dụng" ng-model="voucherUser.usageCount">
+            </div>
+
+            <div class="form-group col-lg-6" >
+                <label for="exampleInputMiddleName">Trang thái :</label>
+                <i ng-click="toggleStatus2('on')" class="fa-2xl fa fa-toggle-on" ng-show="formVoucher.status" style="color: rgb(120, 204, 107);"></i>
+                <i ng-click="toggleStatus2('off')" class="fa-2xl fa fa-toggle-off" ng-show="!formVoucher.status" style="color: #afa9a9;"></i>
+                <label for="exampleInputMiddleName">Chọn để đổi trạng thái</label>
+            </div>
+            
+            
+
+        </div>
+        <button id="btn-action-add" type="button" class="btn btn-primary" ng-click="addVoucher($event)">Lưu
+            Voucher</button>
+
+
+    </form>
+
+</div>
+
+</div>
+<div ng-show="loading" class="overlay">
+    <span class="loader"></span>
+    <div class="text">Đang lưu...</div>
+</div>
+
+
+<style>
+    .label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .select2 {
+        margin-top: 4px;
+        width: 100%;
+        /* Đặt chiều rộng của ô hiển thị */
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        color: #ffffff;
+        border: 0;
+        border-radius: 3px;
+        padding: 7px;
+        font-size: 0.865rem;
+        font-family: inherit;
+        line-height: 1;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(170, 151, 151, 0.7);
+        /* Semi-transparent background color */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        z-index: 9999;
+        /* Ensure that the overlay is on top */
+    }
+
+    .loader {
+        width: 48px;
+        height: 48px;
+        border: 5px solid #FFF;
+        border-bottom-color: #FF3D00;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Styles for the text */
+    .text {
+        font-size: 18px;
+        color: #131111;
+        margin-top: 10px;
+    }
+
+    
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>

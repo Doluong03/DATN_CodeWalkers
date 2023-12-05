@@ -73,13 +73,13 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
             console.log('Chưa chọn giá trị.');
         }
     };
-    angular.element(document).on('keypress', function(event) {
+    angular.element(document).on('keypress', function (event) {
         if (event.key === 'Enter') {
             // Xử lý tìm kiếm ở đây
-            if($scope.keyword ==""){
+            if ($scope.keyword == "") {
                 $scope.loadAllPr()
             }
-            $scope.keyword=$scope.name;
+            $scope.keyword = $scope.name;
             $scope.loadSearch();
         }
     });
@@ -89,12 +89,12 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
             $scope.items = res.data;
             console.log(res.data);
             console.log("Success", res);
-                    // Kiểm tra xem danh sách sản phẩm có rỗng hay không
-        if ($scope.items.length === 0) {
-            $scope.products = 0;
-        }else{
-            $scope.products = 1;
-        }
+            // Kiểm tra xem danh sách sản phẩm có rỗng hay không
+            if ($scope.items.length === 0) {
+                $scope.products = 0;
+            } else {
+                $scope.products = 1;
+            }
             // Gọi loadDetail sau khi tải dữ liệu thành công
             $scope.numVisibleItems = 4;
             $scope.slides = $scope.splitIntoSlides($scope.items, $scope.numVisibleItems);
@@ -103,12 +103,104 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
         });
     }
     $scope.products = 1;
+
     $scope.loadAllPr = function () {
         var url = `${host}/api/product`;
         $http.get(url).then(res => {
             $scope.items = res.data;
             console.log(res.data);
             console.log("Success", res);
+            
+            var promoUrl = `${host}/api/active_promotions`;
+            $http.get(promoUrl).then((promoRes) => {
+                var activePromotions = promoRes.data;
+            
+                // Kiểm tra xem có chương trình khuyến mãi hay không
+                if (activePromotions && activePromotions.length > 0) {
+                    // Bước 2: Tạo một đối tượng để ánh xạ id sản phẩm với mảng thông tin khuyến mãi
+                    var productPromotionsMap = {};
+            
+                    // Bước 3: Lặp qua các chương trình khuyến mãi
+                    activePromotions.forEach((promo) => {
+                        if (
+                            promo.promotionDetailsList &&
+                            promo.promotionDetailsList.length > 0
+                        ) {
+                            // Lặp qua từng chi tiết khuyến mãi của chương trình
+                            promo.promotionDetailsList.forEach((promoDetail) => {
+                                // Kiểm tra xem có thông tin productDetail và id hay không
+                                if (
+                                    promoDetail.productDetail &&
+                                    promoDetail.productDetail.id
+                                ) {
+                                    // Nếu chưa có thông tin khuyến mãi cho sản phẩm, tạo một mảng để lưu
+                                    if (!productPromotionsMap[promoDetail.productDetail.id]) {
+                                        productPromotionsMap[promoDetail.productDetail.id] = [];
+                                    }
+            
+                                    // Thêm thông tin khuyến mãi vào mảng
+                                    productPromotionsMap[promoDetail.productDetail.id].push(
+                                        promoDetail
+                                    );
+            
+                                    // Thêm trường promotionId vào chi tiết khuyến mãi
+                                    promoDetail.promotionId = promo.id;
+                                }
+                            });
+                        }
+                    });
+            
+                    // In ra để kiểm tra
+                    console.log(productPromotionsMap);
+            
+                    // Bước 4: Kiểm tra và áp dụng giảm giá cho từng sản phẩm
+                    $scope.items.forEach((item) => {
+                        // Tìm thông tin khuyến mãi áp dụng cho sản phẩm
+                        var productPromotion = productPromotionsMap[item.id];
+            
+                        if (productPromotion && productPromotion.length > 0) {
+                            // Bước 5: Sắp xếp chi tiết khuyến mãi theo thời gian giảm dần
+                            productPromotion.sort((a, b) => b.createdDate - a.createdDate);
+            
+                            // Bước 6: Lấy chi tiết khuyến mãi mới nhất
+                            var latestPromoDetail = productPromotion[0];
+            
+                            // Thêm trường priceWithPromo vào item
+                            item.priceWithPromo = latestPromoDetail
+                                ? latestPromoDetail.discount
+                                : item.price;
+            
+                            // Thêm trường promotionId vào item
+                            item.promotionId = latestPromoDetail ? latestPromoDetail.promotionId : null;
+            
+                            // Đánh dấu sản phẩm có chương trình khuyến mãi
+                            item.hasPromotion = true;
+                        } else {
+                            // Nếu không có chương trình khuyến mãi, giá giữ nguyên
+                            // Đánh dấu sản phẩm không có chương trình khuyến mãi
+                            item.hasPromotion = false;
+                            // Thêm trường priceWithPromo vào item
+                            item.priceWithPromo = item.price;
+                        }
+                    });
+                } else {
+                    // Nếu không có chương trình khuyến mãi, giá giữ nguyên cho tất cả sản phẩm
+                    $scope.items.forEach((item) => {
+                        // Đánh dấu sản phẩm không có chương trình khuyến mãi
+                        item.hasPromotion = false;
+                        // Thêm trường priceWithPromo vào item
+                        item.priceWithPromo = item.price;
+                    });
+                }
+            
+                console.log($scope.items);
+                $scope.numVisibleItems = 4;
+            }).catch((error) => {
+                console.log("Error", error);
+            });
+            
+
+            
             // Gọi loadDetail sau khi tải dữ liệu thành công
             $scope.numVisibleItems = 4;
             $scope.slides = $scope.splitIntoSlides($scope.items, $scope.numVisibleItems);
@@ -116,11 +208,13 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
             console.log("Error", error);
         });
     }
+
+
     $scope.loadAllPr();
-    $scope.sortProducts = function(sortBy) {
+    $scope.sortProducts = function (sortBy) {
         // Gửi yêu cầu sắp xếp đến API Spring Boot với tiêu chí sắp xếp được truyền vào
-        console.log('/api/product/sort'+sortBy)
-        var url = `${host}/api/product/sort`+sortBy;
+        console.log('/api/product/sort' + sortBy)
+        var url = `${host}/api/product/sort` + sortBy;
         $http.get(url).then(res => {
             $scope.items = res.data;
             console.log(res.data);

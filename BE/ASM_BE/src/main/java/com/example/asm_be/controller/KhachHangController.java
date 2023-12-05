@@ -27,19 +27,16 @@ public class KhachHangController {
 
     @Autowired
     private UserService userService;
-
-
-
     public KhachHangController() {
     }
 
     @GetMapping({"/User"})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public UserRespone getAllUser(
-            @RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
+            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
             @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         UserRespone userRespone = new UserRespone();
-        Page<Users> usersPage = userService.getAll(pageNo, sizePage);
+        Page<Users> usersPage = userService.getAll(pageNo-1, sizePage);
 
         userRespone.setUsersList(usersPage.getContent());
         userRespone.setTotalPages(usersPage.getTotalPages());
@@ -105,5 +102,13 @@ public class KhachHangController {
     @GetMapping("/user/getAll")
     public ResponseEntity<Collection<Users>> getAllUser(){
         return ResponseEntity.ok(userService.getAllUser());
+    }
+    @GetMapping("/user/getUserOld")
+    public ResponseEntity<Collection<Users>> getUserOld(){
+        return ResponseEntity.ok(userService.getUserOld());
+    }
+    @GetMapping("/user/getUserNew")
+    public ResponseEntity<Collection<Users>> getUserNew(){
+        return ResponseEntity.ok(userService.getUserNew());
     }
 }

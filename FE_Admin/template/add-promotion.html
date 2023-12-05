@@ -1,0 +1,367 @@
+
+<style>
+
+    /* Định dạng CSS cho input */
+    .datetime-input-group {
+        margin-bottom: 15px;
+    }
+
+    /* Định dạng CSS cho nút chọn ngày giờ */
+    .datetime-picker-btn {
+        border: 1px solid #ccc;
+        margin-left: 4px;
+        padding: 4px 10px 4px 10px;
+    }
+
+    .row {
+        margin-bottom: 20px;
+        /* Thêm margin để tạo khoảng cách giữa các dòng */
+    }
+
+    /* Định dạng CSS cho bảng chọn ngày trong datepicker */
+    .uib-day,
+    .uib-day-disabled,
+    .uib-day:hover {
+        color: #333;
+        /* Màu chữ */
+        background-color: #fff;
+        /* Màu nền */
+        border: 1px solid #ccc;
+        /* Viền */
+    }
+
+    .uib-day.selected,
+    .uib-day.active {
+        background-color: #337ab7;
+        /* Màu nền khi được chọn hoặc hover */
+        color: #fff;
+        /* Màu chữ khi được chọn hoặc hover */
+    }
+
+    .uib-title,
+    .uib-left,
+    .uib-right {
+        color: #333;
+        /* Màu chữ của tiêu đề và nút điều hướng */
+    }
+
+    .uib-button-bar {
+        background-color: #f5f5f5;
+        /* Màu nền của thanh nút điều hướng */
+        border-top: 1px solid #ddd;
+        /* Đường viền trên cùng của thanh nút điều hướng */
+    }
+
+    .uib-title,
+    .uib-left,
+    .uib-right,
+    .uib-button-bar button {
+        font-size: 10px;
+        /* Kích thước chữ */
+    }
+
+    .uib-datepicker-popup.dropdown-menu {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+        /* Đổ bóng */
+    }
+
+    .uib-datepicker .uib-title {
+        border-bottom: 1px solid #ddd;
+        /* Đường viền dưới tiêu đề */
+    }
+
+    #drop-radio{
+         background-color: #ffffff;
+         height: 200px;
+         box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+         margin-top: -20px;
+        }
+
+
+#drop-radio input[type="text"] {
+    background-color: #ffffff;
+    margin-left: 10px;
+    width: 96%;
+    padding: 4px;
+    border: none; /* Loại bỏ đường viền mặc định */
+    border-bottom: 1px solid #cccccc; /* Giữ đường viền dưới */
+    margin-bottom: 10px;
+
+}
+
+#drop-radio input[type="text"]:focus {
+    outline: none; /* Loại bỏ đường viền mặc định khi input được focus */
+    box-shadow: 0 2px 4px rgba(82, 82, 82, 0.1); /* Hiển thị đường viền mờ khi input được focus */
+}
+
+#drop-radio input[type="text"]::placeholder {
+    color: #878b8f; /* Màu chữ mờ */
+    opacity: 0.8; /* Độ mờ */
+}
+
+.custom-dropdown-sell {
+    position: relative;
+    display: inline-block;
+    width: 40%;
+    margin-top: -65px;
+    margin-right: 30%;
+    float: right;
+
+}
+
+.dropdown-content-sell {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 450px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    z-index: 3;
+    overflow-y: auto;
+    /* Enable vertical scrollbar */
+    max-height: 400px;
+    /* Set maximum height */
+
+}
+
+.custom-dropdown-sell:hover .dropdown-content-sell {
+    display: block;
+}
+
+.prName-sell {
+    font-weight: bold;
+}
+
+.checkbox-container {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      height: 50px;
+      width: 100%;
+      background-color: #f9f9f9;
+      font-size: 15px;
+      border: none;
+
+    }
+
+  
+    input[type="checkbox"] {
+      margin-right: 8px; /* Khoảng cách giữa checkbox và text */
+      transform: scale(1.5); /* Tăng kích thước của checkbox */
+      cursor: pointer; /* Con trỏ tay khi di chuyển qua checkbox */
+    }
+ 
+
+    .checkbox-container:hover {
+      background-color: #e0e0e0; /* Màu nền khi hover */
+    }
+
+
+
+</style>
+
+
+<div class="row" style="background-color: #FFFAFF;height: 100%;">
+    <form class="forms-sample col-lg-12 border rounded-4 h-100">
+        <div class="form-group text-center">
+            <h5 style="margin-top: 15px;margin-bottom: 15px;">Thông tin chương trình giảm giá</h5>
+        </div>
+        <div class="row">
+
+            <div class="col-lg-3">
+                <label for="exampleInputMiddleName">Tên chương trình *</label> 
+            </div>
+            <div class="form-group col justify-items-end">
+            
+                <input type="text" class="form-control" id="exampleInputDate" placeholder="Nhập mã giảm giá"
+                ng-model="formAddPro.name">
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-3">
+                <label for="exampleInputMiddleName">Loại chương trình *</label> 
+            </div> 
+
+            <div class="form-group col justify-items-end" style="margin-top: -8px;">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio"  checked>
+                    <label class="form-check-label" for="exampleRadios1" style="margin-left: -0.6px;margin-top: -2px;">Giảm giá</label>
+                  </div>
+              </div>
+        </div>
+
+         <div class="row">
+            <div class="col-lg-3">
+            </div> 
+            <div class="form-group col">
+                <div class="form-check" id="drop-radio">
+                    <input class="form-check-input" style="margin-left: 5px;" type="radio"  value="Phần Trăm" checked ng-model="formAddPro.typeDiscount" ng-change="updateText('Phần Trăm')">
+                    <label class="form-check-label" for="exampleRadios1">Phần Trăm</label>
+                    <input type="number" id="text1" ng-show="isPercent" placeholder="0" ng-model="formAddPro.value">
+                
+                    <label class="form-check-label" for="exampleRadios2" >Đồng giá</label>
+                    <input style="margin-top: -25px;margin-left: 5px;" class="form-check-input" type="radio"  value="Đồng giá" ng-model="formAddPro.typeDiscount" ng-change="updateText('Đồng giá')">
+                    <input type="number" id="text2" ng-show="isCash" placeholder="0" ng-model="formAddPro.value">
+                    <label ng-show="isCash">Điều Kiện</label>
+                    <input type="number" ng-show="isCash" ng-model="formAddPro.condition">
+                    
+                </div>
+                
+              </div>
+     
+         </div>
+   
+         <div class="row">
+            <div class="col-lg-3">
+                <label for="exampleInputMiddleName">Ngày bắt đầu *</label> 
+            </div> 
+            <div class="form-group col">
+                    <div class="input-group" >
+                        <input type="text" ng-model="formAddPro.startDate" uib-datepicker-popup="{{format}}"
+                            is-open="dateTimePickerOpened1" datepicker-options="dateOptions"
+                            close-text="Close" ng-click="openDateTimePicker('picker1')" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default datetime-picker-btn"
+                                ng-click="openDateTimePicker('picker1')">
+                                <img src="./images/clock_10314522.png" alt="calender img">
+                            </button>
+                        </span>
+                        <p>Chọn giờ:
+                            <input type="time" ng-model="formAddPro.startDate" />
+                        </p>
+                    </div>
+                    
+                
+              </div>
+     
+         </div>
+
+         <div class="row">
+            <div class="col-lg-3">
+                <label for="exampleInputMiddleName">Ngày kết thúc *</label> 
+            </div> 
+            <div class="form-group col">
+                <div class="input-group">
+                    <input type="text" ng-model="formAddPro.endDate" uib-datepicker-popup="{{format}}"
+                        is-open="dateTimePickerOpened2" datepicker-options="dateOptions" 
+                        close-text="Close"  ng-click="openDateTimePicker('picker2')" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default datetime-picker-btn"
+                            ng-click="openDateTimePicker('picker2')">
+                            <img src="./images/clock_10314522.png" alt="calender img">
+                        </button>
+                    </span>
+                    <p>Chọn giờ:
+                        <input type="time" ng-model="formAddPro.endDate" />
+                    </p>
+                </div>
+                    
+                
+              </div>
+     
+         </div>
+
+         <div class="row">
+            <div class="col-lg-3">
+                <label for="exampleInputMiddleName">Mô tả *</label> 
+            </div> 
+
+            <div class="form-group col justify-items-end" style="margin-top: -8px;">
+                <textarea id="myTextarea" ng-model="formAddPro.description" name="myTextarea" rows="4" cols="100">
+                </textarea>
+            
+              </div>
+        </div>
+         
+<div class="row">
+    <div class="col-lg-3">
+        <label for="exampleInputMiddleName">Khuyến mãi *</label> 
+    </div>
+    <div class="col">
+        <select id="select1" class="form-select col" style="margin-bottom: 20px;max-width: 22%;" ng-model="selectedOption" ng-change="onOptionChange()">
+             <option value="Sản phẩm" selected>Sản phẩm</option>
+             <option value="Danh mục" ng-show="!isCash">Danh mục sản phẩm</option> 
+             <option value="Tất cả" ng-show="!isCash" >Tất cả</option>  
+        </select>
+
+        <div class="custom-dropdown-sell" ng-show="isSearchProduct">
+            <input type="text" class="form-control" id="productInput" ng-click="toggleDropdown()"
+                placeholder="Tìm kiếm sản phẩm" ng-model="tab.formData.search"
+                ng-change="filterProducts(tab)">
+            <div id="productDropdown" class="dropdown-content-sell w-25">
+                <!-- Product options go here -->
+                <div ng-repeat="pr in filteredItems">
+                    <button ng-click="selectProduct(pr)" class=" border-0 row bg-light">
+                        <img ng-src="{{'/template/images/sp1/' + pr.product.listImage[0].link }}"
+                            class="img-fluid w-25 h-25 border rounded-4"
+                            alt="{{pr.product.listImage[0].link}}">
+                        <span class="col-8 h-25 row text-start mb-2">
+                            <span class="prName-sell col "> {{pr.product.name}}</span>
+                            <span class="text-end col-3">{{pr.price | vndCurrency}}</span>
+                            <span class=" fw-bold">[{{pr.size.name}} - {{pr.color.name}}]</span>
+                            <span class=" "></span>
+                        </span>
+                    </button>
+                    <hr class="mt-2">
+                </div>
+                <!-- Add more products as needed -->
+            </div>
+        </div>
+
+        <div class="custom-dropdown-sell" ng-show="isSearchCategoryPr">
+            <input type="text" class="form-control" id="productInput" ng-click="toggleDropdown()"
+                placeholder="Tìm kiếm danh mục" ng-model="tab.formData.search"
+                ng-change="filterProducts(tab)">
+            <div id="productDropdown" class="dropdown-content-sell w-25">
+                <!-- Product options go here -->
+                <div ng-repeat="pr in category">
+                    <div ng-click="toggleCheckbox(pr)">
+                    <button class="checkbox-container col-lg-12">
+                          <input type="checkbox" ng-model="pr.selected" ng-change="checkboxChanged(pr)">
+                          <span>{{pr.name}}</span>
+                       
+                      </button>
+                    </div>
+                    <hr class="mt-2">
+                </div>
+                <!-- Add more products as needed -->
+            </div>
+        </div>
+    </div>
+ 
+</div>
+
+<div class="col">
+    <div class="input-group" style="margin-top: 20px;padding-bottom: 20px;">
+        <table class="table">
+            <thead  class="table table-primary ">
+                <tr>
+                    <th style="text-align: left;">Tên Sản phẩm</th>
+                    <th style="text-align: left;">Size-Màu</th>
+                    <th style="text-align: center;">Giá Gốc</th>
+                    <th style="text-align: center;">Giá Khuyến Mại</th>
+                    <th style="text-align: center;">Trạng Thái</th>
+                </tr>
+            </thead>
+            <tbody >
+                <tr ng-repeat="product in listPrReduced" >
+                    <td style="text-align: left;">{{ product.product.name }}</td>
+                    <td style="text-align: left;">{{ product.color }} - {{ product.size }}</td>
+                    <td style="text-align: center;">{{ product.originalPrice | vndCurrency  }}</td>
+                    <td style="text-align: center;">{{ product.discountedPrice | vndCurrency  }}</td>
+                    <td style="text-align: center;">{{ product.status.name }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    </form>
+
+</div>
+
+
+<button ng-click="savePro($event)">Lưu</button>

@@ -16,93 +16,199 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
     $scope.selectedAddress = null;
     var dataUserJson = localStorage.getItem('userIdData');
     var dataUserCart = localStorage.getItem('userCartData');
-      // voucher 
-      var dataUser = localStorage.getItem('userData');
-      var dataJson = JSON.parse(dataUser);
-      var url = `${host}/user-voucher?username=${dataJson.username}`;
-      //get voucher
-      $http.get(url).then(function (res) {
-          $scope.listVouchers = res.data;
-          console.log(" khi tải voucher: " + $scope.listVouchers);
+    // voucher 
+    var dataUser = localStorage.getItem('userData');
+    var dataJson = JSON.parse(dataUser);
+    var url = `${host}/user-voucher?userName=${dataJson.username}`;
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "slideDown",
+        "hideMethod": "slideUp"
+    }
+    //get voucher
+    $http.get(url).then(function (res) {
+        $scope.listVouchers = res.data;
+        console.log(" khi tải voucher: " + $scope.listVouchers);
 
-      }).catch(function (err) {
-          console.log("Lỗi khi tải voucher: " + err);
-      });
+    }).catch(function (err) {
+        console.log("Lỗi khi tải voucher: " + err);
+    });
 
-      $scope.showFormVoucher = function () {
-          $('#exampleModalVoucher').modal('show');
-      }
-      $scope.selectedVoucher = null;
-      $scope.isVoucher = false;
-      $scope.reducePrice = 0;
+    $scope.showFormVoucher = function () {
+        $('#exampleModalVoucher').modal('show');
+    }
+    $scope.selectedVoucher = null;
+    $scope.isVoucher = false;
+    $scope.reducePrice = 0;
+    $scope.isFeeShip = false;
+    $scope.feeShip = 0;
+    $scope.voucherUser = {
+        usageCount: 0,
+        voucher: { id: "" },
+    }
+
+    $scope.selectVoucher = function (voucherId, usageCount) {
+        // Kiểm tra nếu voucher đã được sử dụng thì không thực hiện gì cả
+        if ($scope.selectedVoucher === voucherId) {
+            $scope.selectedVoucher = null;
+            $scope.isVoucher = false;
+            $scope.isFeeShip = false;
+            $scope.loadAllPr(); //load lại giá sản phẩm khi đổi voucher
+            return;
+        }
 
 
+        var urlFindVch = `${host}/find-voucher`;
+        var idVoucher = { id: voucherId };
+        $scope.selectedVoucher = voucherId;
+        console.log("Selected Voucher ID:", voucherId);
 
-      $scope.selectVoucher = function (voucherId) {
-          // Kiểm tra nếu voucher đã được sử dụng thì không thực hiện gì cả
-          if ($scope.isVoucher && $scope.selectedVoucher === voucherId) {
-              $scope.selectedVoucher = null;
-              $scope.isVoucher = false;
-              $scope.loadAllPr(); //load lại giá sản phẩm khi đổi voucher
-              return;
-          }
+        // Thực hiện các hành động khác tùy thuộc vào ID được chọn
+        $http.post(urlFindVch, idVoucher).then(function (res) {
+            console.log("day la voucher theo id : " + res.data);
+            var vouchers = res.data;
 
-        //   $scope.loadAllPr(); //load lại giá sản phẩm khi đổi voucher
+            // tính lại tổng tiền
+            console.log(vouchers);
+            console.log("day la gia san pham :" + $scope.totalPrice);
+            console.log("dieu kien:" + vouchers[0].condition);
 
-          var urlFindVch = `${host}/find-voucher`;
-          var idVoucher = { id: voucherId };
-          $scope.selectedVoucher = voucherId;
-          console.log("Selected Voucher ID:", voucherId);
+            if (vouchers[0].useForm === "Đơn Hàng") {
+                $scope.isFeeShip = false;
+                if ($scope.totalPrice >= vouchers[0].condition) {
 
-          // Thực hiện các hành động khác tùy thuộc vào ID được chọn
-          $http.post(urlFindVch, idVoucher).then(function (res) {
-              console.log("day la voucher theo id : " + res.data);
-              var vouchers = res.data;
+                    if (vouchers[0].discountType === "Phần Trăm") {
 
-              // tính lại tổng tiền
-              console.log("day la gia san pham :" + $scope.totalPrice);
-              console.log("dieu kien:" + vouchers[0].condition);
+                        var discount = ($scope.totalPrice * vouchers[0].value * 0.01);
 
-              if ($scope.totalPrice >= vouchers[0].condition) {
-                  var discount = ($scope.totalPrice * vouchers[0].value * 0.01);
+                        if (discount > vouchers[0].maxReduction) {
+                            console.log("day la gia giam :" + discount)
+                            $scope.reducePrice = (vouchers[0].maxReduction);
+                            console.log("dieu kien :" + vouchers[0].maxReduction)
+                            $scope.totalPrice2 = ($scope.totalPrice - vouchers[0].maxReduction);
+                            $scope.feeAndVoucher($scope.fee, $scope.totalPrice2);
+                        } else { // trường hợp tiền giảm < tiền giảm tối đa                       
+                            $scope.totalPrice2 = $scope.totalPrice - discount;
+                            $scope.reducePrice = discount;
+                            $scope.feeAndVoucher($scope.fee, $scope.totalPrice2);
+                        }
 
-                  if (discount > vouchers[0].maxReduction * 1000) {
-                      console.log("day la gia giam :" + discount)
-                      $scope.reducePrice = (vouchers[0].maxReduction * 1000);
-                      console.log("dieu kien :" + vouchers[0].maxReduction * 1000)
-                      $scope.totalPrice2 = ($scope.totalPrice - vouchers[0].maxReduction * 1000);
-                      $scope.feeAndVoucher($scope.fee, $scope.totalPrice2);
+                    } else {// day la  giảm theo tiền
+                        var checkToTalFrice = $scope.totalPrice - (vouchers[0].maxReduction);
+                        if (checkToTalFrice > 0) {
 
-                  } else {
-                      $scope.totalPrice2 = $scope.totalPrice - ($scope.totalPrice * vouchers[0].value * 0.01);
-                      $scope.reducePrice = ($scope.totalPrice * vouchers[0].value * 0.01);
-                      $scope.feeAndVoucher($scope.fee, $scope.totalPrice2);
-                  }
+                            $scope.totalPrice2 = checkToTalFrice;
+                            $scope.reducePrice = (vouchers[0].maxReduction);
+                            $scope.feeAndVoucher($scope.fee, $scope.totalPrice2);
+                        } else {
+                            $scope.isVoucher = false;
+                            return;
+                        }
 
-                  $scope.isVoucher = true;
-              } else {
-                  $scope.isVoucher = false;
-                  alert("ban khong du dieu kien");
-              }
-          }).catch(function (err) {
-              console.log("Lỗi khi tìm voucher" + err);
-          });
-      };
-      // hàm cập nhật lại tổng tiền khi có voucher
-      $scope.feeAndVoucher = function (fee, frice) {
-    
-        console.log($scope.fee,"here")
-          var url = `${host}/calculateFee`;
-          $http.post(url, JSON.stringify(fee)).then(function (res) {
-              console.log("Phi voucher ", res.data);
-              $scope.feeShip = res.data;
-              $scope.totalPay = (frice + $scope.feeShip);
-          }).catch(function (error) {
-              console.log("Lỗi khi tải ", error);
-          });
-      }
 
-      // end voucher
+                    }
+
+                    $scope.isVoucher = true;
+                } else {
+                    $scope.isVoucher = false;
+                    alert("ban khong du dieu kien");
+                }
+            }
+
+            if (vouchers[0].useForm === "Phí Vận Chuyển") {
+                $scope.isVoucher = false;
+                if ($scope.feeShip >= vouchers[0].condition) {
+
+                    if (vouchers[0].discountType === "Phần Trăm") {
+
+                        var discount = ($scope.feeShip * vouchers[0].value * 0.01);
+
+                        if (discount > vouchers[0].maxReduction) {
+                            console.log("day la gia giam :" + discount)
+                            $scope.reduceFee = (vouchers[0].maxReduction);
+                            console.log("dieu kien :" + vouchers[0].maxReduction)
+                            $scope.totalFee = ($scope.feeShip - vouchers[0].maxReduction);
+                            $scope.feeNew($scope.fee, $scope.totalFee);
+                        } else { // trường hợp tiền giảm < tiền giảm tối đa                       
+                            $scope.totalFee = $scope.totalFee - discount;
+                            $scope.reduceFee = discount;
+                            $scope.feeNew($scope.fee, $scope.totalFee);
+                        }
+
+                    } else {// day la  giảm theo tiền
+                        var checkfee = $scope.feeShip - (vouchers[0].maxReduction);
+                        if (checkfee > 0) {
+                            $scope.totalFee = $scope.feeShip - (vouchers[0].maxReduction);
+                            $scope.reduceFee = (vouchers[0].maxReduction);
+                            $scope.feeNew($scope.fee, $scope.totalFee);
+                        }
+                        else {
+                            $scope.isFeeShip = false;
+                            toastr.error('Voucher không hợp lệ', 'Thông báo')
+                            return;
+                        }
+                    }
+
+                    $scope.isFeeShip = true;
+                } else {
+                    $scope.isFeeShip = false;
+                    alert("ban khong du dieu kien");
+                }
+            }
+
+
+        }).catch(function (err) {
+            console.log("Lỗi khi tìm voucher" + err);
+        });
+    };
+    // hàm cập nhật lại tổng tiền khi có voucher
+    $scope.feeAndVoucher = function (fee, frice) {
+
+        console.log($scope.fee, "here")
+        var url = `${host}/calculateFee`;
+        $http.post(url, JSON.stringify(fee)).then(function (res) {
+            console.log("Phi voucher ", res.data);
+            $scope.feeShip = res.data;
+            $scope.totalPay = (frice + $scope.feeShip);
+        }).catch(function (error) {
+            console.log("Lỗi khi tải ", error);
+        });
+    }
+    // hàm tính giảm phí vận chuyển
+    $scope.feeNew = function (fee, feeNew) {
+
+        console.log($scope.fee, "here")
+        var url = `${host}/calculateFee`;
+        $http.post(url, JSON.stringify(fee)).then(function (res) {
+            console.log("Phi voucher ", res.data);
+            $scope.feeShip = res.data;
+            $scope.totalPay = ($scope.totalPrice + feeNew);
+        }).catch(function (error) {
+            console.log("Lỗi khi tải ", error);
+        });
+    }
+    // cap nhật lại số lần sử dụng
+    $scope.updateUsageCount = function (userVoucher) {
+        $http.patch('http://localhost:8080/CodeWalkers/admin/user-voucher/update', JSON.stringify($scope.voucherUser)).then(function (res) {
+
+        }).catch(function (err) {
+            console.log("Lôĩ Update số lần sử dụng")
+        });
+    };
+
+    // end voucher
     setTimeout(function () {
         $scope.calculateTotalPrice = function (item) {
             // Tính tổng giá trị của sản phẩm (price * quantity)
@@ -116,45 +222,143 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         $scope.loadAllPr = function () {
             var url = `${host}/api/detail`;
             var cartId = $cookies.get('cartId');
-            if (!dataUserCart) {
-                $scope.showOption = false;
-                var config = {
-                    params: { idCart: cartId }
-                };
-            } else {
-                $scope.showOption = true;
-                var config = {
-                    params: { idCart: dataUserCart }
-                };
-            }
+
+            // Thiết lập cấu hình cho HTTP GET request
+            var config = {
+                params: { idCart: dataUserCart || cartId }
+            };
+
+            // Thực hiện HTTP GET request để lấy danh sách sản phẩm
             $http.get(url, config).then(function (res) {
                 $scope.listBillDt = res.data;
-                console.log("Danh sách sản phẩm trong giỏ hàng", $scope.listBillDt);
+                console.log("Danh sách sản phẩm trong giỏ hàng neeeee", $scope.listBillDt);
                 $scope.totalPrice = 0;
                 $scope.countItem = $scope.listBillDt.length;
                 $scope.totalPay = 0;
-                $scope.totalQuantity= 0;
-                // Lặp qua danh sách sản phẩm và tính tổng tiền cho các sản phẩm được tích chọn
-                for (var i = 0; i < $scope.listBillDt.length; i++) {
-                    $scope.totalPrice += $scope.calculateTotalPrice($scope.listBillDt[i]);
-                    $scope.totalQuantity += $scope.listBillDt[i].quantity;
-                    $scope.listResPr.push({
-                        productDetail: $scope.listBillDt[i].productDetail,
-                        quantity: $scope.listBillDt[i].quantity,
-                        name: $scope.listBillDt[i].productDetail.product.name,
-                        price: $scope.listBillDt[i].productDetail.price
-                    });
-                }
-                if (dataUserJson) {
-                    $scope.getFeeUser();
-                } else {
-                    $scope.totalPay = $scope.totalPrice;
-                }
+                $scope.totalQuantity = 0;
+                var activePromotions = [];
+
+                // Bước 1: Lấy thông tin chương trình khuyến mãi đang hoạt động
+                var promoUrl = `${host}/api/active_promotions`;
+                $http.get(promoUrl).then((promoRes) => {
+                    activePromotions = promoRes.data;
+
+                    // Kiểm tra xem có chương trình khuyến mãi hay không
+                    if (activePromotions && activePromotions.length > 0) {
+                        // Bước 2: Tạo một đối tượng để ánh xạ id sản phẩm với mảng thông tin khuyến mãi
+                        var productPromotionsMap = {};
+
+                        // Bước 3: Lặp qua các chương trình khuyến mãi
+                        activePromotions.forEach((promo) => {
+                            if (
+                                promo.promotionDetailsList &&
+                                promo.promotionDetailsList.length > 0
+                            ) {
+                                // Lặp qua từng chi tiết khuyến mãi của chương trình
+                                promo.promotionDetailsList.forEach((promoDetail) => {
+                                    // Kiểm tra xem có thông tin productDetail và id hay không
+                                    if (
+                                        promoDetail.productDetail &&
+                                        promoDetail.productDetail.id
+                                    ) {
+                                        // Nếu chưa có thông tin khuyến mãi cho sản phẩm, tạo một mảng để lưu
+                                        if (!productPromotionsMap[promoDetail.productDetail.id]) {
+                                            productPromotionsMap[promoDetail.productDetail.id] = [];
+                                        }
+
+                                        // Thêm thông tin khuyến mãi vào mảng
+                                        productPromotionsMap[promoDetail.productDetail.id].push(
+                                            promoDetail
+                                        );
+
+                                        // Thêm trường promotionId vào chi tiết khuyến mãi
+                                        promoDetail.promotionId = promo.id;
+                                    }
+                                });
+                            }
+                        });
+
+                        // In ra để kiểm tra
+                        console.log(productPromotionsMap, 'hhhhhhhhhhhhhhhh');
+
+                        // Bước 4: Kiểm tra và áp dụng giảm giá cho từng sản phẩm
+                        $scope.listBillDt.forEach((item) => {
+                            // Tìm thông tin khuyến mãi áp dụng cho sản phẩm
+                            var productPromotion = productPromotionsMap[item.productDetail.id];
+
+                            if (productPromotion && productPromotion.length > 0) {
+                                // Bước 5: Sắp xếp chi tiết khuyến mãi theo thời gian giảm dần
+                                productPromotion.sort((a, b) => b.createdDate - a.createdDate);
+
+                                // Bước 6: Lấy chi tiết khuyến mãi mới nhất
+                                var latestPromoDetail = productPromotion[0];
+
+                                // Thêm trường priceWithPromo vào item
+                                item.priceWithPromo = latestPromoDetail
+                                    ? latestPromoDetail.discount
+                                    : item.price;
+
+                                // Thêm trường promotionId vào item
+                                item.promotionId = latestPromoDetail ? latestPromoDetail.promotionId : null;
+
+                                // Đánh dấu sản phẩm có chương trình khuyến mãi
+                                item.hasPromotion = true;
+                            } else {
+                                // Nếu không có chương trình khuyến mãi, giá giữ nguyên
+                                // Đánh dấu sản phẩm không có chương trình khuyến mãi
+                                item.hasPromotion = false;
+                                // Thêm trường priceWithPromo vào item
+                                item.priceWithPromo = item.price;
+                            }
+                        });
+                    } else {
+                        // Nếu không có chương trình khuyến mãi, giá giữ nguyên cho tất cả sản phẩm
+                        $scope.listBillDt.forEach((item) => {
+                            // Đánh dấu sản phẩm không có chương trình khuyến mãi
+                            item.hasPromotion = false;
+                            // Thêm trường priceWithPromo vào item
+                            item.priceWithPromo = item.price;
+                        });
+                    }
+
+                    // Lặp qua danh sách sản phẩm và tính tổng tiền cho các sản phẩm được tích chọn
+                    for (var i = 0; i < $scope.listBillDt.length; i++) {
+                        // Tính toán giá dựa trên có hoặc không có khuyến mãi
+                        if ($scope.listBillDt[i].hasPromotion) {
+                            $scope.totalPrice += $scope.listBillDt[i].priceWithPromo * $scope.listBillDt[i].quantity;
+                        } else {
+                            $scope.totalPrice += $scope.calculateTotalPrice($scope.listBillDt[i]);
+                        }
+                    
+                        $scope.totalQuantity += $scope.listBillDt[i].quantity;
+                    
+                        // Thêm thông tin sản phẩm vào danh sách
+                        $scope.listResPr.push({
+                            productDetail: $scope.listBillDt[i].productDetail,
+                            quantity: $scope.listBillDt[i].quantity,
+                            name: $scope.listBillDt[i].productDetail.product.name,
+                            price: $scope.listBillDt[i].productDetail.price
+                        });
+                    }
+                    
+
+                    // Gọi hàm getFeeUser nếu có dữ liệu người dùng JSON, ngược lại sử dụng tổng giá
+                    if (dataUserJson) {
+                        $scope.getFeeUser();
+                    } else {
+                        $scope.totalPay = $scope.totalPrice;
+                    }
+                }).catch((error) => {
+                    console.log("Error", error);
+                });
             }).catch(function (error) {
                 console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
             });
-        }
+        };
+
+        // Gọi hàm loadAllPr ngay sau khi định nghĩa
         $scope.loadAllPr();
+
 
         $scope.totalQuantity = 0;
         // Hàm này sẽ thực hiện sau 1 giây
@@ -518,6 +722,6 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                     console.error('Delete thất bại', error);
                 });
         }
-      
+
     }, 50); // 1000 milliseconds = 1 giây
 });

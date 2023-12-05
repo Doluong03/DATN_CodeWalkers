@@ -63,9 +63,7 @@ public class BillDetailImpl implements BillDetailService {
         for (int i = 0; i < list.size(); ++i) {
             Double giaBan = 0.0;
             ProductDetail ctsp = this.productDetailRepository.findById((list.get(i)).getPrDetailId()).get();
-            if (ctsp.getPromotional() != null) {
-                giaBan = ctsp.getPrice() - ctsp.getPrice() * ctsp.getPromotional().getValue() / 100.0;
-            } else {
+            if (ctsp != null) {
                 giaBan = ctsp.getPrice();
             }
             result = result + (double) (list.get(i)).getQuantity() * giaBan;

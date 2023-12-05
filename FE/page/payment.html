@@ -19,12 +19,14 @@
             <div class="address-info-show d-flex " ng-show="selectedAddress">
                 <strong>{{selectedAddress.UserName}}</strong> | <span>{{selectedAddress.PhoneNumber}}</span>
                 <div class="offset-2">{{selectedAddress.AddressDetail}},</div>
-                <div class="ms-3">{{wardsByProvince[selectedAddress.DistrictID] | findWardNameById:selectedAddress.WardCode}},
-                    {{districtsByProvince[selectedAddress.ProvinceID] | findDistrictNameById:selectedAddress.DistrictID}},
+                <div class="ms-3">{{wardsByProvince[selectedAddress.DistrictID] |
+                    findWardNameById:selectedAddress.WardCode}},
+                    {{districtsByProvince[selectedAddress.ProvinceID] |
+                    findDistrictNameById:selectedAddress.DistrictID}},
                     Tỉnh {{provinces | findProvinceNameById:selectedAddress.ProvinceID}}
                 </div>
             </div>
-            
+
             <a class="col-lg-1 text-end me-4" ng-click="" data-bs-toggle="modal" data-bs-target="#exampleAddress"> Thay
                 đổi </a>
         </div>
@@ -43,34 +45,41 @@
                     <div class="row m-1">
                         <div class="col-lg-3 ">
                             <input type="text" class=" form-control w-100" placeholder="Họ và tên*"
-                                ng-model="formAddress.userName"    ng-class="{'is-invalid': checkAddress && !formAddress.userName}">
+                                ng-model="formAddress.userName"
+                                ng-class="{'is-invalid': checkAddress && !formAddress.userName}">
                         </div>
                         <div class="col-lg-3 ms-3">
                             <input type="text" class="form-control w-100" placeholder="Số điện thoại*"
-                                ng-model="formAddress.phoneNumber"  ng-class="{'is-invalid': checkAddress && !formAddress.phoneNumber}">
+                                ng-model="formAddress.phoneNumber"
+                                ng-class="{'is-invalid': checkAddress && !formAddress.phoneNumber}">
                         </div>
                     </div>
                     <div class="row ms-3 mt-3">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="custom-select row  ">
-                                    <input type="text" class="form-control w-100 me-1 mb-2" placeholder="Địa chỉ cụ thể*"
-                                        ng-click="showSelect = !showSelect" ng-model="formAddress.addressDetail" ng-class="{'is-invalid': checkAddress && !formAddress.addressDetail}">
+                                    <input type="text" class="form-control w-100 me-1 mb-2"
+                                        placeholder="Địa chỉ cụ thể*" ng-click="showSelect = !showSelect"
+                                        ng-model="formAddress.addressDetail"
+                                        ng-class="{'is-invalid': checkAddress && !formAddress.addressDetail}">
                                     <select id="select1" class="form-select col" ng-model="formAddress.province"
-                                        ng-show="showSelect" ng-change="loadDistrict(formAddress.province)" ng-class="{'is-invalid': checkAddress && !formAddress.province}">
-                                        <option value="" ng-selected="formAddress.province === ''" >Tỉnh/Thành phố
+                                        ng-show="showSelect" ng-change="loadDistrict(formAddress.province)"
+                                        ng-class="{'is-invalid': checkAddress && !formAddress.province}">
+                                        <option value="" ng-selected="formAddress.province === ''">Tỉnh/Thành phố
                                         </option>
                                         <option ng-repeat="provin in provinces" ng-value="provin">
                                             {{provin.ProvinceName}}</option>
                                     </select>
                                     <select id="select2" class="form-select col" ng-model="formAddress.district"
-                                        ng-show="showSelect" ng-change="loadWard(formAddress.district)" ng-class="{'is-invalid': checkAddress && !formAddress.district}">
+                                        ng-show="showSelect" ng-change="loadWard(formAddress.district)"
+                                        ng-class="{'is-invalid': checkAddress && !formAddress.district}">
                                         <option value="" ng-selected="formAddress.district === ''">Quận/Huyện</option>
                                         <option ng-repeat="district in districts" ng-value="district">
                                             {{district.DistrictName}}</option>
                                     </select>
                                     <select id="select3" class="form-select col" ng-model="formAddress.ward"
-                                        ng-show="showSelect" ng-class="{'is-invalid': checkAddress && !formAddress.ward}" >
+                                        ng-show="showSelect"
+                                        ng-class="{'is-invalid': checkAddress && !formAddress.ward}">
                                         <option value="" ng-selected="formAddress.ward === ''">Phường/Xã</option>
                                         <option ng-repeat="ward in wards" ng-value="ward">{{ward.WardName}}</option>
                                     </select>
@@ -79,8 +88,8 @@
                         </div>
                     </div>
                     <div class="ms-3">
-                        <input type="email" class="form-control w-50" placeholder="Email*"
-                            ng-model="formAddress.email" ng-class="{'is-invalid': checkAddress && !formAddress.email}"  >
+                        <input type="email" class="form-control w-50" placeholder="Email*" ng-model="formAddress.email"
+                            ng-class="{'is-invalid': checkAddress && !formAddress.email}">
                     </div>
                     <div class="ms-3 mt-3">
                         <textarea type="text" class="form-control w-50" placeholder="Nội dung"
@@ -89,7 +98,8 @@
                 </div>
                 <div class="modal-footer w-50">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" ng-click="saveAddress()" ng-model="checkAddress">Thêm mới</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveAddress()" ng-model="checkAddress">Thêm
+                        mới</button>
                 </div>
             </div>
         </div>
@@ -112,12 +122,14 @@
                         <div ng-init="loadDistrictUser(add.ProvinceID)"></div>
                         <div ng-init="loadWardUser(add.DistrictID)"></div>
                         <label for="{{add.id}}" class="address-radio d-flex ">
-                            <input type="radio" id="{{add.id}}" name="address" value="Địa Chỉ 1" class="mb-5" ng-checked="$first" ng-click="selectAddress(add)">
+                            <input type="radio" id="{{add.id}}" name="address" value="Địa Chỉ 1" class="mb-5"
+                                ng-checked="$first" ng-click="selectAddress(add)">
                             <div class="address-info ms-3">
                                 <strong>{{add.UserName}}</strong> | <span>{{add.PhoneNumber}}</span>
-                                <div >{{add.AddressDetail}}</div>
+                                <div>{{add.AddressDetail}}</div>
                                 <div>{{ wardsByProvince[add.DistrictID]| findWardNameById:add.WardCode }},{{
-                                    districtsByProvince[add.ProvinceID]| findDistrictNameById:add.DistrictID }},{{ provinces
+                                    districtsByProvince[add.ProvinceID]| findDistrictNameById:add.DistrictID }},{{
+                                    provinces
                                     | findProvinceNameById:add.ProvinceID }}</div>
                             </div>
                             <div class="d-flex col align-items-end  mb-5">
@@ -131,7 +143,8 @@
                 </div>
                 <div class="modal-footer w-100">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" ng-click="getFeeUser()" data-bs-dismiss="modal">Thay đổi </button>
+                    <button type="button" class="btn btn-primary" ng-click="getFeeUser()" data-bs-dismiss="modal">Thay
+                        đổi </button>
                 </div>
             </div>
         </div>
@@ -152,7 +165,7 @@
         .address-info {
             width: 75%;
         }
-        
+
         .address-info-show {
             width: 85%;
         }
@@ -166,6 +179,7 @@
                     <th>Đơn giá </th>
                     <th>Số lượng </th>
                     <th>Thành tiền</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -185,9 +199,14 @@
                             </div>
                         </div>
                     </td>
-                    <td class="align-middle text-center">{{bill.productDetail.price | vndCurrency }}</td>
-                    <td id="totalPrice" class="ps-4 align-middle text-center ">{{bill.quantity}}</td>
-                    <td id="totalPrice" class="ps-4 align-middle text-center "> {{bill.productDetail.price *  bill.quantity | vndCurrency}}
+                    <td class="align-middle text-center" ng-show="!bill.hasPromotion">{{bill.productDetail.price | vndCurrency }}</td>
+                    <td class="row"> <p class="ps-4 align-middle text-center text-danger" ng-show="bill.hasPromotion">{{bill.priceWithPromo| vndCurrency}}</p> 
+                       <p  class="ps-4 align-middle text-center text-decoration-line-through" ng-show="bill.hasPromotion">{{bill.productDetail.price| vndCurrency}}</p> </td>
+                    <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="!bill.hasPromotion">{{bill.quantity}}</td>
+                    <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="!bill.hasPromotion"> {{bill.productDetail.price *bill.quantity | vndCurrency}}
+                        <!-- // giá khi có khuyến mại -->
+                        <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="bill.hasPromotion">{{bill.quantity}}</td>
+                        <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="bill.hasPromotion"> {{bill.priceWithPromo *bill.quantity | vndCurrency}}
                     </td>
                 </tr>
             </tbody>
@@ -203,7 +222,8 @@
             <div class="col"></div>
             <a class="col-lg-2 text-end me-5" ng-click="" data-bs-toggle="modal" data-bs-target="#exampleModalVoucher">
                 Chọn voucher
-            </a>        </div>
+            </a>
+        </div>
 
     </div>
     <div class="row ms-3 mt-5">
@@ -218,7 +238,7 @@
         </div>
     </div>
     <div class="col-lg-6 offset-6 mt-5 me-0">
-        
+
         <div class="row me-5">
             <h5 class="col-lg-4 offset-5">Tổng tiền hàng: </h5>
             <h5 class="col-lg-3 text-end ">{{totalPrice | vndCurrency}} </h5>
@@ -238,6 +258,19 @@
         <div class="row me-5">
             <h5 class="col-lg-4 offset-5">Phí vận chuyển: </h5>
             <h5 class="col-lg-3 text-end ">{{feeShip == 0 ?"0đ":feeShip | vndCurrency }}</h5>
+        </div>
+        <div class="row me-5" ng-show="isFeeShip">
+            <h5 class="col-lg-4 offset-5">Voucher Giảm giá:</h5>
+            <h5 class="col-lg-3 text-end">
+                - {{reduceFee| vndCurrency }}
+            </h5>
+        </div>
+        
+        <div class="row me-5" ng-show="isFeeShip">
+            <h5 class="col-lg-4 offset-5">Phí sau khi giảm:</h5>
+            <h5 class="col-lg-3 text-end">
+                {{totalFee| vndCurrency }}
+            </h5>
         </div>
         <div class="row me-5">
             <h5 class="col-lg-4 offset-5">Tổng thanh toán: </h5>
@@ -363,14 +396,14 @@
         }
 
         .voucher-quantity {
-            font-family:"Helvetica Neue";
+            font-family: "Helvetica Neue";
             font-size: 16px;
             font-weight: 800;
             position: absolute;
             top: 0;
             left: 0;
             margin: -1px 0 0 0;
-background-color: white;
+            background-color: white;
             /* Tùy chọn: Nền trắng để che phủ phần của hình ảnh */
         }
 
@@ -410,6 +443,9 @@ background-color: white;
             border: none;
             cursor: pointer;
         }
+        .details p {
+            margin-top: -10px;
+        }
     </style>
 
     <div class="modal" id="exampleModalVoucher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -428,13 +464,16 @@ background-color: white;
                 </div>
                 <div class="modal-body">
                     <div ng-repeat="item in listVouchers" id="vouchers">
-                        <div class="voucher-card" ng-click="selectVoucher(item.id)">
-                            <b class="voucher-quantity">x{{item.quantity}}</b>
+                        <div class="voucher-card" ng-click="selectVoucher(item.id,item.usageCount)">
+                            <b class="voucher-quantity">x{{item.usageCount}}</b>
                             <img src="/assets/img/Voucher/{{item.image}}" alt="Voucher Image" />
                             <div class="details">
-                                <p>Giảm {{item.value}}%</p>
-                                <p>Giảm tối đa:{{item.maxReduction}}k</p>
+                                <p ng-show="item.discountType=='Phần Trăm'">Giảm {{item.value}}%</p>
+                                <p ng-show="item.discountType=='VND'">Giảm {{item.value/1000}}k</p>
+                                <p ng-show="item.discountType=='Phần Trăm'">Giảm tối đa:{{item.maxReduction}}k</p>
+                                <p  ng-show="item.discountType=='VND'">Giảm tối đa:{{item.maxReduction/1000}}k</p>
                                 <p>Đơn tối thiểu :{{item.condition|vndCurrency }}</p>
+                                <p>HSD :{{item.endDate}}</p>
                                 <p><input type="radio" ng-model="$parent.selectedVoucher" ng-value="item.id"></p>
                             </div>
                         </div>
@@ -444,7 +483,7 @@ background-color: white;
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Hủy
                     </button>
-<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                         Ok
                     </button>
                 </div>

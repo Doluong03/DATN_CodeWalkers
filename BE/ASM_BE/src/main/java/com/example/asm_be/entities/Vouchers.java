@@ -1,5 +1,6 @@
 package com.example.asm_be.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
+
 
 @Entity(name = "PhieuGiamGia")
 @NoArgsConstructor
@@ -32,8 +35,8 @@ public class Vouchers {
     @Column(name = "gia_tri")
     private double value;
 
-    @Column(name = "ngay_bat_dau")
-    private Date startDate;
+//    @Column(name = "ngay_bat_dau")
+//    private Date startDate;
 
     @Column(name = "ngay_ket_thuc")
     private Date endDate;
@@ -44,16 +47,25 @@ public class Vouchers {
     @Column(name = "hinh_anh")
     private String image;
 
+    @Column(name = "hinh_thuc_ap_dung")
+    private String useForm;
+
     @Column(name = "dieu_kien")
     private double condition;
 
     @Column(name = "giam_toi_da")
     private double maxReduction;
 
-    @Column(name = "so_luong")
-    private int quantity;
+//    @Column(name = "so_luong")
+//    private int quantity;
 
-    @ManyToOne()
-    @JoinColumn(name = "khach_hang_id")
-    private Users users;
+    @Column(name = "loai_giam_gia")
+    private String discountType;
+
+    @Column(name = "loai_khach_hang")
+    private int customType;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "voucher",cascade = CascadeType.REMOVE)
+    private List<VoucherUsers> voucherUsages;
 }

@@ -89,7 +89,11 @@
                                         </span>
                                     </div>
 
-                                    <p class="card-text col-lg-3 text-end"> {{pr.productDetail.price | vndCurrency }}
+                                    <p class="card-text col-lg-3 text-end" ng-show="!pr.hasPromotion"> {{pr.productDetail.price | vndCurrency }}
+                                        <div class="row card-text col-lg-3 text-end" ng-show="pr.hasPromotion">
+                                            <p class="col text-danger">{{pr.priceWithPromo| vndCurrency}}</p>
+                                            <p class="col text-decoration-line-through">{{pr.productDetail.price | vndCurrency }}</p>
+                                        </div>
                                     </p>
                                 </div>
                             </div>
@@ -129,18 +133,11 @@
                     <h5 class="col-lg">Tổng tiền </h5>
                     <h5 class="col-lg text-end  ">{{ totalPrice==0 ?"0đ":totalPrice | vndCurrency }}</h5>
                 </div>
-                <div class="row">
-                    <h5 class="col-lg">Phí giao hàng </h5>
-                    <h5 class="col-lg text-end  ">{{randomValue==0 ?"0đ":randomValue | vndCurrency}}</h5>
-                </div>
-                <div class="row">
-                    <h5 class="col-lg">Giảm giá </h5>
-                    <h5 class="col-lg text-end ">- 300,000đ</h5>
-                </div>
+            
                 <hr>
                 <div class="row">
                     <h5 class="col-lg">Tổng thanh toán </h5>
-                    <h5 class="col-lg text-end ">{{totalPay==0 ?"0đ": totalPay | vndCurrency}}</h5>
+                    <h5 class="col-lg text-end ">{{totalPay==0 ?"0đ": totalPrice | vndCurrency}}</h5>
                 </div>
                 <hr>
                 <div class="pay text-center">
