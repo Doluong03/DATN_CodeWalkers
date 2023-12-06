@@ -193,10 +193,9 @@
             <div class="col-lg" style="overflow-y: auto; max-height: 800px;">
                 <div class="row  ">
                     <div class="col-lg-3 mb-4 aos-animate" data-aos="fade-up"
-                        data-aos-delay="200" ng-repeat="pr in filteredItems">
+                        data-aos-delay="200" ng-repeat="pr in filteredItems" ng-if="getTotalQuantity(pr)>0">
                         <div class="box_product ">
-                            <a ng-href="#/product-detail/{{pr.product.id}}"
-                                class="border-0">
+                            <a ng-href="#/product-detail/{{pr.product.id}}{{pr.hasPromotion ? '/' + pr.promotionId : ''}}" class="border-0">
                                 <img
                                     ng-src="assets/img/product/sp1/{{pr.product.listImage[0].link}}"
                                     class="img-fluid"
@@ -205,8 +204,8 @@
                                     <h5 class="align-items-left">{{pr.product.name}}</h5>
                                 </div>
                                 <p>{{pr.product.category.name}}</p>
-                                <p>Còn lại: {{pr.quantity}}</p>
-                                <p class=" text-dark align-text-bottom">
+                                <p>Còn lại: {{getTotalQuantity(pr)}}</p>
+                                       <p class=" text-dark align-text-bottom" ng-show="!pr.hasPromotion">
                                     {{getMinMaxPrice(pr.product).min |
                                     vndCurrency}}
                                     <span
@@ -214,32 +213,15 @@
                                         - {{getMinMaxPrice(pr.product).max |
                                         vndCurrency}}</span>
                                 </p>
-                            </a>
-                        </div>
-                    </div>
-            <!-- <div class="col-lg">
-                <div class="row ms-5 ">
-                    <div class="col-lg-4 mb-4 " data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in items">
-                        <div class="box_product">
-                           
-                            <a ng-href="#/product-detail/{{pr.product.id}}{{pr.hasPromotion ? '/' + pr.promotionId : ''}}" class="border-0">
-                                <img ng-src="assets/img/product/sp1/{{pr.product.listImage[0].link}}" class="img-fluid" alt="{{pr.product.listImage[0].link}}">
-                                <h5 class="align-items-left">{{pr.product.name}}</h5>
-                                <p>{{pr.product.category.name}}</p>
-                                <p>Còn lại: {{pr.quantity}}</p>
-                                <p class="col text-dark" ng-show="!pr.hasPromotion">{{pr.price  | vndCurrency  }} -->
-                                    <!-- gia khuyến mại -->
-                                    <!-- <div class="row" ng-show="pr.hasPromotion">
+                                    <div class="row" ng-show="pr.hasPromotion">
                                         <p class="col text-danger">{{pr.priceWithPromo | vndCurrency}}</p>
                                         <p class="col text-decoration-line-through">{{pr.price | vndCurrency }}</p>
                                     </div>
                                 </p>
+                             
                             </a>
                         </div>
-                        
-                </div> -->
-                </div>
-            </div>
+                    </div>
         </div>
     </div>
     <div ng-show="products === 0">

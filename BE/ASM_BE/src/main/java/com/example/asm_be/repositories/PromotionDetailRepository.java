@@ -14,7 +14,7 @@ public interface PromotionDetailRepository extends JpaRepository<PromotionDetail
 
     @Query("""
     SELECT new com.example.asm_be.dto.PromotionDetailRespone(
-        ctsp.id, sp.name, ctsp.price, ctkm.discount, ctsp.color.id, ctsp.size.id
+        sp.id, sp.name, ctsp.price, ctkm.discount, ctsp.color.id, ctsp.size.id
     )
     FROM ChiTietKhuyenMai ctkm
     JOIN KhuyenMai km ON ctkm.promotion.id = km.id

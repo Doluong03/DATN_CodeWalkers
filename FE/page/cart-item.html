@@ -129,8 +129,8 @@
                                         </span>
                                     </div>
 
-                                    <p class="card-text col-lg text-end" ng-show="!pr.hasPromotion"> {{pr.productDetail.price | vndCurrency }}
-                                        <div class="row card-text col-lg-5 text-end" ng-show="pr.hasPromotion">
+                                    <p class="card-text col-lg-3 text-end" ng-show="!pr.hasPromotion"> {{pr.productDetail.price | vndCurrency }}
+                                        <div class="row card-text col-lg-3 text-end" ng-show="pr.hasPromotion">
                                             <p class="col text-danger">{{pr.priceWithPromo| vndCurrency}}</p>
                                             <p class="col text-decoration-line-through">{{pr.productDetail.price | vndCurrency }}</p>
                                         </div>

@@ -335,7 +335,6 @@ window.productDetailController = function ($scope, $http, $window) {
         material: { id: item.material.id },
         size: { id: item.size.id },
         color: { id: item.color.id },
-        promotional: { id: item.promotional.id },
         status: { id: item.status.id },
       };
       console.log($scope.formPdDetailUpdate)

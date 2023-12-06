@@ -102,8 +102,27 @@ app.controller("HomeController", function ($scope, $http, $window, $cookies, $an
         });
     }
     $scope.loadAllPrBs();
+    $scope.loadAllDetail = function () {
+        var url = `${host}/api/get-all-pr`;
+        $http.get(url).then(res => {
+            $scope.itemsDetail = res.data;
+        }).catch(error => {
+            console.log("Error", error);
+        });
+    }
+    $scope.loadAllDetail();
     $timeout(function () {
 
+    
+        $scope.getTotalQuantity = function(item) {
+            // Lọc danh sách itemsBs2 theo id sản phẩm
+            var filteredItems = $scope.itemsDetail.filter(prDt => prDt.product.id === item.product.id);
+            // Sử dụng reduce để tính tổng số lượng
+            $scope.totalQuantity= filteredItems.reduce((total, prDt) => total + prDt.quantity, 0);
+            return $scope.totalQuantity;
+        };
+        
+        
         $scope.getMinMaxPrice = function (product) {
             // Lọc danh sách chi tiết sản phẩm theo id sản phẩm
             var filteredDetails = $scope.itemsBs2.filter(detail => detail.product.id === product.id);
@@ -129,7 +148,7 @@ app.controller("HomeController", function ($scope, $http, $window, $cookies, $an
                 
                 var slide = $(`
                     <div class="border" style="height:440px; cursor:pointer;">
-                        <a href="#/product-detail/${product.id}${hasPromotion ? '/' + item.promotionId : ''}">
+                        <a href="#/product-detail/${item.product.id}${hasPromotion ? '/' + item.promotionId : ''}">
                             <div class="card h-100">
                                 <img class="animated flipInX bg-light mb-3" style="height:280px;" src="${imageLink}" alt="${product.name} product image" class="card-img-top">
                                 <div class="card-body">

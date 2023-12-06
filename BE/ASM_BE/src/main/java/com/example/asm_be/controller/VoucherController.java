@@ -56,7 +56,8 @@ public class VoucherController {
                                 voucher.getDiscountType(),
                                 voucher.getCustomType(),
                                 voucherUser.getUsageCount(),
-                                voucherUser.isStatus()
+                                voucherUser.isStatus(),
+                                voucherUser.getId()
                         );
                     })
                     .collect(Collectors.toList());
@@ -185,14 +186,13 @@ public class VoucherController {
     }
 
     @PatchMapping("/admin/user-voucher/update")
-    private ResponseEntity<?> updateUserVoucher(@RequestBody VoucherUsers voucherUsers) {
-        String message = voucherService.updateUserVoucher(voucherUsers.getUsageCount(),voucherUsers.getVoucher().getId()) ? "update thanh cong" : "update that bai";
+    private ResponseEntity<?> updateUserVoucher(@RequestParam int UsageCount,@RequestParam int id) {
+        String message = voucherService.updateUserVoucher(UsageCount,id) ? "update thanh cong" : "update that bai";
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject(message.equals("update thanh cong")
-                        ? "success" : "Failed", message, message.equals("update thanh cong")
-                        ? voucherUsers.getVoucher() : ""));
+                        ? "success" : "Failed", message, message.equals("update thanh cong")));
     }
 
 

@@ -1,9 +1,7 @@
 <div style="height: 150px;"> </div>
-<div class="payment " style="padding: 0 200px 0 290px;"
-    ng-class="{ 'blur-background': showLoading }">
+<div class="payment " style="padding: 0 200px 0 290px;" ng-class="{ 'blur-background': showLoading }">
     <div class="row">
-        <div class="logo col-lg-1 me-3"> <img src="/assets/img/logo.png"
-                class=" border-dark " alt> </div>
+        <div class="logo col-lg-1 me-3"> <img src="/assets/img/logo.png" class=" border-dark " alt> </div>
         <h3 class="fw-bold col-lg-3 mt-4 ms-4  text-success">| Thanh toán</h3>
     </div>
     <div class="hr mt-4"></div>
@@ -22,7 +20,7 @@
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"> Thêm mới </a>
         </div> -->
-        <div class=" row" >
+        <div class=" row">
             <div class="address-info-show d-flex " ng-show="selectedAddress">
                 <strong>{{selectedAddress.UserName}}</strong> | <span>{{selectedAddress.PhoneNumber}}</span>
                 <div class="offset-2">{{selectedAddress.AddressDetail}},</div>
@@ -35,131 +33,105 @@
                 </div>
             </div>
 
-            <a class="col-lg-1 text-end me-4" ng-click data-bs-toggle="modal"
-                data-bs-target="#exampleAddress"> Thay
+            <a class="col-lg-1 text-end me-4" ng-click data-bs-toggle="modal" data-bs-target="#exampleAddress"> Thay
                 đổi </a>
         </div>
 
     </div>
     <!-- Modal -->
-    <div class="modal fade border" id="addressModal"
-    tabindex="-1"
-    aria-labelledby="addressModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false" >
-    <div class="modal-dialog  " style="height: 100px; ">
-        <div class="modal-content border-dark"
-            style="max-height: 500px; width: 555px; left: 40%;">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="addressModalLabel">Địa Chỉ
-                </h1>
-                <button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close" ng-click="cancelAddr()"></button>
-            </div>
-            <div class="modal-body w-100">
-                <div class="row ms-1 me-1">
-                    <div class="col-lg ">
-                        <input type="text" class=" form-control w-100"
-                            placeholder="Họ và tên*"
-                            ng-model="formAddress.userName"
-                            ng-class="{'is-invalid': checkAddress && !formAddress.userName}">
-                    </div>
-                    <div class="col-lg ms-3">
-                        <input type="text" class="form-control w-100"
-                            placeholder="Số điện thoại*"
-                            ng-model="formAddress.phoneNumber"
-                            ng-class="{'is-invalid': checkAddress && !formAddress.phoneNumber}"
-                            maxlength="10">
-                    </div>
+    <div class="modal fade border" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog  " style="height: 100px; ">
+            <div class="modal-content border-dark" style="max-height: 500px; width: 555px; left: 40%;">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addressModalLabel">Địa Chỉ
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        ng-click="cancelAddr()"></button>
                 </div>
-                <div class="row ms-3 mt-3 me-3">
-                    <div class="col-lg">
-                        <div class="form-group">
-                            <div class=" row  ">
-                                <input type="text"
-                                    class="form-control w-100 me-1 mb-2"
-                                    placeholder="Địa chỉ cụ thể*"
-                                    ng-click="showSelect = !showSelect"
-                                    ng-model="formAddress.addressDetail"
-                                    ng-class="{'is-invalid': checkAddress && !formAddress.addressDetail}">
-                                <select id="select1" class="form-select col"
-                                    ng-model="formAddress.province"
-                                    ng-change="loadDistrict(formAddress.province)"
-                                    ng-class="{'is-invalid': checkAddress && !formAddress.province}">
-                                    <option value
-                                        ng-selected="formAddress.province === ''">Tỉnh/Thành
-                                        phố
-                                    </option>
-                                    <option ng-repeat="provin in provinces"
-                                        ng-value="provin.ProvinceID">
-                                        {{provin.ProvinceName}}</option>
-                                </select>
-                                <select id="select2" class="form-select col"
-                                    ng-model="formAddress.district"
-                                    ng-change="loadWard(formAddress.district)"
-                                    ng-class="{'is-invalid': checkAddress && !formAddress.district}">
-                                    <option value
-                                        ng-selected="formAddress.district === ''">Quận/Huyện</option>
-                                    <option
-                                        ng-repeat="district in districts"
-                                        ng-value="district.DistrictID">
-                                        {{district.DistrictName}}</option>
-                                </select>
-                                <select id="select3" class="form-select col"
-                                    ng-model="formAddress.ward"
-                                    ng-class="{'is-invalid': checkAddress && !formAddress.ward}">
-                                    <option value
-                                        ng-selected="formAddress.ward === ''">Phường/Xã</option>
-                                    <option ng-repeat="ward in wards"
-                                        ng-value="ward.WardCode">{{ward.WardName}}</option>
-                                </select>
+                <div class="modal-body w-100">
+                    <div class="row ms-1 me-1">
+                        <div class="col-lg ">
+                            <input type="text" class=" form-control w-100" placeholder="Họ và tên*"
+                                ng-model="formAddress.userName"
+                                ng-class="{'is-invalid': checkAddress && !formAddress.userName}">
+                        </div>
+                        <div class="col-lg ms-3">
+                            <input type="text" class="form-control w-100" placeholder="Số điện thoại*"
+                                ng-model="formAddress.phoneNumber"
+                                ng-class="{'is-invalid': checkAddress && !formAddress.phoneNumber}" maxlength="10">
+                        </div>
+                    </div>
+                    <div class="row ms-3 mt-3 me-3">
+                        <div class="col-lg">
+                            <div class="form-group">
+                                <div class=" row  ">
+                                    <input type="text" class="form-control w-100 me-1 mb-2"
+                                        placeholder="Địa chỉ cụ thể*" ng-click="showSelect = !showSelect"
+                                        ng-model="formAddress.addressDetail"
+                                        ng-class="{'is-invalid': checkAddress && !formAddress.addressDetail}">
+                                    <select id="select1" class="form-select col" ng-model="formAddress.province"
+                                        ng-change="loadDistrict(formAddress.province)"
+                                        ng-class="{'is-invalid': checkAddress && !formAddress.province}">
+                                        <option value ng-selected="formAddress.province === ''">Tỉnh/Thành
+                                            phố
+                                        </option>
+                                        <option ng-repeat="provin in provinces" ng-value="provin.ProvinceID">
+                                            {{provin.ProvinceName}}</option>
+                                    </select>
+                                    <select id="select2" class="form-select col" ng-model="formAddress.district"
+                                        ng-change="loadWard(formAddress.district)"
+                                        ng-class="{'is-invalid': checkAddress && !formAddress.district}">
+                                        <option value ng-selected="formAddress.district === ''">Quận/Huyện</option>
+                                        <option ng-repeat="district in districts" ng-value="district.DistrictID">
+                                            {{district.DistrictName}}</option>
+                                    </select>
+                                    <select id="select3" class="form-select col" ng-model="formAddress.ward"
+                                        ng-class="{'is-invalid': checkAddress && !formAddress.ward}">
+                                        <option value ng-selected="formAddress.ward === ''">Phường/Xã</option>
+                                        <option ng-repeat="ward in wards" ng-value="ward.WardCode">{{ward.WardName}}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="ms-3 me-3">
+                        <input type="email" class="form-control w-100" placeholder="Email" ng-model="formAddress.email">
+                    </div>
+                    <div class="ms-3 mt-3 me-3">
+                        <textarea type="text" class="form-control w-100" placeholder="Nội dung"
+                            ng-model="note"> </textarea>
+                    </div>
                 </div>
-                <div class="ms-3 me-3">
-                    <input type="email" class="form-control w-100"
-                        placeholder="Email"
-                        ng-model="formAddress.email"
-                       >
+                <div class="modal-footer w-100">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        ng-click="cancelAddr()">Hủy</button>
+                    <button type="button" class="btn btn-primary"
+                        ng-click="checkAction ? updateAddress() : saveAddress()" ng-model="checkAddress"> {{nameAction}}
+                    </button>
                 </div>
-                <div class="ms-3 mt-3 me-3">
-                    <textarea type="text" class="form-control w-100"
-                        placeholder="Nội dung"
-                        ng-model="note"> </textarea>
-                </div>
-            </div>
-            <div class="modal-footer w-100">
-                <button type="button" class="btn btn-secondary"
-                    data-bs-dismiss="modal" ng-click="cancelAddr()">Hủy</button>
-                <button type="button" class="btn btn-primary"
-                ng-click="checkAction ? updateAddress() : saveAddress()" ng-model="checkAddress"> {{nameAction}} </button>
             </div>
         </div>
     </div>
-</div>
     <!-- Modal -->
     <!-- Modal-user -->
-    <div class="modal fade  modalUser" 
-        id="exampleAddress" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade  modalUser" id="exampleAddress" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog " style="height: 100px;">
-            <div class="modal-content ms-0 "
-                style="max-height: 600px; width: 600px;">
+            <div class="modal-content ms-0 " style="max-height: 600px; width: 600px;">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5  " id="exampleModalLabel">Địa
                         Chỉ </h1>
-                    <button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body scrollable-modal-body">
-                    <div class="address-item row"
-                        ng-repeat="add in addressUser | orderBy:'-Id'">
+                    <div class="address-item row" ng-repeat="add in addressUser | orderBy:'-Id'">
                         <div ng-init="loadDistrictUser(add.ProvinceID)"></div>
                         <div ng-init="loadWardUser(add.DistrictID)"></div>
                         <label for="{{add.id}}" class="address-radio d-flex ">
-                            <input type="radio" id="{{add.id}}" name="address"
-                                value="Địa Chỉ 1" class="mb-5"
-                                ng-checked="$first"
-                                ng-click="selectAddress(add)">
+                            <input type="radio" id="{{add.id}}" name="address" value="Địa Chỉ 1" class="mb-5"
+                                ng-checked="$first" ng-click="selectAddress(add)">
                             <div class="address-info ms-3">
                                 <strong>{{add.UserName}}</strong> | <span>{{add.PhoneNumber}}</span>
                                 <div>{{add.AddressDetail}}</div>
@@ -172,30 +144,30 @@
                             </div>
                             <div class="d-flex col align-items-end  mb-5">
                                 <button class="btn btn-outline-primary" ng-click="getUpdate(add)" data-bs-toggle="modal"
-                                data-bs-target="#addressModal"> Cập
+                                    data-bs-target="#addressModal"> Cập
                                     nhật</button>
                             </div>
                         </label>
                         <hr>
                     </div>
-                    <a class="col-lg-1 text-end me-4"
-                        ng-click="resetModalContent()" data-bs-toggle="modal"
+                    <a class="col-lg-1 text-end me-4" ng-click="resetModalContent()" data-bs-toggle="modal"
                         data-bs-target="#addressModal"> Thêm mới </a>
                 </div>
                 <div class="modal-footer w-100">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary"
-                        ng-click="getFeeUser()" data-bs-dismiss="modal">Thay đổi
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" ng-click="getFeeUser()" data-bs-dismiss="modal">Thay
+                        đổi
                     </button>
                 </div>
             </div>
         </div>
     </div>
     <style>
-        a,button{
-          cursor: pointer;  
+        a,
+        button {
+            cursor: pointer;
         }
+
         .modalUser {
             top: 10%;
             left: 3%;
@@ -230,38 +202,35 @@
             </thead>
             <tbody>
                 <tr ng-repeat="bill in listBillDt" class="custom-row">
-                    <td class=" w-75" colspan="7">
+                    <td class=" w-50" colspan="7">
                         <div class="row d-flex align-items-center">
                             <div class="col-lg-2">
-                                <img
-                                    src="assets/img/product/sp1/{{bill.productDetail.product.listImage[0].link}}"
-                                    class="rounded-4 h-50 w-75 "
-                                    alt="{{bill.productDetail.product.listImage[0].link}}">
+                                <img src="assets/img/product/sp1/{{bill.productDetail.product.listImage[0].link}}"
+                                    class="rounded-4 h-50 w-75 " alt="{{bill.productDetail.product.listImage[0].link}}">
                             </div>
-                            <div class="col-lg-3 align-middle text-center ">
+                            <div class="col-lg align-middle text-center ">
                                 <p class>{{bill.productDetail.product.name}}</p>
                             </div>
-                            <div class="col-lg-2 align-middle text-center ">
+                            <div class="col-lg align-middle text-center ">
                                 <p class="text-secondary">{{bill.productDetail.product.category.name}}
                                     ,
                                     {{bill.productDetail.size.name}}</p>
                             </div>
                         </div>
                     </td>
-                    <!-- <td class="align-middle text-center">{{bill.productDetail.price
-                        | vndCurrency }}</td>
+                    <td class="align-middle text-center" ng-show="!bill.hasPromotion">{{bill.productDetail.price |
+                        vndCurrency }}</td>
+                    <td class="pt-3 ps-4 align-middle text-center" ng-show="bill.hasPromotion"> <span
+                            class=" text-danger">{{bill.priceWithPromo| vndCurrency}}</span> <br>
+                        <span class=" text-decoration-line-through">{{bill.productDetail.price| vndCurrency}}</span>
+                    </td>
+
                     <td id="totalPrice" class="ps-4 align-middle text-center ">{{bill.quantity}}</td>
-                    <td id="totalPrice" class="ps-4 align-middle text-center ">
-                        {{bill.productDetail.price * bill.quantity |
-                        vndCurrency}} -->
-                    <td class="align-middle text-center" ng-show="!bill.hasPromotion">{{bill.productDetail.price | vndCurrency }}</td>
-                    <td class="row"> <p class="ps-4 align-middle text-center text-danger" ng-show="bill.hasPromotion">{{bill.priceWithPromo| vndCurrency}}</p> 
-                       <p  class="ps-4 align-middle text-center text-decoration-line-through" ng-show="bill.hasPromotion">{{bill.productDetail.price| vndCurrency}}</p> </td>
-                    <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="!bill.hasPromotion">{{bill.quantity}}</td>
-                    <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="!bill.hasPromotion"> {{bill.productDetail.price *bill.quantity | vndCurrency}}
+                    <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="!bill.hasPromotion">
+                        {{bill.productDetail.price *bill.quantity | vndCurrency}}
                         <!-- // giá khi có khuyến mại -->
-                        <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="bill.hasPromotion">{{bill.quantity}}</td>
-                        <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="bill.hasPromotion"> {{bill.priceWithPromo *bill.quantity | vndCurrency}}
+                    <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="bill.hasPromotion">
+                        {{bill.priceWithPromo *bill.quantity | vndCurrency}}
                     </td>
                 </tr>
             </tbody>
@@ -275,10 +244,10 @@
                 <p class="col-lg ms-5 mt-3 fs-4">Voucher</p>
             </div>
             <div class="col"></div>
-            <a class="col-lg-2 text-end me-5" ng-click data-bs-toggle="modal"
-                data-bs-target="#exampleModalVoucher">
+            <a class="col-lg-2 text-end me-5" ng-click data-bs-toggle="modal" data-bs-target="#exampleModalVoucher">
                 Chọn voucher
-            </a> </div>
+            </a>
+        </div>
 
     </div>
     <div class="row ms-3 mt-5">
@@ -286,8 +255,7 @@
             <h3>Phương thức thanh toán</h3>
         </div>
         <div class=" offset-3 col-lg-3 text-end ms-5">
-            <select id="select1" class="form-select col"
-                ng-model="CreateOrder.optionPay">
+            <select id="select1" class="form-select col" ng-model="CreateOrder.optionPay">
                 <option value="0" ng-selected="CreateOrder.optionPay == '0'">Thanh
                     toán khi nhận hàng </option>
                 <option value="1">Thanh toán qua VNPay </option>
@@ -323,11 +291,11 @@
                 - {{reduceFee| vndCurrency }}
             </h5>
         </div>
-        
+
         <div class="row me-5" ng-show="isFeeShip">
             <h5 class="col-lg-4 offset-5">Phí sau khi giảm:</h5>
             <h5 class="col-lg-3 text-end">
-                {{totalFee| vndCurrency }}
+                {{totalFee==0?"0đ": totalFee| vndCurrency }}
             </h5>
         </div>
         <div class="row me-5">
@@ -356,7 +324,7 @@
             z-index: 9999;
         }
 
-    
+
 
         .modal-content-vch {
             margin-top: 60px;
@@ -461,7 +429,10 @@
 
 
         .voucher-card .details {
-            flex: 1;
+        }
+        .details h5{
+            font-weight: bold;
+            padding-bottom: 5px;
         }
 
         .modal-footer-vch {
@@ -469,55 +440,49 @@
             justify-content: flex-end;
             margin-top: 10px;
         }
-
     </style>
 
-    <div class="modal modal_vch" id="exampleModalVoucher" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal modal_vch" id="exampleModalVoucher" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-vch w-100" style="height: 100px">
-            <div class="modal-content modal-content-vch "
-                style="height: 700px">
+            <div class="modal-content modal-content-vch " style="height: 700px">
                 <div class="modal-header modal-header-vch sticky-top">
-                    <h1 class="modal-title modal-title-vch fs-2"
-                        id="exampleModalLabel">
+                    <h1 class="modal-title modal-title-vch fs-2" id="exampleModalLabel">
                         Chọn Voucher
                     </h1>
-                    <button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="voucher bg-light">
                     <label class="fs-5 me-2" style="margin-left: -20px;">Mã
                         Voucher</label>
-                    <input type="text" id="voucherInput"
-                        placeholder="Nhập voucher..."
-                        class="form-control border " />
+                    <input type="text" id="voucherInput" placeholder="Nhập voucher..." class="form-control border " />
                     <button id="addVoucher" class="btn btn-outline-primary">Áp
                         Dụng</button>
                 </div>
                 <div class="modal-body modal-body-vch">
                     <div ng-repeat="item in listVouchers" id="vouchers">
-                        <div class="voucher-card" ng-click="selectVoucher(item.id,item.usageCount)">
+                        <div class="voucher-card" ng-click="selectVoucher(item.id,item.usageCount,item.idVchUser)">
                             <b class="voucher-quantity">x{{item.usageCount}}</b>
                             <img src="/assets/img/Voucher/{{item.image}}" alt="Voucher Image" />
-                            <div class="details">
-                                <p ng-show="item.discountType=='Phần Trăm'">Giảm {{item.value}}%</p>
-                                <p ng-show="item.discountType=='VND'">Giảm {{item.value/1000}}k</p>
-                                <p ng-show="item.discountType=='Phần Trăm'">Giảm tối đa:{{item.maxReduction}}k</p>
-                                <p  ng-show="item.discountType=='VND'">Giảm tối đa:{{item.maxReduction/1000}}k</p>
-                                <p>Đơn tối thiểu :{{item.condition|vndCurrency }}</p>
-                                <p>HSD :{{item.endDate}}</p>
+                            <div class="details pb-1">
+                                <h5 ng-show="item.discountType=='Phần Trăm'">Giảm {{item.value}}%</h5>
+                                <h5 ng-show="item.discountType=='VND'">Giảm {{item.value |vndCurrency}}</h5>
+                                <p ng-show="item.discountType=='Phần Trăm'">Giảm tối đa: {{item.maxReduction
+                                    |vndCurrency}}</p>
+                                <!-- <p ng-show="item.discountType=='VND'">Giảm tối đa: {{item.maxReduction
+                                    |vndCurrency}}</p> -->
+                                <p>Đơn tối thiểu: {{item.condition|vndCurrency }}</p>
+                                <p>HSD: {{item.endDate}}</p>
                                 <p><input type="radio" ng-model="$parent.selectedVoucher" ng-value="item.id"></p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer modal-footer-vch sticky-bottom">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Hủy
                     </button>
-                    <button type="button" class="btn btn-primary"
-                        data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                         Ok
                     </button>
                 </div>

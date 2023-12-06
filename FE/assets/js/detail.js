@@ -73,6 +73,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       $scope.productId = $scope.itemDetail[0].product.id;
       $scope.currentImageSource = `assets/img/product/sp1/${$scope.itemDetail[0].product.mainImg}`;
       for (var i = 0; i < $scope.itemDetail.length; i++) {
+        if($scope.itemDetail[i].quantity>0){
         $scope.sizesPr.push({
           name: $scope.itemDetail[i].size.name,
           checkcl: true
@@ -82,6 +83,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
         });
         $scope.totalQuantity += $scope.itemDetail[i].quantity;
       }
+    }
     }).catch(error => {
       console.log("Error", error);
     });
@@ -89,33 +91,33 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
 
 
   var listPromoDetail = [];
-  $scope.loadPromotionDetail = function(){
+  $scope.loadPromotionDetail = function () {
     console.log($scope.promotionId)
     console.log($scope.productDTId)
     var promoUrl = `${host}/api/promotion/${$scope.promotionId}/${$scope.productDTId}`;
-  
+
     $http.get(promoUrl).then(res => {
-        listPromoDetail = res.data;
-        console.log(listPromoDetail, 'Data is available for use.');
-      })
+      listPromoDetail = res.data;
+      console.log(listPromoDetail, 'Data is available for use.');
+    })
       .catch(error => console.error("Error fetching promotional information", error));
   };
-  
+
   // Usage:
   $scope.loadPromotionDetail();
-  
-  
-  
+
+
+
   $scope.totalQuantity = 0;
 
   $scope.check = function (idColor) {
     $scope.checkPrice = false; // Mặc định, không tìm thấy giá
     $scope.isHasPromo = false;
     $scope.price = 0; // Đặt giá thành 0
-    $scope.pricePromotion =0;
+    $scope.pricePromotion = 0;
     $scope.totalQuantity = 0;
     $scope.loadSizeByCl($scope.productDTId, idColor)
-  
+
     for (var i = 0; i < $scope.itemDetail.length; i++) {
       if ($scope.itemDetail[i].color.id === idColor) {
         $scope.checkPrice = true;
@@ -126,10 +128,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       }
     }
 
-    if(listPromoDetail.length >0){
-      for (var i = 0; i <listPromoDetail.length; i++) {
+    if (listPromoDetail.length > 0) {
+      for (var i = 0; i < listPromoDetail.length; i++) {
         if (listPromoDetail[i].colorId === idColor) {
-
           $scope.checkPrice = true;
           $scope.isHasPromo = true;
           $scope.pricePromotion = listPromoDetail[i].price;
@@ -140,7 +141,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       }
     }
   };
-  
+
   $scope.loadSizeByCl = function (productId, clId) {
     var url = `${host}/api/getSizeBycolor`;
     var config = {
@@ -530,11 +531,11 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       });
   };
 
-  $scope.payNow = function (quantity) {
-    $scope.addCart(quantity);
-    setTimeout(function(){
+  $scope.payNow = function (od) {
+    $scope.addCart(od);
+    setTimeout(function () {
       $scope.addBill();
-    },200)
+    }, 200)
   };
 
 

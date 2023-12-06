@@ -281,6 +281,13 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
         });
     }
     $scope.loadAllPrBs();
+    $scope.getTotalQuantity = function(item) {
+        // Lọc danh sách itemsBs2 theo id sản phẩm
+        var filteredItems = $scope.itemsBs.filter(prDt => prDt.product.id === item.product.id);
+        // Sử dụng reduce để tính tổng số lượng
+        $scope.totalQuantity= filteredItems.reduce((total, prDt) => total + prDt.quantity, 0);
+        return $scope.totalQuantity;
+    };
     $scope.loadDetail = function (idPR) {
         var url = `${host}/api/product/${idPR}`;
         $http.get(url).then(res => {
