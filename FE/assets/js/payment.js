@@ -20,7 +20,16 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
     // voucher 
     var dataUser = localStorage.getItem('userData');
     var dataJson = JSON.parse(dataUser);
-    var url = `${host}/user-voucher?userName=${dataJson.username}`;
+    if(dataJson){
+        var url = `${host}/user-voucher?userName=${dataJson.username}`;
+        $http.get(url).then(function (res) {
+            $scope.listVouchers = res.data;
+            console.log(" khi tải voucher: " + $scope.listVouchers);
+    
+        }).catch(function (err) {
+            console.log("Lỗi khi tải voucher: " + err);
+        });
+    }
     toastr.options = {
         "closeButton": true,
         "debug": false,
@@ -38,14 +47,9 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         "showMethod": "slideDown",
         "hideMethod": "slideUp"
     }
-    //get voucher
-    $http.get(url).then(function (res) {
-        $scope.listVouchers = res.data;
-        console.log(" khi tải voucher: " + $scope.listVouchers);
 
-    }).catch(function (err) {
-        console.log("Lỗi khi tải voucher: " + err);
-    });
+    //get voucher
+
 
     $scope.showFormVoucher = function () {
         $('#exampleModalVoucher').modal('show');
@@ -233,30 +237,22 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
 
         $scope.loadAllPr = function () {
 
-            // var url = `${host}/api/billDt`;
-            // var billDt = $cookies.get('billId');
-            // if (!billDt) {
-            //     return;
-            // }
-            // if (!dataUserCart) {
-            //     $scope.showOption = false;
-            //     var config = {
-            //         params: { idBill: billDt }
-            //     };
-            // } else {
-            //     $scope.showOption = true;
-            //     var config = {
-            //         params: { idBill: billDt }
-            //     };
-            // }
-            var url = `${host}/api/detail`;
-            var cartId = $cookies.get('cartId');
-
-            // Thiết lập cấu hình cho HTTP GET request
-            var config = {
-                params: { idCart: dataUserCart || cartId }
-            };
-
+            var url = `${host}/api/billDt`;
+            var billDt = $cookies.get('billId');
+            if (!billDt) {
+                return;
+            }
+            if (!dataUserCart) {
+                $scope.showOption = false;
+                var config = {
+                    params: { idBill: billDt }
+                };
+            } else {
+                $scope.showOption = true;
+                var config = {
+                    params: { idBill: billDt }
+                };
+            }
             // Thực hiện HTTP GET request để lấy danh sách sản phẩm
             $http.get(url, config).then(function (res) {
                 $scope.listBillDt = res.data;

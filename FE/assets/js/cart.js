@@ -91,22 +91,28 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
         }
     }
     $scope.calculateTotalPriceWithPromo = function (items) {
+        // Check if items is an array
+        if (!Array.isArray(items)) {
+            console.error('Input is not an array');
+            return 0; // or handle the error in a way that makes sense for your application
+        }
+    
         var totalPriceWithPromo = 0;
         var totalPriceWithoutPromo = 0;
-         console.log(items)
+    
         items.forEach((item) => {
-                if (item.hasPromotion) {
-                    totalPriceWithPromo += item.priceWithPromo * item.quantity;
-                } else {
-                    // Kiểm tra xem giá có là NaN không trước khi thêm vào tổng
-                    
-                        totalPriceWithoutPromo += item.productDetail.price * item.quantity;
-                 
+            if (item.hasPromotion) {
+                totalPriceWithPromo += item.priceWithPromo * item.quantity;
+            } else {
+                // Ensure that the price is a valid number before adding to the total
+                var priceWithoutPromo = Number(item.productDetail.price);
+                if (!isNaN(priceWithoutPromo)) {
+                    totalPriceWithoutPromo += priceWithoutPromo * item.quantity;
                 }
-
+            }
         });
     
-        // Log giá trị để kiểm tra
+        // Log values for verification
         console.log('Total Price With Promo:', totalPriceWithPromo);
         console.log('Total Price Without Promo:', totalPriceWithoutPromo);
     
@@ -115,13 +121,14 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
     
     
     
-    $scope.loadAllPr = function (cartId) {
+    
+    $scope.loadAllPrByCart = function (cartId) {
         var url = `${host}/api/detail`;
         var config = {
             params: { idCart: cartId }
         };
     
-        function calculatePricesAndPromotions(items) {
+        $scope.calculatePricesAndPromotions = function(items) {
             // Bước 1: Lấy thông tin chương trình khuyến mãi đang hoạt động
             var promoUrl = `${host}/api/active_promotions`;
     
@@ -198,12 +205,8 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
                 });
         }
     
-        function calculateTotalAndPay(items) {
+        $scope.calculateTotalAndPay = function(items) {
             $scope.totalPrice = $scope.calculateTotalPriceWithPromo(items);
-            $scope.randomValue1 += $scope.testRd;
-            $scope.randomValue2 = $scope.testRd2;
-            $scope.randomValue = $scope.randomValue1 + $scope.randomValue2;
-            $scope.totalPay = ($scope.totalPrice + $scope.randomValue) - $scope.promotinalValue;
             console.log($scope.totalPrice,"jjsjajsaj")
         }
     
@@ -215,10 +218,10 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
             $scope.check();
             console.log($scope.items,'cart')
             $scope.selectAllChecked = false;
-            return calculatePricesAndPromotions($scope.items);
+            return $scope.calculatePricesAndPromotions($scope.items);
         }).then(() => {
             // Tiếp tục tính toán tổng giá và thanh toán
-            calculateTotalAndPay($scope.items);
+            // $scope.calculateTotalAndPay($scope.items);
         }).catch((error) => {
             console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
         });
@@ -243,30 +246,42 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
 
     $scope.check = function () {
         $scope.itemSelected = [];
+        $scope.itemSelected2 = [];
         $scope.totalPrice = 0;
-        $scope.countItem = $scope.items.length;
-        $scope.totalPay = 0;
+        $scope.countItem = 0;
+    
         for (var i = 0; i < $scope.items.length; i++) {
             var currentItem = $scope.items[i];
+    
+            // Update countItem and select items based on the checked status
             if (currentItem.checked) {
-                    $scope.itemSelected.push({
-                        id: currentItem.id,
-                        cart: currentItem.cart,
-                        productDetail: currentItem.productDetail,
-                        quantity: currentItem.quantity,
-                        description: currentItem.description,
-                        status: currentItem.status,
-                    });
-                
+                $scope.countItem++;
+    
+                // Add the selected item to itemSelected array
+                $scope.itemSelected.push({
+                    id: currentItem.id,
+                    cart: currentItem.cart,
+                    productDetail: currentItem.productDetail,
+                    quantity: currentItem.quantity,
+                    description: currentItem.description,
+                    status: currentItem.status,
+                    hasPromotion: currentItem.hasPromotion,
+                    priceWithPromo:currentItem.priceWithPromo
+                });
+    
+                // Update total price by calling calculateTotalAndPay function
+                $scope.totalPrice = $scope.calculateTotalAndPay( $scope.itemSelected);
+                console.log('Total Price:',$scope.calculateTotalAndPay( $scope.itemSelected));
 
-                $scope.idCart = currentItem.cart.id;
-                $scope.totalPrice += $scope.calculateTotalPrice(currentItem);
             }
+
         }
-
-        console.log($scope.itemSelected, 'list');
+    
+        // Log the selected items and their total price
+        console.log('Selected items:', $scope.itemSelected);
     };
-
+    
+    
     $scope.loadAllPrSelected = function () {
         var url = `${host}/api/billDt`;
         var billDt = $cookies.get('billId');
@@ -524,7 +539,21 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
     $scope.pay = function () {
         var idBill = $cookies.get('billId');
         var url = `${host}/api/addBillDtSl/`;
-        $http.post(url + idBill, $scope.itemSelected).then(function () {
+        $scope.itemSelected2 = $scope.itemSelected.map(function(item) {
+            // Create a new object without the specified properties
+            var newItem = {
+                id: item.id,
+                cart: item.cart,
+                productDetail: item.productDetail,
+                quantity: item.quantity,
+                description: item.description,
+                status: item.status
+                // omitting hasPromotion and priceWithPromo
+            };
+        
+            return newItem;
+        });
+        $http.post(url + idBill, $scope.itemSelected2).then(function () {
             console.log('ADD thành công');
         }).catch(function (error) {
             console.error('ADD thất bại', error);

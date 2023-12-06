@@ -84,8 +84,8 @@
       <span ng-show="!checkPrice"> {{ getPriceDisplay() | vndCurrency }}</span>
       <span ng-show="checkPrice && !isHasPromo">{{price | vndCurrency}}</span>
       <div class="row" ng-show="isHasPromo">
-        <p class="col text-danger">{{price| vndCurrency}}</p>
-        <p class="col text-decoration-line-through">{{pricePromotion | vndCurrency }}</p>
+        <span class="col-3 text-danger">{{price| vndCurrency}}</span>
+        <span class="col-1 text-decoration-line-through">{{pricePromotion | vndCurrency }}</span>
     </div>
 
     </h5>

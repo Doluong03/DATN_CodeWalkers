@@ -42,7 +42,7 @@ public class ProductDetail {
     private Color color;
 
     @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
+    @JoinColumn(name = "trang_thai")
     private Status status;
 
     @Column(name = "ngay_tao")

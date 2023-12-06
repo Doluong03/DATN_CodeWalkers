@@ -116,11 +116,20 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     $scope.totalQuantity = 0;
     $scope.loadSizeByCl($scope.productDTId, idColor)
   
-
+    for (var i = 0; i < $scope.itemDetail.length; i++) {
+      if ($scope.itemDetail[i].color.id === idColor) {
+        $scope.checkPrice = true;
+        $scope.isHasPromo = false;
+        $scope.price = $scope.itemDetail[i].price; // Gán giá của sản phẩm đó
+        $scope.selectedColor = idColor;
+        break; // Dừng vòng lặp khi đã tìm thấy sản phẩm
+      }
+    }
 
     if(listPromoDetail.length >0){
       for (var i = 0; i <listPromoDetail.length; i++) {
         if (listPromoDetail[i].colorId === idColor) {
+
           $scope.checkPrice = true;
           $scope.isHasPromo = true;
           $scope.pricePromotion = listPromoDetail[i].price;
@@ -129,19 +138,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
           break; // Dừng vòng lặp khi đã tìm thấy sản phẩm
         }
       }
-    }else{
-      for (var i = 0; i < $scope.itemDetail.length; i++) {
-        if ($scope.itemDetail[i].color.id === idColor) {
-          $scope.checkPrice = true;
-          $scope.isHasPromo = false;
-          $scope.price = $scope.itemDetail[i].price; // Gán giá của sản phẩm đó
-          $scope.selectedColor = idColor;
-          break; // Dừng vòng lặp khi đã tìm thấy sản phẩm
-        }
-      }
     }
-
- 
   };
   
   $scope.loadSizeByCl = function (productId, clId) {
