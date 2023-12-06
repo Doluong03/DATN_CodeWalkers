@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="/assets/css/billDetail.css">
+<div class>
+  <div class="part" ng-show="selectedOrder.status !==5">
+    <div class="row">
+      <div class="col-12 col-md-10 hh-grayBox pt45 pb20 ">
+        <div class="row justify-content-between">
+          <div class="order-tracking completed">
+            <span class="is-complete"> <i
+                class=" text-end bi bi-receipt-cutoff fs-2"></i>
+            </span>
+            <p>Chờ xác nhận <br><span>{{selectedOrder.status}}</span></p>
+          </div>
+          <div class="order-tracking "
+            ng-class="{ 'completed': selectedOrder.status >= 2 }">
+            <span class="is-complete"><i class="bi bi-box-seam-fill fs-2"></i></span>
+            <p>Chờ giao hàng <br><span>Tue, June 25</span></p>
+          </div>
+          <div class="order-tracking"
+            ng-class="{ 'completed': selectedOrder.status >= 3 }">
+            <span class="is-complete"><i class="bi bi-truck fs-2"></i></span>
+
+            <p>Đang giao hàng <br><span>Fri, June 28</span></p>
+          </div>
+          <div class="order-tracking"
+            ng-class="{ 'completed': selectedOrder.status >= 4 }">
+            <span class="is-complete"><i class="bi bi-cash fs-2"></i></span>
+            <p>Hoàn thành <br><span>Fri, June 28</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- order-tracking -->
+    <div class="hr mt-4"></div>
+    <div class="row mt-3 ms-3 rounded-end mb-2">
+      <h4 class="fw-bold text-danger ">Địa chỉ nhận hàng</h4>
+      <div class=" row">
+        <div class="address-info-show d-flex mb-3 ms-1 mt-1">
+          <strong>{{selectedOrder.userName}}</strong> | <span>{{selectedOrder.userPhone}}</span>
+          <div class="offset-2">{{selectedOrder.address}},</div>
+          <div class="ms-3">{{wardsByProvince[selectedOrder.district] |
+            findWardNameById:selectedOrder.ward}},
+            {{districtsByProvince[selectedOrder.province] |
+            findDistrictNameById:selectedOrder.district}},
+            Tỉnh {{provinces | findProvinceNameById:selectedOrder.province}}
+          </div>
+        </div>
+        <!-- 
+        <a class="col-lg-1 text-end me-4" ng-click data-bs-toggle="modal"
+          data-bs-target="#exampleAddress"> Thay
+          đổi </a> -->
+      </div>
+    </div>
+  </div>
+  <div class="part" ng-show="selectedOrder.status==5">
+    <h4 class="p-4">Đã hủy đơn hàng</h4>
+  </div>
+  <!-- address -->
+  <div class="part mt-2 mb-2">
+    <h5 class="text-end pt-3 me-3">Mã đơn hàng: {{selectedOrder.code}}</h5>
+    <hr>
+    <div class="row pr-info ms-1 me-1"
+      ng-repeat="pr in selectedOrder.listBillDetail">
+      <img id="imgPr"
+        src="assets/img/product/sp1/{{pr.productDetail.product.listImage[0].link}}"
+        alt="{{pr.productDetail.product.listImage[0].name}}"
+        class="col-lg">
+      <div class="col-lg-8 info">
+        <p class="fw-bold">{{pr.productDetail.product.name}}</p>
+        <p class="mb-0">Phân loại hàng:
+          {{pr.productDetail.product.category.name}}</p>
+        <p class="mb-0">Màu sắc: {{pr.productDetail.color.name}}</p>
+        <p class="mb-0">Size : {{pr.productDetail.size.name}} x {{pr.quantity}}</p>
+      </div>
+      <div class="col-lg text-end me-2 text-danger">{{pr.productDetail.price |
+        vndCurrency }}</div>
+      <hr>
+    </div>
+    <div class="pay row mb-3">
+      <div class="col-lg text-end">
+        <p>Tổng tiền hàng: </p>
+        <p>Phí vận chuyển: </p>
+        <!-- <p>Thành tiền: </p> -->
+        <p class="mt-2 pt-1">Thành tiền: </p>
+        <p class="mt-1 pt-1">Phương thức thanh toán: </p>
+      </div>
+      <div class="col-lg-3 text-end me-4 line-lg">
+        <p>{{ totalAmount | vndCurrency }}</p>
+        <p>{{selectedOrder.fee==0 ? '0đ': selectedOrder.fee | vndCurrency}}</p>
+        <!-- <p class="fs-5">{{selectedOrder.totalPay|| 0 |vndCurrency}}</p> -->
+        <p class="fs-4 mt-2 text-danger">{{selectedOrder.totalPay|| 0 |vndCurrency}}</p>
+        <p class="mt-2">{{selectedOrder.paymentOptions == 0 ?'Thanh toán khi nhận hàng':'Thanh toán online'}}
+        </p>
+      </div>
+      <div style="height: 50px;"></div>
+    </div>
+  </div>
+</div>

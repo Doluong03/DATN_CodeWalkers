@@ -7,6 +7,7 @@ import com.example.asm_be.jwt.JwtTokenProvider;
 import com.example.asm_be.payload.request.LoginRequest;
 import com.example.asm_be.payload.request.SignUpRequest;
 import com.example.asm_be.payload.request.userRequest;
+import com.example.asm_be.payload.request.userSignUpRequest;
 import com.example.asm_be.payload.response.JwtRespone;
 import com.example.asm_be.payload.response.MessageRespone;
 import com.example.asm_be.security.staff.CustomUserDetails;
@@ -141,15 +142,23 @@ public class AuthServiceIplm implements AuthService {
     }
 
     @Override
-    public ResponseEntity<?> RegisterUser(userRequest userRequest) {
+    public ResponseEntity<?> RegisterUser(userSignUpRequest userSignUpRequest) {
+        // Assuming userService.findByAcc returns an Optional<Users>
+        Optional<Users> usersCheck = userService.findByUserName(userSignUpRequest.getUserName());
+        if (usersCheck.isPresent()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageRespone("Error: Email " + userSignUpRequest.getPassword() + " is already registered."));
+        } else {
+            Users users = new Users();
+            users.setUserName(userSignUpRequest.getUserName());
+            users.setPassword(passwordEncoder.encode(userSignUpRequest.getPassword()));
+            users.setPhoneNumber(userSignUpRequest.getPhoneNumber());
+            users.setName(userSignUpRequest.getFullName());
+            users.setRole("ROLE_USER");
+            userService.save(users);
+            return ResponseEntity.ok(userSignUpRequest);
+        }
 
-         Users users = new Users();
-         users.setUserName(userRequest.getUserName());
-         users.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-         users.setRole("ROLE_USER");
-
-        userService.save(users);
-        return ResponseEntity.ok(new MessageRespone("SignUp User Successful"));
     }
 
     @Override
@@ -175,8 +184,5 @@ public class AuthServiceIplm implements AuthService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
-
 
 }

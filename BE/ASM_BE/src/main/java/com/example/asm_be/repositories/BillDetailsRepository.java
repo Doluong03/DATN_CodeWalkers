@@ -18,7 +18,6 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT SUM(hd.totalPay)
                 FROM HoaDon hd
-                JOIN HoaDonChiTiet hdct ON hd.id = hdct.bill.id
                 WHERE YEAR(hd.createdAt) = :year
             """)
     List<Double> getTotalPayByYear(@Param("year") int year);
@@ -27,7 +26,6 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT SUM(hd.totalPay)
                 FROM HoaDon hd
-                JOIN HoaDonChiTiet hdct ON hd.id = hdct.bill.id
                 WHERE MONTH(hd.createdAt) = (:date1) AND YEAR(hd.createdAt) = (:date2)
             """)
     List<Double> getTotalPayByMonth(@Param("date1") int date1, @Param("date2") int date2);
@@ -36,7 +34,6 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT SUM(hd.totalPay)
                 FROM HoaDon hd
-                JOIN HoaDonChiTiet hdct ON hd.id = hdct.bill.id
                 WHERE hd.createdAt = :day
             """)
     List<Double> getTotalPayByDay(@Param("day") Date day);
@@ -45,7 +42,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                  select count(hd.id)
                  from HoaDon hd
-                 where hd.status = 1
+                 where hd.status = 4
             """)
     List<Integer> getSuccessfulInvoices();
 
@@ -53,7 +50,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                  select count(hd.id)
                  from HoaDon hd
-                 where hd.status = 0
+                 where hd.status = 5
             """)
     List<Integer> getTotalFailedInvoices();
 
@@ -61,7 +58,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                  select count(hd.id)
                  from HoaDon hd
-                 where hd.status = 3
+                 where hd.status between 1 and 3
             """)
     List<Integer> getPendingInvoices();
     // doanh số sản phẩm

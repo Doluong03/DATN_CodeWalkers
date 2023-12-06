@@ -1,5 +1,6 @@
-app.controller("DetailController", function ($scope, $http, $routeParams, CookieService, $cookies, $anchorScroll, $filter) {
+app.controller("DetailController", function ($scope, $http, $routeParams, CookieService, $cookies, $anchorScroll, $filter, $sce, $interval, $timeout) {
   $anchorScroll("pageContent");
+
   $scope.items = [];
   $scope.itemsBs = [];
   $scope.img = [];
@@ -10,7 +11,28 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   $scope.selectedColor = 0;
   $scope.productSizes = {};
   $scope.list = [];
-  var cartId = $cookies.get('cartId');
+  $scope.itemSelected = [];
+  $scope.idCartDt = {};
+  var idUserCook = $cookies.get('idUser');
+  var dataUser = localStorage.getItem('userData');
+  var dataUserJson = JSON.parse(dataUser);
+  toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "3000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "slideDown",
+    "hideMethod": "slideUp"
+  }
   $scope.colorMapping = {
     'Đỏ': 'red',
     'Xanh dương': 'blue',
@@ -26,6 +48,13 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     'Nâu': 'brown'
     /* Thêm các ánh xạ màu khác ở đây */
   };
+  $scope.removeSizeText = function (size) {
+    // Assuming size is a string
+    return size.replace('Size', '').trim();
+  };
+  $scope.trustedHtml = function (html) {
+    return $sce.trustAsHtml(html);
+  };
   // Hàm để thay đổi nguồn ảnh
   $scope.changeImage = function (newSource) {
     $scope.currentImageSource = `assets/img/product/sp1/${newSource}`;
@@ -40,10 +69,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     $http.get(url).then(res => {
       $scope.totalQuantity = 0;
       $scope.itemDetail = res.data;
-      console.log($scope.itemDetail, "here ")
-      $scope.img = $scope.itemDetail[0].product.listImage;
+      $scope.img = res.data[0].product.listImage;
       $scope.productId = $scope.itemDetail[0].product.id;
-      $scope.currentImageSource = `assets/img/product/sp1/${$scope.itemDetail[0].product.listImage[0].link}`;
+      $scope.currentImageSource = `assets/img/product/sp1/${$scope.itemDetail[0].product.mainImg}`;
       for (var i = 0; i < $scope.itemDetail.length; i++) {
         $scope.sizesPr.push({
           name: $scope.itemDetail[i].size.name,
@@ -54,8 +82,6 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
         });
         $scope.totalQuantity += $scope.itemDetail[i].quantity;
       }
-      console.log(res.data);
-      console.log("Success", res);
     }).catch(error => {
       console.log("Error", error);
     });
@@ -81,6 +107,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   
   
   $scope.totalQuantity = 0;
+
   $scope.check = function (idColor) {
     $scope.checkPrice = false; // Mặc định, không tìm thấy giá
     $scope.isHasPromo = false;
@@ -89,11 +116,20 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     $scope.totalQuantity = 0;
     $scope.loadSizeByCl($scope.productDTId, idColor)
   
-
+    for (var i = 0; i < $scope.itemDetail.length; i++) {
+      if ($scope.itemDetail[i].color.id === idColor) {
+        $scope.checkPrice = true;
+        $scope.isHasPromo = false;
+        $scope.price = $scope.itemDetail[i].price; // Gán giá của sản phẩm đó
+        $scope.selectedColor = idColor;
+        break; // Dừng vòng lặp khi đã tìm thấy sản phẩm
+      }
+    }
 
     if(listPromoDetail.length >0){
       for (var i = 0; i <listPromoDetail.length; i++) {
         if (listPromoDetail[i].colorId === idColor) {
+
           $scope.checkPrice = true;
           $scope.isHasPromo = true;
           $scope.pricePromotion = listPromoDetail[i].price;
@@ -102,21 +138,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
           break; // Dừng vòng lặp khi đã tìm thấy sản phẩm
         }
       }
-    }else{
-      for (var i = 0; i < $scope.itemDetail.length; i++) {
-        if ($scope.itemDetail[i].color.id === idColor) {
-          $scope.checkPrice = true;
-          $scope.isHasPromo = false;
-          $scope.price = $scope.itemDetail[i].price; // Gán giá của sản phẩm đó
-          $scope.selectedColor = idColor;
-          break; // Dừng vòng lặp khi đã tìm thấy sản phẩm
-        }
-      }
     }
-
- 
   };
-
+  
   $scope.loadSizeByCl = function (productId, clId) {
     var url = `${host}/api/getSizeBycolor`;
     var config = {
@@ -131,6 +155,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       console.log(url, config);
       $scope.totalQuantity = 0;
       $scope.selectedValue = '';
+      $scope.quantity = 1;
       for (var i = 0; i < $scope.list.length; i++) {
         if ($scope.selectedValue === '') {
           $scope.totalQuantity += $scope.list[i].quantity;
@@ -244,8 +269,6 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     var url = `${host}/api/detail/size`;
     $http.get(url).then(res => {
       $scope.sizes = res.data;
-      console.log(res.data);
-      console.log("Success", res);
     }).catch(error => {
       console.log("Error", error);
     });
@@ -254,8 +277,6 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     var url = `${host}/api/detail/color`;
     $http.get(url).then(res => {
       $scope.colors = res.data;
-      console.log(res.data);
-      console.log("Success", res);
     }).catch(error => {
       console.log("Error", error);
     });
@@ -264,8 +285,6 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     var url = `${host}/api/product`;
     $http.get(url).then(res => {
       $scope.items = res.data;
-      console.log(res.data);
-      console.log("Success", res);
       // Gọi loadDetail sau khi tải dữ liệu thành công
       $scope.loadDetail();
       $scope.numVisibleItems = 4;
@@ -301,6 +320,14 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   };
   $scope.activeSlideIndex = 0;
 
+  $scope.nextSlide = function () {
+    if ($scope.activeSlideIndex < $scope.slides.length - 1) {
+      $scope.activeSlideIndex++;
+    } else {
+      $scope.activeSlideIndex = 0;
+    }
+  };
+
   $scope.prevSlide = function () {
     if ($scope.activeSlideIndex > 0) {
       $scope.activeSlideIndex--;
@@ -308,19 +335,34 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       $scope.activeSlideIndex = $scope.slides.length - 1;
     }
   };
+  var autoSlideInterval;
 
-  $scope.nextSlide = function () {
-    if ($scope.activeSlideIndex < $scope.slides.length - 1) {
-      $scope.activeSlideIndex++;
+  function startAutoSlide() {
+    autoSlideInterval = $interval(function () {
+      $scope.nextSlide();
+    }, 2000); // Đặt khoảng thời gian ở đây, ví dụ 3000ms (3 giây)
+  }
 
-    } else {
-      $scope.activeSlideIndex = 0;
+  function stopAutoSlide() {
+    if (angular.isDefined(autoSlideInterval)) {
+      $interval.cancel(autoSlideInterval);
+      autoSlideInterval = undefined;
     }
-  };
+  }
+
+  // Bắt đầu chạy tự động khi controller được khởi tạo
+  startAutoSlide();
+
+  // Ngừng chạy tự động khi controller bị hủy
+  $scope.$on('$destroy', function () {
+    stopAutoSlide();
+  });
+
 
   $scope.selectedValue = '';
   // Hàm để cập nhật giá trị đã chọn
   $scope.selectSize = function (size) {
+    $scope.quantity = 1;
     $scope.totalQuantity = 0;
     $scope.selectedValue = size;
     if ($scope.selectedColor === 0) {
@@ -349,6 +391,34 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       return $q.reject(error); // Trả về lỗi cho promise
     });
   };
+  $scope.loadAllPrCart = function (id) {
+    var url = `${host}/api/detail`;
+    var config = { params: { idCart: id } };
+    $scope.itemSelected = [];
+    $http.get(url, config)
+      .then(function (res) {
+        $scope.itemsCart = res.data;
+        console.log($scope.itemsCart, 'cart');
+
+        var currentItem = $scope.itemsCart.find(it => it.id === $scope.idCartDt);
+        $scope.itemSelected.push({
+          id: currentItem.id,
+          cart: currentItem.cart,
+          productDetail: currentItem.productDetail,
+          quantity: currentItem.quantity,
+          description: currentItem.description,
+          status: currentItem.status,
+        });
+
+        console.log($scope.itemSelected, 'item');
+
+        var badge = document.querySelector(".badge");
+        badge.textContent = $scope.itemsCart.length;
+      })
+      .catch(function (error) {
+        console.log("Error loading the list of products in the cart", error);
+      });
+  };
 
   // Hàm thêm sản phẩm vào giỏ hàng
   var dataUserCart = localStorage.getItem('userCartData');
@@ -356,66 +426,116 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     var cartId = $cookies.get('cartId');
     var productId = $scope.productId;
     var selectedValue = $scope.selectedValue;
-    var selectedColor = $scope.selectedColor || undefined; // Xử lý trường hợp không chọn màu sắc
-       
+    var selectedColor = $scope.selectedColor || '';
+
     if (!selectedColor) {
-      toastr.error("Vui lòng chọn màu sắc ","Warning")
+      toastr.error("Vui lòng chọn màu sắc!", "Warning");
       return;
     }
-    if ($scope.quantity === null || $scope.quantity === undefined) {
-      console.error('Giá trị quantity không hợp lệ.');
+
+    if (!$scope.quantity) {
+      console.error('Invalid quantity value.');
       return;
     }
-  
+
     if (!productId || !selectedValue) {
       console.log(productId, selectedValue);
-      toastr.error("Vui lòng chọn kích cỡ ","Warning")
+      toastr.error("Vui lòng chọn kích cỡ!", "Warning");
       return;
     }
-  
-    if (!cartId || cartId==95) {
-      // Thực hiện khi cartId không hợp lệ hoặc không tồn tại
+
+    if (!cartId || cartId == 95) {
       $scope.createCart().then(function (cartIdResponse) {
         var cartIdResponse = $cookies.get('cartId');
         $scope.loadAllPrCart(cartIdResponse);
         $scope.cartIdFinal = cartIdResponse;
         console.log("Cart ID created:", $scope.cartIdFinal);
-        $scope.sendDetailAddRequest(sl,$scope.cartIdFinal);
-        // $scope.loadAllPrCart($scope.cartIdFinal);
-      });   
+        $scope.sendDetailAddRequest(sl, $scope.cartIdFinal);
+      });
     } else {
-      if(!dataUserCart){
-        $scope.cartIdFinal = cartId;
-        console.log("Using existing Cart ID:", cartId);
-        $scope.sendDetailAddRequest(sl,cartId);
-      }else{
-        $scope.cartIdFinal = dataUserCart;
-        console.log("Using existing Cart ID:", dataUserCart);
-        $scope.sendDetailAddRequest(sl,dataUserCart);
-      }
-      }
-    
+      $scope.cartIdFinal = dataUserCart || cartId;
+      console.log("Using existing Cart ID:", $scope.cartIdFinal);
+      $scope.sendDetailAddRequest(sl, $scope.cartIdFinal);
+    }
   };
-  
-  $scope.sendDetailAddRequest = function (sl,idCart) {
+
+  $scope.sendDetailAddRequest = function (sl, idCart) {
     var url = `${host}/api/detailAdd/${idCart}/${$scope.productId}/${$scope.selectedValue}/${$scope.selectedColor || ''}`;
     var data = { quantity: sl };
+
     console.log("Sending request to:", url);
+
     $http.post(url, data)
       .then(function (response) {
-        console.log('Cập nhật thành công');
+        $scope.idCartDt = response.data.id;
+        console.log('Successfully updated');
         $scope.loadAllPr();
         $scope.loadAllPrCart(idCart);
+
         toastr.success('Thêm sản phẩm thành công!', 'Thông báo');
-        // Mở modal (nếu cần)
       })
       .catch(function (error) {
-        console.error('Cập nhật thất bại:', error);
-        toastr.error('Có lỗi xảy ra khi thêm sản phẩm', 'Lỗi');
+        console.error('Update failed:', error);
+        toastr.error('Có lỗi xảy ra trong quá trình thêm sản phẩm', 'Error');
       });
   };
-  
 
+
+  $scope.addBill = function () {
+    $scope.idUserFinal = idUserCook || dataUserJson || 0;
+
+    var url = `${host}/api/addBill/${$scope.idUserFinal}`;
+    console.log(url, "url");
+
+    var idBill = $cookies.get('billId');
+
+    if (!idBill) {
+      return $http.post(url)
+        .then(function (res) {
+          $scope.bill = res.data;
+          $scope.billJson = JSON.stringify($scope.bill);
+          console.log("ID: " + $scope.billJson);
+
+          if ($scope.billJson) {
+            const billData = JSON.parse($scope.billJson);
+            console.log("here", billData);
+            CookieService.set('billId', billData.id, 1);
+            CookieService.set('idUser', billData.users.id, 1);
+            $scope.pay();
+          }
+
+          return true;
+        })
+        .catch(function (error) {
+          console.error('Failed to add bill', error);
+          return false;
+        });
+    }
+
+    $scope.pay();
+  };
+
+  $scope.pay = function () {
+    var idBill = $cookies.get('billId');
+    var url = `${host}/api/addBillDtSl/`;
+
+    console.log($scope.itemSelected, "bill");
+
+    $http.post(url + idBill, $scope.itemSelected)
+      .then(function (res) {
+        console.log('Successfully added', res.data);
+      })
+      .catch(function (error) {
+        console.error('Failed to add', error);
+      });
+  };
+
+  $scope.payNow = function (quantity) {
+    $scope.addCart(quantity);
+    setTimeout(function(){
+      $scope.addBill();
+    },200)
+  };
 
 
   // Hàm để gọi giá trị đã chọn
@@ -426,6 +546,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   $scope.quantity = 1;
   $scope.increaseQuantity = function (quantity) {
     $scope.quantity++;
+    if ($scope.quantity > $scope.totalQuantity) {
+      $scope.quantity = $scope.totalQuantity;
+    }
   };
 
   // Hàm xử lý khi người dùng giảm số lượng
@@ -441,6 +564,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       } else {
         $scope.quantity = quantity;
       }
+      if ($scope.quantity > $scope.totalQuantity) {
+        $scope.quantity = $scope.totalQuantity;
+      }
     }
   };
   $scope.onInputBlur = function (quantity) {
@@ -449,41 +575,16 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     } else {
       $scope.quantity = quantity;
     }
+    if ($scope.quantity > $scope.totalQuantity) {
+      $scope.quantity = $scope.totalQuantity;
+    }
   };
-  $scope.loadAllPrCart = function (id) {
-    var url = `${host}/api/detail`;
-    var config = {
-      params: { idCart: id }
-    };
-    $http.get(url, config).then(function (res) {
-      $scope.items = res.data;
-      var badge = document.querySelector(".badge");
-      badge.textContent = $scope.items.length;
-      // Thay đổi số trên biểu tượng
-      console.log("------>ád", $scope.items.length)
-    }).catch(function (error) {
-      console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
-    })
-  }
+
+
   $scope.loadAllPr();
   $scope.loadSize();
   $scope.loadColor();
   $scope.callSelectedValue();
-  toastr.options = {
-    "closeButton": true,
-    "debug": false,
-    "newestOnTop": false,
-    "progressBar": true,
-    "positionClass": "toast-top-right",
-    "preventDuplicates": false,
-    "onclick": null,
-    "showDuration": "300",
-    "hideDuration": "1000",
-    "timeOut": "3000",
-    "extendedTimeOut": "1000",
-    "showEasing": "swing",
-    "hideEasing": "linear",
-    "showMethod": "slideDown",
-    "hideMethod": "slideUp"
-  }
+
+
 });

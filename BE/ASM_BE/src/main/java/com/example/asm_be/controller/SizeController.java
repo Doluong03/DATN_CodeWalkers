@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,17 +29,20 @@ public class SizeController {
     }
 
     @PostMapping({"/Size/insert"})
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> insertSize(@RequestBody Size size) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", this.sizeService.save(size)));
     }
 
     @PutMapping({"/Size/update"})
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> updateSize(@RequestBody Size size) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.sizeService.update(size)));
     }
     @DeleteMapping({"/Size/delete/{id}"})
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> deleteSize(@PathVariable("id") Integer idSize) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Delete thanh cong", this.sizeService.delete(idSize)));

@@ -3,6 +3,7 @@ package com.example.asm_be.controller;
 import com.example.asm_be.payload.request.LoginRequest;
 import com.example.asm_be.payload.request.SignUpRequest;
 import com.example.asm_be.payload.request.userRequest;
+import com.example.asm_be.payload.request.userSignUpRequest;
 import com.example.asm_be.payload.response.JwtRespone;
 import com.example.asm_be.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,8 @@ public class LoginController {
     }
 
     @PostMapping("/signUpUser")
-    public ResponseEntity<?> ResgiterUser(@RequestBody userRequest userRequest){
-        return authService.RegisterUser(userRequest);
+    public ResponseEntity<?> ResgiterUser(@RequestBody userSignUpRequest userSignUpRequest){
+        return authService.RegisterUser(userSignUpRequest);
     }
 
     @PostMapping("/loginUser")

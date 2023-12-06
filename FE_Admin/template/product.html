@@ -1,7 +1,7 @@
 <div class="col-lg-12 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Product table</h4>
+      <h4 class="card-title">Quản lý sản phẩm </h4>
 
       <!-- <button class="btn-primary"  id="add-icon" ng-click="toggleForm()" >
                   <i class="fa-solid fa-plus fa-sx" style="color: #ffffff;"></i>
@@ -82,11 +82,11 @@
                 <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox"
                   type="checkbox"> #
               </th>
-              <th ng-show="columns[1].selected" ng-click="sortData('name')">Tên Kích cỡ<span
+              <th ng-show="columns[1].selected" ng-click="sortData('name')"style="width: 10%;" >Tên Sản phẩm <span
                   class="{{getSortClass('name')}}"></span></th>
-              <th ng-show="columns[2].selected" ng-click="sortData('mainImg')">Ảnh chính<span
+              <th ng-show="columns[2].selected" ng-click="sortData('mainImg')" >Ảnh chính<span
                   class="{{getSortClass('name')}}"></span></th>
-              <th ng-show="columns[3].selected" ng-click="sortData('description')">Mô tả<span
+              <th ng-show="columns[3].selected" ng-click="sortData('description')"  style="width: 50%;">Mô tả<span
                   class="{{getSortClass('name')}}"></span></th>
               <th ng-show="columns[4].selected" ng-click="sortData('brands')">Thương hiệu<span
                   class="{{getSortClass('name')}}"></span></th>
@@ -98,13 +98,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in listProduct | filter:searchText | orderBy:sortColumn:reverseSort">
-              <td><input type="checkbox" ng-model="item.isSelected"></td>
-              <td ng-show="columns[1].selected" style="text-align: center;"> {{item.name}}</td>
-              <td ng-show="columns[2].selected" style="text-align: center;"> {{item.mainImg}}</td>
-              <td ng-show="columns[3].selected" style="text-align: center;"> {{item.description}}</td>
-              <td ng-show="columns[4].selected" style="text-align: center;"> {{item.brands.name}}</td>
-              <td ng-show="columns[5].selected" style="text-align: center;"> {{item.category.name}}</td>
+            <tr ng-repeat="item in listProduct | filter:searchText   | orderBy:sortColumn:reverseSort" >
+              <td><input type="checkbox" ng-model="item.isSelected" ></td>
+              <td ng-show="columns[1].selected" style="text-align: start;"> {{item.name}}</td>
+              <td ng-show="columns[2].selected" style="text-align: center;"><img src="/template/images/sp1/{{item.mainImg}}" alt="{{item.mainImg}}" style="width: 120px; height: 120px;" class="border rounded-4" ></td>
+              <td ng-show="columns[3].selected" style="text-align: start; height: 10px;"> {{item.description}}</td>
+              <td ng-show="columns[4].selected" style="text-align: start;"> {{item.brands.name}}</td>
+              <td ng-show="columns[5].selected" style="text-align: start;"> {{item.category.name}}</td>
               <td ng-show="columns[6].selected" style="text-align: center;">
                 <span ng-if="item.status == true" style="margin-left: -9px;">
                   <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i> Active
@@ -200,16 +200,16 @@
                 <img ng-repeat="img in selectedImages" src="/template/images/sp1/{{img.link}}" alt="{{img.link}}" class="col-2 border ">
             </div>
             
-              <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Ảnh chính"
+              <input type="text" class="form-control d-none" id="exampleInputMiddleName" placeholder="Ảnh chính"
                 ng-model="formproduct.mainImg"  maxlength="30" name="txtImage"
                 ng-class="{'is-invalid': checkAddress && !formproduct.mainImg}">
               <!-- <label ng-show="AddProduct.txtImage.$invalid" style="color: #FC424A;">Bạn cần nhập tối đa 30 ký tự</label> -->
             </div>
             <div class="form-group">
               <label for="exampleInputDescription">Mô tả</label>
-              <input type="text" class="form-control" id="exampleInputDescription" placeholder="Mô tả"
+              <textarea type="text" class="form-control" id="exampleInputDescription" placeholder="Mô tả"
                 ng-model="formproduct.description"  maxlength="30" name="txtMota"
-                ng-class="{'is-invalid': checkAddress && !formproduct.description}">
+                ng-class="{'is-invalid': checkAddress && !formproduct.description}"></textarea>
               <!-- <label ng-show="AddProduct.txtMota.$invalid" style="color: #FC424A;">Bạn cần nhập tối đa 30 ký tự</label> -->
             </div>
 
@@ -265,7 +265,6 @@
   }
 
   .scrollable-modal-body {
-    max-height: 800px;
     /* Điều chỉnh chiều cao tối đa theo ý muốn */
     overflow-y: auto;
     /* Tạo thanh cuộn dọc */
@@ -295,20 +294,20 @@
             </div>
             <div class="form-group">
               <label for="exampleInputMiddleName">Ảnh chính</label>
-              <button class="btn border btn-outline-secomdary d-flex" data-toggle="modal" data-target="#modaleImg"> Chọn ảnh</button>
+              <button class="btn border btn-outline-secomdary d-flex" data-toggle="modal" data-target="#modaleImg" ng-click="changeImg()"> Chọn ảnh</button>
               <div class="listImg row text-align-left d-flex flex-wrap ms-1 ">
                 <img ng-repeat="img in selectedImages" src="/template/images/sp1/{{img.link}}" alt="{{img.link}}" class="col-2 border ">
             </div>
-              <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Ảnh chính" required
+              <input type="text" class="form-control d-none" id="exampleInputMiddleName" placeholder="Ảnh chính" required
                 ng-model="formProductUpdate.mainImg"
                 ng-class="{'is-invalid': checkUpdate && !formProductUpdate.mainImg}">
             </div>
 
             <div class="form-group">
               <label for="exampleInputDescription">Mô tả </label>
-              <input type="text" class="form-control" id="exampleInputEmail" placeholder="Description" required
+              <textarea class="form-control " id="exampleInputEmail" placeholder="Description" style="height: 200px;"
                 ng-model="formProductUpdate.description"
-                ng-class="{'is-invalid': checkUpdate && !formProductUpdate.description}">
+                ng-class="{'is-invalid': checkUpdate && !formProductUpdate.description}"></textarea>
             </div>
             <div class="form-group">
               <label for="exampleInputRate">Brands</label>
@@ -409,21 +408,26 @@
       </div>
 
       <!-- Modal Body -->
-      <div class="modal-body-pr">
+      <div class="modal-body-pr" style="overflow-y: auto;max-height: 750px;">
         <div ng-repeat="image in listCheckBox" class="image-container">
           <label class="label-checkbox border rounded-1 m-2">
             <input type="checkbox" ng-model="image.selected" ng-change="updateSelection(image)"
               class="checkboxImg ms-2">
             <img src="/template/images/sp1/{{image.link}}" alt="{{item.link}}" class="image-pr">
+
           </label>
           <p>{{item.link}}</p>
         </div>
+        <form id="imageUploadForm">
+          <input type="file" id="image" name="image" accept="image/*" multiple style="display:none;">
+          <br>
+          <button type="button" ng-click="openFilePicker()" class="btn btn-uotline-primary ">Upload Image</button>
+      </form>
       </div>
 
       <!-- Modal Footer -->
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-outline-primary" ng-click="addImg()">Thêm mới</button>
       </div>
 
     </div>

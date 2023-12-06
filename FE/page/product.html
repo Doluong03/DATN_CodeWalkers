@@ -1,47 +1,73 @@
-<div class="container mt-5">
-    <div ng-show="products > 0">
-        <div class="row">
-            <div class="col-lg-10 fs-4">Men's Shoes & Sneakers(1010)</div>
+<script src="js/jquery.min.js"></script>
+
+<div style="height: 50px;" class> </div>
+<div class=" mt-5 " style="padding: 0 100px 0 190px;">
+    <div ng-show="products > 0" class="sticky-top z-1">
+        <div class="row ms-3">
+            <div class="col-lg-10 fs-4 mb-4">{{type}} Shoes &
+                Sneakers({{filteredItems.length}})</div>
             <div class="col-lg-2 text-end">
                 <div class="btn-group">
-                    <button type="button border-0" class="btn btn dropdown-toggle" data-bs-toggle="dropdown"
+                    <button type="button border-0"
+                        class="btn btn dropdown-toggle "
+                        data-bs-toggle="dropdown"
                         data-bs-display="static" aria-expanded="false">
-                        Sort by
+                        Sắp xếp
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end text-end border-0">
-                        <li><button class="dropdown-item" type="button" ng-click="sortProducts('Name')" > Featured</button></li>
-                        <li><button class="dropdown-item" type="button"> Newest</button></li>
-                        <li><button class="dropdown-item" type="button" ng-click="sortProducts('PriceD')"> Price: High-Low</button></li>
-                        <li><button class="dropdown-item" type="button"  ng-click="sortProducts('PriceA')"> Price: Low-High</button></li>
+                    <ul
+                        class="dropdown-menu dropdown-menu-end text-end border-0">
+                        <li><button class="dropdown-item" type="button"
+                                ng-click="sortProducts('nameAsc')"> Tên: A->Z</button></li>
+                        <li><button class="dropdown-item" type="button"
+                                ng-click="sortProducts('createAtDesc')"> Mới nhất</button></li>
+                        <li><button class="dropdown-item" type="button"
+                                ng-click="sortProducts('priceDesc')"> Giá:
+                                Cao->Thấp</button></li>
+                        <li><button class="dropdown-item" type="button"
+                                ng-click="sortProducts('priceAsc')"> Giá:
+                                Thấp->Cao</button></li>
+
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row ">
             <!-- menu -->
-            <div class="col-lg-2 scroll" style="width: 18%;">
-                <div class="content mt-3" style="max-height: 1000px; overflow-y: auto;">
+            <div class="col-lg-2 scroll ps-5" style>
+                <div class="content mt-3"
+                    style="max-height: 750px; overflow-y: auto;">
                     <p class="fs-5 fw-bold">Thương hiệu</p>
                     <div class="brandList" ng-repeat="br in brands">
-                        <a href="" class="text-dark fw-bold">{{br.name}}</a>
+                        <a href class="text-dark" ng-click="chooseBr(br)"
+                            ng-class="{'fw-bold ': br.isSelected}">{{br.name}}
+                            <i class="bi bi-check" ng-show="br.isSelected"></i></a>
                     </div>
                     <hr class="w-100">
                     <div class="row align-items-center  w-100 ">
-                        <h5 class="col-lg-8 fw-bold">Size</h5>
-                        <button class="border-0  col-lg-1  " style="background-color: white;" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false"
+                        <p class="col-lg-8 fw-bold">Kích thước </p>
+                        <button class="border-0  col-lg-1  "
+                            style="background-color: white;" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseWidthExample"
+                            aria-expanded="true"
                             aria-controls="collapseWidthExample">
                             <i class="bi bi-chevron-down w-25 text-dark"></i>
                         </button>
                     </div>
-                    <div style="min-height: 0px;">
+                    <div style="min-height: 0px;" class="show">
                         <div class="collapse" id="collapseWidthExample">
-                            <div class="size2-container row w-75">
-                                <div class="size2 col-lg-1 border" ng-repeat="sz in sizes"
-                                    ng-style="{'background-color': selectedValue == sz.name ? 'lightblue' : ''}">
-                                    <input type="radio" name="size" id="{{sz.description}}" ng-model="selectedValue"
-                                        ng-value="sz.name" class="visually-hidden" ng-click="selectSize(sz.name)">
-                                    <label for="{{sz.description}}" tabindex="-1" class="">{{sz.name}}</label>
+                            <div class="size2-container row w-75 ms-0 mt-1">
+                                <div class="size2 col-lg-1 border"
+                                    ng-repeat="size in sizes"
+                                    ng-style="{'background-color': size.isSelected ? 'lightblue' : ''}">
+                                    <input type="checkbox" name="size"
+                                        id="{{size.description}}"
+                                        ng-value="size.id"
+                                        class="visually-hidden"
+                                        ng-model="size.isSelected"
+                                        ng-change="filterByAttributes()">
+                                    <label for="{{size.description}}"
+                                        tabindex="-1" class="pt-1">{{size.name}}</label>
                                 </div>
                             </div>
                         </div>
@@ -49,39 +75,56 @@
                     <hr class="w-100">
                     <div class="row align-items-left  w-100 ">
                         <p class="col-lg-8 fw-bold">Khoảng giá</p>
-                        <button class="border-0  col-lg-1  " style="background-color: white;" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapsePrice" aria-expanded="false"
+                        <button class="border-0  col-lg-1  "
+                            style="background-color: white;" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePrice"
+                            aria-expanded="false"
                             aria-controls="collapsePrice">
                             <i class="bi bi-chevron-down w-25 text-dark"></i>
                         </button>
                     </div>
                     <div class="price">
                         <div style="min-height: 0px;">
-                            <div class="collapse  align-items-center ms-0" id="collapsePrice">
-                                <input type="text" id="minPrice" name="minPrice" class="w-75" placeholder="Tối thiểu">
-                                <p style="height: 1px;" class="text-center w-75"><i class="bi bi-caret-down"></i></p>
-                                <input type="text" id="maxPrice" name="maxPrice" class="w-75 mt-1" placeholder="Tối đa">
-                                <button type="button" class="btn btn-outline-primary w-50 ms-4 mt-2 text-center"
-                                    onclick="addPriceRange()">Apply</button>
+                            <div class="collapse  align-items-center ms-0"
+                                id="collapsePrice">
+                                <input type="text" id="minPrice" name="minPrice"
+                                    class="w-75" placeholder="Tối thiểu"
+                                    ng-model="minPrice">
+                                <p style="height: 1px;" class="text-center w-75"><i
+                                        class="bi bi-caret-down"></i></p>
+                                <input type="text" id="maxPrice" name="maxPrice"
+                                    class="w-75 mt-1" placeholder="Tối đa"
+                                    ng-model="maxPrice">
+                                <button type="button"
+                                    class="btn btn-outline-primary w-50 ms-4 mt-2 text-center"
+                                    ng-click="filterByAttributes()">Apply</button>
                             </div>
                         </div>
                     </div>
                     <hr class="w-100">
                     <div class="row align-items-left  w-100 ">
                         <p class="col-lg-8 fw-bold">Phân loại </p>
-                        <button class="border-0  col-lg-1  " style="background-color: white;" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapseCategory" aria-expanded="false"
+                        <button class="border-0  col-lg-1  "
+                            style="background-color: white;" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseCategory"
+                            aria-expanded="false"
                             aria-controls="collapseCategory">
                             <i class="bi bi-chevron-down w-25 text-dark"></i>
                         </button>
                     </div>
-                    <div class="price">
+                    <div class="price me-1  text-start">
                         <div style="min-height: 0px;">
-                            <div class="collapse  align-items-center ms-0" id="collapseCategory"
-                                ng-repeat="ct in categories">
-                                <button class="border-0 btn">
-                                    <input type="checkbox" name="priceRange" value="{{ct.name}}" class="me-1">
-                                    {{ct.name}}
+                            <div class="collapse ms-0"
+                                id="collapseCategory"
+                                ng-repeat="category in categories">
+                                <button class="border-0 btn ms-0">
+                                    <input type="checkbox" name="priceRange"
+                                        value="{{category.id}}" class="me-1"
+                                        ng-model="category.isSelected"
+                                        ng-change="filterByAttributes()">
+                                    {{category.name}}
                                 </button>
                             </div>
                         </div>
@@ -89,19 +132,26 @@
                     <hr class="w-100">
                     <div class="row align-items-left  w-100 ">
                         <p class="col-lg-8 fw-bold">Chất liệu </p>
-                        <button class="border-0  col-lg-1  " style="background-color: white;" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapseMaterial" aria-expanded="false"
+                        <button class="border-0  col-lg-1  "
+                            style="background-color: white;" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseMaterial"
+                            aria-expanded="false"
                             aria-controls="collapseMaterial">
                             <i class="bi bi-chevron-down w-25 text-dark"></i>
                         </button>
                     </div>
                     <div class="price">
                         <div style="min-height: 0px;">
-                            <div class="collapse  align-items-center ms-0" id="collapseMaterial"
-                                ng-repeat="mt in materials">
+                            <div class="collapse  align-items-center ms-0"
+                                id="collapseMaterial"
+                                ng-repeat="material in materials">
                                 <button class="border-0 btn">
-                                    <input type="checkbox" name="priceRange" value="{{mt.name}}" class="me-1">
-                                    {{mt.name}}
+                                    <input type="checkbox" name="priceRange"
+                                        value="{{material.name}}" class="me-1"
+                                        ng-model="material.isSelected"
+                                        ng-change="filterByAttributes()">
+                                    {{material.name}}
                                 </button>
                             </div>
                         </div>
@@ -109,21 +159,30 @@
                     <hr class="w-100">
                     <div class="row align-items-left  w-100 ">
                         <p class="col-lg-8 fw-bold">Màu sắc </p>
-                        <button class="border-0  col-lg-1  " style="background-color: white;" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapseColor" aria-expanded="false"
+                        <button class="border-0  col-lg-1  "
+                            style="background-color: white;" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseColor"
+                            aria-expanded="false"
                             aria-controls="collapseColor">
                             <i class="bi bi-chevron-down w-25 text-dark"></i>
                         </button>
                     </div>
                     <div class="price">
-                        <div style="min-height: 0px;">
-                            <div class="collapse  align-items-center ms-0" id="collapseColor" ng-repeat="cl in colors">
-                                <button class="border-0 btn">
-                                    <input type="checkbox" name="priceRange" value="{{cl.name}}" class="me-1">
-                                    {{cl.name}}
-                                </button>
+                        <div class="color-container collapse"
+                            style="width: 160px;" id="collapseColor">
+                            <div class="color"
+                                ng-repeat="color in colors | orderBy:'name'"
+                                ng-style="getcolorStyle(color)"
+                                ng-click="check(color)">
+                                <label for="{{color.name}}" class="fs-5"
+                                    ng-style="{'color': getTextColor(color.name)}">
+                                    <i class="bi bi-check"
+                                        ng-show="color.isSelected"></i>
+                                </label>
                             </div>
                         </div>
+
                     </div>
                     <hr class="w-100">
 
@@ -131,7 +190,34 @@
             </div>
 
             <!-- Main -->
-            <div class="col-lg">
+            <div class="col-lg" style="overflow-y: auto; max-height: 800px;">
+                <div class="row  ">
+                    <div class="col-lg-3 mb-4 aos-animate" data-aos="fade-up"
+                        data-aos-delay="200" ng-repeat="pr in filteredItems">
+                        <div class="box_product ">
+                            <a ng-href="#/product-detail/{{pr.product.id}}"
+                                class="border-0">
+                                <img
+                                    ng-src="assets/img/product/sp1/{{pr.product.listImage[0].link}}"
+                                    class="img-fluid"
+                                    alt="{{pr.product.listImage[0].link}}">
+                                <div class="">
+                                    <h5 class="align-items-left">{{pr.product.name}}</h5>
+                                </div>
+                                <p>{{pr.product.category.name}}</p>
+                                <p>Còn lại: {{pr.quantity}}</p>
+                                <p class=" text-dark align-text-bottom">
+                                    {{getMinMaxPrice(pr.product).min |
+                                    vndCurrency}}
+                                    <span
+                                        ng-if="getMinMaxPrice(pr.product).min !== getMinMaxPrice(pr.product).max">
+                                        - {{getMinMaxPrice(pr.product).max |
+                                        vndCurrency}}</span>
+                                </p>
+                            </a>
+                        </div>
+                    </div>
+            <!-- <div class="col-lg">
                 <div class="row ms-5 ">
                     <div class="col-lg-4 mb-4 " data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in items">
                         <div class="box_product">
@@ -141,9 +227,9 @@
                                 <h5 class="align-items-left">{{pr.product.name}}</h5>
                                 <p>{{pr.product.category.name}}</p>
                                 <p>Còn lại: {{pr.quantity}}</p>
-                                <p class="col text-dark" ng-show="!pr.hasPromotion">{{pr.price  | vndCurrency  }}
+                                <p class="col text-dark" ng-show="!pr.hasPromotion">{{pr.price  | vndCurrency  }} -->
                                     <!-- gia khuyến mại -->
-                                    <div class="row" ng-show="pr.hasPromotion">
+                                    <!-- <div class="row" ng-show="pr.hasPromotion">
                                         <p class="col text-danger">{{pr.priceWithPromo | vndCurrency}}</p>
                                         <p class="col text-decoration-line-through">{{pr.price | vndCurrency }}</p>
                                     </div>
@@ -151,25 +237,34 @@
                             </a>
                         </div>
                         
-                </div>
+                </div> -->
                 </div>
             </div>
         </div>
     </div>
     <div ng-show="products === 0">
         <div class="no-results">
-                <div class="css-rnfng4">
-                    <h1 class="css-mqo35 align-items-center d-flex justify-content-center"><span data-test="no-results-title" class="css-epqh4k">We could not find
-                            anything for "{{name}}".</span></h1>
-                </div>
-            <div role="complementary" class="css-1im24m8 d-flex justify-content-center">
+            <div class="css-rnfng4">
+                <h1
+                    class="css-mqo35 align-items-center d-flex justify-content-center"><span
+                        data-test="no-results-title" class="css-epqh4k">We could
+                        not find
+                        anything for "{{name}}".</span></h1>
+            </div>
+            <div role="complementary"
+                class="css-1im24m8 d-flex justify-content-center">
                 <div class="nds-stack css-z31e8r ej3jrvm0 gap-xs-m">
-                    <button class="btn btn-outline-danger" type="button" disabled>
-                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <button class="btn btn-outline-danger" type="button"
+                        disabled>
+                        <span class="spinner-border spinner-border-sm"
+                            aria-hidden="true"></span>
                         <span role="status">Loading...</span>
-                      </button>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div class="loading-container" ng-show="showLoading">
+    <div class="spinner"></div>
 </div>

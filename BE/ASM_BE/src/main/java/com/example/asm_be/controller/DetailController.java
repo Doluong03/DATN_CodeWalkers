@@ -98,9 +98,9 @@ public class DetailController {
         Integer newQuantity = quantity.get("quantity");
 
         // Gọi phương thức dịch vụ để thêm sản phẩm vào giỏ hàng
-        cartDetailService.addOrUpdateCartItem(cart, productDetailCheck, newQuantity);
+       CartDetails cartDetailsRes= cartDetailService.addOrUpdateCartItem(cart, productDetailCheck, newQuantity);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(cartDetailsRes);
     }
 
 }

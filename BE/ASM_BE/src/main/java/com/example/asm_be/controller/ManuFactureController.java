@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -35,6 +36,7 @@ public class ManuFactureController {
     }
 
     @PostMapping({"/admin/Manufacture/insert"})
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> insertStaff(@RequestBody Manufacture manufacture) throws ParseException {
 
         return ResponseEntity
@@ -43,6 +45,7 @@ public class ManuFactureController {
     }
 
     @PutMapping({"/admin/Manufacture/update"})
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> UpdateStaff(@RequestBody Manufacture manufacture) throws ParseException {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -50,6 +53,7 @@ public class ManuFactureController {
     }
 
     @DeleteMapping({"/admin/Manufacture/delete/{id}"})
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> deleteStaff(@PathVariable("id") Integer idFacture) {
         return ResponseEntity
                 .status(HttpStatus.OK)

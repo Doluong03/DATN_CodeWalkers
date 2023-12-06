@@ -344,11 +344,11 @@ window.ColorController = function ($scope, $http, $window, $timeout) {
         await workbook.xlsx.load(reader.result);
         const worksheet = workbook.getWorksheet("Sheet1");
         worksheet.eachRow((row, index) => {
+          console.log(row)
           if (index > 1) {
             let color = {
               name: row.getCell(1).value,
-              description: row.getCell(2).value,
-              status: row.getCell(3).value,
+              status: row.getCell(2).value,
             };
             $http
               .post(

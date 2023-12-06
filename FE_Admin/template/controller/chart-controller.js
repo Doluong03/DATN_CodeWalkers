@@ -202,7 +202,6 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
           })
             .then(function (response) {
               var intValue = parseInt(response.data);
-
               if (!isNaN(intValue)) {
                 // Lưu trữ dữ liệu trong đối tượng với key là giá trị từ dayList
                 responseDataMap[JSON.stringify(value)] = intValue;
@@ -360,7 +359,6 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
             })
               .then(function (response) {
                 var intValue = parseInt(response.data);
-
                 if (!isNaN(intValue)) {
                   // Lưu trữ dữ liệu trong đối tượng với key là giá trị từ dayList
                   responseDataMap[JSON.stringify(value)] = intValue;

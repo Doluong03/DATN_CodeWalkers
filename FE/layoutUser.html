@@ -29,6 +29,7 @@
   <link href="assets/scss/loadingCss.css" rel="stylesheet">
   <link href="assets/scss/button.css" rel="stylesheet">
 
+
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
@@ -51,18 +52,17 @@
   <script src="assets/js/login.js"></script>
 </head>
 
-<body ng-app="app" ng-controller="LayOutController" id="pageContent" ng-class="{ 'blur-background': showLoading }">
+<body >
   <!-- Nội dung của trang -->
-
-
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top">
     <div class=" container-fluid container-xxl w-100 d-flex align-items-center ">
-
       <a href="#home" class="logo d-flex align-items-center" style="margin-top: -30px;margin-left: -29px;">
         <img src="assets/img/logo.png" alt="">
       </a>
-
+      <div class="loading-container" ng-if="showLoading">
+        <div class="spinner"></div>
+        </div>
       <nav id="navbar" class="navbar">
         <ul>
           <li class="dropdown scrollto active"><a href="#product"><span class="text-decoration-none text-dark">News &
@@ -97,18 +97,19 @@
           </li>
 
           <li><a class="nav-link scrollto text-decoration-none text-dark " href="#contact">Contact</a></li>
+
           <form class="d-flex align-items-left ms-4 col-lg-4 "><input placeholder="Search" type="search" name="name"
               ng-model="name" class="form-control rounded-4" ng-keypress="onKeyPress($event)"
-              class="form-control rounded-4 "></form>
+              class="form-control rounded-4 " ></form>
+
           <li><a class="text-decoration-none text-dark" href="#about" data-title="Yêu thích"><i
                 class="bi bi-heart fs-5"></i></a></li>
           <li><a class="text-decoration-none text-dark" href="#cart" data-title="Giỏ hàng"><i
                 class="bi bi-cart3 fs-5"></i> <span class="badge border border-success"></span></a></li>
           <li class="dropdown text-dark" ng-show="showIcon" id="profile"><a class="text-decoration-none text-dark "
-              href="#about"> <img src="assets/img/user/{{imgProfile}}" alt=""> {{username}}</a>
+               > <img src="assets/img/user/{{imgProfile}}" alt=""> {{username}}</a>
             <ul class="userDropdown">
-              <li><a href="#" class="d-block text-dark"> <i class=" me-2 fs-5 text-end bi bi-person-fill"></i> Trang cá
-                  nhân </a>
+              <li><a href="#profile"class="d-block text-dark"> <i class=" me-2 fs-5 text-end bi bi-person-fill"></i> Trang cá nhân </a>
               </li>
               <li>
                 <hr>
@@ -126,9 +127,7 @@
           </li>
 
           <li class=" col-3 ms-2 row w-25" ng-show="!showIcon">
-            <a href="/login.html" class=" btn btn ms-3 col  border-end">Đăng nhập</a>
-            <button ng-click="logOut()" class=" btn btn ms-0 col ">Đăng ký</button>
-          </li>
+            <a  href="/sign_up.html" ng-click="logOut()" class=" btn btn ms-0 col ">Đăng nhập/Đăng ký</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -173,7 +172,7 @@
 
   <!-- Main -->
   <main id="main">
-    <div ng-view ng-class="{ 'blur-background': showLoading }"></div>
+    <!-- <div ng-view ></div> -->
     <!-- Test -->
 
     <!-- End Test  -->
@@ -1072,7 +1071,9 @@
         </div>
       </div>
     </div>
-
+    <div class="loading-container" ng-show="showLoading">
+      <div class="spinner"></div>
+    </div>
     <div class="container">
       <div class="copyright">
         &copy; Copyright <strong><span>FlexStart</span></strong>. All Rights Reserved
@@ -1114,68 +1115,23 @@
   <script src="assets/js/payment.js"></script>
   <script src="assets/js/order.js"></script>
   <script src="assets/js/login.js"></script>
+  <script src="assets/js/profile.js"></script>
   <script>
+      // var prevScrollpos = window.pageYOffset;
 
-    //   var data =  localStorage.getItem('userData');
-    //   var accessToken = JSON.parse(data);
-
-    // function logout() {
-    //     // Call the server-side logout endpoint
-    //     fetch('http://localhost:8080/api/auth/logout', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Authorization': 'Bearer ' + getAccessToken(),
-    //             'Content-Type': 'application/json'
-    //         },
-    //     })
-    //     .then(response => {
-    //         if (response.ok) {
-    //             // Clear the JWT from local storage or cookies
-    //             clearToken();
-    //             // Redirect or perform other actions after successful logout
-    //             window.location.href = "/template/login.html";
-    //         } else {
-    //             console.error('Logout failed:', response.statusText);
-    //         }
-    //     })
-    //     .catch(error => {
-    //         console.error('Error during logout:', error);
-    //     });
-    // }
-
-    // function getAccessToken() {
-    //     return accessToken.token;
-    // }
-
-    // function clearToken() {
-    //     // Implement this function to clear the JWT from local storage or cookies
-    //     // For example, if stored in local storage:
-    //     localStorage.removeItem('userData');
-    // }
-
-    //   async function fetchData() {
-    // try {
-    // const response = await fetch('http://localhost:8080/CodeWalkers/profile/'+accessToken.username);
-
-    // if (!response.ok) throw new Error('Network response was not ok');
-
-    //  const data = await response.json();
-
-    //   // Giả sử data là chuỗi Base64 bạn đã lấy được
-    //   const imageData = "assets/img/avt/"+data.image;
-    //   // Thay đổi src của thẻ img
-    //   // document.getElementById('profileImage').src = imageData;
-    //     console.log(data,"day");
-    //   } catch (error) {
-    //     console.error('There was a problem with the fetch operation:', error);
-    //     }
-    //  }
-    //   fetchData();
-
+      // window.onscroll = function() {
+      //     var currentScrollPos = window.pageYOffset;
+      //     if (prevScrollpos > currentScrollPos) {
+      //         // Hiển thị menu khi cuộn lên
+      //         document.getElementById("header").classList.remove("hidden-menu");
+      //     } else {
+      //         // Ẩn menu khi cuộn xuống
+      //         document.getElementById("header").classList.add("hidden-menu");
+      //     }
+      //     prevScrollpos = currentScrollPos;
+      // };
   </script>
-  <div class="loading-container" ng-show="showLoading">
-    <div class="spinner"></div>
-  </div>
+
 </body>
 
 </html>

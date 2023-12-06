@@ -5,7 +5,19 @@ app.config(function ($routeProvider, $locationProvider) {
     $routeProvider
         .when("/home", {
             templateUrl: "page/home.html",
-            controller: "LayOutController"
+            controller: "HomeController"
+        })
+        .when("/about", {
+            templateUrl: "page/about.html",
+            controller: "BlogController"
+        })
+        .when("/contact", {
+            templateUrl: "page/contact.html",
+            controller: "BlogController"
+        })
+        .when("/new", {
+            templateUrl: "page/home.html",
+            controller: "BlogController"
         })
         .when("/product-detail/:productId", {
             templateUrl: "page/detail.html",
@@ -23,7 +35,7 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: "page/payment.html",
             controller: "PaymentController"
         })
-        .when("/product", {
+        .when("/product/:brandName", {
             templateUrl: "page/product.html",
             controller: "ProductController"
         })
@@ -31,12 +43,31 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: "page/order.html",
             controller: "OrderController"
         })
+        .when("/profile", {
+            templateUrl: "page/profile.html",
+            controller: "ProfileController"
+        })
         .otherwise({
             redirectTo: "/home",
         });
 
 })
-app.controller("LayOutController", function ($scope, $http, $window, $cookies, $anchorScroll) {
+app.run(function ($rootScope, $timeout) {
+    $rootScope.showLoading = false;
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
+        // Trước khi chuyển trang, hiển thị loading
+        $rootScope.showLoading = true;
+    });
+
+    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+        // Sau khi chuyển trang thành công, ẩn loading sau 3 giây
+        $timeout(function () {
+            $rootScope.showLoading = false;
+        }, 200);
+    });
+});
+
+app.controller("LayOutController", function ($scope, $http, $window, $cookies, $anchorScroll, CookieService, $timeout) {
     // Logic của controller ở đây
     $anchorScroll("pageContent");
     $scope.items = [];
@@ -46,110 +77,113 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
     $scope.imgProfile = "";
     var dataUser = localStorage.getItem('userData');
     var dataUserJson = JSON.parse(dataUser);
+    $scope.onKeyPress = function (event) {
+        if (event.key === 'Enter') {
+            // Gọi hàm tìm kiếm tại đây
+            console.log("hererereererererererer")
+            $window.location.href = "http://127.0.0.1:5501/index.html#/product/all";
+        }
+    };
 
 
-    $scope.loadAllPrBs = function () {
-        var url = `${host}/api/product_bs`;
-        $http.get(url).then(res => {
-            $scope.itemsBs = res.data;
+    // $scope.loadAllPrBs = function () {
+    //     var url = `${host}/api/product_bs`;
+    //     $http.get(url).then(res => {
+    //         $scope.itemsBs = res.data;
 
-            // Bước 1: Lấy thông tin chương trình khuyến mãi đang hoạt động
-            var promoUrl = `${host}/api/active_promotions`;
-            $http.get(promoUrl).then((promoRes) => {
-                var activePromotions = promoRes.data;
+    //         // Bước 1: Lấy thông tin chương trình khuyến mãi đang hoạt động
+    //         var promoUrl = `${host}/api/active_promotions`;
+    //         $http.get(promoUrl).then((promoRes) => {
+    //             var activePromotions = promoRes.data;
             
-                // Kiểm tra xem có chương trình khuyến mãi hay không
-                if (activePromotions && activePromotions.length > 0) {
-                    // Bước 2: Tạo một đối tượng để ánh xạ id sản phẩm với mảng thông tin khuyến mãi
-                    var productPromotionsMap = {};
+    //             // Kiểm tra xem có chương trình khuyến mãi hay không
+    //             if (activePromotions && activePromotions.length > 0) {
+    //                 // Bước 2: Tạo một đối tượng để ánh xạ id sản phẩm với mảng thông tin khuyến mãi
+    //                 var productPromotionsMap = {};
             
-                    // Bước 3: Lặp qua các chương trình khuyến mãi
-                    activePromotions.forEach((promo) => {
-                        if (
-                            promo.promotionDetailsList &&
-                            promo.promotionDetailsList.length > 0
-                        ) {
-                            // Lặp qua từng chi tiết khuyến mãi của chương trình
-                            promo.promotionDetailsList.forEach((promoDetail) => {
-                                // Kiểm tra xem có thông tin productDetail và id hay không
-                                if (
-                                    promoDetail.productDetail &&
-                                    promoDetail.productDetail.id
-                                ) {
-                                    // Nếu chưa có thông tin khuyến mãi cho sản phẩm, tạo một mảng để lưu
-                                    if (!productPromotionsMap[promoDetail.productDetail.id]) {
-                                        productPromotionsMap[promoDetail.productDetail.id] = [];
-                                    }
+    //                 // Bước 3: Lặp qua các chương trình khuyến mãi
+    //                 activePromotions.forEach((promo) => {
+    //                     if (
+    //                         promo.promotionDetailsList &&
+    //                         promo.promotionDetailsList.length > 0
+    //                     ) {
+    //                         // Lặp qua từng chi tiết khuyến mãi của chương trình
+    //                         promo.promotionDetailsList.forEach((promoDetail) => {
+    //                             // Kiểm tra xem có thông tin productDetail và id hay không
+    //                             if (
+    //                                 promoDetail.productDetail &&
+    //                                 promoDetail.productDetail.id
+    //                             ) {
+    //                                 // Nếu chưa có thông tin khuyến mãi cho sản phẩm, tạo một mảng để lưu
+    //                                 if (!productPromotionsMap[promoDetail.productDetail.id]) {
+    //                                     productPromotionsMap[promoDetail.productDetail.id] = [];
+    //                                 }
             
-                                    // Thêm thông tin khuyến mãi vào mảng
-                                    productPromotionsMap[promoDetail.productDetail.id].push(
-                                        promoDetail
-                                    );
+    //                                 // Thêm thông tin khuyến mãi vào mảng
+    //                                 productPromotionsMap[promoDetail.productDetail.id].push(
+    //                                     promoDetail
+    //                                 );
             
-                                    // Thêm trường promotionId vào chi tiết khuyến mãi
-                                    promoDetail.promotionId = promo.id;
-                                }
-                            });
-                        }
-                    });
+    //                                 // Thêm trường promotionId vào chi tiết khuyến mãi
+    //                                 promoDetail.promotionId = promo.id;
+    //                             }
+    //                         });
+    //                     }
+    //                 });
             
-                    // In ra để kiểm tra
-                    console.log(productPromotionsMap);
+    //                 // In ra để kiểm tra
+    //                 console.log(productPromotionsMap);
             
-                    // Bước 4: Kiểm tra và áp dụng giảm giá cho từng sản phẩm
-                    $scope.itemsBs.forEach((item) => {
-                        // Tìm thông tin khuyến mãi áp dụng cho sản phẩm
-                        var productPromotion = productPromotionsMap[item.id];
+    //                 // Bước 4: Kiểm tra và áp dụng giảm giá cho từng sản phẩm
+    //                 $scope.itemsBs.forEach((item) => {
+    //                     // Tìm thông tin khuyến mãi áp dụng cho sản phẩm
+    //                     var productPromotion = productPromotionsMap[item.id];
             
-                        if (productPromotion && productPromotion.length > 0) {
-                            // Bước 5: Sắp xếp chi tiết khuyến mãi theo thời gian giảm dần
-                            productPromotion.sort((a, b) => b.createdDate - a.createdDate);
+    //                     if (productPromotion && productPromotion.length > 0) {
+    //                         // Bước 5: Sắp xếp chi tiết khuyến mãi theo thời gian giảm dần
+    //                         productPromotion.sort((a, b) => b.createdDate - a.createdDate);
             
-                            // Bước 6: Lấy chi tiết khuyến mãi mới nhất
-                            var latestPromoDetail = productPromotion[0];
+    //                         // Bước 6: Lấy chi tiết khuyến mãi mới nhất
+    //                         var latestPromoDetail = productPromotion[0];
             
-                            // Thêm trường priceWithPromo vào item
-                            item.priceWithPromo = latestPromoDetail
-                                ? latestPromoDetail.discount
-                                : item.price;
+    //                         // Thêm trường priceWithPromo vào item
+    //                         item.priceWithPromo = latestPromoDetail
+    //                             ? latestPromoDetail.discount
+    //                             : item.price;
             
-                            // Thêm trường promotionId vào item
-                            item.promotionId = latestPromoDetail ? latestPromoDetail.promotionId : null;
+    //                         // Thêm trường promotionId vào item
+    //                         item.promotionId = latestPromoDetail ? latestPromoDetail.promotionId : null;
             
-                            // Đánh dấu sản phẩm có chương trình khuyến mãi
-                            item.hasPromotion = true;
-                        } else {
-                            // Nếu không có chương trình khuyến mãi, giá giữ nguyên
-                            // Đánh dấu sản phẩm không có chương trình khuyến mãi
-                            item.hasPromotion = false;
-                            // Thêm trường priceWithPromo vào item
-                            item.priceWithPromo = item.price;
-                        }
-                    });
-                } else {
-                    // Nếu không có chương trình khuyến mãi, giá giữ nguyên cho tất cả sản phẩm
-                    $scope.itemsBs.forEach((item) => {
-                        // Đánh dấu sản phẩm không có chương trình khuyến mãi
-                        item.hasPromotion = false;
-                        // Thêm trường priceWithPromo vào item
-                        item.priceWithPromo = item.price;
-                    });
-                }
+    //                         // Đánh dấu sản phẩm có chương trình khuyến mãi
+    //                         item.hasPromotion = true;
+    //                     } else {
+    //                         // Nếu không có chương trình khuyến mãi, giá giữ nguyên
+    //                         // Đánh dấu sản phẩm không có chương trình khuyến mãi
+    //                         item.hasPromotion = false;
+    //                         // Thêm trường priceWithPromo vào item
+    //                         item.priceWithPromo = item.price;
+    //                     }
+    //                 });
+    //             } else {
+    //                 // Nếu không có chương trình khuyến mãi, giá giữ nguyên cho tất cả sản phẩm
+    //                 $scope.itemsBs.forEach((item) => {
+    //                     // Đánh dấu sản phẩm không có chương trình khuyến mãi
+    //                     item.hasPromotion = false;
+    //                     // Thêm trường priceWithPromo vào item
+    //                     item.priceWithPromo = item.price;
+    //                 });
+    //             }
             
-                console.log($scope.itemsBs);
-                $scope.numVisibleItems = 4;
-            }).catch((error) => {
-                console.log("Error", error);
-            });
+    //             console.log($scope.itemsBs);
+    //             $scope.numVisibleItems = 4;
+    //         }).catch((error) => {
+    //             console.log("Error", error);
+    //         });
             
-        }).catch(error => {
-            console.log("Error", error);
-        });
-    }
-
-    var cartId = $cookies.get('cartId');
-    console.log("hereCook", cartId)
-
+    //     }).catch(error => {
+    //         console.log("Error", error);
+    //     });
+    // }
     $scope.updateCartByUser = function (idUser) {
         var url = `${host}/api/UpdateCartByUser/`;
         return $http.post(url + idUser).then(function (response) {
@@ -176,6 +210,7 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
             console.log(url + username, updateData)
             $http.post(url + username, updateData).then(function (res) {
                 $scope.imgProfile = res.data.image;
+                localStorage.setItem('userProfile', JSON.stringify(res.data));
                 localStorage.setItem('userIdData', res.data.id);
                 if (!res.data.cart) {
                     $scope.updateCartByUser(res.data.id)
@@ -197,14 +232,14 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
         var config = {
             params: { idCart: id }
         };
-
+        if (!id) {
+            return;
+        }
         $http.get(url, config).then(function (res) {
             $scope.items = res.data;
-            console.log("------>ád", $scope.items.length)
             var badge = document.querySelector(".badge");
             badge.textContent = $scope.items.length;
             // Thay đổi số trên biểu tượng
-            console.log("------>ád", $scope.items.length)
         }).catch(function (error) {
             console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
         })
@@ -230,6 +265,7 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
 
     $scope.loadAllPr = function (cartId) {
         var cartIdReq = $cookies.get('cartId');
+        if (!cartIdReq) { return }
         var url = `${host}/api/cart`;
         var config = {
             params: { idCart: cartIdReq }
@@ -270,7 +306,7 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
                     // Clear the JWT from local storage or cookies
                     clearToken();
                     // Redirect or perform other actions after successful logout
-                    window.location.href = "http://127.0.0.1:5501/login.html";
+                    window.location.href = "http://127.0.0.1:5501/sign_up.html";
                 } else {
                     console.error('Logout failed:', response.statusText);
                 }
@@ -290,32 +326,13 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
         localStorage.removeItem('userData');
         localStorage.removeItem('userCartData');
         localStorage.removeItem('userIdData');
+        CookieService.delete('billId');
+        CookieService.delete('cartId');
+        CookieService.delete('idUser');
+
 
     }
-    $scope.getInfoPayment = function () {
-        // Lấy toàn bộ URL
-        var fullUrl = window.location.href;
-        // Tạo một URLSearchParams object từ URL query string
-        var urlParams = new URLSearchParams(fullUrl);
-        // Lấy giá trị của tham số 'vnp_TransactionStatus'
-        var vnp_TransactionStatus = urlParams.get('vnp_TransactionStatus');
-        if (vnp_TransactionStatus == "00") {
-            $window.location.href = "http://127.0.0.1:5501/layoutUser.html#/orderOverview"
 
-        }
-        else if (vnp_TransactionStatus == null) {
-            // $window.location.href = "http://127.0.0.1:5501/FE/layoutUser.html#/home"
-        } else {
-            $window.location.href = "http://127.0.0.1:5501/layoutUser.html#/product"
-            Swal.fire({
-                icon: 'warning',
-                title: 'Đang chờ thanh toán!',
-                text: 'Vui lòng thanh toán trong vòng 24h'
-            }).then(function () {
-            });
-        }
-
-    }
     $scope.addCart = function () {
         Swal.fire({
             icon: 'warning',
@@ -324,11 +341,27 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
         }).then(function () {
         });
     }
-    $scope.getInfoPayment();
     // Lấy phần tử span có class "badge"
     // Đặt số muốn hiển thị
-    $scope.loadAllPrBs();
+    // $scope.loadAllPrBs();
 
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "slideDown",
+        "hideMethod": "slideUp"
+    }
 });
 app.filter('vndCurrency', function () {
     return function (input) {
@@ -407,6 +440,9 @@ app.factory('AuthService', function () {
 });
 app.filter('findProvinceNameById', function () {
     return function (provinces, id) {
+        if (!provinces) {
+            return
+        }
         var matchedProvince = provinces.find(function (province) {
             return province.ProvinceID === id;
         });
@@ -438,6 +474,21 @@ app.filter('findWardNameById', function () {
         });
 
         return matchedProvince ? matchedProvince.WardName : 'Không tìm thấy';
+    };
+});
+
+// Trong AngularJS module
+app.filter('orderStatus', function () {
+    return function (input) {
+        var statusMapping = {
+            1: 'Chờ xác nhận',
+            2: 'Chờ giao hàng',
+            3: 'Đang giao hàng',
+            4: 'Hoàn thành',
+            5: 'Đã hủy'
+        };
+
+        return statusMapping[input] || 'Không xác định';
     };
 });
 

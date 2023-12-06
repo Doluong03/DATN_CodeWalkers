@@ -18,13 +18,15 @@ import java.util.List;
 @Getter
 @Setter
 public class AddBillRequest {
-    private String userName;
+    private String userId;
     private Integer idBill;
     private Integer provinceId;
     private Integer districtId;
     private String wardId;
     private String address;
     private String note;
+    private String userPhone;
+    private String userName;
     private Double fee;
     private int optionPay;
     private Double totalPay;
@@ -44,6 +46,8 @@ public class AddBillRequest {
         bill.setDescription(this.note);
         bill.setShipDate(this.shipDate);
         bill.setStatus(this.status);
+        bill.setUserName(this.userName);
+        bill.setUserPhone(this.userPhone);
         return bill;
     }
 

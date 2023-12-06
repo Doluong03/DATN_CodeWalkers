@@ -1,6 +1,7 @@
 package com.example.asm_be.controller;
 
 import com.example.asm_be.dto.BrandRespone;
+import com.example.asm_be.dto.ImageRespone;
 import com.example.asm_be.entities.Product;
 import com.example.asm_be.entities.ResponeObject;
 
@@ -61,15 +62,16 @@ public class SanPhamController {
 
 
     @PostMapping({"/admin/Product/insert"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> insertProduct(@RequestBody Product product) throws ParseException {
+        System.out.println(product.toString());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", productService.save(product)));
     }
 
     @PutMapping({"/admin/Product/update"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> UpdateProduct(@RequestBody Product product) throws ParseException {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -77,12 +79,11 @@ public class SanPhamController {
     }
 
     @DeleteMapping({"/admin/Product/delete/{id}"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> deleteProduct(@PathVariable("id") Integer idProduct) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Delete thanh cong", this.productService.delete(idProduct)));
 
     }
-
 }

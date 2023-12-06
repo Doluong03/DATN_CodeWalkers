@@ -2,6 +2,7 @@ package com.example.asm_be.service;
 
 import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
+import com.example.asm_be.request.UserRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +25,9 @@ public interface UserService {
 
     Users findByCartId(Integer id);
 
-    boolean save(Users users);
+    Users save(Users users);
 
-    boolean update(Users users);
+    boolean update(UserRequest users);
 
     boolean delete(Integer idUsers);
 

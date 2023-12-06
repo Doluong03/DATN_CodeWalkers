@@ -1,16 +1,14 @@
 package com.example.asm_be.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity(name = "GioHangChiTiet")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Table(name = "GioHangChiTiet")
 public class CartDetails {
     @Id

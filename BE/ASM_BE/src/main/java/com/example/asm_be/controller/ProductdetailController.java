@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -55,7 +56,7 @@ public class ProductdetailController {
 
     @PostMapping({"/admin/ProductDetails/insert"})
     public ResponseEntity<ResponeObject> insertProductDetail(@RequestBody ProductDetail ProductDetail) throws ParseException {
-
+        ProductDetail.setCreatedAt(new Date());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Add thanh cong", productDetailService.save(ProductDetail)));

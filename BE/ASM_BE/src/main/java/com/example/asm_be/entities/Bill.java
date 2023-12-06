@@ -59,7 +59,10 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "nguoi_lap_id")
     private Staff staff;
-
+    @Column(name = "nguoi_nhan")
+    private String userName;
+    @Column(name = "sdt_nguoi_nhan")
+    private String userPhone;
     @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<BillDetails> listBillDetail;

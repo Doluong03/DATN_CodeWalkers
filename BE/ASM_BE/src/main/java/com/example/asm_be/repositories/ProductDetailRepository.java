@@ -22,10 +22,6 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
             ")\n")
     List<ProductDetail> getAllDistinct();
     List<ProductDetail> findByProductId(int id);
-    List<ProductDetail> findByProduct_NameContaining(String keyword);
-    List<ProductDetail> findAllByOrderByProduct_NameAsc();
-    List<ProductDetail> findAllByOrderByPriceAsc();
-    List<ProductDetail> findAllByOrderByPriceDesc();
     @Query("select p from ChiTietSanPham p where p.product.id=?1 and p.size.id =?2 and  p.color.id = ?3")
     ProductDetail findBySize(int prId,int sizeId, int colorId);
     List<ProductDetail> findByProductIdAndColorId(int idPr,int idColor);
@@ -34,4 +30,14 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
     @Modifying
     @Query("UPDATE ChiTietSanPham t SET t.status.Id = 2 WHERE t.id = :id")
     void capNhatGiaTri(@PathVariable("id") Integer id);
+
+    @Query("SELECT p FROM ChiTietSanPham p WHERE p.price BETWEEN :minPrice AND :maxPrice")
+    List<ProductDetail> findByPriceBetween(@Param("minPrice") double minPrice, @Param("maxPrice") double maxPrice);
+
+    List<ProductDetail> findByColorIdIn(List<Long> colorIds);
+
+    List<ProductDetail> findBySizeIdIn(List<Long> sizeIds);
+
+    List<ProductDetail> findByMaterialIdIn(List<Long> materialIds);
+
 }

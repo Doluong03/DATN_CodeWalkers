@@ -11,8 +11,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping({"/CodeWalkers/admin"})
@@ -23,15 +29,11 @@ public class ImageController {
     private ProductService productService;
 
     @GetMapping({"/Image"})
-    public ImageRespone getAllImage(
-            @RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo
-            , @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
+    public ImageRespone getAllImage() {
         ImageRespone imageRespone = new ImageRespone();
-        Page<Image> imagePage = imageService.getAll(pageNo, sizePage);
+        List<Image> imagePage = imageService.getAll();
+        imageRespone.setImageList(imagePage);
         imageRespone.setProductList(productService.getAll());
-        imageRespone.setImageList(imagePage.getContent());
-        imageRespone.setTotalPages(imagePage.getTotalPages());
-
         return imageRespone;
     }
 
@@ -43,11 +45,16 @@ public class ImageController {
                 .body(new ResponeObject("success", "Add thanh cong", imageService.save(image)));
     }
 
-    @PutMapping({"/Image/update"})
-    public ResponseEntity<ResponeObject> UpdateImage(@RequestBody Image image) throws ParseException {
+    @PutMapping({"/Image/updateById/{idPr}"})
+    public ResponseEntity<ResponeObject> UpdateImage(@PathVariable("idPr") int idPr) throws ParseException {
+        List<Image> list = imageService.findByIdPr(idPr);
+        for (Image x: list) {
+            x.setProduct(null);
+            this.imageService.save(x);
+        }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponeObject("success", "Update thanh cong", this.imageService.update(image)));
+                .build();
     }
 
     @DeleteMapping({"/Image/delete/{id}"})
@@ -79,4 +86,19 @@ public class ImageController {
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.imageService.update(imageRes)));
     }
+
+    @PostMapping("/uploadImg")
+    public ResponseEntity<String> handleFileUpload(@RequestPart("images") MultipartFile[] files) throws IOException {
+        if (files != null && files.length > 0) {
+            imageService.processImageDirectory(files);
+
+            // Return a success response
+            return ResponseEntity.ok("Images uploaded successfully");
+        } else {
+            // Handle the case where no file is provided
+            return ResponseEntity.badRequest().body("No files provided");
+        }
+    }
+
+
 }

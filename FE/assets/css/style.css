@@ -158,8 +158,8 @@ a[data-title]:hover:after {
   padding: 4px 8px;
   position: absolute;
   z-index: 999;
-  top: -70%;
-  left: 80%;
+  top: 80%;
+  left: 70%;
   transform: translateX(-50%);
   border-radius: 4px;
   white-space: nowrap;
@@ -935,9 +935,6 @@ section {
   outline: none;
   color: #fff;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
   z-index: 0;
   border-radius: 10px;
@@ -1028,7 +1025,7 @@ b span {
 }
 
 #intro {
-    width: 200px;
+    width: 600px;
 }
 
 .button-main {
@@ -1069,6 +1066,7 @@ b span {
     font-family: sans-serif;
     font-weight: 600;
     color: #04049d;
+    width: 310px;
     font-size: 14px;
     line-height: 110%;
     letter-spacing: 2px;
@@ -1361,9 +1359,17 @@ b span {
   margin-top: 5%;
   margin-right: 5%;
   width: 100%;
-  background-color: #999;
+  height: 200px; /* Điều chỉnh chiều cao tùy thuộc vào nhu cầu của bạn */
+  object-fit: cover; /* Đảm bảo ảnh bao phủ toàn bộ không gian chỉ định */
   border-radius: 10%;
+  transition: transform 0.5s ease; /* Thêm hiệu ứng transform */
 }
+
+/* Hiệu ứng khi rê chuột vào ảnh */
+.like .carousel-inner .carousel-item img:hover {
+  transform: scale(1.1); /* Phóng to ảnh khi rê chuột vào */
+}
+
 
 .like button {
   /* background-color: #55585e;
@@ -1502,6 +1508,32 @@ b span {
 /*--------------------------------------------------------------
 # Product
 --------------------------------------------------------------*/
+.hidden-menu {
+  display: none;
+}
+.loading-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: #07d5c0 solid;
+  background-color: rgba(255, 255, 255, 0.8); /* Một lớp mờ để làm nổi bật loading */
+  z-index: 9999; /* Z-index lớn để đảm bảo nó nằm trên tất cả các phần tử khác */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px; /* Thiết lập kích thước tối thiểu nếu cần */
+  min-height: 100px; /* Thiết lập kích thước tối thiểu nếu cần */
+}
+
+.sticky-top {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: #fff; /* Chọn màu nền phù hợp */
+  padding: 15px; /* Điều chỉnh padding nếu cần */
+  z-index: 1000; /* Đảm bảo nằm trên các phần khác */
+}
 
 .size2 {
   border-radius: 5px;
@@ -1526,7 +1558,7 @@ b span {
   /* Màu chữ khi hover */
 }
 
-.size2 input[type="radio"] {
+.size2 input[type="checkbox"] {
   cursor: pointer;
   /* CSS cho radio button */
   /* Bạn có thể thêm các tùy chỉnh cho radio button ở đây */

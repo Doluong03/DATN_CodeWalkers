@@ -175,7 +175,8 @@
           <!-- end table -->
     
           <!-- form add -->
-          <div class="col-12 grid-margin stretch-card" ng-if="showForm">
+          <div class="modal-add" id="overlay">
+          <div class="col-6 grid-margin stretch-card" ng-if="showForm">
             <div class="card">
               <div class="card-body">
                 <!-- <h4 class="card-title">Basic form elements</h4> -->
@@ -206,19 +207,6 @@
                         <select class="form-control" id="exampleInputMaterial" ng-model="formImage.product.id" ng-options="product.id as product.name for product in Product">
                           <option value="" disabled selected>-- Chọn Sản Phẩm --</option>
                       </select>
-                                  <!-- <select class="form-control" ng-model="formImage.product.id">
-                          <option value="" selected>Vui lòng chọn trạng thái</option>
-                          <option value="1">Giày thể thao Adidas</option>
-                          <option value="2">Giày thể thao Nike</option>
-                          <option value="3">Giày chạy New Balance</option>
-                          <option value="4">Giày đi học Puma</option>
-                          <option value="5">Giày lười Vans</option>
-                          <option value="6">Giày đế bằng Clarks</option>
-                          <option value="7">Giày thể thao Asics</option>
-                          <option value="8">Giày đội mưa Hunter</option>
-                          <option value="9">Giày lười Vans</option>
-                          <option value="10">Giày công sở Timberland</option>
-                        </select> -->
                     </div>
                   <button id="btn-action-add" type="submit"  ng-click="addImage($event)">Submit</button>
                   <button id="btn-action-cancel"  ng-click="toggleForm()">Cancel</button>
@@ -226,10 +214,12 @@
               </div>
             </div>
           </div>
+        </div>
 
           
           <!-- form update -->
-          <div class="col-12 grid-margin stretch-card"  ng-show="showFormUpdate">
+          <div class="modal-add" id="overlay">
+          <div class="col-6 grid-margin stretch-card"  ng-show="showFormUpdate">
             <div class="card">
               <div class="card-body">
                 <!-- <h4 class="card-title">Basic form elements</h4> -->
@@ -265,6 +255,7 @@
               </div>
             </div>
           </div>
+        </div>
 
           <div class="import-container">
             <div ng-show="importing" class="import-animation"></div>

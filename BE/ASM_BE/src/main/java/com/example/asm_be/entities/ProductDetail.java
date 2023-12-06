@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Table(name = "ChiTietSanPham")
 public class ProductDetail {
     @Id
@@ -43,9 +42,11 @@ public class ProductDetail {
     private Color color;
 
     @ManyToOne
-    @JoinColumn(name = "trang_thai_id")
+    @JoinColumn(name = "trang_thai")
     private Status status;
 
+    @Column(name = "ngay_tao")
+    private Date createdAt;
 
 
 

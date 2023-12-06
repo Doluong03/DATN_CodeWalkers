@@ -26,4 +26,10 @@ public class RoleIplm implements RoleService {
     public Optional<Role> findByNameRole(String roleName) {
         return roleRepository.findByNameRole(roleName);
     }
+
+    @Override
+    public boolean save(Role role) {
+        roleRepository.save(role);
+        return true;
+    }
 }
