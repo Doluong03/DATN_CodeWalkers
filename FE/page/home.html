@@ -162,15 +162,14 @@
                     <div class="row  ">
                         <div class="col-lg-3 mb-4 aos-animate" data-aos="fade-up" data-aos-delay="200"
                             ng-repeat="pr in itemsBs2" ng-if="pr.createdAt > now">
-                            <div class="box_product rounded-4">
-                                <a ng-href="#/product-detail/{{pr.product.id}}" class="border-0">
-                                    <img ng-src="assets/img/product/sp1/{{pr.product.listImage[0].link}}"
+                            <div class="box_product rounded-4" ng-init="getTotalQuantity(pr)">
+                                <a ng-href="#/product-detail/{{pr.product.id}}{{pr.hasPromotion ? '/' + pr.promotionId : ''}}" class="border-0">                                    <img ng-src="assets/img/product/sp1/{{pr.product.listImage[0].link}}"
                                         class="w-100 rounded-4" alt="{{pr.product.listImage[0].link}}">
                                     <div class="">
                                         <h5 class="align-items-left ">{{pr.product.name}}</h5>
                                     </div>
                                     <p>{{pr.product.category.name}}</p>
-                                    <p>Còn lại: {{pr.quantity}}</p>
+                                    <p>Còn lại: {{getTotalQuantity(pr)}}</p>
                                     <p class=" text-dark align-text-bottom">
                                         {{getMinMaxPrice(pr.product).min |
                                         vndCurrency}}

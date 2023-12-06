@@ -127,7 +127,7 @@ public class VoucherImpl implements VoucherService {
             voucherUserRepository.updateUserVoucher(usageCount,id);
             return true;
         }catch (Exception e){
-            e.getMessage();
+            e.printStackTrace();
             return false;
         }
     }

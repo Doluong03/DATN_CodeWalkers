@@ -16,12 +16,12 @@ public interface VoucherUserRepository extends JpaRepository<VoucherUsers, Integ
 
     @Transactional
     @Modifying
-    @Query("update Phieu_KhachHang p set p.usageCount = :usageCount where p.voucher.id = :id")
-    boolean updateUserVoucher(@Param("usageCount") Integer usageCount, @Param("id") Integer id);
+    @Query("update Phieu_KhachHang p set p.usageCount = :usageCount where p.id = :id")
+    Integer updateUserVoucher(@Param("usageCount") Integer usageCount, @Param("id") Integer id);
 
     @Transactional
     @Modifying
-    @Query("delete from Phieu_KhachHang p where p.voucher.id = :id")
+    @Query("delete from Phieu_KhachHang p where p.id = :id")
     void deleteVoucherId(@Param("id") Integer id);
 
 

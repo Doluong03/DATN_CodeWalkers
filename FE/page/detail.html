@@ -111,8 +111,8 @@
     <!-- Tabs -->
     <div class="size-container">
       <div class="size" ng-repeat="sz in sizes | orderBy:'name'" ng-style="getSizeStyle(sz)" class="text-center ">
-        <input type="radio" name="size" id="{{sz.name}}" ng-model="selectedValue" ng-value="sz.id"
-          class="visually-hidden" ng-click="selectSize(sz.id)"  >
+        <input type="radio" name="size" id="{{sz.name}}" ng-model="selectedValue"  ng-value="sz.id"
+          class="visually-hidden" ng-click="selectSize(selectedValue)"  >
         <label for="{{sz.name}}" tabindex="-1" class="fs-5"  ng-style="checkCl(sz)" style="padding-top: 10px;">{{sz.name.replace('Size', '').trim()}}</label>
       </div>
     </div>

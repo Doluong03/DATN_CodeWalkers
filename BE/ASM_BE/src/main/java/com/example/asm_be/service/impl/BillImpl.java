@@ -70,13 +70,13 @@ public class BillImpl implements BillService {
     @Override
     public Page<Bill> getAllPage(Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo, sizePage);
-        return billRepository.findAllByStatusNotOrderByCodeDesc(0, pageable);
+        return billRepository.findAllByStatusNotOrderByCreatedAtDesc(0, pageable);
     }
 
     @Override
     public Page<Bill> getAllPageByStatsus(Integer pageNo, Integer sizePage, int status) {
         Pageable pageable = PageRequest.of(pageNo, sizePage);
-        return billRepository.findAllByStatusOrderByCodeDesc(status, pageable);
+        return billRepository.findAllByStatusOrderByCreatedAtDesc(status, pageable);
     }
 
     @Override

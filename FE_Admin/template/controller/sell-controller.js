@@ -207,6 +207,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
     var searchTerms = searchText.split(' ');
 
     $scope.filteredItems = $scope.itemsBs.filter(function (item) {
+      if(item.quantity>0){
       var nameMatch = item.product.name.toLowerCase().includes(searchText);
       var sizeMatch = item.size.name.toLowerCase().includes(searchText);
       var colorMatch = item.color.name.toLowerCase().includes(searchText);
@@ -219,9 +220,10 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
           item.color.name.toLowerCase().includes(term)
         );
       });
-
+    }
       return nameMatch || sizeMatch || colorMatch || searchTermMatch;
     });
+    
   };
 
   $scope.selectProduct = function (tab, pr) {

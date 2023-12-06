@@ -7,7 +7,7 @@ app.directive("orderDirective", function () {
 });
 app.controller(
   "OrderController",
-  function ($scope, $cookies, $http, $anchorScroll) {
+  function ($scope, $cookies, $http, $anchorScroll,CookieService) {
     // Scroll đến phần tử có id "pageContent"
     $anchorScroll("pageContent");
     $scope.selectedTab = 0; // Đặt tab mặc định
@@ -171,6 +171,134 @@ app.controller(
         }} )
     };
 
+    function processActions(billId) {
+          let api = `${host}/admin/Bill/updateStatus/${billId}?status=0` ;
+          $http.put(api).then(function (response) {
+              // ... (xử lý thành công)
+              CookieService.set('billId', billId, 1);
+              console.log(billId);
+          }
+          
+          )
+              .catch(function (error) {
+                  console.log(error);
+              });
+      // $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+  }
 
+
+
+    $scope.loadAllPrCart = function (id) {
+      var url = `${host}/api/detail`;
+      var config = { params: { idCart: id } };
+      $scope.itemSelected = [];
+      $http.get(url, config)
+        .then(function (res) {
+          $scope.itemsCart = res.data;
+          var badge = document.querySelector(".badge");
+          badge.textContent = $scope.itemsCart.length;
+        })
+        .catch(function (error) {
+          console.log("Error loading the list of products in the cart", error);
+        });
+    };
+  
+    var dataUserCart = localStorage.getItem('userCartData');
+    $scope.addCart = function (od) {
+      var cartId = $cookies.get('cartId');
+      if (!cartId || cartId == 95) {
+        $scope.createCart().then(function (cartIdResponse) {
+          $scope.loadAllPrCart(cartIdResponse);
+          $scope.cartIdFinal = cartIdResponse;
+          console.log("Cart ID created:", $scope.cartIdFinal);
+          $scope.sendDetailAddRequest(sl, $scope.cartIdFinal);
+        });
+      } else {
+        $scope.cartIdFinal = dataUserCart || cartId;
+        console.log("Using existing Cart ID:", $scope.cartIdFinal);
+        od.listBillDetail.forEach(billDt => {
+          $scope.productId = billDt.productDetail.product.id;
+          $scope.selectedValue = billDt.productDetail.size.id;
+          $scope.selectedColor = billDt.productDetail.color.id;
+          $scope.sendDetailAddRequest(od.listBillDetail[0].quantity, $scope.cartIdFinal);
+        })
+      }
+      processActions(od.id);
+    };
+    $scope.sendDetailAddRequest = function (sl, idCart) {
+
+      var url = `${host}/api/detailAdd/${idCart}/${$scope.productId}/${$scope.selectedValue}/${$scope.selectedColor || ''}`;
+      var data = { quantity: sl };
+  
+      console.log("Sending request to:", url);
+  
+      $http.post(url, data)
+        .then(function (response) {
+          $scope.idCartDt = response.data.id;
+          console.log('Successfully updated');
+          $scope.loadAllPrCart(idCart);
+          })
+        .catch(function (error) {
+          console.error('Update failed:', error);
+          toastr.error('Có lỗi xảy ra trong quá trình thêm sản phẩm', 'Error');
+        });
+    };
+  
+  
+    // $scope.addBill = function () {
+    //   $scope.idUserFinal = idUserCook || dataUserJson || 0;
+  
+    //   var url = `${host}/api/addBill/${$scope.idUserFinal}`;
+    //   console.log(url, "url");
+  
+    //   var idBill = $cookies.get('billId');
+  
+    //   if (!idBill) {
+    //     return $http.post(url)
+    //       .then(function (res) {
+    //         $scope.bill = res.data;
+    //         $scope.billJson = JSON.stringify($scope.bill);
+    //         console.log("ID: " + $scope.billJson);
+  
+    //         if ($scope.billJson) {
+    //           const billData = JSON.parse($scope.billJson);
+    //           console.log("here", billData);
+    //           CookieService.set('billId', billData.id, 1);
+    //           CookieService.set('idUser', billData.users.id, 1);
+    //           $scope.pay();
+    //         }
+  
+    //         return true;
+    //       })
+    //       .catch(function (error) {
+    //         console.error('Failed to add bill', error);
+    //         return false;
+    //       });
+    //   }
+  
+    //   $scope.pay();
+    // };
+  
+    // $scope.pay = function () {
+    //   var idBill = $cookies.get('billId');
+    //   var url = `${host}/api/addBillDtSl/`;
+  
+    //   console.log($scope.itemSelected, "bill");
+  
+    //   $http.post(url + idBill, $scope.itemSelected)
+    //     .then(function (res) {
+    //       console.log('Successfully added', res.data);
+    //     })
+    //     .catch(function (error) {
+    //       console.error('Failed to add', error);
+    //     });
+    // };
+  
+    // $scope.payNow = function (quantity) {
+    //   $scope.addCart(quantity);
+    //   setTimeout(function(){
+    //     $scope.addBill();
+    //   },200)
+    // };
   }
 );

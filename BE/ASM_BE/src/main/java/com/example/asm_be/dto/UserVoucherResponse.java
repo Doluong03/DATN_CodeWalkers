@@ -47,6 +47,7 @@ public class UserVoucherResponse {
     private Integer usageCount;
 
     private boolean voucherStatus;
+    private Integer idVchUser;
 
 
 }
