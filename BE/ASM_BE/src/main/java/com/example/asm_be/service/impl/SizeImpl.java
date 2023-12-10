@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class SizeImpl implements SizeService {
 
     @Override
     public Page<Size> getAllPage(Integer pageNo, Integer sizePage) {
-        Pageable sizePageable = PageRequest.of(pageNo, sizePage);
+        Pageable sizePageable = PageRequest.of(pageNo, sizePage, Sort.by(Sort.Order.desc("id")));
         return sizeRepository.findAll(sizePageable);
     }
 

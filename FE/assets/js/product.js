@@ -25,7 +25,6 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
                 // For example, mark the brand as selected
                 var selectedBrand = $scope.brands.find(function (brand) {
                     console.log(brandNameFromUrl,brand,'here');
-
                     return brand.name === brandNameFromUrl;
                 });
     
@@ -229,28 +228,6 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
             console.log("Error", error);
         });
     }
-
-
-    $scope.loadAllPr();
-    $scope.sortProducts = function (sortBy) {
-        // Gửi yêu cầu sắp xếp đến API Spring Boot với tiêu chí sắp xếp được truyền vào
-        console.log('/api/product/sort' + sortBy)
-        var url = `${host}/api/product/sort` + sortBy;
-        $http.get(url).then(res => {
-            $scope.filteredItems = res.data;
-            $scope.sortProducts("priceAsc");
-
-            // Kiểm tra xem danh sách sản phẩm có rỗng hay không
-            if ($scope.items.length === 0) {
-                $scope.products = 0;
-            } else {
-                $scope.products = 1;
-            }
-        }).catch(error => {
-            console.log("Error", error);
-        });
-    };
-
 
 
     $scope.loadAllPr();

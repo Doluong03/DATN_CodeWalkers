@@ -19,6 +19,7 @@ public class UserDetailsCustom implements UserDetails {
      private String userName;
      private String password;
      private Collection<? extends GrantedAuthority> authorities;
+     private String email;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -33,14 +34,16 @@ public class UserDetailsCustom implements UserDetails {
             return new UserDetailsCustom(
                     users.getUserName(),
                     users.getPassword(),
-                    Collections.singletonList(grantedAuthority)
+                    Collections.singletonList(grantedAuthority),
+                    users.getEmail()
             );
         } else {
             // Trường hợp không có vai trò (hoặc có thể xử lý khác tùy thuộc vào logic của bạn)
             return new UserDetailsCustom(
                     users.getUserName(),
                     users.getPassword(),
-                    Collections.emptyList()
+                    Collections.emptyList(),
+                    users.getEmail()
             );
         }
     }

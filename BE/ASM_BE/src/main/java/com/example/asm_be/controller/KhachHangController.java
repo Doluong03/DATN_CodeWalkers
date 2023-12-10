@@ -48,13 +48,7 @@ public class KhachHangController {
     @PostMapping({"/admin/User/insert"})
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> insertStaff(@RequestBody Users users) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-        Date current = new Date();
-        Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
-        Date createdDate = dateFormat.parse(current.toString());
-        users.setDateOfBirth(BirthDayFormat);
-        users.setCreatedDate(createdDate);
-        users.setPhoneNumber(users.getPhoneNumber());
+        users.setCreatedDate(new Date());
         users.setStatus(true);
         return ResponseEntity
                 .status(HttpStatus.OK)

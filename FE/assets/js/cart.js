@@ -96,10 +96,10 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
             console.error('Input is not an array');
             return 0; // or handle the error in a way that makes sense for your application
         }
-    
+
         var totalPriceWithPromo = 0;
         var totalPriceWithoutPromo = 0;
-    
+
         items.forEach((item) => {
             if (item.hasPromotion) {
                 totalPriceWithPromo += item.priceWithPromo * item.quantity;
@@ -111,36 +111,63 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
                 }
             }
         });
-    
+
         // Log values for verification
         console.log('Total Price With Promo:', totalPriceWithPromo);
         console.log('Total Price Without Promo:', totalPriceWithoutPromo);
-    
+
         return totalPriceWithPromo + totalPriceWithoutPromo;
     };
-    
-    
-    
-    
+
+
+    var remainingItems = [];
+    $scope.loadAllPrSelected = function () {
+        var url = `${host}/api/billDt`;
+        var billDt = $cookies.get('billId');
+        var config = {
+            params: { idBill: billDt }
+        };
+        if (!billDt) {
+            return
+        }
+        $http.get(url, config).then(function (res) {
+            $scope.listBillDt = res.data;
+            for (var i = 0; i < $scope.listBillDt.length; i++) {
+                remainingItems = $scope.listBillDt.filter(listItem => {
+                    // Kiểm tra xem có phần tử trong $scope.items có cùng productDetail.id hay không
+                    var matchingItem = $scope.items.find(item => item.productDetail.id === listItem.productDetail.id && item.status === 0);
+                    if (matchingItem) {
+                        matchingItem.checked = true; // or any other condition to set the 'checked' property
+                    }
+                    // Nếu không có phần tử nào thỏa mãn điều kiện, trả về true để giữ lại phần tử này
+                    return !matchingItem;
+                });
+            }
+
+            $scope.check();
+        });
+    }
+    $scope.loadAllPrSelected();
+
     $scope.loadAllPrByCart = function (cartId) {
         var url = `${host}/api/detail`;
         var config = {
             params: { idCart: cartId }
         };
-    
-        $scope.calculatePricesAndPromotions = function(items) {
+
+        $scope.calculatePricesAndPromotions = function (items) {
             // Bước 1: Lấy thông tin chương trình khuyến mãi đang hoạt động
             var promoUrl = `${host}/api/active_promotions`;
-    
+
             return $http.get(promoUrl)
                 .then((promoRes) => {
                     var activePromotions = promoRes.data;
-    
+
                     // Kiểm tra xem có chương trình khuyến mãi hay không
                     if (activePromotions && activePromotions.length > 0) {
                         // Bước 2: Tạo một đối tượng để ánh xạ id sản phẩm với mảng thông tin khuyến mãi
                         var productPromotionsMap = {};
-    
+
                         // Bước 3: Lặp qua các chương trình khuyến mãi
                         activePromotions.forEach((promo) => {
                             if (promo.promotionDetailsList && promo.promotionDetailsList.length > 0) {
@@ -152,39 +179,39 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
                                         if (!productPromotionsMap[promoDetail.productDetail.id]) {
                                             productPromotionsMap[promoDetail.productDetail.id] = [];
                                         }
-    
+
                                         // Thêm thông tin khuyến mãi vào mảng
                                         productPromotionsMap[promoDetail.productDetail.id].push(promoDetail);
                                     }
                                 });
                             }
                         });
-    
+
                         // Bước 4: Kiểm tra và áp dụng giảm giá cho từng sản phẩm
                         items.forEach((item) => {
                             // Tìm thông tin khuyến mãi áp dụng cho sản phẩm
                             var productPromotion = productPromotionsMap[item.productDetail.id];
-    
+
                             if (productPromotion && productPromotion.length > 0) {
                                 // Bước 5: Sắp xếp chi tiết khuyến mãi theo thời gian giảm dần
                                 productPromotion.sort((a, b) => b.createdDate - a.createdDate);
-    
+
                                 // Bước 6: Lấy chi tiết khuyến mãi mới nhất
                                 var latestPromoDetail = productPromotion[0];
-    
+
                                 // Thêm trường priceWithPromo vào item
                                 item.priceWithPromo = latestPromoDetail ? latestPromoDetail.discount : item.price;
-    
+
                                 // Thêm trường promotionId vào item
                                 item.promotionId = latestPromoDetail ? latestPromoDetail.promotionId : null;
-    
+
                                 // Đánh dấu sản phẩm có chương trình khuyến mãi
                                 item.hasPromotion = true;
                             } else {
                                 // Nếu không có chương trình khuyến mãi, giá giữ nguyên
                                 // Đánh dấu sản phẩm không có chương trình khuyến mãi
                                 item.hasPromotion = false;
-    
+
                                 // Thêm trường priceWithPromo vào item
                                 item.priceWithPromo = item.price;
                             }
@@ -194,7 +221,7 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
                         items.forEach((item) => {
                             // Đánh dấu sản phẩm không có chương trình khuyến mãi
                             item.hasPromotion = false;
-    
+
                             // Thêm trường priceWithPromo vào item
                             item.priceWithPromo = item.price;
                         });
@@ -204,23 +231,26 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
                     console.log("Error", error);
                 });
         }
-    
-        $scope.calculateTotalAndPay = function(items) {
+
+
+
+        $scope.calculateTotalAndPay = function (items) {
             $scope.totalPrice = $scope.calculateTotalPriceWithPromo(items);
-            console.log($scope.totalPrice,"jjsjajsaj")
+            console.log($scope.totalPrice, "jjsjajsaj")
         }
-    
+
         $http.get(url, config).then((res) => {
             $scope.items = res.data;
             var badge = document.querySelector(".badge");
             badge.textContent = $scope.items.length;
-            $scope.loadAllPrSelected();
             $scope.check();
-            console.log($scope.items,'cart')
+            console.log($scope.items, 'cart')
             $scope.selectAllChecked = false;
             return $scope.calculatePricesAndPromotions($scope.items);
         }).then(() => {
             // Tiếp tục tính toán tổng giá và thanh toán
+            $scope.loadAllPrSelected();
+
             // $scope.calculateTotalAndPay($scope.items);
         }).catch((error) => {
             console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
@@ -229,17 +259,12 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
 
 
 
-    $scope.getDataUser2(function (cartIdCall) {
-        console.log(cartIdCall, "here");
-        $scope.loadAllPrByCart(cartIdCall);
-        // $scope.loadAllPrCart(cartIdCall);
-    })
-
-
     $scope.checkAll = function () {
         var newState = $scope.selectAllChecked; // Toggle the state
         for (var i = 0; i < $scope.items.length; i++) {
-            $scope.items[i].checked = newState;
+            if ($scope.items[i].status === 0) {
+                $scope.items[i].checked = newState;
+            }
         }
         $scope.check();
     }
@@ -249,14 +274,14 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
         $scope.itemSelected2 = [];
         $scope.totalPrice = 0;
         $scope.countItem = 0;
-    
+        var currentItem = [];
         for (var i = 0; i < $scope.items.length; i++) {
-            var currentItem = $scope.items[i];
-    
+            currentItem = $scope.items[i];
+            console.log(currentItem.hasPromotion, 'aaa');
             // Update countItem and select items based on the checked status
             if (currentItem.checked) {
                 $scope.countItem++;
-    
+
                 // Add the selected item to itemSelected array
                 $scope.itemSelected.push({
                     id: currentItem.id,
@@ -266,42 +291,44 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
                     description: currentItem.description,
                     status: currentItem.status,
                     hasPromotion: currentItem.hasPromotion,
-                    priceWithPromo:currentItem.priceWithPromo
+                    priceWithPromo: currentItem.priceWithPromo
                 });
-    
+
                 // Update total price by calling calculateTotalAndPay function
-                $scope.totalPrice = $scope.calculateTotalAndPay( $scope.itemSelected);
-                console.log('Total Price:',$scope.calculateTotalAndPay( $scope.itemSelected));
+                $scope.totalPrice = $scope.calculateTotalAndPay($scope.itemSelected);
+                console.log('Total Price:', $scope.calculateTotalAndPay($scope.itemSelected));
 
             }
 
         }
-    
+
         // Log the selected items and their total price
         console.log('Selected items:', $scope.itemSelected);
     };
-    
-    
-    $scope.loadAllPrSelected = function () {
-        var url = `${host}/api/billDt`;
-        var billDt = $cookies.get('billId');
-        var config = {
-            params: { idBill: billDt }
-        };
-        if(!billDt){
-            return
+
+    $scope.getDataUser2(function (cartIdCall) {
+        console.log(cartIdCall, "here");
+        $scope.loadAllPrByCart(cartIdCall);
+        // $scope.loadAllPrCart(cartIdCall);
+    })
+    function autoCheckQuantity() {
+        // $scope.getDataUser2(function (cartIdCall) {
+        //     console.log(cartIdCall, "here");
+        //     $scope.loadAllPrByCart(cartIdCall);
+        //     // $scope.loadAllPrCart(cartIdCall);
+        // })
+
+        console.log(remainingItems[0], 'remain');
+        if (remainingItems[0]) {
+            $scope.deleteBillDt(remainingItems[0].id);
         }
-        $http.get(url, config).then(function (res) {
-            $scope.listBillDt = res.data;
-            for (var i = 0; i < $scope.listBillDt.length; i++) {
-                var matchingItem = $scope.items.find(item => item.productDetail.id === $scope.listBillDt[i].productDetail.id);
-                if (matchingItem) {
-                    matchingItem.checked = true; // or any other condition to set the 'checked' property
-                }
-            }    
-            $scope.check();
-        });
     }
+    var intervalPromise = $interval(autoCheckQuantity, 5000);
+
+    // Nếu bạn muốn ngừng chạy tự động sau khi rời khỏi trang
+    $scope.$on('$destroy', function () {
+        $interval.cancel(intervalPromise);
+    });
     $scope.deleteItems = function () {
         if ($scope.itemSelected.length == 0) {
             toastr.warning('Vui lòng chọn sản phẩm muốn xóa!', 'Thông báo')
@@ -421,7 +448,7 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
                 // Xử lý khi cập nhật thành công
                 $scope.loadAllPrByCart($scope.idCartFinal);
                 $scope.check();
-                console.log('Cập nhật số lượng thành công');
+                console.log('Cập nhật số lượng thành công', $scope.idCartFinal);
             })
             .catch(function (error) {
                 // Xử lý khi cập nhật thất bại
@@ -507,12 +534,12 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
     $scope.idBill = 0;
     $scope.billJson = {};
     var idBill = $cookies.get('billId');
-    console.log(idBill,'bill')
+    console.log(idBill, 'bill')
     $scope.addBill = function () {
         var url = `${host}/api/addBill/${$scope.idUserFinal}`;
         console.log(url, "url");
         var idBill = $cookies.get('billId');
-        console.log(idBill,'bill')
+        console.log(idBill, 'bill')
         if (!idBill) {
             return $http.post(url).then(function (res) {
                 $scope.bill = res.data; // Gán dữ liệu từ API vào $scope.bill
@@ -539,7 +566,7 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
     $scope.pay = function () {
         var idBill = $cookies.get('billId');
         var url = `${host}/api/addBillDtSl/`;
-        $scope.itemSelected2 = $scope.itemSelected.map(function(item) {
+        $scope.itemSelected2 = $scope.itemSelected.map(function (item) {
             // Create a new object without the specified properties
             var newItem = {
                 id: item.id,
@@ -550,7 +577,7 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
                 status: item.status
                 // omitting hasPromotion and priceWithPromo
             };
-        
+
             return newItem;
         });
         $http.post(url + idBill, $scope.itemSelected2).then(function () {
@@ -600,8 +627,21 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
         }
     }
 
+
+    $scope.deleteBillDt = function (billdt) {
+        var url = `${host}/api/cart/deleteBillDt/`;
+        $http.delete(url + billdt)
+            .then(function () {
+                toastr.success('Xóa sản phẩm thành công!', 'Thông báo')
+            })
+            .catch(function (error) {
+                console.error('Delete thất bại', error);
+            });
+    }
+
     // Bắt đầu chạy tự động khi controller được khởi tạo
     startAutoSlide();
+
 
     // Ngừng chạy tự động khi controller bị hủy
     $scope.$on('$destroy', function () {

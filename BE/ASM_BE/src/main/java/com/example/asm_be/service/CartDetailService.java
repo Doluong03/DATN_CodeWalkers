@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface CartDetailService {
 
     public List<CartDetails> findByCart(int id);
-//    public CartDetails getOne(int id);
+    public Optional<CartDetails> getOne(int id);
     public CartDetails save( CartDetails cartDetails);
     public CartDetails update( CartDetails cartDetails, int PrId);
     public Boolean delete( int  productId,int  cartId);

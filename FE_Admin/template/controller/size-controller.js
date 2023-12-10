@@ -36,7 +36,7 @@ window.SizeController = function ($scope, $http, $window, $timeout) {
   $scope.formSize = {
     name: "",
     description: "",
-    status: "",
+    status: true,
   };
 
   $scope.formSizeUpdate = {

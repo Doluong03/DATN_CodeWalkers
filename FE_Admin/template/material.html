@@ -2,10 +2,7 @@
 <div class="col-lg-12 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Material table</h4>
-
-
-
+      <h4 class="card-title">Quản lý chất liệu</h4>
       <div class="search-container">
         <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a Material">
         <i class="fa-light fa-magnifying-glass"></i>
@@ -215,7 +212,7 @@
             <div class="modal-footer">
               <button id="btn-action-cancel" type="button" class="btn btn-secondary"
                 data-dismiss="modal">Cancel</button>
-              <button id="btn-action-add" type="button" class="btn btn-primary"
+              <button id="btn-action-add" type="submit" class="btn btn-primary"
                 ng-click="UpdateMaterial($event)">Submit</button>
             </div>
           </form>
@@ -257,18 +254,18 @@
               >Bạn cần nhập mô tả tối đa 50 ký tự</label>    -->
             </div>
   
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="exampleSelectGender">Trạng Thái</label>
               <select class="form-select" aria-label="Large select example" ng-model="formMaterial.status" ng-class="{'is-invalid': checkAddress && !formMaterial.status}">
                 <option selected disabled style="color: #a0a0a0;">--Trạng thái Chất liệu--</option>
                 <option value=true>Đang Hoạt Động</option>
                 <option value=false>Ngừng Hoạt Động</option>
               </select>
-            </div>
+            </div> -->
             <div class="modal-footer">
               <button id="btn-action-cancel" type="button" class="btn btn-secondary"
                 data-dismiss="modal">Cancel</button>
-              <button id="btn-action-add" type="button" class="btn btn-primary"
+              <button id="btn-action-add" type="submit" class="btn btn-primary"
                 ng-click="addMaterial($event)">Submit</button>
             </div>
           </form>

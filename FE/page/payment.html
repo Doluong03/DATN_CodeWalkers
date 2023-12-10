@@ -21,10 +21,10 @@
                 data-bs-target="#exampleModal"> Thêm mới </a>
         </div> -->
         <div class=" row">
-            <div class="address-info-show d-flex " ng-show="selectedAddress">
-                <strong>{{selectedAddress.UserName}}</strong> | <span>{{selectedAddress.PhoneNumber}}</span>
-                <div class="offset-2">{{selectedAddress.AddressDetail}},</div>
-                <div class="ms-3">{{wardsByProvince[selectedAddress.DistrictID]
+            <div class="address-info-show d-flex " ng-show="selectedAddress" >
+                <strong>{{selectedAddress.UserName}} </strong> |  <span class="ms-2"> (+84){{selectedAddress.PhoneNumber}}</span>
+                <div class="offset-2" >{{selectedAddress.AddressDetail}},</div>
+                <div class="ms-2">{{wardsByProvince[selectedAddress.DistrictID]
                     | findWardNameById:selectedAddress.WardCode}},
                     {{districtsByProvince[selectedAddress.ProvinceID] |
                     findDistrictNameById:selectedAddress.DistrictID}},
@@ -32,7 +32,6 @@
                     findProvinceNameById:selectedAddress.ProvinceID}}
                 </div>
             </div>
-
             <a class="col-lg-1 text-end me-4" ng-click data-bs-toggle="modal" data-bs-target="#exampleAddress"> Thay
                 đổi </a>
         </div>
@@ -106,7 +105,7 @@
                 </div>
                 <div class="modal-footer w-100">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                        ng-click="cancelAddr()">Hủy</button>
+                        ng-click="checkAction ? '' :cancelAddr()">Hủy</button>
                     <button type="button" class="btn btn-primary"
                         ng-click="checkAction ? updateAddress() : saveAddress()" ng-model="checkAddress"> {{nameAction}}
                     </button>

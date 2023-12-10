@@ -178,6 +178,11 @@ window.ColorController = function ($scope, $http, $window, $timeout) {
 
   };
 
+  $scope.closeModal = function (id) {
+    document.getElementById(id).style.display = ('none')
+    $('body').removeClass('modal-open'); // Loại bỏ class 'modal-open' khỏi body
+    $('.modal-backdrop').remove();
+  };
   // show form add
   $scope.showForm = false; // Mặc định ẩn form
   $scope.toggleForm = function () {
@@ -220,6 +225,7 @@ window.ColorController = function ($scope, $http, $window, $timeout) {
             });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
             $scope.formColor = {};
+            $scope.closeModal('colorAddModal')
           })
           .catch(function (error) {
             console.error("Error:", error);
@@ -305,6 +311,7 @@ window.ColorController = function ($scope, $http, $window, $timeout) {
             });
             $scope.formUserUpdate = {};
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            $scope.closeModal('colorUpdateModal')
           })
           .catch(function (error) {
             console.error("Error:", error);

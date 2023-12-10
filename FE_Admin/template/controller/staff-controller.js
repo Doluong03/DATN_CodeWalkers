@@ -372,7 +372,6 @@ $scope.toggleFormUpdate = function (event, item) {
   
 
 // import exel
-
 $scope.importing = false; // Biến để theo dõi trạng thái của animation
 $scope.importInProgress = false; // Flag để kiểm soát quá trình import
 $scope.errorShown = false; // Flag để kiểm soát việc hiển thị lỗi
@@ -535,7 +534,6 @@ $scope.exportToExcel = function () {
   var ws = XLSX.utils.aoa_to_sheet(data);
   var wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Danh sách Nhân viên");
-
   XLSX.writeFile(wb, "Danh sách Nhân viên.xlsx");
 };
 

@@ -468,11 +468,14 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
 
     $http.post(url, data)
       .then(function (response) {
+        if(!response.data){
+          toastr.error('Số lượng sản phẩm trong kho không đủ để thêm nhiều hơn vào giỏ hàng.','Thông báo');
+          return;
+        }
         $scope.idCartDt = response.data.id;
-        console.log('Successfully updated');
+        console.log(response,'Successfully updated');
         $scope.loadAllPr();
         $scope.loadAllPrCart(idCart);
-
         toastr.success('Thêm sản phẩm thành công!', 'Thông báo');
       })
       .catch(function (error) {

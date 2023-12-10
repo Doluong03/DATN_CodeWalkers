@@ -40,10 +40,8 @@ window.UserController = function ($scope, $http, $window, $timeout) {
     phoneNumber: "",
     gender: true,
     email: "",
-    address: "",
     createdDate: "",
     modified: "",
-    image: "",
   };
 
   $scope.formUserUpdate = {
@@ -53,10 +51,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
     phoneNumber: "",
     gender: true,
     email: "",
-    address: "",
-    createdDate: "",
     modified: "",
-    image: "",
   };
 
   // phân trang start
@@ -219,6 +214,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
       cancelButtonText: "Không",
     }).then((result) => {
       if (result.isConfirmed) {
+        console.log($scope.formUser)
         $http
           .post(
             apiAdmin + "User" + "/insert",
@@ -234,6 +230,8 @@ window.UserController = function ($scope, $http, $window, $timeout) {
             });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
             $scope.formUser = {};
+            $('#userAddModal').modal('hide'); // Đóng modal khi thông báo thành công hiển thị và người dùng ấn OK
+            $('.modal-backdrop').hide();
           })
           .catch(function (error) {
             console.error("Error:", error);
@@ -277,12 +275,11 @@ window.UserController = function ($scope, $http, $window, $timeout) {
       $scope.formUserUpdate = {
         id: item.id,
         name: item.name,
-        dateOfBirth: item.dateOfBirth,
+        dateOfBirth: new Date(item.dateOfBirth),
         phoneNumber: item.phoneNumber,
         gender: item.gender,
         email: item.email,
         address: item.address,
-        createdDate: item.createdDate,
       };
     } else {
       // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
@@ -321,6 +318,8 @@ window.UserController = function ($scope, $http, $window, $timeout) {
             });
             $scope.formUserUpdate = {};
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            $('#userUpdateModal').modal('hide'); // Đóng modal khi thông báo thành công hiển thị và người dùng ấn OK
+            $('.modal-backdrop').hide();
           })
           .catch(function (error) {
             console.error("Error:", error);

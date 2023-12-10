@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 @Repository
 public interface BillDetailsRepository extends JpaRepository<BillDetails, Integer> {
+    Optional<BillDetails> findByBillIdAndAndProductDetailId(int idBill, int idPrDt);
     List<BillDetails> findByBillId(int idBill);
     int deleteAllByBillId(int idBill);
     // doanh thu theo nam

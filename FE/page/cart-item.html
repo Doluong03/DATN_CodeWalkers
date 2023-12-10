@@ -1,32 +1,4 @@
-<section id="hero" class="hero d-flex align-items-center ">
-    <div id="carouselExampleInterval" class="carousel slide offset-1 ps-5 pt-5 " data-bs-ride="carousel">
-        <div class="carousel-inner ">
-            <div class="carousel-item active " data-bs-interval="10000">
-                <img src="assets/img/bn9.jpg" class="d-block " alt="...">
-            </div>
-            <div class="carousel-item" data-bs-interval="2000">
-                <img src="assets/img/bn5.jpg" class="d-block   " alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="assets/img/bn3.jpg" class="d-block" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="assets/img/bn8.jpg" class="d-block" alt="...">
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    </div>
-</section><!-- End Hero -->
+<div style="height: 50px;"></div>
 <div class=" w-100  mt-5" style="padding: 0 300px 0 350px;">
     <div class="row  mb-5">
         <div class="col-lg ">
@@ -54,13 +26,14 @@
                     <div ng-init="idCart = pr.cart.id"
                         ng-init="loadSize(pr.productDetail.product.id, pr.productDetail.color.id)"></div>
                     <div class="card  border border-0"
-                        ng-init="loadSize(pr.productDetail.product.id, pr.productDetail.color.id)">
+                        ng-init="loadSize(pr.productDetail.product.id, pr.productDetail.color.id)"
+                        ng-class="{ 'disabled-item': pr.status === 1 }">
                         <div class="row mt-3 ">
                             <div class="col-lg-1 text-start form-check">
                                 <input type="checkbox" ng-model="pr.checked" ng-change="check()" aria-hidden="true"
-                                    id="check" class="form-check-input ms-3 mt-4 fs-4 border-dark">
+                                    id="check" class="form-check-input ms-3 mt-4 fs-4 border-dark" ng-disabled="pr.status === 1">
                             </div>
-                            <div class="col-lg-3 mt-3">
+                            <div class="col-lg-3 mt-3" style="opacity: 1;">
                                 <a ng-href="#/product-detail/{{pr.productDetail.product.id}}" class="border-0">
                                     <img ng-src="assets/img/product/sp1/{{pr.productDetail.product.listImage[0].link}}"
                                         class="card-img-center   border border-4 rounded-4 w-100 p-2 h-75 bg-secondary bg-opacity-25"
@@ -90,7 +63,7 @@
                                             </p>
                                             <div class="row">
                                                 <p class="col-lg-3 ms-0">Số lượng</p>
-                                                <div class="col-lg-6 d-flex align-items-center">
+                                                <div class="col-lg-8 d-flex align-items-center">
                                                     <div class="input-group quantity-input">
                                                         <div class="input-group-prepend">
                                                             <button class="quantity-button border-1" type="button"
@@ -125,15 +98,18 @@
                                                         <i class="bi bi-trash3 text-dark fs-4" title="Delete 🗑️"></i>
                                                     </button>
                                                 </div>
+                                                <span class="fst-italic text-danger mt-2" ng-if="pr.status===1"> Số lượng sản phẩm không đủ😓 Vui lòng chọn lại!</span>
                                             </div>
                                         </span>
                                     </div>
 
-                                    <p class="card-text col-lg-3 text-end" ng-show="!pr.hasPromotion"> {{pr.productDetail.price | vndCurrency }}
-                                        <div class="row card-text col-lg-3 text-end" ng-show="pr.hasPromotion">
-                                            <p class="col text-danger">{{pr.priceWithPromo| vndCurrency}}</p>
-                                            <p class="col text-decoration-line-through">{{pr.productDetail.price | vndCurrency }}</p>
-                                        </div>
+                                    <p class="card-text col-lg-3 text-end" ng-show="!pr.hasPromotion">
+                                        {{pr.productDetail.price | vndCurrency }}
+                                    <div class="row card-text col-lg-3 text-end" ng-show="pr.hasPromotion">
+                                        <p class="col text-danger">{{pr.priceWithPromo| vndCurrency}}</p>
+                                        <p class="col text-decoration-line-through">{{pr.productDetail.price |
+                                            vndCurrency }}</p>
+                                    </div>
                                     </p>
                                 </div>
                             </div>
@@ -146,6 +122,13 @@
 
     </div>
     <style>
+        .disabled-item {
+            /* opacity: 0.5; */
+            /* Điều này làm mờ phần tử */
+            /* pointer-events: none; */
+            /* Ngăn chặn sự tương tác với phần tử */
+        }
+
         .sticky {
             position: -webkit-sticky;
             position: sticky;
@@ -165,8 +148,9 @@
                 <hr>
                 <div class="bill mt-1 row">
                     <div class="col-lg-4">
-                        <input type="checkbox" name="" id="selectAll"ng-model="selectAllChecked" ng-change="checkAll()" class="form-check-input fs-4 border-dark ">
-                        <label for="selectAll" class="fs-5 ms-4 " >Chọn tất cả ({{countItem}})</label>
+                        <input type="checkbox" name="" id="selectAll" ng-model="selectAllChecked" ng-change="checkAll()"
+                            class="form-check-input fs-4 border-dark ">
+                        <label for="selectAll" class="fs-5 ms-4 ">Chọn tất cả ({{countItem}})</label>
                         <button type="button" class="btn fs-5" ng-click="deleteItems()">Xóa</button>
                     </div>
                     <div class="col-lg d-flex text-end">
@@ -203,10 +187,11 @@
                         <div class="col-lg carousel-slide " ng-repeat="pr in slide"
                             ng-class="{ 'd-none': $index >= numVisibleItems }">
                             <a ng-href="#/product-detail/{{pr.id}}">
-                            <img ng-src="assets/img/product/sp1/{{pr.listImage[0].link }}"
-                                alt="{{pr.listImage[0].link }}" style="height: 200px; background-color: whitesmoke; ">
-                            <h4 class="ms-5 text-dark" >{{ pr.name }}</h4>
-                        </a>
+                                <img ng-src="assets/img/product/sp1/{{pr.listImage[0].link }}"
+                                    alt="{{pr.listImage[0].link }}"
+                                    style="height: 200px; background-color: whitesmoke; ">
+                                <h4 class="ms-5 text-dark">{{ pr.name }}</h4>
+                            </a>
                         </div>
                     </div>
                 </div>

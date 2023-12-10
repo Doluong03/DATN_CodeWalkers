@@ -1,5 +1,5 @@
 
-app.controller("HomeController", function ($scope, $http, $window, $cookies, $anchorScroll, $compile, $timeout) {
+app.controller("HomeController", function ($scope, $http, $timeout) {
     $scope.now = new Date(); // Lấy ngày và thời gian hiện tại
     // Giảm đi 5 ngày
     $scope.now.setDate($scope.now.getDate() - 7);
@@ -51,7 +51,6 @@ app.controller("HomeController", function ($scope, $http, $window, $cookies, $an
                     });
 
                     // In ra để kiểm tra
-                    console.log(productPromotionsMap);
 
                     // Bước 4: Kiểm tra và áp dụng giảm giá cho từng sản phẩm
                     $scope.itemsBs2.forEach((item) => {
@@ -137,7 +136,6 @@ app.controller("HomeController", function ($scope, $http, $window, $cookies, $an
             var carouselContainer = $('.owl-carousel');
             // Sử dụng vòng lặp để thêm các slide từ dữ liệu
             var listItemPromo = $scope.itemsBs2.filter(item => item.hasPromotion === true);
-            console.log(listItemPromo,"here")
             for (var i = 0; i < listItemPromo.length; i++) {
                 var hasPromotion;
                 var product = listItemPromo[i].product;
@@ -197,6 +195,6 @@ app.controller("HomeController", function ($scope, $http, $window, $cookies, $an
             });
         });
 
-    }, 250)
+    }, 350)
 
 });
