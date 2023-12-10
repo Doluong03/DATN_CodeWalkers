@@ -216,10 +216,12 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
     }
     // cap nhật lại số lần sử dụng
     $scope.updateUsageCount = function () {
-        var UsageCount = $scope.usageCount;
+        var UsageCount = $scope.usageCount -1;
         var idUser_Vch = $scope.idUser_Vch;
         $http.patch(`http://localhost:8080/CodeWalkers/admin/user-voucher/update?UsageCount=${UsageCount}&id=${idUser_Vch}`)
             .then(function (res) {
+                console.log(`http://localhost:8080/CodeWalkers/admin/user-voucher/update?UsageCount=${UsageCount}&id=${idUser_Vch}`)
+                console.log(res,'aa')
                 // Xử lý kết quả thành công
             })
             .catch(function (err) {
@@ -584,8 +586,12 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         $scope.urlPay = "";
         console.log($scope.listResPr, "asd")
         $scope.showAddress = false;
+
         // Gửi dữ liệu về máy chủ với ID
         $scope.saveAddress = function () {
+            if(dataUserJson){
+                $scope.checkData = true;
+            }
             $scope.fee = {};
             if (
                 !$scope.formAddress.userName ||
@@ -594,7 +600,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                 !$scope.formAddress.ward ||
                 !$scope.formAddress.province ||
                 !$scope.formAddress.district ||
-                !$scope.formAddress.email
+                (!$scope.formAddress.email && !dataUserJson)
             ) {
                 $scope.checkAddress = true;
                 return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
@@ -737,13 +743,13 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                             title: 'Đặt hàng thành công!',
                             text: 'Thông tin đơn hàng đã được gửi vè mail của bạn.'
                         }).then(function () {
+                            $scope.updateUsageCount();
                             $scope.deleteCart();
                             $scope.generatePDF(dataToSend,formDataAdr,listPr);
                             localStorage.removeItem('dataToSend');
                             localStorage.removeItem('dataAdr');
                             localStorage.removeItem('listpr');
                             console.log(res.data);
-                            $scope.updateUsageCount();
                             $window.location.href = "http://127.0.0.1:5501/index.html#/portfolio/order"
                         });
                         console.log('Suaw thành công');

@@ -153,13 +153,13 @@
                             ng-class="{'is-invalid': checkSignup && !signUpRequest.userName}">
                     </div>
                     <div class="type">
-                        <input type="text" class="form-style" placeholder="Email" ng-model="signUpRequest.fullName"
-                            ng-class="{'is-invalid': checkSignup && !signUpRequest.fullName}">
+                        <input type="email" class="form-style" placeholder="Email" ng-model="signUpRequest.email"
+                            ng-class="{'is-invalid': checkSignup && !signUpRequest.email}">
                     </div>
                     <div class="type">
                         <input type="tel" class="form-style" placeholder="Số điện thoại"
                             ng-model="signUpRequest.phoneNumber"
-                            ng-class="{'is-invalid': checkSignup && !signUpRequest.phoneNumber}">
+                            ng-class="{'is-invalid': checkSignup && !signUpRequest.phoneNumber}" maxlength="10" minlength="10">
                     </div>
                     <div class="type">
                         <input type="password" class="form-style" placeholder="Mật khẩu"

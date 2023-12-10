@@ -105,7 +105,7 @@ public class ImageImpl implements ImageService {
 //            saveImageFile(imageFile, "D:/DATN_CWS/TestCode/DATN_CodeWalkers/FE/assets/img/product/sp1/");
 
             // Save to the second directory
-            saveImageFile(imageFile, "D:/DATN_CWS/TestCode/DATN_CodeWalkers/FE_Admin/template/images/sp1/");
+//            saveImageFile(imageFile, "D:/DATN_CWS/TestCode/DATN_CodeWalkers/FE_Admin/template/images/sp1/");
         } catch (Exception e) {
             e.printStackTrace();
         }

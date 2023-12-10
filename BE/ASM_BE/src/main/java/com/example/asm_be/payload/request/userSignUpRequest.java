@@ -14,7 +14,7 @@ public class userSignUpRequest {
 
     private String phoneNumber;
 
-    private String fullName;
+    private String email;
 
 
 }

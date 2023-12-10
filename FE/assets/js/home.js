@@ -140,7 +140,7 @@ app.controller("HomeController", function ($scope, $http, $timeout) {
                 var hasPromotion;
                 var product = listItemPromo[i].product;
                 var item = listItemPromo[i];
-                var imageLink = `assets/img/product/sp1/${product.listImage[0].link}`;
+                var imageLink = `assets/img/product/sp1/${product.mainImg}` ||"";
                 var price = listItemPromo[i].price;
                  hasPromotion = listItemPromo[i].hasPromotion;
                 

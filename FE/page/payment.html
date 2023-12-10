@@ -95,8 +95,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ms-3 me-3">
-                        <input type="email" class="form-control w-100" placeholder="Email" ng-model="formAddress.email">
+                    <div class="ms-3 me-3" ng-show="!showOption">
+                        <input type="email" class="form-control w-100" placeholder="Email*" ng-model="formAddress.email" ng-class="{'is-invalid': checkAddress && !formAddress.email}">
                     </div>
                     <div class="ms-3 mt-3 me-3">
                         <textarea type="text" class="form-control w-100" placeholder="Nội dung"

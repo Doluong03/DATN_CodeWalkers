@@ -21,7 +21,7 @@ app.controller('loginController', ['$scope', '$http', function ($scope, $http,Co
     userName: "",
     password: "",
     phoneNumber: "",
-    fullName: ""
+    email: ""
   };
   console.log(check,"aaa")
 
@@ -86,7 +86,7 @@ app.controller('loginController', ['$scope', '$http', function ($scope, $http,Co
     if (
       !$scope.signUpRequest.userName || 
       !$scope.signUpRequest.phoneNumber ||
-      !$scope.signUpRequest.fullName ||
+      !$scope.signUpRequest.email ||
       !$scope.signUpRequest.password 
   ) {
     toastr.error('Vui lòng điền đầy đủ thông tin', 'Thông báo')

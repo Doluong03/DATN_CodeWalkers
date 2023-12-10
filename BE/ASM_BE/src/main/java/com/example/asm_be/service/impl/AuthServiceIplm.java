@@ -153,7 +153,7 @@ public class AuthServiceIplm implements AuthService {
             users.setUserName(userSignUpRequest.getUserName());
             users.setPassword(passwordEncoder.encode(userSignUpRequest.getPassword()));
             users.setPhoneNumber(userSignUpRequest.getPhoneNumber());
-            users.setName(userSignUpRequest.getFullName());
+            users.setEmail(userSignUpRequest.getEmail());
             users.setRole("ROLE_USER");
             userService.save(users);
             return ResponseEntity.ok(userSignUpRequest);
