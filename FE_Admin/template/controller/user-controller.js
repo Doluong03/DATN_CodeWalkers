@@ -3,7 +3,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
   $scope.pageNo = 1;
   $scope.sizePage = 5;
   $scope.lastIndex = 0; // phần tử cuối của mảng
-  $scope.isDeleted =false;
+  $scope.isDeleted = false;
   //config headers
   var headers = {
     headers: {
@@ -90,7 +90,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
     return pages;
   };
 
-  
+
   $scope.nextPage = function () {
     if ($scope.pageCurrent < $scope.totalPage) {
       $scope.pageCurrent++;
@@ -122,16 +122,17 @@ window.UserController = function ($scope, $http, $window, $timeout) {
     // Gọi các hàm khác cần thiết với giá trị mới của sizePage
   };
   // end phân trang
+  $scope.checkAcc = false;
 
   $scope.hienThi = function (pageNo, sizePage) {
-    let apiUrl = apiUser + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+    let apiUrl = apiUser + "?checkAcc=" + $scope.checkAcc + " &pageNo=" + pageNo + "&sizePage=" + sizePage;
     $http.get(apiUrl, headers).then(
       function (response) {
         // Xử lý phản hồi thành công
         $scope.listUSers = response.data.usersList;
         $scope.totalPage = response.data.totalPages;
         $scope.lastIndex = $scope.listUSers[$scope.listUSers.length - 1].id;
-
+        console.log( response.data);
       },
       function (error) {
         // Xử lý lỗi
@@ -149,6 +150,29 @@ window.UserController = function ($scope, $http, $window, $timeout) {
 
   // Gọi hàm hienThi() để lấy dữ liệu ban đầu
   $scope.hienThi($scope.pageNo, $scope.sizePage);
+
+
+  $scope.switchAcc = function () {
+    var thElements = document.querySelectorAll('#UserTable th:not(:last-child)'); // Loại bỏ cột "Action"
+    $scope.columns = [];
+    $scope.columnFilters = {};
+    angular.forEach(thElements, function (thElement) {
+      var columnName = thElement.innerText.trim();
+      $scope.columns.push({ name: columnName, selected: true }); // Chọn tất cả mặc định
+      $scope.columnFilters[columnName] = ''; // Khởi tạo filter cho mỗi cột
+      if (!$scope.checkAcc) {
+        if (columnName === "Tên đăng nhập" || columnName === "Mật khẩu") {
+          $scope.columns[$scope.columns.length - 1].selected = false;
+        }
+      }
+      // Tắt chọn cột "Ngày Sinh"
+      if (columnName === "Ngày Sinh" || columnName === "Giới Tính") {
+        $scope.columns[$scope.columns.length - 1].selected = false;
+      }
+    });
+    $scope.hienThi($scope.pageNo, $scope.sizePage);
+  }
+
 
   //delete data
 
@@ -557,28 +581,28 @@ window.UserController = function ($scope, $http, $window, $timeout) {
       if (result.isConfirmed) {
 
 
-    selectedItems.forEach(element => {
-      let userId = element.id;
-      let api = apiURL + "admin/User/delete/" + userId;
-      console.log(api)
-      $http.delete(api, headers).then(function (response) {
-          
-          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-          console.log(response);
-          isDeleted = true;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    });
-        
-    if(isDeleted){
-      Swal.fire("Xóa thành công!", "", "success");
-      $scope.selectAllCheckbox = false;
+        selectedItems.forEach(element => {
+          let userId = element.id;
+          let api = apiURL + "admin/User/delete/" + userId;
+          console.log(api)
+          $http.delete(api, headers).then(function (response) {
 
-    }
-      
-     } else if (result.dismiss === Swal.DismissReason.cancel) {
+            $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            console.log(response);
+            isDeleted = true;
+          })
+            .catch(function (error) {
+              console.log(error);
+            });
+        });
+
+        if (isDeleted) {
+          Swal.fire("Xóa thành công!", "", "success");
+          $scope.selectAllCheckbox = false;
+
+        }
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hành động khi người dùng ấn "Không"
         Swal.fire("Hủy bỏ", "", "error");
       }
@@ -586,51 +610,61 @@ window.UserController = function ($scope, $http, $window, $timeout) {
     // Thực hiện xử lý xóa tất cả ở đây với mảng selectedItems
   };
 
-// Lấy tên cột từ bảng HTML
-$scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
-$scope.columns = [];
+  // Lấy tên cột từ bảng HTML
+  $scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
+  $scope.columns = [];
 
-// Khai báo biến và khởi tạo giá trị mặc định
-$scope.columnFilters = {};
+  // Khai báo biến và khởi tạo giá trị mặc định
+  $scope.columnFilters = {};
 
-// Sử dụng $timeout để đảm bảo rằng DOM đã được tạo trước khi lấy thông tin cột
-$timeout(function () {
-  var thElements = document.querySelectorAll('#UserTable th:not(:last-child)'); // Loại bỏ cột "Action"
+  // Sử dụng $timeout để đảm bảo rằng DOM đã được tạo trước khi lấy thông tin cột
+  $timeout(function () {
+    var thElements = document.querySelectorAll('#UserTable th:not(:last-child)'); // Loại bỏ cột "Action"
 
-  angular.forEach(thElements, function (thElement) {
-    var columnName = thElement.innerText.trim();
-    $scope.columns.push({ name: columnName, selected: true }); // Chọn tất cả mặc định
-    $scope.columnFilters[columnName] = ''; // Khởi tạo filter cho mỗi cột
-  });
+    angular.forEach(thElements, function (thElement) {
+      var columnName = thElement.innerText.trim();
+      $scope.columns.push({ name: columnName, selected: true }); // Chọn tất cả mặc định
+      $scope.columnFilters[columnName] = ''; // Khởi tạo filter cho mỗi cột
+      if (!$scope.checkAcc) {
+        if (columnName === "Tên đăng nhập" || columnName === "Mật khẩu") {
+          $scope.columns[$scope.columns.length - 1].selected = false;
+        }
+      }
+      // Tắt chọn cột "Ngày Sinh"
+      if (columnName === "Ngày Sinh" || columnName === "Giới Tính") {
+        $scope.columns[$scope.columns.length - 1].selected = false;
+      }
 
-  // Kiểm tra xem tất cả các cột có được chọn không và cập nhật trạng thái của checkbox "Chọn Tất Cả"
-  $scope.selectAll = $scope.columns.every(function (column) {
-    return column.selected;
-  });
-});
-
-$scope.toggleAll = function () {
-  angular.forEach($scope.columns, function (column) {
-    column.selected = $scope.selectAll;
-  });
-};
-
-$scope.toggleColumn = function (column) {
-  if (!column.selected) {
-    $scope.selectAll = $scope.columns.some(function (column) {
-      return column.selected;
     });
-  } else {
+
+    // Kiểm tra xem tất cả các cột có được chọn không và cập nhật trạng thái của checkbox "Chọn Tất Cả"
     $scope.selectAll = $scope.columns.every(function (column) {
       return column.selected;
     });
-  }
-};
+  });
 
-$scope.reLoad = function(){
- 
-    $scope.hienThi(0,5);
-};
+  $scope.toggleAll = function () {
+    angular.forEach($scope.columns, function (column) {
+      column.selected = $scope.selectAll;
+    });
+  };
+
+  $scope.toggleColumn = function (column) {
+    if (!column.selected) {
+      $scope.selectAll = $scope.columns.some(function (column) {
+        return column.selected;
+      });
+    } else {
+      $scope.selectAll = $scope.columns.every(function (column) {
+        return column.selected;
+      });
+    }
+  };
+
+  $scope.reLoad = function () {
+
+    $scope.hienThi(0, 5);
+  };
 
   // thu vien jQuery không đụng vào
   (function ($) {

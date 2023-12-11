@@ -446,8 +446,23 @@ myApp.filter('customFilter', function() {
   };
 });
 
-
-
-
+myApp.filter('orderStatus', function () {
+  return function (input) {
+      var statusMapping = {
+          0: 'Thanh toán tiền mặt',
+          1: 'Thanh toán chuyển khoản',
+      };
+      return statusMapping[input] || 'Không xác định';
+  };
+});
+myApp.filter('orderStatus2', function () {
+  return function (input) {
+      var statusMapping = {
+          0: 'Thanh toán khi nhận hàng',
+          1: 'Thanh toán qua VnPay',
+      };
+      return statusMapping[input] || 'Không xác định';
+  };
+});
 
 

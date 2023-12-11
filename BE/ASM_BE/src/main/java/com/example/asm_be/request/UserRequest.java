@@ -37,7 +37,6 @@ public class UserRequest {
         users.setGender(this.gender);
         users.setEmail(this.email);
         users.setImage(this.image);
-        users.setUserName(this.userName);
         return users;
     }
 }

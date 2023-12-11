@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public interface UserService {
 
-    Page<Users> getAll(Integer pageNo, Integer sizePage);
+    public Page<Users> getAll(Boolean checkAcc ,Integer pageNo, Integer sizePage);
 
     List<Users> getList();
 

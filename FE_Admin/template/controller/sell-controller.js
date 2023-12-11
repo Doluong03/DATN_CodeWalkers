@@ -214,7 +214,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
   $scope.loadAllPrBs = function () {
     var url = `${host}/api/get-all-pr`;
     $http.get(url).then(res => {
-      $scope.itemsBs = res.data;
+      $scope.itemsBs = res.data.filter(item => item.quantity > 0);
       $scope.filteredItems = $scope.itemsBs;
     }).catch(error => {
       console.log("Error", error);
@@ -467,6 +467,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
   $scope.listUser = []; // Tạo danh sách người dùng
   $scope.filteredUsers = []; // Tạo danh sách người dùng lọc
 
+
   $scope.loadUser = function () {
     var url = `${host}/user/getAll`;
     $http.get(url).then(function (res) {
@@ -482,28 +483,27 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
   };
   $scope.loadUser();
 
-  $scope.filterUsers = function () {
-    var searchText = $scope.userInput.toLowerCase();
-    $scope.filteredUsers = $scope.listUser.filter(function (user) {
-      return user.name.toLowerCase().includes(searchText);
-    });
-  };
-
-
   $scope.searchCustomers = function (tab) {
-    var searchText = tab.formData.userName.toLowerCase();
+    $scope.disabled = false;
     $scope.filteredUsers = $scope.listUser.filter(function (user) {
-      var lowerSearchText = searchText.toLowerCase();
-      return user.name.toLowerCase().includes(lowerSearchText) || (user.phoneNumber && user.phoneNumber.includes(searchText));
+      var searchText = tab.formData.userPhone.toLowerCase();
+
+      // Kiểm tra nếu user.name và user.phoneNumber không phải là null hoặc undefined
+      if (user.name && user.phoneNumber) {
+        return user.name.toLowerCase().includes(searchText) || user.phoneNumber.includes(searchText);
+      }
+
+      return false; // Nếu một trong những giá trị là null hoặc undefined, trả về false
     });
   };
+
 
   $scope.selectCustomer = function (user, tab) {
     tab.formData.userName = user.name;
     tab.formData.userPhone = user.phoneNumber; // Replace 'phoneNumber' with the actual property name in your user object
     tab.formData.userID = user.id;
     console.log(tab.formData.userID, 'iddddd select');
-
+    $scope.disabled = true;
     $scope.saveTabsToLocalStorage();
   };
 
@@ -593,13 +593,25 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
       $scope.saveTabsToLocalStorage();
     }
   }
+
   $scope.submitForm = function (event, tab) {
     event.preventDefault();
+    const checkPay = document.getElementById("userPay");
     $scope.checkDone = false;
     if (!tab.formData.listPrByCart) {
       toastr.error("Chưa có sản phẩm trong giỏ hàng", "Lỗi");
       return;
     }
+    console.log(tab.formData.moneyBack, 'a', Number(tab.formData.moneyBack))
+    if (
+      !tab.formData.moneyBack || checkPay.classList.contains("is-invalid")
+    ) {
+      // Hiển thị thông báo lỗi
+      console.log("a")
+      $scope.checkAddress = true;
+      return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
+    }
+
     var dataToSend = {
       userId: tab.formData.userID,
       idBill: tab.formData.id,
@@ -687,12 +699,22 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
   };
 
   $scope.changCurrency = function (tab) {
-    tab.formData.userPay = tab.formData.userPay.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-    tab.formData.moneyBack = (tab.formData.userPay - tab.formData.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    let invalidCharacterRegex = /[^0-9₫,.]/;
+    const checkPay = document.getElementById("userPay");
+    if (invalidCharacterRegex.test(tab.formData.userPay)) {
+      checkPay.classList.add("is-invalid");
+      console.log("f")
+    } else {
+      console.log("s")
+      checkPay.classList.remove("is-invalid");
+    }    
+    tab.formData.moneyBack = (Number(tab.formData.userPay) - tab.formData.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    // tab.formData.userPay = tab.formData.userPay.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
   }
-  $scope.changeSelect = function (tab) {
+  $scope.changeSelect = function (tab) {   
     if (tab.formData.optionPay === "1") {
-      tab.formData.userPay = (tab.formData.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+      tab.formData.userPay = (tab.formData.totalPay)
+      $scope.changCurrency(tab);
     } else {
       tab.formData.userPay = 0;
     }

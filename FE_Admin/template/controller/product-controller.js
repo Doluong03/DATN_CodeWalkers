@@ -534,7 +534,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
 
           let product = {
             code: row.getCell(1).value,
-            name: row.getCell(2).value,
+            name: row.getCell(2).value.trim(),
             description: row.getCell(3).value,
             brands: { id: findBrandId(row.getCell(4).value) || null },
             category: { id: findCategoryId(row.getCell(5).value) || null },

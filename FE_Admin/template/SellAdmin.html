@@ -1,8 +1,9 @@
 <link rel="stylesheet" href="css/css-layout/order.css">
 <link rel="stylesheet" href="scss/switch_radio.css">
+<link rel="stylesheet" href="css/css-layout/search.css">
 
 <div>
-    <h4> Quản lý hóa đơn </h4> 
+    <h4> Quản lý hóa đơn </h4>
     <div class="row ">
         <div class="nav nav-tabs col ms-3" id="nav-tab" role="tablist">
             <button class="nav-link" ng-repeat="tab in tabs" ng-class="{ 'active': tab.active }"
@@ -27,11 +28,14 @@
                 <div class="row h-25">
                     <div class="col-7 d-flex">
                         <input type="checkbox" id="switch" ng-model="tab.formData.checkAct"
-                            ng-change="saveTabsToLocalStorage(tab)" ng-click="resetDH(tab)"/><label for="switch" id="switch">Toggle</label>
+                            ng-change="saveTabsToLocalStorage(tab)" ng-click="resetDH(tab)" /><label for="switch"
+                            id="switch">Toggle</label>
                         <p class="mt-1 ms-2 fs-5 text-primary-emphasis">Đặt hàng</p>
                     </div>
                     <!-- QR -->
-                    <button ng-click="startCam(tab)" class="text-center btn btn-outline-primary ms-5 col-1" style="width: 50px;"  data-toggle="modal" data-target="#qrModal"><i class="fa-regular fa-qrcode fs-3 w-100 "></i></button>
+                    <button ng-click="startCam(tab)" class="text-center btn btn-outline-primary ms-5 col-1"
+                        style="width: 50px;" data-toggle="modal" data-target="#qrModal"><i
+                            class="fa-regular fa-qrcode fs-3 w-100 "></i></button>
 
                     <div class="custom-dropdown-sell" ng-if="tabs.length > 0">
                         <input type="text" class="form-control" id="productInput" ng-click="toggleDropdown()"
@@ -64,11 +68,11 @@
                             <div class="form-group text-center mt-2">
                                 <h5>Thông tin khách hàng</h5>
                             </div>
-                            <div class="row ">
+                            <div class="row mb-2" >
                                 <div class="custom-dropdown-user form-group col-lg justify-items-end">
                                     <label for="customerSearch">Tìm Khách Hàng</label>
                                     <input type="search" class="form-control" id="exampleInputMiddleName"
-                                        placeholder="Search by phone or email" ng-model="tab.formData.userName"
+                                        placeholder="Tìm kiếm theo sdt hoặc tên" ng-model="tab.formData.userPhone"
                                         ng-change="searchCustomers(tab)">
                                     <div id="customerDropdown" class="dropdown-content-user">
                                         <div ng-repeat="user in filteredUsers">
@@ -84,9 +88,11 @@
                                 </div>
                                 <div class="form-group col-lg mt-1">
                                     <input type="text" class="form-control mt-4" id="exampleInputMiddleName"
-                                        placeholder="Phone Number" ng-model="tab.formData.userPhone" maxlength="10">
+                                        placeholder="Khách hàng" ng-model="tab.formData.userName" maxlength="10" ng-disabled = "disabled">
                                 </div>
+                       
                             </div>
+
                             <div class="form-group">
                                 <label for="exampleInputDate">Mã hóa đơn</label>
                                 <input type="text" class="form-control" id="exampleInputDate" placeholder=""
@@ -105,8 +111,9 @@
                                         placeholder="Họ và Tên" ng-model="formNotEditAdmin.staffPhone" readonly>
                                 </div>
                             </div>
-                            <div class="row" ng-show="tab.formData.checkAct" ng-init="loadDistrict(tab.formData.provinceId)">
-                                <div class="form-group col-lg"  ng-init="loadWard(tab.formData.districtId)">
+                            <div class="row" ng-show="tab.formData.checkAct"
+                                ng-init="loadDistrict(tab.formData.provinceId)">
+                                <div class="form-group col-lg" ng-init="loadWard(tab.formData.districtId)">
                                     <label for="exampleInputDate">Địa chỉ</label>
                                     <select id="select1" class="form-select col" ng-model="tab.formData.provinceId"
                                         ng-change="loadDistrict(tab.formData.provinceId)"
@@ -143,17 +150,14 @@
                                 <div class="form-group col-lg ">
                                     <label for="exampleInputDate">Khuyến mãi</label>
                                     <input type="search" class="form-control" id="exampleInputMiddleName"
-                                        placeholder="0đ"
-                                        ng-class="{'is-invalid': checkAddress && !tab.formData.fee}"
+                                        placeholder="0đ" ng-class="{'is-invalid': checkAddress && !tab.formData.fee}"
                                         ng-model="tab.formData.fee">
                                 </div>
                                 <div class="form-group col-lg ">
                                     <label for="exampleInputDate">Phí vận chuyển</label>
                                     <input type="search" class="form-control" id="exampleInputMiddleName"
-                                        placeholder="0đ"
-                                        ng-class="{'is-invalid': checkAddress && !tab.formData.fee}"
-                                        ng-model="tab.formData.fee"
-                                        ng-value="tab.formData.fee | vndCurrency">
+                                        placeholder="0đ" ng-class="{'is-invalid': checkAddress && !tab.formData.fee}"
+                                        ng-model="tab.formData.fee" ng-value="tab.formData.fee | vndCurrency">
                                 </div>
 
                             </div>
@@ -170,8 +174,7 @@
                                     <select class="form-select mt-1" id="exampleInputMiddleName"
                                         ng-model="tab.formData.optionPay"
                                         ng-class="{'is-invalid': checkAddress && !tab.formData.optionPay}"
-                                        ng-change="changeSelect(tab)"
-                                        >
+                                        ng-change="changeSelect(tab)">
                                         <option value="" disable>---Chọn phương thức---</option>
                                         <option value="0">Thanh toán bằng tiền mặt</option>
                                         <option value="1">Thanh toán chuyển khoản</option>
@@ -180,14 +183,16 @@
                             </div>
                             <div class="row" ng-show="!tab.formData.checkAct">
                                 <div class="form-group col-lg justify-items-end ">
-                                    <label for="exampleInputMiddleName">Tiền khách trả:  </label>
-                                    <input type="money" class="form-control" id="exampleInputMiddleName" placeholder="0đ"
-                                        ng-model="tab.formData.userPay" ng-change="changCurrency(tab)" >
+                                    <label for="exampleInputMiddleName">Tiền khách trả: </label>
+                                    <input type="money" class="form-control" id="userPay"
+                                        placeholder="0đ" ng-model="tab.formData.userPay" ng-change="changCurrency(tab)"
+                                         ng-class="{'is-invalid': checkAddress && !tab.formData.userPay }"
+                                         >
                                 </div>
                                 <div class="form-group col-lg justify-items-end ">
-                                    <label for="exampleInputMiddleName">Tiền trả lại:  </label>
+                                    <label for="exampleInputMiddleName">Tiền trả lại: </label>
                                     <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="0đ"
-                                        ng-model="tab.formData.moneyBack" readonly>
+                                        ng-model="tab.formData.moneyBack" readonly ng-class="{'is-invalid': checkAddress && !tab.formData.moneyBack }">
                                 </div>
                             </div>
                         </div>
@@ -247,71 +252,83 @@
             </div>
         </div>
     </div>
-   <!-- Bootstrap Modal for QR Code Scanner -->
-   <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="qrModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="qrModalLabel">Product QR Code Scanner</h4>
-            </div>
-            <div class="modal-body">
-                <!-- Video container -->
-                <div>
-                    <video id="scanner"></video>
+    <!-- Bootstrap Modal for QR Code Scanner -->
+    <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="qrModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="qrModalLabel">Product QR Code Scanner</h4>
                 </div>
-                <!-- Result container -->
-                <div id="result-container">
-                    <p>Product Code: <span id="result">{{ detectedCode }}</span></p>
+                <div class="modal-body">
+                    <!-- Video container -->
+                    <div>
+                        <video id="scanner"></video>
+                    </div>
+                    <!-- Result container -->
+                    <div id="result-container">
+                        <p>Product Code: <span id="result">{{ detectedCode }}</span></p>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</div>
 <style>
     /* Custom styles for the QR code scanner modal */
     #qrModal {
-        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Semi-transparent black background */
     }
 
     #qrModal .modal-dialog {
-        max-width: 680px; /* Set the maximum width of the modal */
+        max-width: 680px;
+        /* Set the maximum width of the modal */
     }
 
     #qrModal .modal-header {
-        background-color: #337ab7; /* Blue header background */
-        color: #fff; /* White text */
-        border-bottom: 1px solid #ddd; /* Gray border bottom */
+        background-color: #337ab7;
+        /* Blue header background */
+        color: #fff;
+        /* White text */
+        border-bottom: 1px solid #ddd;
+        /* Gray border bottom */
     }
 
     #qrModal .modal-title {
-        margin: 0; /* Remove default margin for modal title */
+        margin: 0;
+        /* Remove default margin for modal title */
     }
 
     #qrModal .modal-body {
-        padding: 20px; /* Add padding to the modal body */
+        padding: 20px;
+        /* Add padding to the modal body */
     }
 
     #result-container {
-        margin-top: 20px; /* Add margin to the result container */
+        margin-top: 20px;
+        /* Add margin to the result container */
     }
 
     /* Customize button styles */
     #qrModal .btn-primary {
-        background-color: #337ab7; /* Blue button background */
-        border-color: #2e6da4; /* Darker blue border */
+        background-color: #337ab7;
+        /* Blue button background */
+        border-color: #2e6da4;
+        /* Darker blue border */
     }
 
     #qrModal .btn-primary:hover,
     #qrModal .btn-primary:focus {
-        background-color: #286090; /* Darker blue on hover/focus */
-        border-color: #204d74; /* Darker blue border on hover/focus */
+        background-color: #286090;
+        /* Darker blue on hover/focus */
+        border-color: #204d74;
+        /* Darker blue border on hover/focus */
     }
 </style>
 
@@ -325,7 +342,5 @@
         $('.dropdown-toggle').dropdown();
     });
 </Script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 
 </div>

@@ -1,4 +1,5 @@
 let host = "http://localhost:8080/CodeWalkers";
+
 window.orderManage = function ($scope, $http, $window, $timeout, $document) {
     $scope.listOrders = [];
     $scope.pageNo = 0;
@@ -184,7 +185,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
         $scope.updateTotalPay();
     };
 
-    
+
     $scope.address = {};
     $scope.getAddress = function (id) {
         var url = `${host}/get-address-by-id/`;
@@ -261,9 +262,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
 
     $scope.hienThi = function (pageNo, sizePage) {
         if (!$scope.status) {
-            apiUrl = apiOrder + "/get-all-bill" + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
-        } else if ($scope.status == '/0') {
-            apiUrl = apiOrder + "/get-all-bill" + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+            apiUrl = apiOrder + "/get-all-bill/6" + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
         } else {
             apiUrl = apiOrder + "/get-all-bill" + $scope.status + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
         }
@@ -271,9 +270,11 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             function (response) {
                 // Xử lý phản hồi thành công
                 $scope.listOrders = response.data;
-                $scope.totalPage = response.data[0].totalPages;
-                var lastIndex = $scope.listOrders[$scope.listOrders.length - 1].code;
-                $scope.lastIndex = lastIndex.slice(5);
+                if(response.data[0]){
+                    $scope.totalPage = response.data[0].totalPages;
+                    var lastIndex = $scope.listOrders[$scope.listOrders.length - 1].code;
+                    $scope.lastIndex = lastIndex.slice(5);
+                }
                 $scope.getBadge();
             },
             function (error) {
@@ -377,7 +378,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
             $scope.showFormUpdate = true;
             $scope.activeItem = item;
             $scope.listRes = [];
-            $scope.totalPrice= 0 ;
+            $scope.totalPrice = 0;
             // Nạp dữ liệu của dòng được chọn vào biểu mẫu
             // item.fee = item.fee.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
             for (var i = 0; i < item.listBillDetail.length; i++) {
@@ -390,7 +391,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
                 });
             }
             for (var i = 0; i < $scope.listRes.length; i++) {
-                $scope.totalPrice+= $scope.listRes[i].total;
+                $scope.totalPrice += $scope.listRes[i].total;
             }
             $scope.formNotEdit = item;
 
@@ -408,9 +409,9 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
                 status: item.status,
                 idStaff: $scope.formNotEditAdmin.staffId,
                 userName: item.userName,
-                userPhone:item.userPhone
+                userPhone: item.userPhone
             };
-            $scope.promotional =  ( ($scope.totalPrice +  $scope.formOrderUpdate.fee) - $scope.formOrderUpdate.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            $scope.promotional = (($scope.totalPrice + $scope.formOrderUpdate.fee) - $scope.formOrderUpdate.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         } else {
             // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
             $scope.showFormUpdate = false;
@@ -420,7 +421,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
     };
     $scope.updateTotalPay = function () {
         $scope.formOrderUpdate.totalPay = 0;
-        $scope.totalPrice= 0 ;
+        $scope.totalPrice = 0;
         for (var i = 0; i < $scope.listRes.length; i++) {
             $scope.formOrderUpdate.totalPay += $scope.listRes[i].total;
         }
@@ -703,7 +704,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
     $scope.loadAllPrBs = function () {
         var url = `${host}/api/get-all-pr`;
         $http.get(url).then(res => {
-            $scope.itemsBs = res.data;
+                $scope.itemsBs = res.data.filter(item => item.quantity>0);
             // Gọi loadDetail sau khi tải dữ liệu thành công
             //  $scope.loadDetail();
             $scope.filteredItems = $scope.itemsBs;
@@ -915,7 +916,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
 
         });
     }
-    
+
     function processActions(selectedItems, status) {
         selectedItems.forEach(element => {
             if (status == 3) {
@@ -964,7 +965,7 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
                     $scope.handleTabClick(status, tabToShow);
                 }
             }
-            
+
             )
                 .catch(function (error) {
                     console.log(error);
@@ -974,14 +975,15 @@ window.orderManage = function ($scope, $http, $window, $timeout, $document) {
     }
     // Lấy tên cột từ bảng HTML
     $scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
-    $scope.columns = [];
 
-    // Khai báo biến và khởi tạo giá trị mặc định
-    $scope.columnFilters = {};
 
     // Sử dụng $timeout để đảm bảo rằng DOM đã được tạo trước khi lấy thông tin cột
     $timeout(function () {
-        var thElements = document.querySelectorAll('#UserTable th:not(:last-child)'); // Loại bỏ cột "Action"
+        $scope.columns = [];
+
+        // Khai báo biến và khởi tạo giá trị mặc định
+        $scope.columnFilters = {};
+        var thElements = document.querySelectorAll('#UserTable1 th:not(:last-child)'); // Loại bỏ cột "Action"
 
         angular.forEach(thElements, function (thElement) {
             var columnName = thElement.innerText.trim();

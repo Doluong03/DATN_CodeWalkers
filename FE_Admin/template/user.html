@@ -83,7 +83,11 @@
 
       </div>
 
-
+      <div class="form-check form-switch ms-2">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" ng-model="checkAcc"
+          ng-change="switchAcc()">
+        <label class="form-check-label" for="flexSwitchCheckChecked">Tài khoản khách hàng</label>
+      </div>
       <!-- start table -->
       <div class="table-responsive pt-3">
         <table class="table expandable-table table-hover" style="width: 100%" id="UserTable">
@@ -99,23 +103,33 @@
                   class="{{getSortClass('dateOfBirth')}}"></span></th>
               <th ng-show="columns[3].selected" ng-click="sortData('gender')">Giới Tính<span
                   class="{{getSortClass('gender')}}"></span></th>
-              <th ng-show="columns[5].selected" ng-click="sortData('email')">Email<span
+              <th ng-show="columns[4].selected" ng-click="sortData('email')">Email<span
                   class="{{getSortClass('email')}}"></span></th>
-              <th ng-show="columns[6].selected" ng-click="sortData('phoneNumber')">Số Điện Thoại<span
+              <th ng-show="columns[5].selected" ng-click="sortData('phoneNumber')">Số Điện Thoại<span
                   class="{{getSortClass('phoneNumber')}}"></span></th>
+              <th ng-show="columns[6].selected" ng-click="sortData('phoneNumber')">Tên đăng nhập<span
+                  class="{{getSortClass('phoneNumber')}}"></span></th>
+              <th ng-show="columns[7].selected" ng-click="sortData('phoneNumber')">Mật khẩu<span
+                  class="{{getSortClass('phoneNumber')}}"></span></th>
+                  <!-- <th ng-show="columns[8].selected" ng-click="sortData('phoneNumber')">Địa chỉ<span
+                    class="{{getSortClass('phoneNumber')}}"></span></th> -->
               <th name="Action">Action</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="item in listUSers | filter:searchText | orderBy:sortColumn:reverseSort">
               <td><input type="checkbox" ng-model="item.isSelected"></td>
-              <td ng-show="columns[1].selected">{{ item.name }}</td>
+              <td ng-show="columns[1].selected">{{ item.name || "None"}}</td>
               <td ng-show="columns[2].selected">{{ item.dateOfBirth |dateformat }}</td>
               <td ng-show="columns[3].selected">{{ item.gender == true ? 'nam' : 'nữ' }}</td>
-              <td ng-show="columns[5].selected">{{ item.email }}</td>
-              <td ng-show="columns[6].selected">{{ item.phoneNumber }}</td>
+              <td ng-show="columns[4].selected">{{ item.email }}</td>
+              <td ng-show="columns[5].selected">{{ item.phoneNumber }}</td>
+              <td ng-show="columns[6].selected">{{ item.userName }}</td>
+              <td ng-show="columns[7].selected">{{ item.password }}</td>
+              <!-- <td ng-show="columns[8].selected">{{ item.addressList }}</td> -->
               <td>
-                <a href="#" ng-click="toggleFormUpdate($event, item)" style="text-decoration: none; color: #1545e1;" data-bs-target="#userUpdateModal" data-bs-toggle="modal">
+                <a href="#" ng-click="toggleFormUpdate($event, item)" style="text-decoration: none; color: #1545e1;"
+                  data-bs-target="#userUpdateModal" data-bs-toggle="modal">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </a>
                 <a href="#" ng-click="removeStaff($event, item)" style="text-decoration: none; color: #FC424A;">
@@ -267,31 +281,31 @@
               ng-model="formUserUpdate.phoneNumber">
           </div>
           <div class="modal-footer sticky-bottom">
-          <button id="btn-action-add" ng-click="UpdateUser($event)">Submit</button>
-          <button id="btn-action-cancel" ng-click="toggleFormUpdate($event, null)">Cancel</button>
-        </div>
+            <button id="btn-action-add" ng-click="UpdateUser($event)">Submit</button>
+            <button id="btn-action-cancel" ng-click="toggleFormUpdate($event, null)">Cancel</button>
+          </div>
         </form>
+      </div>
     </div>
   </div>
-</div>
 
 
-<div class="import-container">
-  <div ng-show="importing" class="import-animation"></div>
-  <p ng-show="importing">Processing...</p>
-</div>
+  <div class="import-container">
+    <div ng-show="importing" class="import-animation"></div>
+    <p ng-show="importing">Processing...</p>
+  </div>
 
-<Script>
-  function triggerFileInput() {
-    // Kích hoạt sự kiện click trên input-file
-    document.getElementById('input-file').click();
-  }
+  <Script>
+    function triggerFileInput() {
+      // Kích hoạt sự kiện click trên input-file
+      document.getElementById('input-file').click();
+    }
 
-</Script>
+  </Script>
 
 
-<Script>
-  $(document).ready(function () {
-    $('.dropdown-toggle').dropdown();
-  });
-</Script>
+  <Script>
+    $(document).ready(function () {
+      $('.dropdown-toggle').dropdown();
+    });
+  </Script>

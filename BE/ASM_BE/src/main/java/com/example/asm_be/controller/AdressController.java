@@ -100,6 +100,7 @@ public class AdressController {
                         usersRes.setName(addressRequest.getUserName());
                         usersRes.setPhoneNumber(addressRequest.getPhoneNumber());
                         usersRes.setEmail(addressRequest.getEmail());
+                        userService.save(usersRes);
                         cart.setUsers(usersRes);
                         cartService.save(cart);
                         addressRequest.map(address);

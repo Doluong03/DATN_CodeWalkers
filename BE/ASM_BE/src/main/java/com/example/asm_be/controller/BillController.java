@@ -88,6 +88,7 @@ public class BillController {
     public ResponseEntity<?> CreateBill(@PathVariable("idUser") int idUser) {
         if (idUser == 0) {
             Users usersNew = new Users();
+            usersNew.setName("Khách lẻ");
             userService.save(usersNew);
             return ResponseEntity.ok(billService.save(new Bill(), usersNew));
         } else {

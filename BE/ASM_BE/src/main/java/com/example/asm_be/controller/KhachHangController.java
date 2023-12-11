@@ -32,18 +32,20 @@ public class KhachHangController {
     }
 
     @GetMapping({"/User"})
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public UserRespone getAllUser(
+            @RequestParam Boolean checkAcc,
             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
             @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         UserRespone userRespone = new UserRespone();
-        Page<Users> usersPage = userService.getAll(pageNo-1, sizePage);
+        Page<Users> usersPage = userService.getAll(checkAcc,pageNo-1, sizePage);
 
         userRespone.setUsersList(usersPage.getContent());
         userRespone.setTotalPages(usersPage.getTotalPages());
 
         return userRespone;
     }
+
 
     @PostMapping({"/admin/User/insert"})
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")

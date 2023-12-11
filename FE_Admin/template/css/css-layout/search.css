@@ -1,0 +1,40 @@
+.custom-select {
+    position: relative;
+    display: inline-block;
+  }
+
+  .select-box {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+
+  .options-container {
+    display: none;
+    position: absolute;
+    width: 92%;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    border-top: none;
+    z-index: 1;
+  }
+
+  .option {
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .option:hover {
+    background-color: #f2f2f2;
+  }
+
+  /* Styling for the search input */
+  .search-box {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }

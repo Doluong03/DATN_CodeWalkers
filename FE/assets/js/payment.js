@@ -542,6 +542,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         }
 
         $scope.resetModalContent = function () {
+            $scope.checkAction=false;
             $scope.formAddress = {
                 addressDetail: "",
                 ward: '',

@@ -22,10 +22,11 @@ public class UserImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public Page<Users> getAll(Integer pageNo, Integer sizePage) {
+    public Page<Users> getAll(Boolean checkAcc ,Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo, sizePage, Sort.by(Sort.Order.desc("id")));
-        return userRepository.findAll(pageable);
+        return userRepository.findByAcc(checkAcc ,pageable);
     }
+
     @Override
     public List<Users> getAllUser() {
         return userRepository.findAll();
