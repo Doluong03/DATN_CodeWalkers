@@ -46,15 +46,18 @@ app.controller(
     };
     $scope.check = {};
     var dataUserCart = localStorage.getItem("userCartData");
+    var dataUserJson = localStorage.getItem('userIdData');
+
     $scope.loadBillByUs = function () {
       var url = `${host}/api/getBill`;
-      if (!dataUserCart) {
-        var cartId = $cookies.get("cartId");
+      var idUser;
+      if (!dataUserJson) {
+        idUser = $cookies.get('idUser');
       } else {
-        var cartId = dataUserCart;
+         idUser = dataUserJson;
       }
       var config = {
-        params: { idCart: cartId },
+        params: { idUser: idUser },
       };
       $http
         .get(url, config)

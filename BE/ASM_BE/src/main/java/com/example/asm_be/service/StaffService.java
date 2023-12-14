@@ -30,4 +30,6 @@ List getList();
     boolean existsByEmail(String email);
 
     boolean saveStaff(SignUpRequest signUpRequest);
+    void switchStatus(Integer id);
+
 }

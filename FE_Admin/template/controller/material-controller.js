@@ -190,6 +190,15 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
     $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
     $scope.formMaterial = {};
   };
+
+    //switch status
+    $scope.switchStatus = function (id) {
+      let api = apiAdmin + "Material" + "/switchStatus/" + id;
+      $http.post(api, null).then(function (res) {
+          console.log(res.data);
+          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+      });
+  };
   // add one product
   $scope.closeModal = function (id) {
     document.getElementById(id).style.display = ('none')

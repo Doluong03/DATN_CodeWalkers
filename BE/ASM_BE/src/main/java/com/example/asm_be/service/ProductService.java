@@ -22,4 +22,6 @@ public interface ProductService {
 
     boolean delete( Integer idProduct);
 
+    void switchStatus(Integer id);
+
 }

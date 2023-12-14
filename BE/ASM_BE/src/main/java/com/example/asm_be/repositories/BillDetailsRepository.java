@@ -69,7 +69,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT
                 pl.name,
-                COUNT(DISTINCT csanpham.product.id)
+                COUNT( csanpham.product.id)
                 FROM
                 HoaDonChiTiet hdc
                 JOIN
@@ -90,7 +90,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT
                     pl.name,
-                    COUNT(DISTINCT csanpham.product.id)
+                    COUNT( csanpham.product.id)
                 FROM
                     HoaDonChiTiet hdc
                     JOIN ChiTietSanPham csanpham ON hdc.productDetail.id = csanpham.id
@@ -119,7 +119,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT
                  pl.name,
-                COUNT(DISTINCT csanpham.product.id)
+                COUNT( csanpham.product.id)
                 FROM
                 HoaDonChiTiet hdc
                 JOIN

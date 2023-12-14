@@ -63,6 +63,12 @@ public class KhachHangController {
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.userService.update(users)));
     }
+    @PutMapping({"/admin/User/updateInActive/{id}"})
+    public ResponseEntity<ResponeObject> UpdateInActive(@PathVariable("id") int id) throws ParseException {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Update thanh cong", this.userService.updateInActive(id)));
+    }
 
     @DeleteMapping({"/admin/User/delete/{id}"})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -95,5 +101,10 @@ public class KhachHangController {
     @GetMapping("/user/getUserNew")
     public ResponseEntity<Collection<Users>> getUserNew(){
         return ResponseEntity.ok(userService.getUserNew());
+    }
+    @PostMapping("/admin/User/switchStatus/{id}")
+    public ResponseEntity<?> turnOn(@PathVariable("id") int id) {
+        this.userService.switchStatus(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

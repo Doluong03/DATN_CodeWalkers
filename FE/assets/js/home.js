@@ -8,7 +8,8 @@ app.controller("HomeController", function ($scope, $http, $timeout) {
     $scope.loadAllPrBs = function () {
         var url = `${host}/api/product_bs`;
         $http.get(url).then(res => {
-            $scope.itemsBs2 = res.data;
+            console.log(res.data);
+            $scope.itemsBs2 = res.data.filter(pr =>pr.status.id == 1);
 
             // Bước 1: Lấy thông tin chương trình khuyến mãi đang hoạt động
             var promoUrl = `${host}/api/active_promotions`;

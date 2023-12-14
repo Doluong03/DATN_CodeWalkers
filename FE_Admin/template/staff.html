@@ -108,13 +108,11 @@
                             <td ng-show="columns[4].selected" style="text-align: center;">{{item.address}}</td>
                             <td ng-show="columns[5].selected">{{item.email}}</td>
                             <td ng-show="columns[6].selected">{{item.phoneNumber}}</td>
-                            <td ng-show="columns[7].selected">
-                                <span ng-if="item.status == true" style="margin-left: -9px;">
-                                    <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i>
-                                    Active
-                                </span>
-                                <span ng-if="item.status != true">
-                                    <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Disable
+                            <td ng-click="switchStatus(item.id)">
+                                <span ng-show="columns[7].selected" style="text-align: center;">
+                                    <i ng-if="item.status" class="fa-2xl fa fa-toggle-on"
+                                        style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
+                                    <i ng-if="!item.status" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
                                 </span>
                             </td>
                             <td ng-show="columns[8].selected"><img
@@ -200,8 +198,13 @@
                     <div class="form-group">
                         <label for="exampleInputDate">Ngày Sinh</label>
                         <input type="date" class="form-control" id="exampleInputDate" name="dateOfBirth"
-                            ng-model="formStaff.dateOfBirth">
+                            ng-model="formStaff.dateOfBirth" ng-class="{'is-invalid': checkAdd && !isValidDate()}">
+                        <span class="error-message text-danger form-text"
+                            ng-show="myForm.dateOfBirth.$error.dateTooYoung && (myForm.dateOfBirth.$dirty || myForm.$submitted)">
+                            Ngày sinh phải lớn hơn 18 năm trước.
+                        </span>
                     </div>
+                    
                     <div class="form-group">
                         <label for="exampleSelectGender">Giới Tính</label>
                         <select class="form-select" id="exampleSelectGender" ng-model="formStaff.gender" name="gender"
@@ -215,23 +218,35 @@
                         <label for="exampleInputEmail">Email</label>
                         <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email"
                             ng-model="formStaff.email" name="email"
-                            ng-class="{'is-invalid': checkAdd && !formStaff.email}" required>
+                            ng-class="{'is-invalid': checkAdd && (myForm.email.$error.email || myForm.email.$error.emailExists || !formStaff.email)}" required>
                         <span class="error-message text-danger form-text"
-                            ng-show="myForm.email.$error.email && (myForm.email.$dirty || myForm.$submitted)">
-                            Hãy nhập địa chỉ Email hợp lệ.
+                            ng-show="(myForm.email.$error.email && (myForm.email.$dirty || myForm.$submitted)) || myForm.email.$error.emailExists">
+                            <span ng-show="myForm.email.$error.email && (myForm.email.$dirty || myForm.$submitted)">
+                                Hãy nhập Email hợp lệ.
+                            </span>
+                            <span ng-show="myForm.email.$error.emailExists">
+                                Email đã tồn tại.
+                            </span>
                         </span>
                     </div>
+                    
                     <div class="form-group">
                         <label for="exampleInputSDT">Số Điện Thoại</label>
                         <input type="tel" class="form-control" id="exampleInputSDT" placeholder="Phone Number"
                             ng-model="formStaff.phoneNumber" name="phoneNumber"
-                            ng-class="{'is-invalid': checkAdd && !formStaff.phoneNumber}" required
-                            ng-pattern="/^[0-9]{10}$/">
+                            ng-class="{'is-invalid': checkAdd && (myForm.phoneNumber.$error.pattern || myForm.phoneNumber.$error.phoneNumberExists || !formStaff.phoneNumber)}" required
+                            ng-pattern="/^(03|05|07|08|09)[0-9]{8}$/">
                         <span class="error-message text-danger form-text"
-                            ng-show="myForm.phoneNumber.$error.pattern && (myForm.phoneNumber.$dirty || myForm.$submitted)">
-                            Hãy nhập Số điện thoại hợp lệ.
+                            ng-show="(myForm.phoneNumber.$error.pattern && (myForm.phoneNumber.$dirty || myForm.$submitted)) || myForm.phoneNumber.$error.phoneNumberExists">
+                            <span ng-show="myForm.phoneNumber.$error.pattern && (myForm.phoneNumber.$dirty || myForm.$submitted)">
+                                Hãy nhập Số điện thoại hợp lệ.
+                            </span>
+                            <span ng-show="myForm.phoneNumber.$error.phoneNumberExists">
+                                Số điện thoại đã tồn tại.
+                            </span>
                         </span>
                     </div>
+                    
 
                     <div class="form-group">
                         <label for="exampleInputAddress">Địa Chỉ</label>
@@ -243,7 +258,7 @@
                         <label for="exampleSelectGender">Ảnh</label>
                         <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
                             <div class="form-group">
-                                <button ng-click="openFileInput()">Choose File</button>
+                                <button ng-click="openFileInput()" class="btn btn-outline-secondary ">Choose File</button>
                                 <input type="file" id="fileInput" style="display:none"
                                     onchange="angular.element(this).scope().fileChanged(this)" />
                                 <input type="text" style="border: none ;" ng-model="formStaff.image" readonly />
@@ -301,25 +316,37 @@
                         </select>
 
                     </div>
+
                     <div class="form-group">
                         <label for="exampleInputEmail">Email</label>
                         <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email"
                             ng-model="formStaffUpdate.email" name="email"
-                            ng-class="{'is-invalid': checkUpdate && !formStaffUpdate.email}" required>
+                            ng-class="{'is-invalid': checkAdd && (myForm.email.$error.email || myForm.email.$error.emailExists || !formStaffUpdate.email)}" required>
                         <span class="error-message text-danger form-text"
-                            ng-show="myFormUpdate.email.$error.email && (myFormUpdate.email.$dirty || myFormUpdate.$submitted)">
-                            Hãy nhập địa chỉ Email hợp lệ.
+                            ng-show="(myForm.email.$error.email && (myForm.email.$dirty || myForm.$submitted)) || myForm.email.$error.emailExists">
+                            <span ng-show="myForm.email.$error.email && (myForm.email.$dirty || myForm.$submitted)">
+                                Hãy nhập Email hợp lệ.
+                            </span>
+                            <span ng-show="myForm.email.$error.emailExists">
+                                Email đã tồn tại.
+                            </span>
                         </span>
                     </div>
+                    
                     <div class="form-group">
                         <label for="exampleInputSDT">Số Điện Thoại</label>
                         <input type="tel" class="form-control" id="exampleInputSDT" placeholder="Phone Number"
                             ng-model="formStaffUpdate.phoneNumber" name="phoneNumber"
-                            ng-class="{'is-invalid': checkUpdate && !formStaffUpdate.phoneNumber}"
-                            ng-pattern="/^[0-9]{10}$/" required>
+                            ng-class="{'is-invalid': checkAdd && (myForm.phoneNumber.$error.pattern || myForm.phoneNumber.$error.phoneNumberExists || !formStaffUpdate.phoneNumber)}" required
+                            ng-pattern="/^(03|05|07|08|09)[0-9]{8}$/">
                         <span class="error-message text-danger form-text"
-                            ng-show="myFormUpdate.phoneNumber.$error.pattern && (myFormUpdate.phoneNumber.$dirty || myFormUpdate.$submitted)">
-                            Hãy nhập Số điện thoại hợp lệ.
+                            ng-show="(myForm.phoneNumber.$error.pattern && (myForm.phoneNumber.$dirty || myForm.$submitted)) || myForm.phoneNumber.$error.phoneNumberExists">
+                            <span ng-show="myForm.phoneNumber.$error.pattern && (myForm.phoneNumber.$dirty || myForm.$submitted)">
+                                Hãy nhập Số điện thoại hợp lệ.
+                            </span>
+                            <span ng-show="myForm.phoneNumber.$error.phoneNumberExists">
+                                Số điện thoại đã tồn tại.
+                            </span>
                         </span>
                     </div>
                     <div class="form-group">

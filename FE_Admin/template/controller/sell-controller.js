@@ -433,9 +433,9 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
   // Call clearTabsFromLocalStorage when needed
 
   $scope.removeTab = function (tabToRemove) {
-    if (!$scope.checkDone) {
-      $scope.removeBill(tabToRemove);
-    }
+    // if (!$scope.checkDone) {
+    //   $scope.removeBill(tabToRemove);
+    // }
     var tabIndex = $scope.tabs.indexOf(tabToRemove);
     var previousTabIndex = (tabIndex === $scope.tabs.length - 1) ? tabIndex - 1 : tabIndex;
     // Kích hoạt tab trước đó
@@ -549,6 +549,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
+        $scope.removeTab(tab);
         // Hành động khi người dùng ấn "Có"
         $http.delete(api, headers).then(function (response) {
           Swal.fire('Xóa thành công!', '', 'success');
@@ -604,7 +605,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
     }
     console.log(tab.formData.moneyBack, 'a', Number(tab.formData.moneyBack))
     if (
-      !tab.formData.moneyBack || checkPay.classList.contains("is-invalid")
+      (!tab.formData.moneyBack || checkPay.classList.contains("is-invalid")) &&  !tab.formData.checkAct
     ) {
       // Hiển thị thông báo lỗi
       console.log("a")
@@ -670,8 +671,8 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
           if (response) {
             Swal.fire({
               icon: "success",
-              title: "Cập nhật thành công!",
-              text: "Thông tin đơn hàng đã được cập nhật.",
+              title: "Mua hàng thành công!",
+              text: "Thông tin đơn hàng đã được thêm.",
             });
             if (dataToSend.userId !== tab.formData.userIDNew) {
               $scope.deleteUser(tab.formData.userIDNew);

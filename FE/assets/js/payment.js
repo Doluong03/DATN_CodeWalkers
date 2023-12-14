@@ -15,6 +15,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
     $scope.selectedAddress = null;
     $scope.districts = [];
     $scope.wards = [];
+    $scope.nameAction = "Thêm mới";
 
     $scope.note = ""; // Đặt lại trường nội dung
     var dataUserJson = localStorage.getItem('userIdData');
@@ -180,7 +181,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                     $scope.isFeeShip = false;
                     alert("ban khong du dieu kien pvc");
                 }
-                $scope.reducePrice='0';
+                $scope.reducePrice = '0';
             }
 
 
@@ -216,12 +217,12 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
     }
     // cap nhật lại số lần sử dụng
     $scope.updateUsageCount = function () {
-        var UsageCount = $scope.usageCount -1;
+        var UsageCount = $scope.usageCount - 1;
         var idUser_Vch = $scope.idUser_Vch;
         $http.patch(`http://localhost:8080/CodeWalkers/admin/user-voucher/update?UsageCount=${UsageCount}&id=${idUser_Vch}`)
             .then(function (res) {
                 console.log(`http://localhost:8080/CodeWalkers/admin/user-voucher/update?UsageCount=${UsageCount}&id=${idUser_Vch}`)
-                console.log(res,'aa')
+                console.log(res, 'aa')
                 // Xử lý kết quả thành công
             })
             .catch(function (err) {
@@ -430,7 +431,6 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
 
         $scope.loadDistrict = function (province) {
             var url = `${host}/get-district/`;
-            var idProvince = province.ProvinceID;
             $http.get(url + province).then(function (res) {
                 $scope.districts = res.data;
                 console.log("Danh sách Quận huyện ", res.data);
@@ -441,7 +441,6 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         }
         $scope.loadWard = function (district) {
             var url = `${host}/get-Ward/`;
-            var idDistrict = district.DistrictID;
             $http.get(url + district).then(function (res) {
                 $scope.wards = res.data;
                 console.log("Danh sách Phường xã ", res.data);
@@ -542,7 +541,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         }
 
         $scope.resetModalContent = function () {
-            $scope.checkAction=false;
+            $scope.checkAction = false;
             $scope.formAddress = {
                 addressDetail: "",
                 ward: '',
@@ -587,10 +586,61 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         $scope.urlPay = "";
         console.log($scope.listResPr, "asd")
         $scope.showAddress = false;
+        $scope.getAll = function () {
+            let apiUrl = `${host}/user/getAll`;
+            $http.get(apiUrl).then(
+                function (response) {
+                    var idUser;
+                    if (!dataUserJson) {
+                        idUser = $cookies.get('idUser');
+                    } else {
+                        idUser = dataUserJson;
+                    }
+                    // Xử lý phản hồi thành công
+                    var indexToRemove = response.data.findIndex(user => user.id === Number(idUser));
+                    if (indexToRemove !== -1) {
+                        $scope.listAllUSers = [];
+                        response.data.splice(indexToRemove, 1);
+                        console.log(response.data, '1');
+                        $scope.listAllUSers = response.data; // Assign the modified array back to $scope.listAllUsers
+                        console.log($scope.listAllUSers, 'a'); // Corrected variable name
+                    }
+                    
+                    console.log( Number(idUser),'a',indexToRemove)
+                },
+                function (error) {
+                    // Xử lý lỗi
+                    console.log(error);
+                }
+            );
+        };
+        $scope.getAll();
+        $scope.phoneNumberExists = function () {
 
+            if (!$scope.formAddress.phoneNumber) {
+                return false; // Phone number is not set, consider it not existing
+            }
+            return $scope.listAllUSers.some(staff => staff.phoneNumber === $scope.formAddress.phoneNumber);
+        };
+        $scope.$watch('formAddress.phoneNumber', function (newValue, oldValue) {
+            $scope.myForm.phoneNumber.$setValidity('phoneNumberExists', !$scope.phoneNumberExists());
+        });
+
+        $scope.$watch('formAddress.email', function (newValue, oldValue) {
+            $scope.myForm.email.$setValidity('emailExists', !$scope.emailExists());
+        });
+        console.log($scope.listAllUSers, 'aa')
+
+        $scope.emailExists = function () {
+            if (!$scope.formAddress.email) {
+                return false; // Email is not set, consider it not existing
+            }
+            return $scope.listAllUSers.some(staff => staff.email === $scope.formAddress.email);
+        };
         // Gửi dữ liệu về máy chủ với ID
         $scope.saveAddress = function () {
-            if(dataUserJson){
+
+            if (dataUserJson) {
                 $scope.checkData = true;
             }
             $scope.fee = {};
@@ -602,10 +652,13 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                 !$scope.formAddress.province ||
                 !$scope.formAddress.district ||
                 (!$scope.formAddress.email && !dataUserJson)
+                || $scope.myForm.email.$error.emailExists
+                || $scope.myForm.phoneNumber.$error.phoneNumberExists
             ) {
                 $scope.checkAddress = true;
                 return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
             }
+
             $scope.checkAddress = false;
             var url = `${host}/save-address`;
             $scope.fee = {
@@ -663,8 +716,8 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
             });
         };
         $scope.checkAction = false;
-        $scope.nameAction = "Thêm mới";
         $scope.getUpdate = function (item) {
+
             $scope.checkAction = true;
             $scope.nameAction = "Cập nhật";
             $scope.loadDistrict(item.ProvinceID);
@@ -701,6 +754,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                     text: 'Thông tin địa chỉ đã được thêm.'
                 }).then(function () {
                     $scope.getAddressUser();
+                    $scope.selectAddress($scope.addressUser[$scope.addressUser.length - 1]);
                     $('#exampleAddress').modal('show');
                 });
                 return true;
@@ -723,8 +777,6 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
             });
         }
 
-
-
         $scope.updateBill = function () {
             $scope.showLoading = true;
             var url = `${host}/bill/updateBill`;
@@ -746,7 +798,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                         }).then(function () {
                             $scope.updateUsageCount();
                             $scope.deleteCart();
-                            $scope.generatePDF(dataToSend,formDataAdr,listPr);
+                            $scope.generatePDF(dataToSend, formDataAdr, listPr);
                             localStorage.removeItem('dataToSend');
                             localStorage.removeItem('dataAdr');
                             localStorage.removeItem('listpr');
@@ -822,10 +874,11 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                 reducePrice: $scope.reducePrice,
                 email: $scope.formAddress.email
             }
+
             localStorage.setItem('dataToSend', JSON.stringify(dataToSend));
             localStorage.setItem('dataAdr', JSON.stringify(formDataAdr));
             localStorage.setItem('listpr', JSON.stringify($scope.listResPr));
-            console.log(formDataAdr,"aa")
+            console.log(formDataAdr, "aa")
             if ($scope.CreateOrder.optionPay == 0) {
                 $scope.updateBill();
             } else {
@@ -876,7 +929,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         };
 
 
-        $scope.generatePDF = function (tab,dataAdr,listPr) {
+        $scope.generatePDF = function (tab, dataAdr, listPr) {
             tab = JSON.parse(tab);
             dataAdr = JSON.parse(dataAdr);
             listPr = JSON.parse(listPr);
@@ -1007,7 +1060,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
             // pdfMake.createPdf(documentDefinition).download('invoice_' + tab.code + '.pdf');
 
             // --Auto Print --
-           var pdfDoc = pdfMake.createPdf(documentDefinition);
+            var pdfDoc = pdfMake.createPdf(documentDefinition);
             pdfDoc.getBlob((blob) => {
                 var file = new File([blob], 'document.pdf', { type: 'application/pdf' });
                 $scope.sendEmail(JSON.stringify(dataAdr.email), tab.userName, file);

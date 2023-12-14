@@ -1,6 +1,7 @@
 package com.example.asm_be.controller;
 
 import com.example.asm_be.dto.ProductDetailsRespone;
+import com.example.asm_be.entities.Product;
 import com.example.asm_be.entities.ProductDetail;
 import com.example.asm_be.entities.ResponeObject;
 import com.example.asm_be.service.*;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping({"/CodeWalkers"})
@@ -36,11 +38,10 @@ public class ProductdetailController {
 
     @GetMapping({"/admin/ProductDetails"})
     public ProductDetailsRespone getAllProductDetail(
-            @RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo
-            ,@RequestParam(value = "sizePage",defaultValue = "5") Integer sizePage)
-    {
-        ProductDetailsRespone productDetailsRespone =  new ProductDetailsRespone();
-        Page<ProductDetail> productDetailPage = productDetailService.getAllPage(pageNo,sizePage);
+            @RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo
+            , @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
+        ProductDetailsRespone productDetailsRespone = new ProductDetailsRespone();
+        Page<ProductDetail> productDetailPage = productDetailService.getAllPage(pageNo, sizePage);
 
         productDetailsRespone.setProductDetailList(productDetailPage.getContent());
         productDetailsRespone.setTotalPages(productDetailPage.getTotalPages());
@@ -74,10 +75,49 @@ public class ProductdetailController {
     public ResponseEntity<ResponeObject> deleteProductDetail(@PathVariable("id") Integer idProduct) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponeObject("success", "Delete thanh cong",  productDetailService.delete(idProduct)));
+                .body(new ResponeObject("success", "Delete thanh cong", productDetailService.delete(idProduct)));
     }
+
     @GetMapping("/admin/ProductDetails/details")
-    public List<ProductDetail> detailsProduct(@RequestParam("productName") String productName){
+    public List<ProductDetail> detailsProduct(@RequestParam("productName") String productName) {
         return productDetailService.findByProductName(productName);
+    }
+
+    @PostMapping("/admin/ProductDetails/switch-all-by-pr/{idPr}")
+    private ResponseEntity<?> switchAllByPr(@PathVariable("idPr") int idPr) {
+        productService.switchStatus(idPr);
+        List<ProductDetail> productDetailList = productDetailService.findByPrId(idPr);
+        if(productService.getOne(idPr).isStatus()){
+            productDetailList.forEach(productDetail -> {
+                productDetailService.turnOn(productDetail.getId());
+            });
+        }else{
+            productDetailList.forEach(productDetail -> {
+                productDetailService.turnOff(productDetail.getId());
+            });
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+//    @PostMapping("/admin/ProductDetails/turn-off-all/{idPr}")
+//    public ResponseEntity<?> turnOffAll(@PathVariable("idPr") int idPr) {
+//        productService.switchStatus(idPr);
+//        List<ProductDetail> productDetailList = productDetailService.findByPrId(idPr);
+//        productDetailList.forEach(productDetail -> {
+//            productDetailService.turnOff(productDetail.getId());
+//        });
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+
+    @PostMapping("/admin/ProductDetails/turn-on/{id}")
+    private ResponseEntity<?> turnOn(@PathVariable("id") int id) {
+        productDetailService.turnOn(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/admin/ProductDetails/turn-off/{id}")
+    public ResponseEntity<?> turnOff(@PathVariable("id") int id) {
+        productDetailService.turnOff(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -48,4 +48,9 @@ public class SizeController {
                 .body(new ResponeObject("success", "Delete thanh cong", this.sizeService.delete(idSize)));
 
     }
+    @PostMapping("/Size/switchStatus/{id}")
+    public ResponseEntity<?> turnOn(@PathVariable("id") int id) {
+        this.sizeService.switchStatus(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

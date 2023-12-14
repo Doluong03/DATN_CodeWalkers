@@ -144,8 +144,91 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
 
   // Đăng ký sự kiện $viewContentLoaded
   $scope.$on('$viewContentLoaded', $scope.onViewContentLoaded);
+  $scope.weeklyRevenue = async function () {
+    // Lấy ngày đầu tiên của tuần hiện tại
+    var currentDate = moment();
+    console.log(currentDate.clone().startOf('isoWeek').format('DD-MM-YYYY'),'a')
+    console.log(currentDate.format('DD-MM-YYYY'),'a')
+    $scope.weeklyTotalRevenue = 0;
+
+    // Lặp qua mỗi ngày của tuần từ ngày đầu tiên đến ngày hiện tại
+    for (var day = currentDate.clone().startOf('isoWeek'); day.isSameOrBefore(currentDate.clone()); day.add(1, 'days')) {
+      await getDailyRevenue(day.format('DD-MM-YYYY'));
+    }
+  };
+
+  async function getDailyRevenue(day) {
+    var url = 'http://localhost:8080/CodeWalkers/thong-ke/ngay';
+    var params = { day: day };
+    try {
+      var response = await $http({
+        method: 'POST',
+        url: url,
+        params: params,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log(day,'1')
+      $scope.dailyRevenue = parseInt(response.data);
+      $scope.weeklyTotalRevenue += $scope.dailyRevenue || 0;
+    } catch (error) {
+      // Xử lý lỗi nếu có
+      console.log(error);
+    }
+  }
 
 
+
+  $scope.monthlyRevenue = function () {
+    var currentDate = moment();
+    var month = currentDate.month() + 1; // Adding 1 because months are zero-indexed
+    var year = currentDate.year();
+    url = 'http://localhost:8080/CodeWalkers/thong-ke/thang';
+    params = { month: month, month2: year };
+    $http({
+      method: 'POST',
+      url: url,
+      params: params,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(function (response) {
+        $scope.monthlyRevenue = parseInt(response.data);
+      })
+      .catch(function (error) {
+        // Xử lý lỗi nếu có
+        console.log(error);
+      });
+  }
+  $scope.yearlyRevenue = function () {
+    var currentDate = moment();
+    var year = currentDate.year();
+    $scope.totalYearlyRevenue = 0;
+    for (var i = year - 5; i <= year; i++) {
+      url = 'http://localhost:8080/CodeWalkers/thong-ke/nam';
+      params = { year: i };
+      $http({
+        method: 'POST',
+        url: url,
+        params: params,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(function (response) {
+          $scope.yearlyRevenue = parseInt(response.data);
+        })
+        .catch(function (error) {
+          // Xử lý lỗi nếu có
+          console.log(error);
+        });
+    }
+  }
+  $scope.weeklyRevenue();
+  $scope.monthlyRevenue();
+  $scope.yearlyRevenue();
   // line Chart
   $scope.filterDate = function (selectedDisplay) {
     console.log(selectedDisplay);
@@ -291,6 +374,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
     }, 1000)
 
     $timeout(function () {
+
       if (selectedDisplay === 'day' || selectedDisplay === 'month' || selectedDisplay === 'year') {
         try {
           var startDate = new Date($scope.selectedDay1);
@@ -649,15 +733,14 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
         }
       }
     }, 1000); // Set timeout to 1 second (1000 milliseconds)
-
-     //tồn kho
+    //tồn kho
     $timeout(function () {
       if (selectedDisplay2 === 'stock') {
         try {
           $http.get('http://localhost:8080/CodeWalkers/ton').then(function (response) {
             console.log(response.data);
 
-              
+
             // Sử dụng hàm generateColors để tạo mảng màu
             var colors = generateColors(response.data.length);
 
@@ -722,24 +805,24 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
         try {
           var year1 = new Date().getFullYear();
           var year2 = new Date().getFullYear();
-  
-    
+
+
           $http({
             method: 'POST',
             url: 'http://localhost:8080/CodeWalkers/doanh-so/nam',
-            params: {sYear: year1, eYear: year2}, // Dữ liệu gửi đi trong request body
+            params: { sYear: year1, eYear: year2 }, // Dữ liệu gửi đi trong request body
             headers: {
               'Content-Type': 'application/json'
             }
           })
             .then(function (response) {
               console.log(response.data);
-    
+
               // Sử dụng hàm generateColors để tạo mảng màu
               var colors = generateColors(response.data.length);
-    
+
               var data = {
-                labels:  response.data.map(item => item.tenLoai),
+                labels: response.data.map(item => item.tenLoai),
                 datasets: [{
                   label: '# of Votes',
                   data: response.data.map(item => item.soLuong),
@@ -749,7 +832,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
                   fill: false
                 }]
               };
-    
+
               var options = {
                 scales: {
                   yAxes: [{
@@ -767,7 +850,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
                   }
                 }
               };
-    
+
               // Vẽ biểu đồ
               if ($("#barChart").length) {
                 var barChartCanvas = $("#barChart").get(0).getContext("2d");
@@ -792,8 +875,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
         }
       }
     }, 1000);
-    
-   
+
   };
 
   // Function để tạo mảng màu động

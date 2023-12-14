@@ -1,5 +1,6 @@
 package com.example.asm_be.service.impl;
 
+import com.example.asm_be.entities.Brands;
 import com.example.asm_be.entities.Category;
 import com.example.asm_be.entities.Color;
 import com.example.asm_be.repositories.CategoryRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CategoryImpl implements CategoryService {
@@ -66,5 +68,13 @@ public class CategoryImpl implements CategoryService {
             return false;
         }
     }
-
+    @Override
+    public void switchStatus(Integer id) {
+        Optional<Category> optinalBrand = categoryRepository.findById(id);
+        if (optinalBrand.isPresent()) {
+            Category category = optinalBrand.get();
+            category.setStatus(!category.isStatus());
+            categoryRepository.save(category);
+        }
+    }
 }

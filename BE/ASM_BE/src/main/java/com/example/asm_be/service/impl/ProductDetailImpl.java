@@ -1,12 +1,11 @@
 package com.example.asm_be.service.impl;
 
 import com.example.asm_be.dto.ProductFilterDTO;
-import com.example.asm_be.entities.Product;
-import com.example.asm_be.entities.ProductDetail;
-import com.example.asm_be.entities.Size;
+import com.example.asm_be.entities.*;
 import com.example.asm_be.repositories.ProductDetailRepository;
 import com.example.asm_be.repositories.ProductRepository;
 import com.example.asm_be.repositories.SizeRepository;
+import com.example.asm_be.repositories.StatusRepository;
 import com.example.asm_be.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -25,7 +24,7 @@ public class ProductDetailImpl implements ProductDetailService {
     @Autowired
     private ProductDetailRepository productDetailRepository;
     @Autowired
-    private SizeRepository sizeRepository;
+    private StatusRepository statusRepository;
     @Autowired
     private ProductRepository productRepository;
 
@@ -210,5 +209,36 @@ public class ProductDetailImpl implements ProductDetailService {
     public List<ProductDetail> findByProductName(String productName) {
         return productDetailRepository.findByProductName(productName);
     }
+    @Override
+    @Transactional
+    public void turnOn(int id) {
+        Optional<ProductDetail> optionalVoucher = productDetailRepository.findById(id);
+        System.out.println(optionalVoucher.get().getStatus().getName()+"aaaaa");
+        if (optionalVoucher.isPresent()) {
+            ProductDetail productDetail = optionalVoucher.get();
+            Status status = statusRepository.findById(1).get();
+            System.out.println(productDetail.getStatus().getName()+"aaaaaaaaaaaaaa");
+            productDetail.setStatus(status);
+            productDetailRepository.save(productDetail);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void turnOff(int id) {
+        try {
+            Optional<ProductDetail> optionalVoucher = productDetailRepository.findById(id);
+            System.out.println(optionalVoucher.get().getStatus().getName()+"aaaaa");
+            ProductDetail productDetail = optionalVoucher.get();
+            Status status = statusRepository.findById(2).get();
+            productDetail.setStatus(status);
+            System.out.println(productDetail.getStatus().getName()+"aaaaaaaaaaaaaa");
+            productDetailRepository.save(productDetail);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

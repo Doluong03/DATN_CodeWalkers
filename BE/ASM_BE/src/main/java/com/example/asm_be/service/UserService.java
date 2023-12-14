@@ -41,4 +41,8 @@ public interface UserService {
 
     List<Users> getUserNew();
 
+    public boolean updateInActive(int  id);
+    void switchStatus(Integer id);
+
+
 }

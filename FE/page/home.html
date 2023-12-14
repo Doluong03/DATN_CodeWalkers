@@ -130,246 +130,223 @@
         </div>
     </div>
 
-    <!-- Product -->
-    <!-- ======= Values Section ======= -->
-
-
-            <!-- <div class="row ms-5">
-                <div class="col-lg-4 mb-3" data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in itemsBs">
-                    <div class="box">
-                        <a ng-href="#/product-detail/{{pr.product.id}}{{pr.hasPromotion ? '/' + pr.promotionId : ''}}"
-                            class="image-container">
-                            <img ng-src="{{'assets/img/product/sp1/' + pr.product.listImage[0].link }}"
-                                class="img-fluid w-100" alt="{{pr.product.listImage[0].link}}">
-                        </a>
-                        <a ng-href="#/product-detail/{{pr.product.id}}{{pr.hasPromotion ? '/' + pr.promotionId : ''}}"
-                            class="image-container">
-                            <h5 class="align-items-left">{{pr.product.name}}</h5>
-                            <p>{{pr.product.category.name}}</p>
-                            <p class="col text-dark mb-1" ng-show="!pr.hasPromotion">{{pr.price | vndCurrency }}</p>
-                            <div class="row" ng-show="pr.hasPromotion">
-                                <p class="col text-danger">{{pr.priceWithPromo| vndCurrency}}</p>
+    <div class="col-lg">
+        <h3 class="mb-3 text-center fw-bold"> Sản phẩm mới nhất</h3>
+        <div class="row  ">
+            <div class="col-lg-3 mb-4 aos-animate" data-aos="fade-up" data-aos-delay="200" ng-repeat="pr in itemsBs2 |orderBy: '-id' | limitTo:8 "
+               >
+                <div class="box_product rounded-4" ng-init="getTotalQuantity(pr)">
+                    <a ng-href="#/product-detail/{{pr.product.id}}{{pr.hasPromotion ? '/' + pr.promotionId : ''}}"
+                        class="border-0"> <img ng-src="assets/img/product/sp1/{{pr.product.listImage[0].link}}"
+                            class="w-100 rounded-4" alt="{{pr.product.listImage[0].link}}">
+                        <div class="">
+                            <h5 class="align-items-left ">{{pr.product.name}}</h5>
+                        </div>
+                        <p>{{pr.product.category.name}}</p>
+                        <p>Còn lại: {{getTotalQuantity(pr)}}</p>
+                        <p class=" text-dark align-text-bottom" ng-show="!pr.hasPromotion">
+                            {{getMinMaxPrice(pr.product).min |
+                            vndCurrency}}
+                            <span
+                                ng-if="getMinMaxPrice(pr.product).min !== getMinMaxPrice(pr.product).max">
+                                - {{getMinMaxPrice(pr.product).max |
+                                vndCurrency}}</span>
+                        </p>
+                            <div class="row " ng-show="pr.hasPromotion">
+                                <p class="col text-danger">{{pr.priceWithPromo | vndCurrency}}</p>
                                 <p class="col text-decoration-line-through">{{pr.price | vndCurrency }}</p>
                             </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .owl-custom-prev,
+    .owl-custom-next {
+        position: absolute;
+        margin-top: -320px;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+
+    .owl-custom-prev {
+        left: -50px;
+    }
+
+    .owl-custom-next {
+        right: -50px;
+    }
+
+    /* CSS cho nút "View" */
+    .view-button {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 16px;
+        border: none;
+        cursor: pointer;
+        perspective: 1000px;
+        /* Đặt góc nhìn cho hiệu ứng flip */
+    }
+
+    .view-button span {
+        display: inline-block;
+        transition: transform 0.5s;
+    }
+
+    /* CSS cho hiệu ứng flip khi hover vào ảnh */
+    .border:hover .view-button span {
+        transform: rotateY(180deg);
+    }
+</style>
+
+<!-- ***** Social Area Starts ***** -->
+<section class="section" id="social">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2>Social Media</h2>
+                    <span>Details to details is what makes Hexashop
+                        different from the other themes.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row images">
+            <div class="col-2">
+                <div class="thumb">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>Fashion</h6>
+                            <i class="fa fa-instagram"></i>
                         </a>
                     </div>
-                </div> -->
-
-
-
-                <div class="col-lg">
-                    <h3 class="mb-3 text-center fw-bold"> Sản phẩm mới nhất</h3>
-                    <div class="row  ">
-                        <div class="col-lg-3 mb-4 aos-animate" data-aos="fade-up" data-aos-delay="200"
-                            ng-repeat="pr in itemsBs2" ng-if="pr.createdAt > now">
-                            <div class="box_product rounded-4" ng-init="getTotalQuantity(pr)">
-                                <a ng-href="#/product-detail/{{pr.product.id}}{{pr.hasPromotion ? '/' + pr.promotionId : ''}}" class="border-0">                                    <img ng-src="assets/img/product/sp1/{{pr.product.listImage[0].link}}"
-                                        class="w-100 rounded-4" alt="{{pr.product.listImage[0].link}}">
-                                    <div class="">
-                                        <h5 class="align-items-left ">{{pr.product.name}}</h5>
-                                    </div>
-                                    <p>{{pr.product.category.name}}</p>
-                                    <p>Còn lại: {{getTotalQuantity(pr)}}</p>
-                                    <p class=" text-dark align-text-bottom">
-                                        {{getMinMaxPrice(pr.product).min |
-                                        vndCurrency}}
-                                        <span ng-if="getMinMaxPrice(pr.product).min !== getMinMaxPrice(pr.product).max">
-                                            - {{getMinMaxPrice(pr.product).max |
-                                            vndCurrency}}</span>
-                                    </p>
-                                </a>
-                            </div>
+                    <img src="assets/images/instagram-01.jpg" alt>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="thumb">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>New</h6>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                    <img src="assets/images/instagram-02.jpg" alt>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="thumb">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>Brand</h6>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                    <img src="assets/images/instagram-03.jpg" alt>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="thumb">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>Makeup</h6>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                    <img src="assets/images/instagram-04.jpg" alt>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="thumb">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>Leather</h6>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                    <img src="assets/images/instagram-05.jpg" alt>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="thumb">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>Bag</h6>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                    <img src="assets/images/instagram-06.jpg" alt>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ***** Social Area Ends ***** -->
+<!-- ***** Subscribe Area Starts ***** -->
+<div class="subscribe">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="section-heading">
+                    <h2>
+                        Bằng cách đăng ký để nhận thông tin mới nhất của chúng tôi bạn có thể nhận được 30%
+                        giảm giá</h2>
+                    <span>Chi tiết với chi tiết là những gì làm cho CodeWalker khác biệt với các chủ đề
+                        khác.
+                    </span>
+                </div>
+                <form id="subscribe" action="" method="get">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <fieldset>
+                                <input name="name" type="text" id="name" placeholder="Họ và tên" required="">
+                            </fieldset>
                         </div>
+                        <div class="col-lg-5">
+                            <fieldset>
+                                <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*"
+                                    placeholder="Địa chỉ email" required="">
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-2">
+                            <fieldset>
+                                <button type="submit" id="form-submit" class="main-dark-button"><i
+                                        class="fa fa-paper-plane"></i></button>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4">
+                <div class="row">
+                    <div class="col-6">
+                        <ul>
+                            <li>Địa chỉ cửa hàng:<br><span>Tòa nhà FPT Polytechnic., Cổng số 2, 13 P. Trịnh
+                                    Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</span></li>
+                            <li>Số điện thoại:<br><span>0865683753</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <ul>
+                            <li>Giờ hoạt động:<br><span>07:30 AM - 9:30 PM hàng ngày</span></li>
+                            <li>Email:<br><span>Luondo03x@gmail.com</span></li>
+                            <li>Kênh thông tin:<br><span><a href="#">Facebook</a>, <a href="#">Instagram</a>, <a
+                                        href="#">Behance</a>, <a href="#">Linkedin</a></span></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-
-            <style>
-                .owl-custom-prev,
-                .owl-custom-next {
-                    position: absolute;
-                    margin-top: -320px;
-                    transform: translateY(-50%);
-                    z-index: 1;
-                }
-
-                .owl-custom-prev {
-                    left: -50px;
-                }
-
-                .owl-custom-next {
-                    right: -50px;
-                }
-
-                /* CSS cho nút "View" */
-                .view-button {
-                    display: none;
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    background-color: #007bff;
-                    color: #fff;
-                    padding: 8px 16px;
-                    border: none;
-                    cursor: pointer;
-                    perspective: 1000px;
-                    /* Đặt góc nhìn cho hiệu ứng flip */
-                }
-
-                .view-button span {
-                    display: inline-block;
-                    transition: transform 0.5s;
-                }
-
-                /* CSS cho hiệu ứng flip khi hover vào ảnh */
-                .border:hover .view-button span {
-                    transform: rotateY(180deg);
-                }
-            </style>
-
-            <!-- ***** Social Area Starts ***** -->
-            <section class="section" id="social">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="section-heading">
-                                <h2>Social Media</h2>
-                                <span>Details to details is what makes Hexashop
-                                    different from the other themes.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row images">
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>Fashion</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src="assets/images/instagram-01.jpg" alt>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>New</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src="assets/images/instagram-02.jpg" alt>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>Brand</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src="assets/images/instagram-03.jpg" alt>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>Makeup</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src="assets/images/instagram-04.jpg" alt>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>Leather</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src="assets/images/instagram-05.jpg" alt>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>Bag</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src="assets/images/instagram-06.jpg" alt>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- ***** Social Area Ends ***** -->
-            <!-- ***** Subscribe Area Starts ***** -->
-            <div class="subscribe">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="section-heading">
-                                <h2>
-                                    Bằng cách đăng ký để nhận thông tin mới nhất của chúng tôi bạn có thể nhận được 30%
-                                    giảm giá</h2>
-                                <span>Chi tiết với chi tiết là những gì làm cho CodeWalker khác biệt với các chủ đề
-                                    khác.
-                                </span>
-                            </div>
-                            <form id="subscribe" action="" method="get">
-                                <div class="row">
-                                    <div class="col-lg-5">
-                                        <fieldset>
-                                            <input name="name" type="text" id="name" placeholder="Họ và tên"
-                                                required="">
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-5">
-                                        <fieldset>
-                                            <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*"
-                                                placeholder="Địa chỉ email" required="">
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <fieldset>
-                                            <button type="submit" id="form-submit" class="main-dark-button"><i
-                                                    class="fa fa-paper-plane"></i></button>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="row">
-                                <div class="col-6">
-                                    <ul>
-                                        <li>Địa chỉ cửa hàng:<br><span>Tòa nhà FPT Polytechnic., Cổng số 2, 13 P. Trịnh
-                                                Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</span></li>
-                                        <li>Số điện thoại:<br><span>0865683753</span></li>
-                                    </ul>
-                                </div>
-                                <div class="col-6">
-                                    <ul>
-                                        <li>Giờ hoạt động:<br><span>07:30 AM - 9:30 PM hàng ngày</span></li>
-                                        <li>Email:<br><span>Luondo03x@gmail.com</span></li>
-                                        <li>Kênh thông tin:<br><span><a href="#">Facebook</a>, <a
-                                                    href="#">Instagram</a>, <a href="#">Behance</a>, <a
-                                                    href="#">Linkedin</a></span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ***** Subscribe Area Ends ***** -->
+        </div>
+    </div>
+</div>
+<!-- ***** Subscribe Area Ends ***** -->

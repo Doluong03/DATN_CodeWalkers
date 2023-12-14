@@ -132,6 +132,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
         // Xử lý phản hồi thành công
         $scope.listProduct = response.data.productList;
         $scope.totalPage = response.data.totalPages;
+        console.log($scope.listProduct)
       },
       function (error) {
         // Xử lý lỗi
@@ -165,7 +166,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
   //hiển thị category
   $scope.category = [];
   $scope.hienThi2 = function () {
-    var url = apiCategory;
+    var url = `${host}/api/product/category`;
     $http.get(url).then(res => {
       $scope.category = res.data;
       console.log("Success", res);
@@ -224,6 +225,16 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
     }
     $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
     $scope.formSize = {};
+  };
+
+
+  //switch status
+  $scope.switchStatus = function (id) {
+    let api = apiURL + "admin/Product/switchStatus/" + id;
+    $http.post(api, null).then(function (res) {
+      console.log(res.data);
+      $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+    });
   };
   // add one product
 

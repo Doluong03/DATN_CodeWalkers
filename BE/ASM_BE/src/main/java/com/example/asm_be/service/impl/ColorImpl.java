@@ -1,5 +1,6 @@
 package com.example.asm_be.service.impl;
 
+import com.example.asm_be.entities.Category;
 import com.example.asm_be.entities.Color;
 import com.example.asm_be.repositories.ColorRepository;
 import com.example.asm_be.service.ColorService;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ColorImpl implements ColorService {
@@ -62,6 +64,15 @@ public class ColorImpl implements ColorService {
         } catch (Exception var3) {
             var3.getMessage();
             return false;
+        }
+    }
+    @Override
+    public void switchStatus(Integer id) {
+        Optional<Color> optinalBrand = colorRepository.findById(id);
+        if (optinalBrand.isPresent()) {
+            Color color = optinalBrand.get();
+            color.setStatus(!color.isStatus());
+            colorRepository.save(color);
         }
     }
 }

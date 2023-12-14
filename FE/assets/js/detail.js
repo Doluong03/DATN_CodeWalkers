@@ -64,15 +64,16 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   $scope.productDTId = $routeParams.productId;
   $scope.promotionId = $routeParams.promotionId;
   $scope.currentImageSource = null;
-
+  $scope.categoryName = "";
   $scope.loadDetail = function () {
     var url = `${host}/api/product/${$scope.productDTId}`;
 
     $http.get(url).then(res => {
       $scope.totalQuantity = 0;
-      $scope.itemDetail = res.data;
+      $scope.itemDetail = res.data.filter(pr =>pr.status.id == 1);
       $scope.img = res.data[0].product.listImage;
       $scope.productId = $scope.itemDetail[0].product.id;
+      $scope.categoryName = $scope.itemDetail[0].product.category.name;
       $scope.currentImageSource = `assets/img/product/sp1/${$scope.itemDetail[0].product.mainImg}`;
       for (var i = 0; i < $scope.itemDetail.length; i++) {
         if ($scope.itemDetail[i].quantity > 0) {
@@ -287,7 +288,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   $scope.loadAllPr = function () {
     var url = `${host}/api/product`;
     $http.get(url).then(res => {
-      $scope.items = res.data;
+
+      // Assuming res.data is an array
+      $scope.items = res.data.slice(-10);
       // Gọi loadDetail sau khi tải dữ liệu thành công
       $scope.loadDetail();
       $scope.numVisibleItems = 4;
@@ -459,19 +462,17 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
         $scope.sendDetailAddRequest(sl, $scope.cartIdFinal);
       });
     } else {
-      var dataUserCart = JSON.parse(JSON.stringify(localStorage.getItem('userCartData')));
       $scope.cartIdFinal = dataUserCart || cartId;
       console.log("Using existing Cart ID:", $scope.cartIdFinal);
       $scope.sendDetailAddRequest(sl, $scope.cartIdFinal);
     }
   };
+  var dataUserCart = JSON.parse(JSON.stringify(localStorage.getItem('userCartData')));
 
   $scope.sendDetailAddRequest = function (sl, idCart) {
     var url = `${host}/api/detailAdd/${idCart}/${$scope.productId}/${$scope.selectedValue}/${$scope.selectedColor || ''}`;
     var data = { quantity: sl };
-
     console.log("Sending request to:", url);
-
     $http.post(url, data)
       .then(function (response) {
         if (!response.data) {

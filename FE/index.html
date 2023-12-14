@@ -12,9 +12,11 @@
 
     <title>CodeWalkers Ecommerce</title>
 
+
     <!-- Vendor CSS Files -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <!-- <link href="assets/scss/button.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
@@ -50,7 +52,6 @@
     <link rel="stylesheet" href="assets/css/owl-carousel.css">
 
     <link rel="stylesheet" href="assets/css/lightbox.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -63,19 +64,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
-    <!--
+    <!-- Include jQuery via CDN -->
 
-TemplateMo 571 Hexashop
 
-https://templatemo.com/tm-571-hexashop
 
--->
+
 </head>
 <style>
-    .menu li a{
+    .menu li a {
         color: white;
     }
 </style>
+
 <body ng-app="app" ng-controller="LayOutController" id="pageContent">
 
     <!-- ***** Preloader Start ***** -->
@@ -96,12 +96,13 @@ https://templatemo.com/tm-571-hexashop
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
                         <a href="#home" class="logo">
-                            <img src="assets/img/logo.png" style="width: 250px; margin-top: -30px; ">
+                            <img src="assets/img/logo.png" style="width: 250px; margin-top: -30px; margin-left: -130px; ">
                         </a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav menu" style="right: 13%; font-family: sans-serif;">
                             <li class=""><a href="#home" class="">TRANG CHỦ</a> </li>
+                            <li class=""><a href="#product/all" class="">SẢN PHẨM</a> </li>
                             <li class=""><a href="#about">VỀ CHÚNG TÔI</a></li>
                             <li class=""><a href="#contact">LIÊN HỆ</a></li>
 
@@ -132,7 +133,8 @@ https://templatemo.com/tm-571-hexashop
                                     <span
                                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger w-50">0
                                     </span></a></li>
-                                    <img src="assets/img/chris_banner_candy.png" alt="" srcset="" style="height: 100px; width: 300px; margin: -35px -200px 0px 60px">
+                            <img src="assets/img/chris_banner_candy.png" alt="" srcset=""
+                                style="height: 100px; width: 300px; margin: -35px -200px 0px 60px">
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -263,6 +265,7 @@ https://templatemo.com/tm-571-hexashop
     <!-- Global Init -->
     <script src="assets/js_home/custom.js"></script>
 
+    
     <script>
 
         $(function () {

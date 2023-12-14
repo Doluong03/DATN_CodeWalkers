@@ -4,6 +4,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
   $scope.sizePage = 5;
   $scope.lastIndex = 0; // phần tử cuối của mảng
   $scope.isDeleted = false;
+  $scope.listAllUSers=[];
   //config headers
   var headers = {
     headers: {
@@ -132,7 +133,21 @@ window.UserController = function ($scope, $http, $window, $timeout) {
         $scope.listUSers = response.data.usersList;
         $scope.totalPage = response.data.totalPages;
         $scope.lastIndex = $scope.listUSers[$scope.listUSers.length - 1].id;
-        console.log( response.data);
+        console.log(response.data);
+      },
+      function (error) {
+        // Xử lý lỗi
+        console.log(error);
+      }
+    );
+  };
+  $scope.getAll = function () {
+    let apiUrl = `${host}/user/getAll`;
+    $http.get(apiUrl, headers).then(
+      function (response) {
+        // Xử lý phản hồi thành công
+        $scope.listAllUSers = response.data;
+        console.log(response.data,'a');
       },
       function (error) {
         // Xử lý lỗi
@@ -150,6 +165,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
 
   // Gọi hàm hienThi() để lấy dữ liệu ban đầu
   $scope.hienThi($scope.pageNo, $scope.sizePage);
+  $scope.getAll();
 
 
   $scope.switchAcc = function () {
@@ -176,6 +192,18 @@ window.UserController = function ($scope, $http, $window, $timeout) {
 
   //delete data
 
+  $scope.updateInActive = function (userId) {
+    let api = apiURL + "admin/User/updateInActive/" + userId;
+    $http
+      .put(api, headers)
+      .then(function (response) {
+        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+        console.log("here")
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   $scope.removeStaff = function (event, item) {
     event.preventDefault();
 
@@ -196,9 +224,12 @@ window.UserController = function ($scope, $http, $window, $timeout) {
         $http
           .delete(api, headers)
           .then(function (response) {
+            if (response.data.data === false) {
+              $scope.updateInActive(userId);
+            }
             Swal.fire("Xóa thành công!", "", "success");
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-            console.log(response);
+            console.log(response, 'aaaa');
           })
           .catch(function (error) {
             console.log(error);
@@ -209,6 +240,33 @@ window.UserController = function ($scope, $http, $window, $timeout) {
       }
     });
   };
+
+    //switch status
+    $scope.switchStatus = function (id) {
+      let api =  apiURL + "admin/User/switchStatus/" + id;
+      $http.post(api, null).then(function (res) {
+        console.log(res.data);
+        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+      });
+    };
+  //show bill
+  $scope.loadBillByUs = function (idUser) {
+    var url = `${host}/api/getBill`;
+    var config = {
+      params: { idUser: idUser },
+    };
+    $http
+      .get(url, config)
+      .then(function (res) {
+        $scope.itemsOrder = res.data.filter(bill => bill.status !== 0 || bill.status > 6);
+        $scope.totalPrice = 0;
+        console.log("Danh sách đơn hàng", res.data);
+      })
+      .catch(function (error) {
+        console.log("Lỗi khi tải danh sách", error);
+      });
+  };
+  //end show bill
 
   // show form add
   $scope.showForm = false; // Mặc định ẩn form
@@ -224,11 +282,66 @@ window.UserController = function ($scope, $http, $window, $timeout) {
     $scope.formUser = {};
   };
   // add one product
+  $scope.isValidDate = function () {
 
+    if (!$scope.formUser.dateOfBirth) {
+      return false; // Date is not set
+    }
+
+    var today = new Date();
+    var birthDate = new Date($scope.formUser.dateOfBirth);
+
+    // Calculate age
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    // Check if age is greater than or equal to 15
+    return age >= 15;
+  };
+  $scope.$watch('formUser.dateOfBirth', function (newValue, oldValue) {
+    $scope.myForm.dateOfBirth.$setValidity('dateTooYoung', $scope.isValidDate());
+  });
+
+  $scope.phoneNumberExists = function () {
+
+    if (!$scope.formUser.phoneNumber) {
+      return false; // Phone number is not set, consider it not existing
+    }
+    return $scope.listAllUSers.some(staff => staff.phoneNumber === $scope.formUser.phoneNumber);
+  };
+  $scope.$watch('formUser.phoneNumber', function (newValue, oldValue) {
+    $scope.myForm.phoneNumber.$setValidity('phoneNumberExists', !$scope.phoneNumberExists());
+  });
+
+  $scope.$watch('formUser.email', function (newValue, oldValue) {
+    $scope.myForm.email.$setValidity('emailExists', !$scope.emailExists());
+  });
+  console.log($scope.listAllUSers,'aa')
+
+  $scope.emailExists = function () {
+    if (!$scope.formUser.email) {
+      return false; // Email is not set, consider it not existing
+    }
+    return $scope.listAllUSers.some(staff => staff.email === $scope.formUser.email);
+  };
   $scope.addUser = function (event) {
     event.preventDefault();
     console.log($scope.formUser);
-
+    if (!$scope.formUser.name
+      || !$scope.formUser.phoneNumber
+      || !$scope.formUser.gender
+      || !$scope.formUser.email
+      || !$scope.formUser.dateOfBirth
+    ) {
+      // Nếu form không hợp lệ, thông báo lỗi và ngăn chặn việc thực hiện tiếp
+      // console.log("Vui lòng điền đầy đủ thông tin cần thiết.");
+      $scope.checkAdd = true;
+      return;
+    }
     Swal.fire({
       title: "Xác nhận",
       text: "Bạn có chắc chắn muốn thực hiện hành động này?",

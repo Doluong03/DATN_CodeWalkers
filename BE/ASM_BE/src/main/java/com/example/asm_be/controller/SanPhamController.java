@@ -86,4 +86,9 @@ public class SanPhamController {
                 .body(new ResponeObject("success", "Delete thanh cong", this.productService.delete(idProduct)));
 
     }
+    @PostMapping("/admin/Product/switchStatus/{id}")
+    public ResponseEntity<?> turnOn(@PathVariable("id") int id) {
+        this.productService.switchStatus(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

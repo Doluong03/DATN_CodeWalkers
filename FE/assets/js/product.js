@@ -9,14 +9,13 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
     $scope.itemsSort = [];
     $scope.brands = [];
     $scope.itemsBs = [];
-
+    $scope.filteredItems = [];
+    $scope.displayedItems = [];
     $scope.loadBrand = function () {
         var url = `${host}/api/product/brand`;
         $http.get(url).then(res => {
             $scope.brands = res.data;
-            console.log(res.data);
-            console.log("Success", res);
-    
+
             // Check if brandName is provided in the URL
             var brandNameFromUrl = $routeParams.brandName;
             if (brandNameFromUrl) {
@@ -24,10 +23,9 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
                 // Your logic to select the brand based on brandNameFromUrl
                 // For example, mark the brand as selected
                 var selectedBrand = $scope.brands.find(function (brand) {
-                    console.log(brandNameFromUrl,brand,'here');
                     return brand.name === brandNameFromUrl;
                 });
-    
+
                 if (selectedBrand) {
                     $scope.chooseBr(selectedBrand);
                 }
@@ -36,13 +34,11 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
             console.log("Error", error);
         });
     };
-    
+
     $scope.loadCategory = function () {
         var url = `${host}/api/product/category`;
         $http.get(url).then(res => {
             $scope.categories = res.data;
-            console.log(res.data);
-            console.log("Success", res);
         }).catch(error => {
             console.log("Error", error);
         });
@@ -51,8 +47,6 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
         var url = `${host}/api/product/material`;
         $http.get(url).then(res => {
             $scope.materials = res.data;
-            console.log(res.data);
-            console.log("Success", res);
         }).catch(error => {
             console.log("Error", error);
         });
@@ -61,8 +55,6 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
         var url = `${host}/api/product/color`;
         $http.get(url).then(res => {
             $scope.colors = res.data;
-            console.log(res.data);
-            console.log("Success", res);
         }).catch(error => {
             console.log("Error", error);
         });
@@ -71,8 +63,6 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
         var url = `${host}/api/detail/size`;
         $http.get(url).then(res => {
             $scope.sizes = res.data;
-            console.log(res.data);
-            console.log("Success", res);
         }).catch(error => {
             console.log("Error", error);
         });
@@ -122,24 +112,96 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
         });
     }
     $scope.products = 1;
+    // Initialize or set these values based on your requirements
+    $scope.currentPage = 1;
+    $scope.itemsPerPage = 8;
+    $scope.totalPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage);
+    $scope.pageCurrent = $scope.currentPage;
+
+    $scope.pageChanged = function () {
+        $scope.totalPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage);
+        var begin = ($scope.currentPage - 1) * $scope.itemsPerPage;
+        var end = begin + $scope.itemsPerPage;
+        $scope.displayedItems = $scope.filteredItems.slice(begin, end);
+        // $anchorScroll("pageContent");
+    };
+
+    $scope.$watchGroup(['filteredItems', 'currentPage', 'itemsPerPage'], function (newVals, oldVals) {
+        if (newVals[0] !== oldVals[0] || newVals[2] !== oldVals[2]) {
+            $scope.currentPage = 1;
+        }
+        $scope.pageChanged();
+    });
+
+    $scope.getPages = function () {
+        var pages = [];
+        for (var i = 1; i <= $scope.totalPages; i++) {
+            pages.push(i);
+        }
+        return pages;
+    };
+
+    $scope.setPage = function (page) {
+        $scope.currentPage = page;
+        $scope.pageCurrent = page;
+        $scope.pageChanged();
+    };
+
+    $scope.next = function () {
+        if ($scope.currentPage < $scope.totalPages) {
+            $scope.currentPage++;
+            $scope.pageCurrent = $scope.currentPage;
+            $scope.pageChanged();
+        }
+    };
+
+    $scope.previous = function () {
+        if ($scope.currentPage > 1) {
+            $scope.currentPage--;
+            $scope.pageCurrent = $scope.currentPage;
+            $scope.pageChanged();
+        }
+    };
+
+    $scope.pageRange = function () {
+        var pages = [];
+    
+        // Calculate start and end page
+        var startPage = Math.max(1, $scope.currentPage - 1);
+        var endPage = Math.min($scope.totalPages, startPage + 3);
+    
+        // Ensure we have 4 pages or less
+        while (endPage - startPage < 3 && startPage > 1) {
+            startPage--;
+        }
+    
+        // Build the array of page numbers
+        for (var i = startPage; i <= endPage; i++) {
+            pages.push(i);
+        }
+    
+        return pages;
+    };
+    
+
+
+    // Call pageChanged to initialize pagination
+    $scope.pageChanged();
 
     $scope.loadAllPr = function () {
         var url = `${host}/api/product_bs`;
         $http.get(url).then(res => {
-            $scope.items = res.data;
-            $scope.filteredItems = res.data;
-            console.log(res.data);
-            console.log("Success", res);
-            
+            $scope.items = res.data.filter(pr => pr.status.id == 1);
+            $scope.filteredItems = res.data.filter(pr => pr.status.id == 1);
             var promoUrl = `${host}/api/active_promotions`;
             $http.get(promoUrl).then((promoRes) => {
                 var activePromotions = promoRes.data;
-            
+
                 // Kiểm tra xem có chương trình khuyến mãi hay không
                 if (activePromotions && activePromotions.length > 0) {
                     // Bước 2: Tạo một đối tượng để ánh xạ id sản phẩm với mảng thông tin khuyến mãi
                     var productPromotionsMap = {};
-            
+
                     // Bước 3: Lặp qua các chương trình khuyến mãi
                     activePromotions.forEach((promo) => {
                         if (
@@ -157,42 +219,42 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
                                     if (!productPromotionsMap[promoDetail.productDetail.id]) {
                                         productPromotionsMap[promoDetail.productDetail.id] = [];
                                     }
-            
+
                                     // Thêm thông tin khuyến mãi vào mảng
                                     productPromotionsMap[promoDetail.productDetail.id].push(
                                         promoDetail
                                     );
-            
+
                                     // Thêm trường promotionId vào chi tiết khuyến mãi
                                     promoDetail.promotionId = promo.id;
                                 }
                             });
                         }
                     });
-            
+
                     // In ra để kiểm tra
-                    console.log(productPromotionsMap);
-            
+                    // console.log(productPromotionsMap);
+
                     // Bước 4: Kiểm tra và áp dụng giảm giá cho từng sản phẩm
                     $scope.items.forEach((item) => {
                         // Tìm thông tin khuyến mãi áp dụng cho sản phẩm
                         var productPromotion = productPromotionsMap[item.id];
-            
+
                         if (productPromotion && productPromotion.length > 0) {
                             // Bước 5: Sắp xếp chi tiết khuyến mãi theo thời gian giảm dần
                             productPromotion.sort((a, b) => b.createdDate - a.createdDate);
-            
+
                             // Bước 6: Lấy chi tiết khuyến mãi mới nhất
                             var latestPromoDetail = productPromotion[0];
-            
+
                             // Thêm trường priceWithPromo vào item
                             item.priceWithPromo = latestPromoDetail
                                 ? latestPromoDetail.discount
                                 : item.price;
-            
+
                             // Thêm trường promotionId vào item
                             item.promotionId = latestPromoDetail ? latestPromoDetail.promotionId : null;
-            
+
                             // Đánh dấu sản phẩm có chương trình khuyến mãi
                             item.hasPromotion = true;
                         } else {
@@ -212,18 +274,10 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
                         item.priceWithPromo = item.price;
                     });
                 }
-            
-                console.log($scope.items);
                 $scope.numVisibleItems = 4;
             }).catch((error) => {
                 console.log("Error", error);
             });
-            
-
-            
-            // Gọi loadDetail sau khi tải dữ liệu thành công
-            $scope.numVisibleItems = 4;
-            $scope.slides = $scope.splitIntoSlides($scope.items, $scope.numVisibleItems);
         }).catch(error => {
             console.log("Error", error);
         });
@@ -235,8 +289,13 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
         // Gửi yêu cầu sắp xếp đến API Spring Boot với tiêu chí sắp xếp được truyền vào
         console.log('/api/product/sortBy');
         var url = `${host}/api/product/sortBy?sortBy=` + sortBy;
-
-        $http.post(url, $scope.filteredItems).then(res => {
+        // Giả sử mảng của bạn được lưu trữ trong res.data
+        $scope.filteredItemsNew = $scope.filteredItems.map(item => {
+            const { hasPromotion, priceWithPromo, promotionId, ...rest } = item;
+            return rest;
+        });
+        console.log($scope.filteredItemsNew, 'a')
+        $http.post(url, $scope.filteredItemsNew).then(res => {
             $scope.filteredItems = res.data;
             console.log(res.data);
             // Gọi loadDetail sau khi tải dữ liệu thành công
@@ -249,20 +308,16 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
         var url = `${host}/api/get-all-pr`;
         $http.get(url).then(res => {
             $scope.itemsBs = res.data;
-            console.log($scope.currentImageSource);
-            console.log("itemsBs", res);
-            // Gọi loadDetail sau khi tải dữ liệu thành công
-            //  $scope.loadDetail();
         }).catch(error => {
             console.log("Error", error);
         });
     }
     $scope.loadAllPrBs();
-    $scope.getTotalQuantity = function(item) {
+    $scope.getTotalQuantity = function (item) {
         // Lọc danh sách itemsBs2 theo id sản phẩm
         var filteredItems = $scope.itemsBs.filter(prDt => prDt.product.id === item.product.id);
         // Sử dụng reduce để tính tổng số lượng
-        $scope.totalQuantity= filteredItems.reduce((total, prDt) => total + prDt.quantity, 0);
+        $scope.totalQuantity = filteredItems.reduce((total, prDt) => total + prDt.quantity, 0);
         return $scope.totalQuantity;
     };
     $scope.loadDetail = function (idPR) {
@@ -363,9 +418,9 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
     $scope.chooseBr = function (br) {
         br.isSelected = !br.isSelected;
         $scope.filterByAttributes();
-        $scope.type= br.name;
+        $scope.type = br.name;
     };
-  
+
     $scope.getTextColor = function (colorName) {
         if (colorName in $scope.colorMapping) {
             // Nếu tên màu có trong ánh xạ, sử dụng ánh xạ để lấy mã màu CSS
@@ -397,6 +452,7 @@ app.controller("ProductController", function ($scope, $http, $routeParams, $loca
             return 0; // Hoặc giá trị mặc định tùy theo trường hợp.
         }
     }
+
 
     $scope.loadAllPrBs()
     $scope.loadSize();

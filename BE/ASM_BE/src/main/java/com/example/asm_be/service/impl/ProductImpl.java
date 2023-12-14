@@ -1,6 +1,7 @@
 package com.example.asm_be.service.impl;
 
 import com.example.asm_be.entities.Color;
+import com.example.asm_be.entities.Material;
 import com.example.asm_be.entities.Product;
 import com.example.asm_be.repositories.ProductRepository;
 import com.example.asm_be.service.ProductService;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -67,6 +69,15 @@ public class ProductImpl implements ProductService {
         } catch (Exception var3) {
             var3.getMessage();
             return false;
+        }
+    }
+    @Override
+    public void switchStatus(Integer id) {
+        Optional<Product> optinalBrand = productRepository.findById(id);
+        if (optinalBrand.isPresent()) {
+            Product product = optinalBrand.get();
+            product.setStatus(!product.isStatus());
+            productRepository.save(product);
         }
     }
 }

@@ -80,6 +80,10 @@ public class MauSacController {
                 .body(new ResponeObject("success", "Delete thanh cong", this.colorService.delete(idColor)));
 
     }
-
+    @PostMapping("/admin/Color/switchStatus/{id}")
+    public ResponseEntity<?> turnOn(@PathVariable("id") int id) {
+        this.colorService.switchStatus(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

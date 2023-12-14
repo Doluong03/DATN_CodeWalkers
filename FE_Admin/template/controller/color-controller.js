@@ -177,7 +177,14 @@ window.ColorController = function ($scope, $http, $window, $timeout) {
     });
 
   };
-
+  //switch status
+  $scope.switchStatus = function (id) {
+    let api = apiURL + "admin/Color" + "/switchStatus/" + id;
+    $http.post(api, null).then(function (res) {
+        console.log(res.data);
+        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+    });
+};
   $scope.closeModal = function (id) {
     document.getElementById(id).style.display = ('none')
     $('body').removeClass('modal-open'); // Loại bỏ class 'modal-open' khỏi body

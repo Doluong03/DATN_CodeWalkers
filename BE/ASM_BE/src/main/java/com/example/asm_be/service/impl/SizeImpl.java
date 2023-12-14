@@ -1,6 +1,7 @@
 package com.example.asm_be.service.impl;
 
 import com.example.asm_be.entities.Address;
+import com.example.asm_be.entities.Material;
 import com.example.asm_be.entities.Size;
 import com.example.asm_be.repositories.AddressRepository;
 import com.example.asm_be.repositories.SizeRepository;
@@ -79,5 +80,15 @@ public class SizeImpl implements SizeService {
     @Override
     public Size findByName(String name) {
         return sizeRepository.findByName(name);
+    }
+
+    @Override
+    public void switchStatus(Integer id) {
+        Optional<Size> optinalBrand = sizeRepository.findById(id);
+        if (optinalBrand.isPresent()) {
+            Size size = optinalBrand.get();
+            size.setStatus(!size.isStatus());
+            sizeRepository.save(size);
+        }
     }
 }

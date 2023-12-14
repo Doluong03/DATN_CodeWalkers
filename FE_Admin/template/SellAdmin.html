@@ -8,8 +8,8 @@
         <div class="nav nav-tabs col ms-3" id="nav-tab" role="tablist">
             <button class="nav-link" ng-repeat="tab in tabs" ng-class="{ 'active': tab.active }"
                 ng-click="activateTab(tab)" ng-style="{'font-weight': tab.active ? 'bold' : 'normal'}">
-                {{ tab.title }}
-                <span ng-click="removeTab(tab)" style="cursor: pointer; margin-left: 5px;" ng-if="tabs.length > 0 "><i
+                {{ tab.title }} 
+                <span ng-click="removeBill(tab)" style="cursor: pointer; margin-left: 5px;" ng-if="tabs.length > 0 "><i
                         class="fa-sharp fa-solid fa-xmark ms-2"></i></span>
             </button>
 
@@ -244,7 +244,7 @@
                         </div>
                         <div class="text-end">
                             <button id="btn-action-cancel" type="button" class="btn btn-secondary " data-dismiss="modal"
-                                ng-click="removeTab(tab)">Hủy</button>
+                                ng-click="removeBill(tab)">Hủy</button>
                             <button id="btn-action-add" type="submit" class="btn btn-primary">Xuất hóa đơn</button>
                         </div>
                     </form>

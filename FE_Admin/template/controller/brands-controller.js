@@ -182,6 +182,15 @@ window.BrandsController = function ($scope, $http, $window, $timeout) {
   };
 
 
+$scope.switchStatus = function (id) {
+    let api = apiBrands + "/switchStatus/" + id;
+    $http.post(api, null).then(function (res) {
+        console.log(res.data);
+        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+    });
+};
+
+
   $scope.closeModal = function (id) {
     document.getElementById(id).style.display = ('none')
     $('body').removeClass('modal-open'); // Loại bỏ class 'modal-open' khỏi body

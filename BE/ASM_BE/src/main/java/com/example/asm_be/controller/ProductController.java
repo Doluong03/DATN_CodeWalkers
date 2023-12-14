@@ -68,4 +68,5 @@ public class ProductController {
         List<ProductDetail> filteredProducts = productDetailService.filterProductsByAttributes( productFilterDTO);
         return new ResponseEntity<>(filteredProducts, HttpStatus.OK);
     }
+
 }

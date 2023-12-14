@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<Users, Integer> {
     Optional<Users> findByUserName(String userName);
 
-    @Query("SELECT c FROM Users c WHERE c.status = true AND (:userNameParam = false AND c.userName IS NULL OR :userNameParam = true AND c.userName IS NOT NULL)")
+    @Query("SELECT c FROM Users c WHERE (c.email is not null ) and (:userNameParam = false AND c.userName IS NULL OR :userNameParam = true AND c.userName IS NOT NULL)")
     Page<Users> findByAcc(@Param("userNameParam") boolean userNameParam, Pageable pageable);
 
 

@@ -22,7 +22,7 @@
   </div>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="width: 1000px;">
         <div class="modal-body">
           <div id="carouselExample2" class="carousel slide">
             <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
@@ -162,7 +162,7 @@
 
 <div class="like mb-5 " style="width: 1400px;margin-left: 350px; ">
   <div class="row">
-    <div class="col-lg">You Might Also Like</div>
+    <div class="col-lg">Có thể bạn sẽ thích</div>
     <div class="col-lg text-end">
       <button class="btn btn-secondary" type="button" ng-click="prevSlide()" data-bs-target="#carouselExample">
         <i class="bi bi-chevron-left"></i> <span class="visually-hidden">Previous</span>
@@ -182,7 +182,7 @@
             <a ng-href="#/product-detail/{{pr.id}}">
               <img ng-src="assets/img/product/sp1/{{pr.listImage[0].link }}"
                   alt="{{pr.listImage[0].link }}" style="height: 200px; background-color: whitesmoke; ">
-              <h4 class="ms-5 text-dark" >{{ pr.name }}</h4>
+              <h4 class="ms-5 text-dark" >{{ pr.category.name }}</h4>
           </a>
           </div>
         </div>

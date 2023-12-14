@@ -464,5 +464,18 @@ myApp.filter('orderStatus2', function () {
       return statusMapping[input] || 'Không xác định';
   };
 });
+myApp.filter('orderStatus', function () {
+  return function (input) {
+      var statusMapping = {
+          1: 'Chờ xác nhận',
+          2: 'Chờ giao hàng',
+          3: 'Đang giao hàng',
+          4: 'Hoàn thành',
+          5: 'Đã hủy',
+          6: 'Mua hàng tại quầy'
+      };
 
+      return statusMapping[input] || 'Không xác định';
+  };
+});
 

@@ -183,6 +183,15 @@ window.CategoryController = function ($scope, $http, $window, $timeout) {
 
   };
 
+
+  //switch status
+  $scope.switchStatus = function (id) {
+    let api = apiCategory + "/switchStatus/" + id;
+    $http.post(api, null).then(function (res) {
+        console.log(res.data);
+        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+    });
+};
   // show form add
   $scope.showForm = false; // Mặc định ẩn form
   $scope.toggleForm = function () {

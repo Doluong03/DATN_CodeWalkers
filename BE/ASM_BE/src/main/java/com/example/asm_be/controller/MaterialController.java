@@ -54,4 +54,9 @@ public MaterialRespone getAllMaterial(@RequestParam(value = "pageNo",defaultValu
     public ResponseEntity<ResponObject> deleteStaff(@PathVariable("id") Integer idMaterial) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Delete thanh cong", this.materialService.delete(idMaterial)));
     }
+    @PostMapping("/Material/switchStatus/{id}")
+    public ResponseEntity<?> turnOn(@PathVariable("id") int id) {
+        this.materialService.switchStatus(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

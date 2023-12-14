@@ -9,7 +9,7 @@
 
 
       <div class="search-container">
-        <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a Product">
+        <input type="text" id="btn-search" ng-model="searchText" placeholder="Tìm kiềm sản phẩm">
         <i class="fa-light fa-magnifying-glass"></i>
       </div>
 
@@ -105,14 +105,13 @@
               <td ng-show="columns[3].selected" style="text-align: start; height: 10px;"> {{item.description}}</td>
               <td ng-show="columns[4].selected" style="text-align: start;"> {{item.brands.name}}</td>
               <td ng-show="columns[5].selected" style="text-align: start;"> {{item.category.name}}</td>
-              <td ng-show="columns[6].selected" style="text-align: center;">
-                <span ng-if="item.status == true" style="margin-left: -9px;">
-                  <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i> Active
+              <td ng-click="switchStatus(item.id)">
+                <span ng-show="columns[6].selected" style="text-align: center;">
+                    <i ng-if="item.status" class="fa-2xl fa fa-toggle-on"
+                        style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
+                    <i ng-if="!item.status" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
                 </span>
-                <span ng-if="item.status != true">
-                  <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Disable
-                </span>
-              </td>
+            </td>
               <td>
                 <a href="#" ng-click="toggleFormUpdate($event, item)" data-toggle="modal"
                   data-target="#productUpdateModal" style="text-decoration: none; color: rgb(62, 44, 165);">
@@ -214,25 +213,25 @@
             </div>
 
             <div class="form-group">
-              <label for="exampleInputRate">Brands</label>
-              <select class="form-control" id="exampleInputRate" ng-model="formproduct.brands.id"
+              <label for="exampleInputRate">Thương hiệu</label>
+              <select class="form-select" id="exampleInputRate" ng-model="formproduct.brands.id"
                 ng-class="{'is-invalid': checkAddress && !formproduct.brands.id}">
-                <option value="" disabled>-- Select a brand --</option>
+                <option value="" disabled>-- Chọn thương hiệu --</option>
                 <option ng-repeat="item in brands" value={{item.id}}>{{item.name}}</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="exampleInputRate">Category</label>
-              <select class="form-control" id="exampleInputRate" ng-model="formproduct.category.id"
+              <label for="exampleInputRate">Phân loại</label>
+              <select class="form-select" id="exampleInputRate" ng-model="formproduct.category.id"
                 ng-class="{'is-invalid': checkAddress && !formproduct.category.id}">
-                <option value="" disabled>-- Select a category --</option>
+                <option value="" disabled>-- Chọn phân loại --</option>
                 <option ng-repeat="item in category" value={{item.id}}>{{item.name}}</option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="exampleSelectGender">Trạng Thái</label>
-              <select class="form-control" ng-model="formproduct.status"
+              <select class="form-select" ng-model="formproduct.status"
                 ng-class="{'is-invalid': checkAddress && !formproduct.status}">
                 <option value="" disabled>-- Chọn Trạng thái --</option>
                 <option value=true>Đang hoạt động</option>
@@ -241,9 +240,9 @@
             </div>
             <div class="modal-footer">
               <button id="btn-action-cancel" type="button" class="btn btn-secondary"
-                data-dismiss="modal">Cancel</button>
+                data-dismiss="modal">Hủy</button>
               <button id="btn-action-add" type="button" class="btn btn-primary"
-                ng-click="addProduct($event)">Submit</button>
+                ng-click="addProduct($event)">Thêm mới</button>
             </div>
           </form>
 
@@ -310,24 +309,24 @@
                 ng-class="{'is-invalid': checkUpdate && !formProductUpdate.description}"></textarea>
             </div>
             <div class="form-group">
-              <label for="exampleInputRate">Brands</label>
-              <select class="form-control" id="exampleInputRate" ng-model="formProductUpdate.brands.id"
+              <label for="exampleInputRate">Thương hiệu</label>
+              <select class="form-select" id="exampleInputRate" ng-model="formProductUpdate.brands.id"
                 ng-options="brands.id as brands.name for brands in brands"
                 ng-class="{'is-invalid': checkUpdate && !formProductUpdate.brands.id}">
-                <option value="">Select a brand</option>
+                <option value="">Chọn thương hiệu</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="exampleInputRate">Category</label>
-              <select class="form-control" id="exampleInputRate" ng-model="formProductUpdate.category.id"
+              <label for="exampleInputRate">Phân loại</label>
+              <select class="form-select" id="exampleInputRate" ng-model="formProductUpdate.category.id"
                 ng-options="category.id as category.name for category in category"
                 ng-class="{'is-invalid': checkUpdate && !formProductUpdate.category.id}">
-                <option value="">Select a category</option>
+                <option value="">Chọn phân loại</option>
               </select>
             </div>
             <div class="form-group">
               <label for="exampleSelectGender">Trạng Thái</label>
-              <select class="form-control" id="exampleSelectGender" ng-model="formProductUpdate.status"
+              <select class="form-select" id="exampleSelectGender" ng-model="formProductUpdate.status"
                 ng-options="status as (status ? 'Đang hoạt động' : 'Ngừng hoạt động') for status in [true, false]"
                 ng-class="{'is-invalid': checkUpdate && !formProductUpdate.status}">
                 <option value="" disabled>-- Chọn Trạng thái --</option>
@@ -336,9 +335,9 @@
 
             <div class="modal-footer">
               <button id="btn-action-cancel" type="button" class="btn btn-secondary"
-                data-dismiss="modal">Cancel</button>
+                data-dismiss="modal">Hủy</button>
               <button id="btn-action-add" type="button" class="btn btn-primary"
-                ng-click="UpdateProduct($event)">Submit</button>
+                ng-click="UpdateProduct($event)">Cập nhật</button>
             </div>
           </form>
 

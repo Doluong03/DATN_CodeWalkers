@@ -1,5 +1,6 @@
 package com.example.asm_be.service.impl;
 
+import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.repositories.UserRepository;
 import com.example.asm_be.request.UserRequest;
@@ -62,6 +63,17 @@ public class UserImpl implements UserService {
             return false;
         }
     }
+    public boolean updateInActive(int  id) {
+        try {
+            Users users = userRepository.findById(id).get();
+            users.setStatus(false);
+            this.userRepository.save(users);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
+    }
 
     public boolean delete(Integer idUsers) {
         try {
@@ -101,5 +113,16 @@ public class UserImpl implements UserService {
     @Override
     public List<Users> getUserNew() {
         return userRepository.getUserNew();
+    }
+
+    @Override
+    public void switchStatus(Integer id) {
+        Optional<Users> optinalBrand = userRepository.findById(id);
+        System.out.println(optinalBrand.get().isStatus()+"aaaa");
+        if (optinalBrand.isPresent()) {
+            Users user = optinalBrand.get();
+            user.setStatus(!user.isStatus());
+            userRepository.save(user);
+        }
     }
 }

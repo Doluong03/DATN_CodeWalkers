@@ -78,9 +78,8 @@ public class BillController {
     }
 
     @GetMapping("/api/getBill")
-    public ResponseEntity<Collection<Bill>> getBill(@RequestParam int idCart) {
-        Users users = userService.findByCartId(idCart);
-        return ResponseEntity.ok(billService.getByUser(users.getId()));
+    public ResponseEntity<Collection<Bill>> getBill(@RequestParam int idUser) {
+        return ResponseEntity.ok(billService.getByUser(idUser));
     }
 
 

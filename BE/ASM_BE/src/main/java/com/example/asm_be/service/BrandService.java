@@ -27,4 +27,5 @@ public interface BrandService {
 
      boolean delete( Integer idBrand);
 
+     void switchStatus(Integer id);
 }

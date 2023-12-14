@@ -182,7 +182,9 @@ app.controller("LayOutController", function ($scope, $http, $window, $cookies, $
             badge.textContent = res.data.length;
             console.log("Danh sách sản phẩm trong giỏ hàng", res.data);
             // Lặp qua danh sách sản phẩm và tính tổng tiền cho các sản phẩm được tích chọn
-            $scope.sendDetailUpdateRequest(res.data, cartId);
+            if(accessToken){
+                $scope.sendDetailUpdateRequest(res.data, cartId);
+            }
         }).catch(function (error) {
             console.log("Lỗi khi tải danh sách sản phẩm trong giỏ hàng", error);
         });
@@ -396,6 +398,16 @@ app.filter('orderStatus', function () {
         };
 
         return statusMapping[input] || 'Không xác định';
+    };
+});
+app.directive('ionRangeSlider', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            $(element).ionRangeSlider({
+                // Your Ion Range Slider options here
+            });
+        }
     };
 });
 

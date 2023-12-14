@@ -1,6 +1,7 @@
 package com.example.asm_be.service.impl;
 
 import com.example.asm_be.entities.Category;
+import com.example.asm_be.entities.Color;
 import com.example.asm_be.entities.Material;
 import com.example.asm_be.repositories.MaterialRepository;
 import com.example.asm_be.service.MaterialService;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class MaterialImpl implements MaterialService {
@@ -64,6 +66,15 @@ private MaterialRepository materialRepository;
         } catch (Exception var3) {
             var3.getMessage();
             return false;
+        }
+    }
+    @Override
+    public void switchStatus(Integer id) {
+        Optional<Material> optinalBrand = materialRepository.findById(id);
+        if (optinalBrand.isPresent()) {
+            Material material = optinalBrand.get();
+            material.setStatus(!material.isStatus());
+            materialRepository.save(material);
         }
     }
 }

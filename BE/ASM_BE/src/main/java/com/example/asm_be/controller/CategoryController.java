@@ -61,4 +61,10 @@ public CategoryRespone getAllCategory(@RequestParam(value = "pageNo",defaultValu
     public ResponseEntity<ResponObject> deleteStaff(@PathVariable("id") Integer idCategory) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Delete thanh cong", this.categoryService.delete(idCategory)));
     }
+    @PostMapping("/api/product/category/switchStatus/{id}")
+    public ResponseEntity<?> turnOn(@PathVariable("id") int id) {
+        this.categoryService.switchStatus(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

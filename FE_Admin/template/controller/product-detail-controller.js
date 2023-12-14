@@ -1,5 +1,5 @@
 
-window.productDetailController = function ($scope, $http, $window) {
+window.productDetailController = function ($scope, $http, $window, $timeout) {
 
 
   $scope.listProductDetail = [];
@@ -45,55 +45,7 @@ window.productDetailController = function ($scope, $http, $window) {
   $scope.displayedUsers = []; // Thêm mảng để hiển thị người dùng trên trang hiện tại
   $scope.finalMergedProducts = []; // Thêm mảng để lưu dữ liệu cần hiển thị
 
-  $scope.pageRange = function () {
-    var startPage = Math.max(1, $scope.pageCurrent - Math.floor($scope.itemsPerPage / 2));
-    var endPage = Math.min($scope.totalPage, startPage + $scope.itemsPerPage - 1);
-    var pages = [];
 
-    if ($scope.pageCurrent + Math.floor($scope.itemsPerPage / 2) > $scope.totalPage) {
-      startPage = Math.max(1, $scope.totalPage - $scope.itemsPerPage + 1);
-      endPage = $scope.totalPage;
-    }
-
-    if (startPage > 1) {
-      startPage = Math.max(1, startPage - 1);
-    }
-
-    for (var i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-
-    return pages;
-  };
-
-  $scope.nextPage = function () {
-    if ($scope.pageCurrent < $scope.totalPage - 1) {
-      $scope.pageCurrent++;
-      $scope.loadPage();
-    }
-  };
-
-  $scope.previousPage = function () {
-    if ($scope.pageCurrent > 0) {
-      $scope.pageCurrent--;
-      $scope.loadPage();
-    }
-  };
-
-  $scope.onHover = function (index) {
-    $scope.hoveredPage = index;
-  };
-
-  $scope.onLeave = function () {
-    $scope.hoveredPage = null;
-  };
-
-  $scope.loadPage = function () {
-    var startIndex = $scope.pageCurrent * $scope.itemsPerPage;
-    var endIndex = ($scope.pageCurrent + 1) * $scope.itemsPerPage - 1;
-    $scope.displayedUsers = $scope.finalMergedProducts.slice(startIndex, endIndex + 1);
-    $scope.updateFinalMergedProducts();
-  };
 
   // end phân trang
 
@@ -143,17 +95,21 @@ window.productDetailController = function ($scope, $http, $window) {
         }
         $scope.updateFinalMergedProducts = function () {
           var mergedProducts = {};
-
+          $scope.detail.sort(function (a, b) {
+            return b.id - a.id;
+          });
           $scope.detail.forEach(function (product) {
             var englishColorName = convertColorName(product.color.name);
 
-            if (product.status.id === 1) {
+            if (product.status.id) {
               if (!mergedProducts[product.product.name]) {
                 // If the product doesn't exist, add a new entry
                 mergedProducts[product.product.name] = {
+                  id:product.product.id,
                   name: product.product.name,
                   sizes: [product.size.name],  // Use an array to store unique sizes
-                  colors: [englishColorName]   // Use an array to store unique colors
+                  colors: [englishColorName],   // Use an array to store unique colors
+                  status: product.product.status   // Use an array to store unique colors
                 };
               } else {
                 // If the product already exists, update sizes and colors only if not already present
@@ -180,6 +136,73 @@ window.productDetailController = function ($scope, $http, $window) {
       }
     );
   };
+
+  // phan trang 
+  // Assuming you have $scope.currentPage and $scope.itemsPerPage in your controller
+  $scope.pageRange = function () {
+    var startPage = Math.max(1, $scope.currentPage - Math.floor($scope.itemsPerPage / 2));
+    var endPage = Math.min($scope.totalPages(), startPage + $scope.itemsPerPage - 1);
+    var pages = [];
+
+    if ($scope.currentPage + Math.floor($scope.itemsPerPage / 2) > $scope.totalPages()) {
+      startPage = Math.max(1, $scope.totalPages() - $scope.itemsPerPage + 1);
+      endPage = $scope.totalPages();
+    }
+
+    if (startPage > 1) {
+      startPage = Math.max(1, startPage - 1);
+    }
+
+    for (var i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
+  $scope.currentPage = 1;
+  $scope.itemsPerPage = 5;  // Adjust the number of items per page as needed
+
+  $scope.paginateFinalMergedProducts = function () {
+    var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
+    var end = begin + $scope.itemsPerPage;
+
+    // Slice the array to get the current page's items
+    $scope.displayedFinalMergedProducts = $scope.finalMergedProducts.slice(begin, end);
+  };
+
+  // Watch for changes in currentPage or finalMergedProducts and update the displayed items
+  $scope.$watchGroup(['currentPage', 'finalMergedProducts'], function () {
+    $scope.paginateFinalMergedProducts();
+  });
+
+  // Function to change the current page
+  $scope.setPage = function (pageNo) {
+    $scope.currentPage = pageNo;
+  };
+
+  // Function to navigate to the previous or next page
+  $scope.prevPage = function () {
+    if ($scope.currentPage > 1) {
+      $scope.currentPage--;
+    }
+  };
+
+  $scope.nextPage = function () {
+    if ($scope.currentPage < $scope.totalPages()) {
+      $scope.currentPage++;
+    }
+  };
+
+  // Calculate the total number of pages
+  $scope.totalPages = function () {
+    return Math.ceil($scope.finalMergedProducts.length / $scope.itemsPerPage);
+  };
+
+  // Initialize the displayed items
+  $scope.paginateFinalMergedProducts();
+
+
+  // end phan trang 
 
   $scope.PageNo = function (pageNo, sizePage) {
     $scope.pageCurrent = pageNo; // Cập nhật pageCurrent khi chọn trang cụ thể
@@ -227,11 +250,55 @@ window.productDetailController = function ($scope, $http, $window) {
     });
 
   };
+  $scope.switchStatusPr = function (item) {
+    let api = apiProductDetails +"/switch-all-by-pr/" + item.id;
+    $http.post(api, null).then(function (res) {
+      console.log(res.data);
+      $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+    });
+  };
 
+  $scope.toggleStatus = function (item) {
+    if (item.status.id==1) { 
+        $scope.turnOff(item);
+    } else {
+        $scope.turnOn(item);
+    }
+    $scope.Reload(item.product.name);
+
+    // Gọi hàm hiển thị sau khi cập nhật trạng thái
+    console.log(item.status.id,"")
+  };
+
+$scope.turnOn = function (item) {
+    let api = apiProductDetails +"/turn-on/" + item.id;
+    $http.post(api, null).then(function (res) {
+        console.log(res.data);
+        $scope.Reload(item.product.name);
+    });
+
+};
+
+$scope.turnOff = function (item) {
+    let api = apiProductDetails +"/turn-off/" + item.id;
+    $http.post(api, null).then(function (res) {
+        console.log(res.data);
+        $scope.Reload(item.product.name);
+
+    });
+};
+  
   // show form add
   $scope.showForm = false; // Mặc định ẩn form
   $scope.toggleForm = function () {
+    $timeout(function () {
+      $('#exampleInputSize').val(null).trigger('change');
+      $('#product').val(null).trigger('change');
+    }, 100)
+
     if ($scope.showFormUpdate) {
+      // Bỏ chọn tất cả các giá trị đã chọn
+
       // Nếu form cập nhật đang mở, đóng nó trước khi mở form thêm mới
       $scope.showFormUpdate = false;
     }
@@ -243,17 +310,20 @@ window.productDetailController = function ($scope, $http, $window) {
   $scope.addUser = function (event) {
     if (!$scope.formProductDetail.quantity ||
       !$scope.formProductDetail.price ||
-      !$scope.formProductDetail.product.id ||
       !$scope.formProductDetail.material.id ||
-      !$scope.formProductDetail.size.id ||
-      !$scope.formProductDetail.color.id) {
+      !$scope.formProductDetail.color.id ||
+      $scope.selectSize.length == 0
+    ) {
+      console.log($scope.selectSize, '1')
       // Hiển thị thông báo lỗi
+      toastr.error('Vui lòng nhập đủ thông tin!', 'Thông báo');
       // Assuming you have a variable named checkProductDetail to handle the error message
       $scope.checkProductDetail = true;
       return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
-  }
-  
+    }
+
     event.preventDefault();
+
     console.log($scope.formProductDetail);
 
     Swal.fire({
@@ -265,35 +335,43 @@ window.productDetailController = function ($scope, $http, $window) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-       var checkExist= $scope.listProductDetail.find(prDt => prDt.product.id === $scope.formProductDetail.product.id && prDt.color.id === $scope.formProductDetail.color.id && prDt.size.id === $scope.formProductDetail.size.id)
-       if(checkExist){
-        Swal.fire({
-          icon: "error",
-          title: "Lỗi!",
-          text: "sản phẩm đã tồn tại. Vui lòng thử lại."
-        });
-        return
-       }
-       $http.post(apiProductDetails + "/insert", JSON.stringify($scope.formProductDetail))
-          .then(function (response) {
-            console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
-            Swal.fire({
-              icon: 'success',
-              title: 'Thêm thành công!',
-              text: 'Thông tin người dùng đã được thêm.'
+        console.log($scope.selectSize)
+        $scope.selectSize.forEach(function (size) {
+          console.log(Number(size.id), 'a')
+          var checkExist = $scope.listProductDetail.find(prDt => prDt.product.id === Number($scope.productData[0].id) && prDt.color.id === $scope.formProductDetail.color.id && prDt.size.id === Number(size.id))
+          if (checkExist) {
+            // toastr.error('Kích thước '+size.text+ ' đã tồn tại!' , 'Vui lòng chọn kích thước khác');
+            return;
+          }
+          $scope.formProductDetail.size = {};
+          $scope.formProductDetail.size.id = "";
+          $scope.formProductDetail.product = {};
+          $scope.formProductDetail.product.id = "";
+          $scope.formProductDetail.size.id = Number(size.id);
+          $scope.formProductDetail.product.id = Number($scope.productData[0].id);
+          console.log($scope.formProductDetail.product.id, 'ba')
+          $http.post(apiProductDetails + "/insert", JSON.stringify($scope.formProductDetail))
+            .then(function (response) {
+              console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
+              Swal.fire({
+                icon: 'success',
+                title: 'Thêm thành công!',
+                text: 'Thông tin người dùng đã được thêm.'
+              });
+              $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+              $scope.formProductDetail = {};
+              $scope.closeModal('formAddModal');
+            })
+            .catch(function (error) {
+              console.error("Error:", error);
+              Swal.fire({
+                icon: "error",
+                title: "Lỗi!",
+                text: "Đã xảy ra lỗi khi thêm người dùng. Vui lòng thử lại sau."
+              });
             });
-            $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-            $scope.formProductDetail = {};
-            $scope.closeModal('formAddModal');
-          })
-          .catch(function (error) {
-            console.error("Error:", error);
-            Swal.fire({
-              icon: "error",
-              title: "Lỗi!",
-              text: "Đã xảy ra lỗi khi thêm người dùng. Vui lòng thử lại sau."
-            });
-          });
+        })
+
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire('Hủy bỏ', '', 'error');
       }
@@ -362,8 +440,8 @@ window.productDetailController = function ($scope, $http, $window) {
       !$scope.formPdDetailUpdate.status.id) {
       // Hiển thị thông báo lỗi
       $scope.checkPdDetailUpdate = true;
-      return ; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
-  }
+      return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
+    }
     event.preventDefault();
     console.log($scope.formPdDetailUpdate);
 
@@ -436,6 +514,41 @@ window.productDetailController = function ($scope, $http, $window) {
       console.log("Error", error);
     });
   }
+  $scope.selectSize = [];
+
+  // select multiple size
+  angular.element(document).ready(function () {
+    // Set up a listener for the change event
+    $('#exampleInputSize').on('change', function () {
+      // Manually update the AngularJS model
+      $scope.$apply(function () {
+        $scope.selectedData = $('#exampleInputSize').select2('data');
+        // Check if any data is selected
+        if ($scope.selectedData && $scope.selectedData.length > 0) {
+          // Access the first selected data's id
+          // Assuming you want to remove the option with value 'first'
+          $scope.selectSize = $scope.selectedData;
+          console.log($scope.selectSize, '111')
+        }
+
+      });
+    });
+    $('#product').on('change', function () {
+      // Manually update the AngularJS model
+      $scope.$apply(function () {
+        $scope.productData = $('#product').select2('data');
+        // Check if any data is selected
+        if ($scope.productData && $scope.productData.length > 0) {
+          // Access the first selected data's id
+          // Assuming you want to remove the option with value 'first'
+          $scope.selectPr = $scope.productData;
+          console.log($scope.selectPr, '111')
+        }
+
+      });
+    });
+  });
+  // Initialize the formProductDetail object
   $scope.loadPr();
   $scope.loadSize();
   $scope.loadColor();
