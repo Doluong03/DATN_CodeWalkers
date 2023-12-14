@@ -1,8 +1,11 @@
 package com.example.asm_be.repositories;
 
 import com.example.asm_be.entities.Users;
+import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,4 +38,16 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
                
             """)
     List<Users> getUserOld();
+
+    @Query("select kh from Users kh where kh.rank.id =2")
+    List<Users> getUserSliver();
+
+    @Query("select kh from Users kh where kh.rank.id =3")
+    List<Users> getUserGold();
+
+    @Query("select kh from Users kh where kh.rank.id =4")
+    List<Users> getUserDiamond();
+
+    @Procedure(name = "CapNhatRankTheoIdKhachHang")
+    void capNhatRankTheoIdKhachHang(@Param("idKhachHang") int idKhachHang);
 }

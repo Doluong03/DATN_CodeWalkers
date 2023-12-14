@@ -101,4 +101,38 @@ public class UserImpl implements UserService {
     public List<Users> getUserNew() {
         return userRepository.getUserNew();
     }
+
+    @Override
+    public void updateRankUser(Integer idUser) {
+        userRepository.capNhatRankTheoIdKhachHang(idUser);
+    }
+
+    @Override
+    public boolean updatePointRankUser(Integer point,String userName) {
+        try {
+         Users users  = userRepository.findByUserName(userName).get();
+         users.setPoints(point);
+         userRepository.save(users);
+          updateRankUser(users.getId());
+            return true;
+        } catch (Exception var3) {
+            var3.getMessage();
+            return false;
+        }
+    }
+
+    @Override
+    public List<Users> getUserSliver() {
+        return userRepository.getUserSliver();
+    }
+
+    @Override
+    public List<Users> getUserGold() {
+        return userRepository.getUserGold();
+    }
+
+    @Override
+    public List<Users> getUserDiamond() {
+        return userRepository.getUserDiamond();
+    }
 }

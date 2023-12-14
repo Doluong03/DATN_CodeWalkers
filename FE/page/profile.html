@@ -1,14 +1,23 @@
 <div style="height: 100px;"></div>
 
-<div class=" ms-5 "style="padding: 0 96px 0 206px;" >
-    <div class="text-center  pt-5 pb-5 mt-2 mb-2 ms-1 fw-bold bg-light"
-        style="width: 1565px;">
+
+
+<div class=" ms-5 " style="padding: 0 96px 0 206px;">
+    <div class="text-center  pt-5 pb-5 mt-2 mb-2 ms-1 fw-bold bg-light" style="width: 1565px;">
         <h3>Thông tin cá nhân </h3>
+
+        <!-- Content for Kho voucher tab -->
+        <div id="voucher" class="tab-pane fade">
+            <h3>Kho voucher</h3>
+            <p>Nội dung của tab Kho voucher ở đây.</p>
+            {{listAllVouchers}}
+        </div>
+
+
     </div>
 
     <div class="tab-content ms-3" id="nav-tabContent">
-        <div class="tab-pane fade show active " id="nav-home" role="tabpanel"
-            aria-labelledby="nav-home-tab"
+        <div class="tab-pane fade show active " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
             tabindex="0">
 
             <div class="row">
@@ -19,70 +28,58 @@
                             <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
                         </div>
 
+                        <div>
+                            Hạng nè : {{info.rank}} <img style="width: 44px;height: 44px;" src="../assets/images/rank_ct.png" alt="rank ct"> <br>
+                            Điểm hiện có : {{info.points}}
+                        </div>
+
                         <div class="col text-center ">
-                            <img src="/assets/img/user/{{info.image}} "
-                                class="rounded-4 mt-3"
-                                style="width: 120px; height: 100px;"
-                                alt="{{info.image}}">
-                            <input type="file" id="imageInput" accept="image/*"
-                                style="display: none" file-input
+                            <img src="/assets/img/user/{{info.image}} " class="rounded-4 mt-3"
+                                style="width: 120px; height: 100px;" alt="{{info.image}}">
+                            <input type="file" id="imageInput" accept="image/*" style="display: none" file-input
                                 ng-model="info.image">
-                            <button class="btn text-start border mt-1 ms-2"
-                                ng-click="selectImage($event)">Chọn ảnh</button>
+                            <button class="btn text-start border mt-1 ms-2" ng-click="selectImage($event)">Chọn
+                                ảnh</button>
                         </div>
                         <hr>
                     </div>
                     <div>
                         <form action>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control"
-                                    id="floatingInputDisabled"
-                                    placeholder="name@example.com"
-                                    ng-model="info.userName" readonly>
+                                <input type="text" class="form-control" id="floatingInputDisabled"
+                                    placeholder="name@example.com" ng-model="info.userName" readonly>
                                 <label for="floatingInput">Tên đăng nhập
                                 </label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control"
-                                    id="floatingInputDisabled"
-                                    placeholder="name@example.com"
-                                    ng-model="info.fullName">
+                                <input type="text" class="form-control" id="floatingInputDisabled"
+                                    placeholder="name@example.com" ng-model="info.fullName">
                                 <label for="floatingTextarea">Họ và tên</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="email" class="form-control"
-                                    id="floatingInputDisabled"
-                                    placeholder="name@example.com"
-                                    ng-model="info.email">
+                                <input type="email" class="form-control" id="floatingInputDisabled"
+                                    placeholder="name@example.com" ng-model="info.email">
                                 <label for="floatingTextarea2">Email</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control"
-                                    id="floatingInputDisabled"
-                                    placeholder="name@example.com"
-                                    ng-model="info.phone">
+                                <input type="text" class="form-control" id="floatingInputDisabled"
+                                    placeholder="name@example.com" ng-model="info.phone">
                                 <label for="floatingTextarea2">Số điện thoại</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <select class="form-control"
-                                    id="exampleSelectGender"
-                                    ng-model="info.gender"
+                                <select class="form-control" id="exampleSelectGender" ng-model="info.gender"
                                     ng-options="gender as (gender ? 'Nam' : 'Nữ') for gender in [true, false]">
                                 </select>
                                 <label for="floatingTextarea2">Giới tính</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="date" class="form-control"
-                                    id="floatingInputDisabled"
-                                    placeholder="name@example.com"
-                                    ng-model="info.dateOfBirth"
+                                <input type="date" class="form-control" id="floatingInputDisabled"
+                                    placeholder="name@example.com" ng-model="info.dateOfBirth"
                                     ng-value="dateFormat(info.dateOfBirth)">
                                 <label for="floatingTextarea2">Ngày sinh
                                 </label>
                             </div>
-                            <button type="button"
-                                class="btn btn-outline-info mb-5"
-                                style="width: 10%;"
+                            <button type="button" class="btn btn-outline-info mb-5" style="width: 10%;"
                                 ng-click="UpdateUser()">Lưu</button>
                         </form>
                     </div>
@@ -94,15 +91,12 @@
                             <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
                         </div>
                         <div class="col mt-5 text-end">
-                            <button class="btn text-center bg-light mt-3"
-                                ng-click="resetModalContent()"
-                                data-bs-toggle="modal"
-                                data-bs-target="#addressModal">Thêm địa chỉ mới</button>
+                            <button class="btn text-center bg-light mt-3" ng-click="resetModalContent()"
+                                data-bs-toggle="modal" data-bs-target="#addressModal">Thêm địa chỉ mới</button>
                         </div>
                         <hr>
                     </div>
-                    <div class="address-item ms-2  row"
-                        ng-repeat="add in addressUser | orderBy:'-Id'">
+                    <div class="address-item ms-2  row" ng-repeat="add in addressUser | orderBy:'-Id'">
                         <div ng-init="loadProvince()"></div>
                         <div ng-init="loadDistrictUser(add.ProvinceID)"></div>
                         <div ng-init="loadWardUser(add.DistrictID)"></div>
@@ -118,14 +112,12 @@
                                     | findProvinceNameById:add.ProvinceID }}</div>
                             </div>
                             <div class=" col mb-5 text-end mt-4 ">
-                                <a style="cursor: pointer; color: #1545e1;"
-                                    ng-click="getUpdate(add)"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#addressModal" class="me-2" title="Cập nhật ">
+                                <a style="cursor: pointer; color: #1545e1;" ng-click="getUpdate(add)"
+                                    data-bs-toggle="modal" data-bs-target="#addressModal" class="me-2"
+                                    title="Cập nhật ">
                                     <i class="fs-4  bi bi-pencil-square"></i>
                                 </a>
-                                <a  ng-click="deleteAdr(add)"
-                                    style="cursor: pointer; color: #FC424A;" title="Xóa"><i
+                                <a ng-click="deleteAdr(add)" style="cursor: pointer; color: #FC424A;" title="Xóa"><i
                                         class="fs-4  bi bi-trash"></i>
                                 </a>
                             </div>
@@ -137,99 +129,79 @@
         </div>
     </div>
 
-    <div class="modal fade border" id="addressModal"
-        tabindex="-1"
-        aria-labelledby="addressModalLabel" aria-hidden="true">
+    <div class="modal fade border" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog  " style="height: 100px; ">
-            <div class="modal-content border-dark"
-                style="max-height: 500px; width: 555px; left: 40%;">
+            <div class="modal-content border-dark" style="max-height: 500px; width: 555px; left: 40%;">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="addressModalLabel">Địa Chỉ
                     </h1>
-                    <button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body w-100">
                     <div class="row ms-1 me-1">
                         <div class="col-lg ">
-                            <input type="text" class=" form-control w-100"
-                                placeholder="Họ và tên*"
+                            <input type="text" class=" form-control w-100" placeholder="Họ và tên*"
                                 ng-model="formAddress.userName"
                                 ng-class="{'is-invalid': checkAddress && !formAddress.userName}">
                         </div>
                         <div class="col-lg ms-3">
-                            <input type="text" class="form-control w-100"
-                                placeholder="Số điện thoại*"
+                            <input type="text" class="form-control w-100" placeholder="Số điện thoại*"
                                 ng-model="formAddress.phoneNumber"
-                                ng-class="{'is-invalid': checkAddress && !formAddress.phoneNumber}"
-                                maxlength="10">
+                                ng-class="{'is-invalid': checkAddress && !formAddress.phoneNumber}" maxlength="10">
                         </div>
                     </div>
                     <div class="row ms-3 mt-3 me-3">
                         <div class="col-lg">
                             <div class="form-group">
                                 <div class=" row  ">
-                                    <input type="text"
-                                        class="form-control w-100 me-1 mb-2"
-                                        placeholder="Địa chỉ cụ thể*"
-                                        ng-click="showSelect = !showSelect"
+                                    <input type="text" class="form-control w-100 me-1 mb-2"
+                                        placeholder="Địa chỉ cụ thể*" ng-click="showSelect = !showSelect"
                                         ng-model="formAddress.addressDetail"
                                         ng-class="{'is-invalid': checkAddress && !formAddress.addressDetail}">
-                                    <select id="select1" class="form-select col"
-                                        ng-model="formAddress.province"
+                                    <select id="select1" class="form-select col" ng-model="formAddress.province"
                                         ng-change="loadDistrict(formAddress.province)"
                                         ng-class="{'is-invalid': checkAddress && !formAddress.province}">
-                                        <option value
-                                            ng-selected="formAddress.province === ''">Tỉnh/Thành
+                                        <option value ng-selected="formAddress.province === ''">Tỉnh/Thành
                                             phố
                                         </option>
-                                        <option ng-repeat="provin in provinces"
-                                            ng-value="provin.ProvinceID">
+                                        <option ng-repeat="provin in provinces" ng-value="provin.ProvinceID">
                                             {{provin.ProvinceName}}</option>
                                     </select>
-                                    <select id="select2" class="form-select col"
-                                        ng-model="formAddress.district"
+                                    <select id="select2" class="form-select col" ng-model="formAddress.district"
                                         ng-change="loadWard(formAddress.district)"
                                         ng-class="{'is-invalid': checkAddress && !formAddress.district}">
-                                        <option value
-                                            ng-selected="formAddress.district === ''">Quận/Huyện</option>
-                                        <option
-                                            ng-repeat="district in districts"
-                                            ng-value="district.DistrictID">
+                                        <option value ng-selected="formAddress.district === ''">Quận/Huyện</option>
+                                        <option ng-repeat="district in districts" ng-value="district.DistrictID">
                                             {{district.DistrictName}}</option>
                                     </select>
-                                    <select id="select3" class="form-select col"
-                                        ng-model="formAddress.ward"
+                                    <select id="select3" class="form-select col" ng-model="formAddress.ward"
                                         ng-class="{'is-invalid': checkAddress && !formAddress.ward}">
-                                        <option value
-                                            ng-selected="formAddress.ward === ''">Phường/Xã</option>
-                                        <option ng-repeat="ward in wards"
-                                            ng-value="ward.WardCode">{{ward.WardName}}</option>
+                                        <option value ng-selected="formAddress.ward === ''">Phường/Xã</option>
+                                        <option ng-repeat="ward in wards" ng-value="ward.WardCode">{{ward.WardName}}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="ms-3 me-3">
-                        <input type="email" class="form-control w-100"
-                            placeholder="Email"
-                            ng-model="formAddress.email"
-                           >
+                        <input type="email" class="form-control w-100" placeholder="Email" ng-model="formAddress.email">
                     </div>
                     <div class="ms-3 mt-3 me-3">
-                        <textarea type="text" class="form-control w-100"
-                            placeholder="Nội dung"
+                        <textarea type="text" class="form-control w-100" placeholder="Nội dung"
                             ng-model="note"> </textarea>
                     </div>
                 </div>
                 <div class="modal-footer w-100">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                     <button type="button" class="btn btn-primary"
-                    ng-click="checkAction ? updateAddress() : saveAddress()" ng-model="checkAddress"> {{nameAction}} </button>
+                        ng-click="checkAction ? updateAddress() : saveAddress()" ng-model="checkAddress"> {{nameAction}}
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    
+
+
 </div>

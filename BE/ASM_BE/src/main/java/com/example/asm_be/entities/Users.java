@@ -66,6 +66,13 @@ public class Users {
     @Column(name = "trang_thai")
     private boolean status;
 
+    @ManyToOne()
+    @JoinColumn(name = "hang_id")
+    private Rank rank;
+
+    @Column(name = "diem_tich_luy")
+    private Integer points;
+
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Cart cart;

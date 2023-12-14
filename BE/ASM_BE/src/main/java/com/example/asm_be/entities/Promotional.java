@@ -1,6 +1,5 @@
 package com.example.asm_be.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -51,6 +50,8 @@ public class Promotional {
 
     @Column(name = "trang_thai")
     private int status;
+
+
 
     @JsonManagedReference
     @OneToMany(mappedBy = "promotion", cascade = CascadeType.REMOVE)

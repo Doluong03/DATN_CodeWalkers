@@ -1,24 +1,25 @@
 <div class="col-lg-12 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">User table</h4>
+      <h4 class="card-title">Khách Hàng</h4>
 
 
 
       <div class="search-container">
-        <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a User">
+        <input type="text" id="btn-search" ng-model="searchText" placeholder="Tìm kiếm .....">
         <i class="fa-light fa-magnifying-glass"></i>
       </div>
 
 
-      <button ng-click="deleteAll()" id="delete-all" class="btn btn-danger"><i class="fa-duotone fa-trash"></i> Xoá
+      <button ng-click="deleteAll()" id="delete-all" class="btn btn-outline-danger"><i class="fa-duotone fa-trash"></i> Xoá
         Nhiều</button>
-
+        <button  data-bs-toggle="modal" data-bs-target="#exampleModal" id="delete-all" class="btn btn-outline-primary" ng-click="toggleForm()" >
+          <i class=" fa-solid fa-plus fa-lg mr-2"   ></i>Thêm Mới
+      </button>
 
       <div class="btn-group">
 
-         <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="toggleForm()">
-          <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
+   
 
             <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
             <i class="fa-solid fa-arrows-rotate "></i>                                                                  
@@ -49,24 +50,6 @@
           <i class="fa-sharp fa-solid fa-file-import"></i>
         </button>
 
-        <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
-                <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button> -->
-
-                    <!-- Phân trang -->
-                    <!-- <ul class="pagination justify-content-end" style="margin-top: 20px;">
-                        <li class="page-item" ng-class="{ 'disabled': pageCurrent === 1, 'hovered': hoveredPage === 'previous' }">
-                          <a class="page-link" ng-click="previousPage()" ng-class="{ 'disabled-link': pageCurrent === 0 }" ng-mouseenter="onHover('previous')" ng-mouseleave="onLeave()"><span aria-hidden="true">&laquo;</span></a>
-                        </li>
-                        <li class="page-item" ng-repeat="page in pageRange()" ng-class="{ 'active': page === pageCurrent, 'hovered': hoveredPage === page }">
-                          <a class="page-link" ng-click="PageNo(page, sizePage)" ng-mouseenter="onHover(page)" ng-mouseleave="onLeave()">{{ page }}</a>
-                      </li>
-                      
-                        <li class="page-item" ng-class="{ 'disabled': pageCurrent === totalPage, 'hovered': hoveredPage === 'next' }">
-                          <a class="page-link" ng-click="nextPage()" ng-class="{ 'disabled-link': pageCurrent === totalPage - 1 }" ng-mouseenter="onHover('next')" ng-mouseleave="onLeave()"> <span aria-hidden="true">&raquo;</span></a>
-                        </li>
-                    </ul>
-                       </nav>   -->
-
         <div class="btn-group">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuIconButton1"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -88,7 +71,7 @@
           <thead>
             <tr>
               <th>
-                <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox" type="checkbox"> #
+                <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox" type="checkbox"> 
               </th>
               <th ng-show="columns[1].selected" ng-click="sortData('name')">Họ và Tên<span class="{{getSortClass('name')}}"></span></th>
               <th ng-show="columns[2].selected" ng-click="sortData('dateOfBirth')">Ngày Sinh<span class="{{getSortClass('dateOfBirth')}}"></span></th>
@@ -109,7 +92,9 @@
               <td ng-show="columns[5].selected">{{ item.email }}</td>
               <td ng-show="columns[6].selected">{{ item.phoneNumber }}</td>
               <td>
-                <a href="#" ng-click="toggleFormUpdate($event, item)" style="text-decoration: none; color: #1545e1;">
+                <a href="#" ng-click="toggleFormUpdate($event, item)" 
+                style="text-decoration: none; color: #1545e1;" data-bs-toggle="modal"
+                data-bs-target="#modalUpdate">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </a>
                 <a href="#" ng-click="removeStaff($event, item)" style="text-decoration: none; color: #FC424A;">
@@ -166,12 +151,31 @@
 </div>
 <!-- end table -->
 
+<style>
+  .modal-dialog .modal-content {
+    width: 1200px;
+    margin-top: -50px;
+    right: 70%;
+  }
+
+  .scrollable-modal-body {
+    max-height: 800px;
+    /* Điều chỉnh chiều cao tối đa theo ý muốn */
+    overflow-y: auto;
+    /* Tạo thanh cuộn dọc */
+  }
+</style>
+
 <!-- form add -->
-<div class="modal-add" id="overlay">
-  <div class="col-6 grid-margin stretch-card" ng-if="showForm">
-    <div class="card">
-      <div class="card-body">
-        <form class="forms-sample">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog col-12">
+    <div class="modal-content" style="width: 1000px; right: 40%;">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm mới </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+        <form name="myForm">
           <div class="form-group">
             <input type="hidden" class="form-control" ng-model="formUser.id">
           </div>
@@ -210,61 +214,73 @@
               placeholder="VD : 123 Đường ABC, Quận 1, TP.HCM" ng-model="formUser.address">
           </div>
 
-          <button id="btn-action-add" ng-click="addUser($event)">Submit</button>
-          <button id="btn-action-cancel" ng-click="toggleForm()">Cancel</button>
         </form>
       </div>
+
+
+    
+    <div class="modal-footer sticky-bottom">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="submit" class="btn btn-primary"  ng-click="addUser($event)">Submit</button>
     </div>
   </div>
 </div>
-
-
+</div>
 
 
 <!-- form update -->
-
-<div class="col-12 grid-margin stretch-card" ng-show="showFormUpdate">
-  <div class="card">
-    <div class="card-body">
-      <form class="forms-sample">
-        <div class="form-group">
-          <input type="hidden" class="form-control" ng-model="formUserUpdate.id">
-          <input type="hidden" class="form-control" ng-model="formUserUpdate.createdDate">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputMiddleName">Tên Khách Hàng</label>
-          <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên" required
-            ng-model="formUserUpdate.name">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputDate">Ngày Sinh</label>
-          <input type="text" class="form-control" id="exampleInputDate" placeholder="VD : 03/10/2003"
-            ng-model="formUserUpdate.dateOfBirth">
-        </div>
-        <div class="form-group">
-          <label for="exampleSelectGender">Giới Tính</label>
-          <select class="form-control" id="exampleSelectGender" ng-model="formUserUpdate.gender"
-            ng-options="gender as (gender ? 'Nam' : 'Nữ') for gender in [true, false]">
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="exampleInputEmail">Email</label>
-          <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email" required
-            ng-model="formUserUpdate.email">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputSDT">Số Điện Thoại</label>
-          <input type="text" class="form-control" id="exampleInputSDT" placeholder="Phone Number"
-            ng-model="formUserUpdate.phoneNumber">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputAddress">Địa Chỉ</label>
-          <input type="text" class="form-control" id="exampleInputAddress"
-            placeholder="VD : 123 Đường ABC, Quận 1, TP.HCM" ng-model="formUserUpdate.address">
-        </div>
-        <button id="btn-action-add" ng-click="UpdateUser($event)">Submit</button>
-        <button id="btn-action-cancel" ng-click="toggleFormUpdate($event, null)">Cancel</button>
-      </form>
+<div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog col-12">
+    <div class="modal-content" style="width: 1000px; right: 40%;">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+        <form class="myFormUpdate">
+          <div class="form-group">
+            <input type="hidden" class="form-control" ng-model="formUserUpdate.id">
+            <input type="hidden" class="form-control" ng-model="formUserUpdate.createdDate">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputMiddleName">Tên Khách Hàng</label>
+            <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên" required
+              ng-model="formUserUpdate.name">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputDate">Ngày Sinh</label>
+            <input type="date" class="form-control" id="exampleInputDate" placeholder="VD : 03/10/2003"
+              ng-model="formUserUpdate.dateOfBirth">
+          </div>
+          <div class="form-group">
+            <label for="exampleSelectGender">Giới Tính</label>
+            <select class="form-control" id="exampleSelectGender" ng-model="formUserUpdate.gender"
+              ng-options="gender as (gender ? 'Nam' : 'Nữ') for gender in [true, false]">
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail">Email</label>
+            <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email" required
+              ng-model="formUserUpdate.email">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputSDT">Số Điện Thoại</label>
+            <input type="text" class="form-control" id="exampleInputSDT" placeholder="Phone Number"
+              ng-model="formUserUpdate.phoneNumber">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputAddress">Địa Chỉ</label>
+            <input type="text" class="form-control" id="exampleInputAddress"
+              placeholder="VD : 123 Đường ABC, Quận 1, TP.HCM" ng-model="formUserUpdate.address">
+          </div>
+          <button id="btn-action-add" ng-click="UpdateUser($event)">Submit</button>
+          <button id="btn-action-cancel" ng-click="toggleFormUpdate($event, null)">Cancel</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" ng-click="UpdateUser($event)">Submit</button>
+      </div>
     </div>
   </div>
 </div>
@@ -288,3 +304,4 @@
     $('.dropdown-toggle').dropdown();
   });
 </Script>
+

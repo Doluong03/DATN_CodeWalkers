@@ -7,6 +7,7 @@ import com.example.asm_be.entities.Vouchers;
 import com.example.asm_be.repositories.Promotinonalrepository;
 import com.example.asm_be.repositories.PromotionDetailRepository;
 import com.example.asm_be.service.PromotionService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -103,4 +104,59 @@ public class PromotionIplm implements PromotionService {
     public Optional<Promotional> findById(int id) {
         return promotinonalrepository.findById(id);
     }
+
+    @Override
+    public boolean updatePromotion(Promotional promotional) {
+        try{
+            promotinonalrepository.save(promotional);
+            return true;
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean UpdateProDetai(Double discount, Integer idPro, Integer idProduct) {
+        try {
+          promotionDetailRepository.UpdateProDetai(discount,idPro,idProduct);
+            return true;
+        }catch(Exception ex){
+            ex.printStackTrace();
+             return false;
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteProDetail(Integer idProductDetail, Integer idPro) {
+        try {
+            promotionDetailRepository.deleteProDetail(idProductDetail,idPro);
+            return true;
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteAll(Integer idPro) {
+        try {
+            promotionDetailRepository.deleteAll(idPro);
+            return true;
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public List<Promotional> getAll() {
+        return promotinonalrepository.findAll();
+    }
+
+
 }

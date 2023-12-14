@@ -96,11 +96,11 @@
                     ng-model="formUpdateVoucher.condition">
             </div>
 
-            <!-- <div class="form-group col-lg-6 justify-items-end">
+            <div class="form-group col-lg-6 justify-items-end">
                 <label for="exampleInputMiddleName">Số Lượng</label>
                 <input type="number" class="form-control" id="exampleInputMiddleName" placeholder="Số lượng"
                     ng-model="formUpdateVoucher.quantity">
-            </div> -->
+            </div>
         </div>
 
         <div class="row ">
@@ -137,7 +137,8 @@
             <div class="form-group col-lg-6">
                 <label class="label" for="selectStatus">Nhóm khách hàng áp dụng</label>
                 <select class="form-control select2" id="selectStatus" ng-model="selectedStatus"
-                    ng-options="option as option.value for option in statusOptions track by option.id" multiple>
+                    ng-options="option as option.value for option in statusOptions track by option.id" 
+                    ng-disabled="isSelectStatusDisabled2()" multiple>
                 </select>
             </div>
 
@@ -146,6 +147,7 @@
                 <input type="number" class="form-control" id="exampleInputMiddleName"
                     placeholder="Nhập số lượng sử dụng" ng-model="voucherUser.usageCount">
             </div>
+            
 
             <div class="form-group col-lg-6">
                 <label for="exampleInputMiddleName">Trang thái :</label>
@@ -156,7 +158,11 @@
                 <label for="exampleInputMiddleName">Chọn để đổi trạng thái</label>
             </div>
 
-
+            <div class="form-group col-lg-6" >
+                <label for="exampleInputMiddleName">Cho phép đổi :</label>
+                <i ng-click="toggleStatus4('on')" class="fa-2xl fa fa-toggle-on" ng-show="formUpdateVoucher.exchangeAllowed" style="color: rgb(120, 204, 107);"></i>
+                <i ng-click="toggleStatus4('off')" class="fa-2xl fa fa-toggle-off" ng-show="!formUpdateVoucher.exchangeAllowed" style="color: #afa9a9;"></i>
+            </div>
 
         </div>
         <button id="btn-action-add" type="button" class="btn btn-primary" ng-click="updateVoucher($event)">Lưu

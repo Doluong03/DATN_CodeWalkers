@@ -4,6 +4,7 @@ import com.example.asm_be.dto.PromotionDetailRespone;
 import com.example.asm_be.entities.PromotionDetails;
 import com.example.asm_be.entities.Promotional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,5 +29,15 @@ public interface PromotionService {
     void turnOff(int id);
 
     Optional<Promotional> findById(int id);
+
+    boolean updatePromotion(Promotional promotional);
+
+    boolean UpdateProDetai(Double discount, Integer idPro,Integer idProduct);
+
+    boolean deleteProDetail(Integer idProductDetail,Integer idPro);
+
+    boolean deleteAll(Integer idPro);
+
+    List<Promotional> getAll();
 
 }

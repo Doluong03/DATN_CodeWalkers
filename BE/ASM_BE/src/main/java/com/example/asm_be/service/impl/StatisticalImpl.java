@@ -66,5 +66,25 @@ public class StatisticalImpl implements StatisticalService {
         return billDetailsRepository.getStock();
     }
 
+    @Override
+    public List<Double> getTotalPayByCurrentMonth() {
+        return billDetailsRepository.getTotalPayByCurrentMonth();
+    }
+
+    @Override
+    public List<Double> getTotalPayByCurrentDay() {
+        return  billDetailsRepository.getTotalPayByCurrentDay();
+    }
+
+    @Override
+    public List<Double> getTotalPayByCurrentYear() {
+        return billDetailsRepository.getTotalPayByCurrentYear();
+    }
+
+    @Override
+    public List<Double> getAllTotalPay() {
+        return billDetailsRepository.getAllTotalPay();
+    }
+
 
 }

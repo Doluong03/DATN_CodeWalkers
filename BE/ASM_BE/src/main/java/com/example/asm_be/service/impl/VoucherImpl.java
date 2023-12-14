@@ -1,5 +1,7 @@
 package com.example.asm_be.service.impl;
 
+import com.example.asm_be.dto.VoucherUserDTO;
+import com.example.asm_be.dto.VoucherUserDTO2;
 import com.example.asm_be.entities.VoucherUsers;
 import com.example.asm_be.entities.Vouchers;
 import com.example.asm_be.repositories.VoucherRepository;
@@ -7,10 +9,10 @@ import com.example.asm_be.repositories.VoucherUserRepository;
 import com.example.asm_be.service.VoucherService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,10 +23,7 @@ public class VoucherImpl implements VoucherService {
     VoucherRepository voucherRepository;
     @Autowired
     VoucherUserRepository voucherUserRepository;
-//    @Override
-//    public List<Vouchers> getVouchersByUserName(String userName) {
-//        return voucherRepository.getVoucher(userName);
-//    }
+
 
     @Override
     public Optional<Vouchers> getVouchersById(Integer id) {
@@ -53,6 +52,7 @@ public class VoucherImpl implements VoucherService {
     }
 
     @Override
+    @Transactional
     public boolean deleteVoucher(Integer idVc) {
         try{
          voucherRepository.deleteById(idVc);
@@ -76,7 +76,8 @@ public class VoucherImpl implements VoucherService {
 
     @Override
     public Page<Vouchers> getPageVoucher(Integer pageNo, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        Sort sort = Sort.by(Sort.Order.desc("id"));
+        Pageable pageable = PageRequest.of(pageNo,pageSize,sort);
         return voucherRepository.findAll(pageable);
     }
 
@@ -112,7 +113,7 @@ public class VoucherImpl implements VoucherService {
     }
 
     @Override
-    public Optional<Integer> getOneUserVoucher(int id) {
+    public List<VoucherUserDTO> getOneUserVoucher(int id) {
         return voucherRepository.getUserVouchersById(id);
     }
 
@@ -122,9 +123,9 @@ public class VoucherImpl implements VoucherService {
     }
 
     @Override
-    public boolean updateUserVoucher(int usageCount, int id) {
+    public boolean updateUserVoucher(int usageCount, int id,int idUser) {
         try{
-            voucherUserRepository.updateUserVoucher(usageCount,id);
+            voucherUserRepository.updateUserVoucher(usageCount,id,idUser);
             return true;
         }catch (Exception e){
             e.printStackTrace();
@@ -133,6 +134,7 @@ public class VoucherImpl implements VoucherService {
     }
 
     @Override
+    @Transactional
     public boolean deleteVoucherId(int id) {
         try{
             voucherUserRepository.deleteVoucherId(id);
@@ -141,6 +143,48 @@ public class VoucherImpl implements VoucherService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public boolean updateUserVouchers(VoucherUsers voucherUsers) {
+        try{
+            voucherUserRepository.save(voucherUsers);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Optional<VoucherUsers> findByUsersAndId(Integer id,Integer idVch) {
+        return voucherUserRepository.findByUsersId(id,idVch);
+    }
+
+    @Override
+    public List<VoucherUserDTO2> getUserVouchersByVoucherAndUserName(int id, String userName) {
+        return voucherRepository.getUserVouchersByVoucherAndUserName(id,userName);
+    }
+
+    @Override
+    public boolean updateQuantity(Integer quantity, Integer id) {
+        try {
+            Optional<Vouchers> vouchers = voucherRepository.findById(id);
+            if (vouchers.isPresent()) {
+                Vouchers vouchers1 = vouchers.get();
+                vouchers1.setQuantity(quantity);
+                voucherRepository.save(vouchers1);
+            }
+            return true;
+        } catch (Exception Ex) {
+            Ex.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public List<Integer> getListCusType(Integer idVc) {
+        return voucherUserRepository.getListCusType(idVc);
     }
 
 

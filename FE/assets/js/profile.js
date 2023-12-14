@@ -44,6 +44,8 @@ app.controller(
             gender: false,
             dateOfBirth: "",
             image: "",
+            rank : "",
+            points : null
         };
         $scope.selectedImage = null;
         $scope.dateFormat = function (input) {
@@ -76,6 +78,8 @@ app.controller(
                     gender: profileUser.gender,
                     dateOfBirth: new Date(profileUser.dateOfBirth),
                     image: profileUser.image,
+                    rank : profileUser.rank.name,
+                    points : profileUser.points
                 };
                 console.log($scope.info, $scope.dateFormat($scope.info.dateOfBirth));
             }

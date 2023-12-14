@@ -147,6 +147,43 @@ public class StatisticalController {
             return new ResponseEntity<>(list, HttpStatus.OK);
 
     }
+
+    @GetMapping("/total-today")
+    public  ResponseEntity<List<Double>> toDay(){
+
+        List<Double> list = statisticalService.getTotalPayByCurrentDay();
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
+
+    }
+
+
+    @GetMapping("/total-mothDay")
+    public  ResponseEntity<List<Double>> monthDay(){
+
+        List<Double> list = statisticalService.getTotalPayByCurrentMonth();
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/total-yearDay")
+    public  ResponseEntity<List<Double>> totalYearday(){
+
+        List<Double> list = statisticalService.getTotalPayByCurrentYear();
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/totalAll")
+    public  ResponseEntity<List<Double>> totalALl(){
+
+        List<Double> list = statisticalService.getAllTotalPay();
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
+
+    }
 }
 
 

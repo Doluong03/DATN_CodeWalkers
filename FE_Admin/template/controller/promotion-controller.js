@@ -33,10 +33,11 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
         startDate: null,
         endDate: null,
         status: 1,
-        condition: 0
+        condition: 0,
+        // exchangePoint : 0
     }
     $scope.formUpdatePro = {
-        id : "",
+        id: "",
         name: "",
         description: "",
         typeDiscount: "Phần Trăm",
@@ -44,7 +45,27 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
         startDate: null,
         endDate: null,
         status: 1,
-        condition: 0
+        condition: 0,
+        endTime: null,
+        startTime: null,
+        // exchangePoint : 0
+    }
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "slideDown",
+        "hideMethod": "slideUp"
     }
 
     $scope.listPrReduced = [];
@@ -157,6 +178,7 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
         }
     }
 
+
     $scope.updateText = function (text) {
         if (text === 'Phần Trăm') {
             $scope.isPercent = true;
@@ -168,7 +190,48 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
         }
     }
 
-   
+    $scope.updateText2 = function (text) {
+        // Lưu giữ giá trị trước khi thay đổi
+        var previousTypeDiscount = angular.copy($scope.formUpdatePro.typeDiscount);
+
+        var confirmResult;
+
+
+        confirmResult = Swal.fire({
+            title: 'Xác nhận',
+            text: 'Khi đổi loại giảm giá sẽ xóa toàn bộ sản phẩm bạn có chắc chắn muốn thực hiện hành động này ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        });
+
+
+        confirmResult.then((result) => {
+            if (result.isConfirmed) {
+                // Hành động khi người dùng chọn "Có"
+                if (text === 'Phần Trăm' || text === 'Đồng giá') {
+                    if (text === 'Phần Trăm') {
+                        $scope.deleteAllPromotionDetail($scope.promotionId);
+                        $scope.detail();
+                        $scope.isPercent = true;
+                        $scope.isCash = false;
+                    } else if (text === 'Đồng giá') {
+                        $scope.deleteAllPromotionDetail($scope.promotionId);
+                        $scope.isCash = true;
+                        $scope.isPercent = false;
+                    }
+                }
+            } else {
+                // Hành động khi người dùng chọn "Không" hoặc đóng confirm
+                // Khôi phục giá trị nếu cần
+                $scope.formUpdatePro.typeDiscount = previousTypeDiscount;
+            }
+        });
+    };
+
+
+
 
     $scope.onOptionChange = function () {
         $scope.isSearchProduct = $scope.selectedOption === "Sản phẩm";
@@ -375,11 +438,176 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
         }
     };
 
+    $scope.removeProduct = function (selectedProduct) {
+        // Xác định vị trí của sản phẩm trong danh sách
+        let existingProductIndex = $scope.listPrReduced.findIndex(item => item.id === selectedProduct.id);
+
+        if (existingProductIndex !== -1) {
+            // Nếu sản phẩm tồn tại, xóa nó khỏi danh sách
+            $scope.listPrReduced.splice(existingProductIndex, 1);
+            console.log("Sản phẩm đã xóa khỏi danh sách.");
+        }
+    };
+
+    $scope.removeProduct2 = function (selectedDetail, idProDetail) {
+        // Xác định vị trí của chi tiết trong danh sách
+        let existingDetailIndex = $scope.listPromotionsDetials.promotionDetailsList.findIndex(item => item === selectedDetail);
+        console.log(existingDetailIndex, 'nee');
+        if (existingDetailIndex !== -1) {
+            // Nếu chi tiết tồn tại, xóa nó khỏi danh sách
+            $scope.deletePromotionDetail(idProDetail, $scope.promotionId);
+            $scope.listPromotionsDetials.promotionDetailsList.splice(existingDetailIndex, 1);
+            console.log("Chi tiết đã xóa khỏi danh sách.");
+        }
+    };
+
+
+    // Trong controller
+    $scope.selectProduct2 = function (selectedProduct) {
+        if ($scope.formUpdatePro.value !== 0) {
+            let discountedPrice;
+            let originalPrice = selectedProduct.price;
+
+            console.log("Selected Product: ", selectedProduct);
+            console.log("Form Update Pro: ", $scope.formUpdatePro);
+
+
+            if ($scope.formUpdatePro.typeDiscount === "Phần Trăm") {
+                discountedPrice = originalPrice - originalPrice * ($scope.formUpdatePro.value * 0.01);
+                toastr.success('Thêm sản phẩm thành công!', 'Congratulations ');
+            } else {
+                if ($scope.formUpdatePro.condition == originalPrice) {
+                    discountedPrice = ($scope.formUpdatePro.condition == originalPrice) ? $scope.formUpdatePro.value : originalPrice;
+                    toastr.success('Thêm sản phẩm thành công!', 'Congratulations ');
+                } else {
+                    toastr.error('Sản phẩm chưa đủ điều kiện áp dụng!', 'Thông báo')
+                    return;
+                }
+            }
+
+            console.log("Discounted Price: ", discountedPrice);
+
+            // Check if the product already exists in the list
+            const existingProductIndex = $scope.listPromotionsDetials.promotionDetailsList.findIndex(item => item.productDetail.id === selectedProduct.id);
+
+            if (existingProductIndex !== -1) {
+                // Get idProDetail from the existing item in the list
+                const idProDetail = $scope.listPromotionsDetials.promotionDetailsList[existingProductIndex].productDetail.id;
+
+                console.log(idProDetail)
+                // If the product exists, remove it from the list
+                $scope.deletePromotionDetail(idProDetail, $scope.promotionId);
+                $scope.listPromotionsDetials.promotionDetailsList.splice(existingProductIndex, 1);
+                console.log("Sản phẩm đã tồn tại trong danh sách chi tiết. Đã xóa khỏi danh sách.");
+                return;
+            }
+
+            // trường hợp thêm sản phẩm mới
+            if (selectedProduct) {
+                const newProDetails = angular.copy($scope.formAddPromDetail);
+
+                // Lấy các giá trị từ selectedProduct và gán vào newProDetails
+                newProDetails.productDetail.id = selectedProduct.id;
+                newProDetails.promotion.id = $scope.promotionId;
+                newProDetails.discount = discountedPrice;
+
+                try {
+                    console.log(newProDetails);
+                    // Gọi API để thêm chi tiết khuyến mãi
+                    return $http.post('http://localhost:8080/CodeWalkers/admin/promotion-details/save', JSON.stringify(newProDetails), headers)
+                        .then(function (response) {
+                            console.log('Promotion details added successfully:', response.data);
+                            // Thực hiện các hành động tiếp theo sau khi thêm thành công
+                            $scope.detail();
+                            // Trả về response để có thể sử dụng ở nơi gọi hàm
+                            return response;
+                        })
+                        .catch(function (error) {
+                            console.error('Error adding promotion details:', error);
+                            return Promise.reject(error);
+                        });
+                } catch (error) {
+                    console.error("Error copying promotion details:", error);
+                    return Promise.reject(error);
+                }
+            } else {
+                console.error(`Selected product not found for productDetailId: ${$scope.promotionId}`);
+                return Promise.reject(`Selected product not found for productDetailId: ${selectedProduct.id}`);
+            }
+
+
+
+
+
+        }
+    };
+
+
+    $scope.deleteAllPromotionDetail = function (idPro) {
+        var url = 'http://localhost:8080/CodeWalkers/admin/promotion/delete-detail2/' + idPro;
+
+        $http.delete(url).then(function (response) {
+            console.log('Promotion all detail deleted successfully:', response.data);
+            // Thực hiện các hành động khác sau khi xóa thành công, nếu cần
+        })
+            .catch(function (error) {
+                console.error('Error deleting promotion detail:', error);
+                // Xử lý lỗi nếu cần
+            });
+    };
+
+    $scope.hasError = {
+        startDate: false,
+        endDate: false
+    };
+
+    $scope.checkDateTimeValidity = function () {
+        var startDateTime = new Date($scope.formAddPro.startDate + " " + $scope.formAddPro.startTime);
+        var endDateTime = new Date($scope.formAddPro.endDate + " " + $scope.formAddPro.endTime);
+
+        $scope.hasError.startDate = startDateTime >= endDateTime;
+        $scope.hasError.endDate = endDateTime <= startDateTime;
+    };
 
 
     $scope.savePro = async function (event) {
         event.preventDefault();
-        console.log($scope.formAddPro);
+        if ($scope.formAddPro.typeDiscount === "Phần Trăm" &&
+            ($scope.formAddPro.value < 1 || $scope.formAddPro.value > 100)) {
+            // Hiển thị thông báo lỗi hoặc thực hiện các hành động khác
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi!",
+                text: "Phần trăm phải nằm trong khoảng từ 1 đến 100."
+            });
+            return; // Dừng việc thực hiện hàm nếu có lỗi
+        }
+
+        if ($scope.formAddPro.startDate >= $scope.formAddPro.endDate) {
+            // Hiển thị thông báo lỗi hoặc thực hiện các hành động khác
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi!",
+                text: "Ngày bắt đầu phải trước ngày kết thúc."
+            });
+            return; // Dừng việc thực hiện hàm nếu có lỗi
+        }
+
+        // Call the function to check date validity
+        $scope.checkDateTimeValidity();
+
+        // Validate date
+        if ($scope.hasError.startDate || $scope.hasError.endDate) {
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi!",
+                text: "Ngày bắt đầu phải trước ngày kết thúc."
+            });
+            return;
+        }
+
+
+        console.log($scope.formUpdatePro);
 
         const confirmResult = await Swal.fire({
             title: 'Xác nhận',
@@ -619,23 +847,262 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
             $scope.listPromotionsDetials = res.data;
             console.log($scope.listPromotionsDetials);
 
-            $scope.formUpdatePro.id = $scope.listPromotionsDetials.id,
-            $scope.formUpdatePro.name= $scope.listPromotionsDetials.name,
-            $scope.formUpdatePro.description= $scope.listPromotionsDetials.description,
-            $scope.formUpdatePro.typeDiscount= $scope.listPromotionsDetials.typeDiscount,
-            $scope.formUpdatePro.value= $scope.listPromotionsDetials.value,
-            $scope.formUpdatePro.startDate= $scope.listPromotionsDetials.startDate,
-            $scope.formUpdatePro.endDate= $scope.listPromotionsDetials.endDate,
-            $scope.formUpdatePro.status= $scope.listPromotionsDetials.status,
-            $scope.formUpdatePro.condition= $scope.listPromotionsDetials.condition
-           
+            $scope.formUpdatePro.id = $scope.listPromotionsDetials.id;
+            $scope.formUpdatePro.name = $scope.listPromotionsDetials.name;
+            $scope.formUpdatePro.description = $scope.listPromotionsDetials.description;
+
+            // Kiểm tra giá trị typeDiscount và thiết lập giá trị mặc định nếu cần
+            if ($scope.listPromotionsDetials.typeDiscount === "Phần Trăm" || $scope.listPromotionsDetials.typeDiscount === "Đồng giá") {
+                $scope.formUpdatePro.typeDiscount = $scope.listPromotionsDetials.typeDiscount;
+            } else {
+                // Thiết lập giá trị mặc định nếu không khớp
+                $scope.formUpdatePro.typeDiscount = "Phần Trăm"; // hoặc "Đồng giá" tùy thuộc vào yêu cầu của bạn
+            }
+
+            $scope.formUpdatePro.value = $scope.listPromotionsDetials.value;
+            $scope.formUpdatePro.startDate = $scope.listPromotionsDetials.startDate;
+            $scope.formUpdatePro.endDate = $scope.listPromotionsDetials.endDate;
+            $scope.formUpdatePro.status = $scope.listPromotionsDetials.status;
+            $scope.formUpdatePro.condition = $scope.listPromotionsDetials.condition;
+            $scope.formUpdatePro.endTime = convertTimeToTimestamp($scope.listPromotionsDetials.endDate);
+            $scope.formUpdatePro.startTime = convertTimeToTimestamp($scope.listPromotionsDetials.startDate);
+
+            console.log($scope.formUpdatePro.typeDiscount)
         }).catch(function (err) {
             console.log("Lỗi khi tải detail" + err);
         });
     }
+
     $scope.detail();
 
-    // thu vien jQuery không đụng vào
+    // Hàm chuyển đổi từ timestamp sang timestamp
+    function convertTimeToTimestamp(timestamp) {
+        // Kiểm tra nếu timestamp không phải là số
+        if (typeof timestamp !== 'number') {
+            console.error('Invalid timestamp:', timestamp);
+            return null; // hoặc giá trị mặc định khác tùy ý
+        }
+
+        // Tạo đối tượng Date từ timestamp
+        var date = new Date(timestamp);
+
+        return date;
+    }
+
+    // Hàm chuyển đổi ngày và giờ thành chuỗi timestamp
+    function formatDateTime(date, time) {
+        // Tạo đối tượng Date từ ngày
+        var dateTime = new Date(date);
+
+        // Kiểm tra nếu time không phải là đối tượng Date
+        if (!(time instanceof Date)) {
+            console.error('Invalid time format:', time);
+            return null; // hoặc giá trị mặc định khác tùy ý
+        }
+
+        // Đặt giờ và phút từ đối tượng Date vào đối tượng dateTime
+        dateTime.setHours(time.getHours(), time.getMinutes(), 0, 0);
+
+        // Lấy timestamp từ đối tượng Date
+        var timestamp = dateTime.getTime();
+
+        return timestamp;
+    }
+
+
+    // $scope.UpdatePro = function () {
+    //     // Tạo biến endDate từ hai biến riêng lẻ
+    //     var endDate = formatDateTime($scope.formUpdatePro.endDate, $scope.formUpdatePro.endTime);
+    //     var startDate = formatDateTime($scope.formUpdatePro.startDate, $scope.formUpdatePro.startTime);
+
+    //     // Log để kiểm tra
+    //     console.log(endDate);
+
+    //     // Tạo bản sao của đối tượng formUpdatePro
+    //     var dataToSend = angular.copy($scope.formUpdatePro);
+
+    //     // Gán giá trị mới cho thuộc tính endDate
+    //     dataToSend.endDate = endDate;
+    //     dataToSend.startDate = startDate;
+
+    //     // Loại bỏ các thuộc tính không mong muốn
+    //     delete dataToSend.startTime;
+    //     delete dataToSend.endTime;
+
+    //     console.log(dataToSend);
+
+    //     $http.put('http://localhost:8080/CodeWalkers/admin/promotion/update', dataToSend, headers)
+    //         .then(function (res) { console.log(res.data) })
+    //         .catch(function (err) { console.log("Lỗi khi update" + err) });
+
+
+    // };
+
+
+
+    $scope.updatePromotionAndDetails = async function () {
+
+        // Gọi hàm kiểm tra giá trị
+        $scope.validatePercentage();
+    
+        // Kiểm tra biến trạng thái lỗi
+        if ($scope.isError) {
+            toastr.error('Vui lòng nhập min là 1% và max 100%!', 'Lỗi')
+            return;
+        }
+    
+        if ($scope.formUpdatePro.value !== 0) {
+    
+            // Hiển thị hộp thoại xác nhận với SweetAlert
+            const confirmResult = await Swal.fire({
+                title: 'Xác nhận',
+                text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không'
+            });
+    
+            // Kiểm tra phản hồi của người dùng
+            if (!confirmResult.isConfirmed) {
+                return;
+            }
+    
+            // Tiếp tục xử lý nếu xác nhận
+    
+            // Tạo bản sao của formUpdatePro
+            var promotionData = angular.copy($scope.formUpdatePro);
+    
+            // Định dạng ngày và giờ
+            var endDate = formatDateTime(promotionData.endDate, promotionData.endTime);
+            var startDate = formatDateTime(promotionData.startDate, promotionData.startTime);
+    
+            // Gán giá trị mới
+            promotionData.endDate = endDate;
+            promotionData.startDate = startDate;
+    
+            // Xóa các thuộc tính không mong muốn
+            delete promotionData.startTime;
+            delete promotionData.endTime;
+    
+            // Ghi log để kiểm tra
+            console.log(promotionData);
+    
+            // Cập nhật khuyến mãi
+            $http.put('http://localhost:8080/CodeWalkers/admin/promotion/update', promotionData, headers)
+                .then(function (res) {
+                    console.log('Cập nhật khuyến mãi thành công:', res.data);
+    
+                    // Tiếp theo, cập nhật chi tiết khuyến mãi
+                    angular.forEach($scope.listPromotionsDetials.promotionDetailsList, function (detail) {
+                        var detailData = {
+                            discount: detail.discount,
+                            idPro: $scope.promotionId,  // Giả sử ID được trả về trong phản hồi
+                            idProduct: detail.productDetail.id
+                        };
+                        console.log(detailData)
+                    });
+                    toastr.success('Cập nhật thành công!', 'Congratulations ');
+                    window.location.href ='http://127.0.0.1:5500/template/index.html#/khuyen-mai';
+                })
+                .catch(function (err) {
+                    console.log('Lỗi cập nhật khuyến mãi:', err);
+                });
+        }
+    };
+    
+    
+    // Function to delete promotion detail
+    $scope.deletePromotionDetail = function (idProDetail, idPro) {
+
+        // Make an HTTP request to delete the promotion detail
+        $http.delete('http://localhost:8080/CodeWalkers/admin/promotion/delete-detail/' + idProDetail + '/' + idPro)
+            .then(function (response) {
+                // Handle success, if needed
+                console.log('Promotion detail deleted successfully.');
+
+                // You may want to update your view or perform other actions here
+
+            })
+            .catch(function (error) {
+                // Handle error
+                console.error('Error deleting promotion detail:', error);
+            });
+    };
+
+    $scope.validatePercentage = function () {
+        // Chuyển đổi giá trị nhập vào thành số
+        var inputValue = parseFloat($scope.formUpdatePro.value);
+
+        // Kiểm tra xem giá trị có nằm trong khoảng từ 1 đến 100 không
+        if (isNaN(inputValue) || inputValue < 1 || inputValue > 100) {
+            // Nếu không nằm trong khoảng, thiết lập biến trạng thái lỗi
+            $scope.isError = true;
+            // Hiển thị thông báo lỗi nếu cần
+            return;
+
+        } else {
+            // Nếu giá trị hợp lệ, đặt biến trạng thái lỗi về false
+            $scope.isError = false;
+        }
+    };
+
+    // hen gio 
+    var promotions = [];
+
+    $scope.getAllPromotions = function () {
+        var apiUrl = 'http://localhost:8080/CodeWalkers/api/promotion2/getALL2';
+
+        $http.get(apiUrl)
+            .then(function (response) {
+                // Handle successful response
+                promotions = response.data;
+                console.log('All promotions:', promotions);
+
+                // Check and close promotions based on endDate
+                checkAndClosePromotions();
+
+                // Perform actions with the fetched promotions
+            })
+            .catch(function (error) {
+                // Handle error
+                console.error('Error fetching promotions:', error);
+
+                // You may want to show an error message to the user or perform other error-handling actions
+            });
+    };
+
+    // Function to check and close promotions based on endDate
+    function checkAndClosePromotions() {
+        // Thời gian hiện tại
+        var currentDate = new Date();
+
+        // Iterate through the promotions
+        promotions.forEach(function (promotion) {
+            // Đối tượng Date từ timestamp
+            var endDate = new Date(promotion.endDate);
+
+            // So sánh thời gian hiện tại với thời gian kết thúc của mỗi promotion
+            if (currentDate >= endDate) {
+                $scope.turnOff(promotion.id);
+            } else {
+                // Nếu chưa đến thời điểm kết thúc, bạn có thể thực hiện các hành động khác hoặc đợi
+                console.log("Chương trình khuyến mại vẫn đang diễn ra...", promotion);
+            }
+        });
+
+        // Hẹn giờ kiểm tra lại sau mỗi giây
+        setTimeout(function () {
+            checkAndClosePromotions();
+        }, 1000);
+    }
+
+    // Example usage
+    $scope.getAllPromotions(); // Call this function when you want to fetch and check promotions
+
+
+
+
     (function ($) {
         "use strict";
         $(function () {

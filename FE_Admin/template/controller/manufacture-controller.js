@@ -1,32 +1,28 @@
-window.ManufactureController = function ($scope, $http, $window) {
-  $scope.listManufacture = [];
+window.ManufactureController = function ($scope, $http, $window,$timeout) {
+  $scope.listRank = [];
   $scope.isActive = true;
   $scope.lastIndex =0; // phần tử cuối của mảng
-  $scope.pageNo = 0;
-  $scope.sizePage = 5;
+  $scope.pageNo = 1;
+  $scope.sizePage = 10;
 
-  $scope.statusOptions = [
-    { value: 1, label: 'Đang hoạt động' },
-    { value: 2, label: 'Ngừng hoạt động' }
-];
-  
-  $scope.formManufacture = {
+
+  $scope.formRank = {
     name: "",
     description:"",
-    status:{
-        id:""
-    },
+    status: true,
+    minimumPoints : 0
   };
 
-  $scope.formManufactureUpdate = {
+  $scope.formUpdateRank = {
     id: "",
     name: "",
     description:"",
-    status: "",
+    status: false,
+    minimumPoints : 0
   };
 
   $scope.totalPage = 0;
-  $scope.pageCurrent = 0;
+  $scope.pageCurrent = 1;
   $scope.itemsPerPage = 3; // Số lượng trang bạn muốn hiển thị
   
   $scope.pageRange = function () {
@@ -80,13 +76,12 @@ window.ManufactureController = function ($scope, $http, $window) {
   // hien thi
 
   $scope.hienThi = function (pageNo,sizePage) {
-    let apiUrl = apiManufacture + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+    let apiUrl = 'http://localhost:8080/CodeWalkers/admin/rank' + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
     $http.get(apiUrl).then(
       function (response) {
         // Kiểm tra dữ liệu có được in ra không
-        $scope.listManufacture = response.data.manufactureList;
+        $scope.listRank = response.data.rankList;
         $scope.totalPage = response.data.totalPages;
-        $scope.lastIndex = $scope.listManufacture[$scope.listManufacture.length - 1].id;
 
         console.log(response.data);
         console.log(response.data.totalPages);
@@ -114,7 +109,7 @@ window.ManufactureController = function ($scope, $http, $window) {
     event.preventDefault();
 
     let manufactureId = item.id;
-    let api = apiManufacture + "/delete/" + manufactureId;
+    let api = 'http://localhost:8080/CodeWalkers/admin/rank' + "/delete/" + manufactureId;
     Swal.fire({
       title: 'Xác nhận',
       text: 'Bạn có chắc chắn muốn thực hiện hành động này?',
@@ -166,10 +161,9 @@ window.ManufactureController = function ($scope, $http, $window) {
       if (result.isConfirmed) {
         // Hành động khi người dùng ấn "Có"
         console.log($scope.formManufacture)
-        $http.post(apiManufacture + "/insert", JSON.stringify($scope.formManufacture)).then(function (response) {
+        $http.post('http://localhost:8080/CodeWalkers/admin/rank' + "/save", JSON.stringify($scope.formRank)).then(function (response) {
           Swal.fire('Thêm thành công!', '', 'success');
           $scope.hienThi($scope.pageCurrent,$scope.sizePage);
-          $scope.formManufacture = {};
           console.log(response);
         })
         .catch(function (error) {
@@ -187,6 +181,7 @@ window.ManufactureController = function ($scope, $http, $window) {
         Swal.fire('Hủy bỏ', '', 'error');
       }
     });
+    $scope.formRank = {};
 
     
   };
@@ -216,10 +211,12 @@ $scope.toggleFormUpdate = function (event, item) {
 
    
     // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-    $scope.formManufactureUpdate.id = item.id;
-    $scope.formManufactureUpdate.name = item.name;
-    $scope.formManufactureUpdate.description = item.description;
-    $scope.formManufactureUpdate.status = item.status;
+    $scope.formUpdateRank.id = item.id;
+    $scope.formUpdateRank.name = item.name;
+    $scope.formUpdateRank.description = item.description;
+    $scope.formUpdateRank.status = item.status;
+    $scope.formUpdateRank.minimumPoints = item.minimumPoints;
+    console.log($scope.formUpdateRank.status);
     
   }else {
     // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
@@ -234,7 +231,18 @@ $scope.toggleFormUpdate = function (event, item) {
   // update
   $scope.UpdateUser = function (event) {
     event.preventDefault();
-    console.log($scope.formManufactureUpdate);
+    console.log($scope.formUpdateRank);
+
+    if (
+      !$scope.formUpdateRank.id ||
+      !$scope.formUpdateRank.name ||
+      !$scope.formUpdateRank.description ||
+      !$scope.formUpdateRank.status
+    ) {
+      $scope.checkAdd = true;
+      return;
+    }
+    
 
     Swal.fire({
       title: 'Xác nhận',
@@ -246,9 +254,9 @@ $scope.toggleFormUpdate = function (event, item) {
     }).then((result) => {
       if (result.isConfirmed) {
         // Hành động khi người dùng ấn "Có"
-        $http.put(apiManufacture + "/update", JSON.stringify($scope.formManufactureUpdate)).then(function (response) {
+        $http.put(apiManufacture + "/update", JSON.stringify($scope.formUpdateRank)).then(function (response) {
           Swal.fire('Cập nhật thành công!', '', 'success');
-          $scope.formUserUpdate = {};
+          $scope.formUpdateRank = {};
           $scope.hienThi($scope.pageCurrent,$scope.sizePage);
         })
           .catch(function (error) {
@@ -448,6 +456,104 @@ $scope.getSortClass = function (column) {
     }
     return 'sort-none';
 };    
+
+$scope.selectAllChanged = function () {
+  console.log("Trạng thái của selectAllCheckbox:", $scope.selectAllCheckbox);
+  angular.forEach($scope.listRank, function (item) {
+    item.isSelected = $scope.selectAllCheckbox;
+  });
+};
+
+$scope.deleteAll = function () {
+  var selectedItems = $scope.listRank.filter(function (item) {
+    return item.isSelected;
+  });
+
+  if (selectedItems.length === 0) {
+    alert("Vui lòng chọn các khách hàng bạn muốn xóa ?");
+    return false;
+  }
+
+  Swal.fire({
+    title: "Xác nhận",
+    text: "Bạn có chắc chắn muốn thực hiện hành động này?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Có",
+    cancelButtonText: "Không",
+  }).then((result) => {
+    if (result.isConfirmed) {
+
+
+  selectedItems.forEach(element => {
+    let userId = element.id;
+    let api = 'http://localhost:8080/CodeWalkers/admin/rank' + "/delete/" + userId;
+    console.log(api)
+    $http.delete(api, headers).then(function (response) {
+        
+        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+        console.log(response);
+        isDeleted = true;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  });
+      
+  if(isDeleted){
+    Swal.fire("Xóa thành công!", "", "success");
+    $scope.selectAllCheckbox = false;
+
+  }
+    
+   } else if (result.dismiss === Swal.DismissReason.cancel) {
+      // Hành động khi người dùng ấn "Không"
+      Swal.fire("Hủy bỏ", "", "error");
+    }
+  });
+  // Thực hiện xử lý xóa tất cả ở đây với mảng selectedItems
+};
+
+// Lấy tên cột từ bảng HTML
+$scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
+$scope.columns = [];
+
+// Khai báo biến và khởi tạo giá trị mặc định
+$scope.columnFilters = {};
+
+// Sử dụng $timeout để đảm bảo rằng DOM đã được tạo trước khi lấy thông tin cột
+$timeout(function () {
+var thElements = document.querySelectorAll('#VoucherTable th:not(:last-child)'); // Loại bỏ cột "Action"
+
+angular.forEach(thElements, function (thElement) {
+  var columnName = thElement.innerText.trim();
+  $scope.columns.push({ name: columnName, selected: true }); // Chọn tất cả mặc định
+  $scope.columnFilters[columnName] = ''; // Khởi tạo filter cho mỗi cột
+});
+
+// Kiểm tra xem tất cả các cột có được chọn không và cập nhật trạng thái của checkbox "Chọn Tất Cả"
+$scope.selectAll = $scope.columns.every(function (column) {
+  return column.selected;
+});
+});
+
+$scope.toggleAll = function () {
+angular.forEach($scope.columns, function (column) {
+  column.selected = $scope.selectAll;
+});
+};
+
+$scope.toggleColumn = function (column) {
+if (!column.selected) {
+  $scope.selectAll = $scope.columns.some(function (column) {
+    return column.selected;
+  });
+} else {
+  $scope.selectAll = $scope.columns.every(function (column) {
+    return column.selected;
+  });
+}
+};
 
   // thu vien jQuery không đụng vào
   (function ($) {
