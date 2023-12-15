@@ -29,8 +29,14 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
        $scope.loadVoucherUser = function(){
         var url = `${host}/user-voucher?userName=${dataJson.username}`;
         $http.get(url).then(function (res) {
-            $scope.listVouchers = res.data.filter(vch => vch.usageCount > 0);
-
+            console.log(new Date(res.data[0].endDate),'a',new Date())
+            $scope.listVouchers = res.data.filter(vch => {
+                const dateParts = vch.endDate.split('.');
+                const formattedEndDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+                
+                return vch.usageCount > 0 && formattedEndDate > new Date();
+            });
+            
             console.log(" khi tải voucher: " + JSON.stringify(res.data));
 
         }).catch(function (err) {
@@ -219,18 +225,18 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
         });
     };
 
-    // cap nhật lại số lần sử dụng
-    $scope.updateUsageCount = function (idUser, usageCount, idUser_Vch) {
+    // // cap nhật lại số lần sử dụng
+    // $scope.updateUsageCount = function (idUser, usageCount, idUser_Vch) {
      
-        $http.patch(`http://localhost:8080/CodeWalkers/admin/user-voucher/update?UsageCount=${usageCount}&id=${idUser_Vch}&` + idUser)
-            .then(function (res) {
-                // Xử lý kết quả thành công
-            })
-            .catch(function (err) {
-                console.log("Lỗi Update số lần sử dụng", err);
-            });
+    //     $http.patch(`http://localhost:8080/CodeWalkers/admin/user-voucher/update?UsageCount=${usageCount}&id=${idUser_Vch}&` + idUser)
+    //         .then(function (res) {
+    //             // Xử lý kết quả thành công
+    //         })
+    //         .catch(function (err) {
+    //             console.log("Lỗi Update số lần sử dụng", err);
+    //         });
 
-    };
+    // };
 
 
     $scope.updateUsageCount2 = function (idUser, usageCount, idUser_Vch) {
@@ -1107,7 +1113,7 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
                 optionPay: $scope.CreateOrder.optionPay,
                 totalPay: $scope.totalPay,
                 status: 1,
-                idStaff: 24,
+                idStaff: 1,
                 userName: $scope.selectedAddress.UserName,
                 userPhone: $scope.selectedAddress.PhoneNumber,
             }
@@ -1382,11 +1388,11 @@ app.controller("PaymentController", function ($scope, $window, $cookies, $http, 
             if (profileUser) {
                 if (!isNaN(totalPay)) {
                     if (totalPay >= 5000000) {
-                        point1 = profileUser.points + 5;
+                        point1 = profileUser.points + 150;
                     } else if (totalPay >= 1000000) {
-                        point1 = profileUser.points + 2;
+                        point1 = profileUser.points + 50;
                     } else {
-                        point1 = profileUser.points + 1;
+                        point1 = profileUser.points + 20;
                     }
                 } else {
                     console.error('totalPay không phải là số.', totalPay);

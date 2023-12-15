@@ -5,163 +5,292 @@
     <h3>Thông tin cá nhân </h3>
   </div>
 
-<div class=" d-flex ms-2">
-  <ul class=" mcd-menu  flex-column nav-pills ms-0" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-    <li id="account-tab" data-bs-toggle="pill" data-bs-target="#account" aria-controls="account"
-      aria-selected="true" class="active">
-      <a>
-        <i class="fa fa-home"></i>
-        <strong>Tài khoản</strong>
-      </a>
-    </li>
-    <li id="order-tab" data-bs-toggle="pill" data-bs-target="#order" aria-controls="order"
-      aria-selected="false">
-      <a>
-        <i class="fa fa-edit"></i>
-        <strong>Đơn mua</strong>
-      </a>
-    </li>
-    <li id="address-tab" data-bs-toggle="pill" data-bs-target="#address" aria-controls="address"
-      aria-selected="false">
-      <a>
-        <i class="fa fa-gift"></i>
-        <strong>Địa chỉ</strong>
-      </a>
-    </li>
-    <li id="voucher-tab" data-bs-toggle="pill" data-bs-target="#voucher" aria-controls="voucher"
-      aria-selected="false">
-      <a>
-        <i class="fa fa-globe"></i>
-        <strong>Kho voucher</strong>
-      </a>
-    </li>
-  </ul>
-  <div class="tab-content ms-5">
-    <!-- Content for Tài khoản tab -->
-    <div id="account" class="tab-pane fade show active">
-      <div class="bg-light border" style="width:900px; padding: 0 20px 0 20px;">
-        <div class="row ">
-          <div class="mt-5 col-7">
-            <h4>Hồ sơ của tôi</h4>
-            <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
-          </div>
-          <!-- <div class="col text-center ">
+  <div class=" d-flex ms-2">
+    <ul class=" mcd-menu  flex-column nav-pills ms-0" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <li id="account-tab" data-bs-toggle="pill" data-bs-target="#account" aria-controls="account" aria-selected="true"
+        class="active" ng-click="getProfile()">
+        <a>
+          <i class="fa fa-home"></i>
+          <strong>Tài khoản</strong>
+        </a>
+      </li>
+      <li id="order-tab" data-bs-toggle="pill" data-bs-target="#order" aria-controls="order" aria-selected="false">
+        <a>
+          <i class="fa fa-edit"></i>
+          <strong>Đơn mua</strong>
+        </a>
+      </li>
+      <li id="address-tab" data-bs-toggle="pill" data-bs-target="#address" aria-controls="address"
+        aria-selected="false">
+        <a>
+          <i class="fa fa-gift"></i>
+          <strong>Địa chỉ</strong>
+        </a>
+      </li>
+      <li id="voucher-tab" data-bs-toggle="pill" data-bs-target="#voucher" aria-controls="voucher"
+        aria-selected="false">
+        <a>
+          <i class="fa fa-globe"></i>
+          <strong>Kho voucher</strong>
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content ms-5">
+      <!-- Content for Tài khoản tab -->
+      <div id="account" class="tab-pane fade show active">
+        <div class="bg-light border" style="width:900px; padding: 0 20px 0 20px;">
+          <div class="row ">
+            <div class="mt-5 col-7">
+              <h4>Hồ sơ của tôi</h4>
+              <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+            </div>
+            <div>
+              Hạng : {{info.rank}} <img style="width: 44px;height: 44px;" ng-show="info.image!==1" src="../assets/images/rank_{{info.image}}.png"
+                alt="rank ct"> <br>
+              Điểm hiện có : {{info.points}}
+            </div>
+
+            <!-- <div class="col text-center ">
             <img src="/assets/img/user/{{info.image}} " class="rounded-4 mt-3" style="width: 120px; height: 100px;"
               alt="{{info.image}}">
             <input type="file" id="imageInput" accept="image/*" style="display: none" file-input ng-model="info.image">
             <button class="btn text-start border mt-1 ms-2" ng-click="selectImage($event)">Chọn ảnh</button>
           </div> -->
-          <hr>
-        </div>
-        <div>
-          <form action>
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingInputDisabled" placeholder="name@example.com"
-                ng-model="info.userName" readonly>
-              <label for="floatingInput">Tên đăng nhập
-              </label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingInputDisabled" placeholder="name@example.com"
-                ng-model="info.fullName">
-              <label for="floatingTextarea">Họ và tên</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="floatingInputDisabled" placeholder="name@example.com"
-                ng-model="info.email">
-              <label for="floatingTextarea2">Email</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingInputDisabled" placeholder="name@example.com"
-                ng-model="info.phone">
-              <label for="floatingTextarea2">Số điện thoại</label>
-            </div>
-            <div class="form-floating mb-3">
-              <select class="form-control" id="exampleSelectGender" ng-model="info.gender"
-                ng-options="gender as (gender ? 'Nam' : 'Nữ') for gender in [true, false]">
-              </select>
-              <label for="floatingTextarea2">Giới tính</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="date" class="form-control" id="floatingInputDisabled" placeholder="name@example.com"
-                ng-model="info.dateOfBirth" ng-value="dateFormat(info.dateOfBirth)">
-              <label for="floatingTextarea2">Ngày sinh
-              </label>
-            </div>
-            <button type="button" class="btn btn-outline-info mb-5" style="width: 10%;"
-              ng-click="UpdateUser()">Lưu</button>
-          </form>
+            <hr>
+          </div>
+          <div>
+            <form action>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInputDisabled" placeholder="name@example.com"
+                  ng-model="info.userName" readonly>
+                <label for="floatingInput">Tên đăng nhập
+                </label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInputDisabled" placeholder="name@example.com"
+                  ng-model="info.fullName">
+                <label for="floatingTextarea">Họ và tên</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInputDisabled" placeholder="name@example.com"
+                  ng-model="info.email">
+                <label for="floatingTextarea2">Email</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInputDisabled" placeholder="name@example.com"
+                  ng-model="info.phone">
+                <label for="floatingTextarea2">Số điện thoại</label>
+              </div>
+              <div class="form-floating mb-3">
+                <select class="form-control" id="exampleSelectGender" ng-model="info.gender"
+                  ng-options="gender as (gender ? 'Nam' : 'Nữ') for gender in [true, false]">
+                </select>
+                <label for="floatingTextarea2">Giới tính</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="floatingInputDisabled" placeholder="name@example.com"
+                  ng-model="info.dateOfBirth" ng-value="dateFormat(info.dateOfBirth)">
+                <label for="floatingTextarea2">Ngày sinh
+                </label>
+              </div>
+              <button type="button" class="btn btn-outline-info mb-5" style="width: 10%;"
+                ng-click="UpdateUser()">Lưu</button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Content for Đơn mua tab -->
-    <div id="order" class="tab-pane fade">
-      <div ng-include="'page/order.html'"></div>
+      <!-- Content for Đơn mua tab -->
+      <div id="order" class="tab-pane fade">
+        <div ng-include="'page/order.html'"></div>
 
-    </div>
+      </div>
 
-    <!-- Content for Địa chỉ tab -->
-    <div id="address" class="tab-pane fade">
-      <div class="bg-light border " style="width:900px; padding: 0 20px 20px 20px;">
-        <div class="row ms-2 ">
+      <!-- Content for Địa chỉ tab -->
+      <div id="address" class="tab-pane fade">
+        <div class="bg-light border " style="width:900px; padding: 0 20px 20px 20px;">
+          <div class="row ms-2 ">
             <div class="mt-5 col-8">
-                <h4>Địa chỉ của tôi</h4>
-                <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+              <h4>Địa chỉ của tôi</h4>
+              <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
             </div>
             <div class="col mt-5 text-end">
-                <button class="btn text-center bg-light mt-3"
-                    ng-click="resetModalContent()"
-                    data-bs-toggle="modal"
-                    data-bs-target="#addressModal">Thêm địa chỉ mới</button>
+              <button class="btn text-center bg-light mt-3" ng-click="resetModalContent()" data-bs-toggle="modal"
+                data-bs-target="#addressModal">Thêm địa chỉ mới</button>
             </div>
-            <hr >
-        </div>
-        <div class="address-item ms-0  row"
-            ng-repeat="add in addressUser | orderBy:'-Id'">
+            <hr>
+          </div>
+          <div class="address-item ms-0  row" ng-repeat="add in addressUser | orderBy:'-Id'">
             <div ng-init="loadProvince()"></div>
             <div ng-init="loadDistrictUser(add.ProvinceID)"></div>
             <div ng-init="loadWardUser(add.DistrictID)"></div>
             <label for="{{add.id}}" class="address-radio d-flex ">
-                <div class="address-info ms-3">
-                    <strong>{{add.UserName}}</strong> | <span>{{add.PhoneNumber}}</span>
-                    <div>{{add.AddressDetail}}</div>
-                    <div>{{ wardsByProvince[add.DistrictID]|
-                        findWardNameById:add.WardCode }},{{
-                        districtsByProvince[add.ProvinceID]|
-                        findDistrictNameById:add.DistrictID }},{{
-                        provinces
-                        | findProvinceNameById:add.ProvinceID }}</div>
-                </div>
-                <div class=" col mb-3 text-end  ">
-                    <a style="cursor: pointer; color: #1545e1;"
-                        ng-click="getUpdate(add)"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addressModal" class="me-2" title="Cập nhật ">
-                        <i class="fs-4  bi bi-pencil-square"></i>
-                    </a>
-                    <a  ng-click="deleteAdr(add)"
-                        style="cursor: pointer; color: #FC424A;" title="Xóa"><i
-                            class="fs-4  bi bi-trash"></i>
-                    </a>
-                </div>
+              <div class="address-info ms-3">
+                <strong>{{add.UserName}}</strong> | <span>{{add.PhoneNumber}}</span>
+                <div>{{add.AddressDetail}}</div>
+                <div>{{ wardsByProvince[add.DistrictID]|
+                  findWardNameById:add.WardCode }},{{
+                  districtsByProvince[add.ProvinceID]|
+                  findDistrictNameById:add.DistrictID }},{{
+                  provinces
+                  | findProvinceNameById:add.ProvinceID }}</div>
+              </div>
+              <div class=" col mb-3 text-end  ">
+                <a style="cursor: pointer; color: #1545e1;" ng-click="getUpdate(add)" data-bs-toggle="modal"
+                  data-bs-target="#addressModal" class="me-2" title="Cập nhật ">
+                  <i class="fs-4  bi bi-pencil-square"></i>
+                </a>
+                <a ng-click="deleteAdr(add)" style="cursor: pointer; color: #FC424A;" title="Xóa"><i
+                    class="fs-4  bi bi-trash"></i>
+                </a>
+              </div>
             </label>
             <hr class="bg-dark ms-3 w-75">
+          </div>
         </div>
-    </div>
-    </div>
+      </div>
 
-    <!-- Content for Kho voucher tab -->
-    <div id="voucher" class="tab-pane fade">
-      <h3>Kho voucher</h3>
-      <p>Nội dung của tab Kho voucher ở đây.</p>
-    </div>
+      <!-- Content for Kho voucher tab -->
+      <div id="voucher" class="tab-pane fade">
+        <div class="bg-light border " style="width:1200px; padding: 0 20px 20px 20px;">
 
-    <!-- Content for Blog tab -->
-    <div id="v-pills-blog" class="tab-pane fade">
-      <h3>Blog</h3>
-      <p>Nội dung của tab Blog ở đây.</p>
+          <div ng-repeat="item in listAllVouchers" id="vouchers">
+            <div class="voucher-card w-100">
+              <b class="voucher-quantity">x{{item.quantity}}</b>
+              <img src="/assets/img/Voucher/{{item.image}}" alt="Voucher Image" />
+              <div class="details pb-1 row w-50">
+                <div class="col">
+                  <h5 ng-show="item.discountType=='Phần Trăm'">Giảm {{item.value}}%</h5>
+                  <h5 ng-show="item.discountType=='VND'">Giảm {{item.value |vndCurrency}}</h5>
+                  <p ng-show="item.discountType=='Phần Trăm'">Giảm tối đa: {{item.maxReduction
+                    |vndCurrency}}</p>
+                  <!-- <p ng-show="item.discountType=='VND'">Giảm tối đa: {{item.maxReduction
+                  |vndCurrency}}</p> -->
+                  <p>Đơn tối thiểu: {{item.condition|vndCurrency }}</p>
+                </div>
+                <div class="col mt-4">
+                  <p>HSD: {{item.endDate |dateFormat }}</p>
+                  <p>Đổi điểm : {{item.exchangePoint}} </p>
+                </div>
+              </div>
+              <div class="form-floating mt-2  w-25">
+                <input type="number" class="form-control" id="inputCount" placeholder="name@example.com"
+                  ng-model="voucherUser.usageCount">
+                <label for="floatingInput" >Số lượng muốn đổi
+                </label>
+                <button ng-click="doidiem(item.id,item.exchangePoint,item.quantity)"
+                  class="btn btn-outline-secondary w-50 ms-1">Đổi điểm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content for Blog tab -->
+      <div id="v-pills-blog" class="tab-pane fade">
+        <h3>Blog</h3>
+        <p>Nội dung của tab Blog ở đây.</p>
+      </div>
     </div>
   </div>
 </div>
-</div>
+<style>
+  .voucher {
+    background-color: #5c5b5b;
+    justify-content: center;
+    position: sticky;
+    margin-top: 30px;
+    background-color: #fff;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+
+  }
+
+  .voucher input[type="text"] {
+    width: 68%;
+    padding: 15px 15px 15px 15px;
+    margin-right: -80px;
+    border: 1px #302f2f;
+
+  }
+
+  .voucher input[type="text"] :hover {
+    border: none;
+  }
+
+  .voucher-card .details input[type="radio"] {
+    transform: scale(1.7);
+    position: absolute;
+    right: 0;
+    margin-right: 30px;
+    margin-top: -40px;
+  }
+
+  .voucher button {
+    margin-left: 100px;
+    padding: 15px 15px 15px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width: max-content;
+    border-radius: 15px solid;
+  }
+
+  #vouchers {
+    margin-top: 10px;
+  }
+
+  .voucher-card {
+    width: max-content;
+    position: relative;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  }
+
+  .voucher-card img {
+    width: 150px;
+    height: 140px;
+    margin-right: 30px;
+    background-color: #ee4d2d;
+  }
+
+  .voucher-quantity {
+    font-family: "Helvetica Neue";
+    font-size: 16px;
+    font-weight: 800;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: -1px 0 0 0;
+    background-color: white;
+    /* Tùy chọn: Nền trắng để che phủ phần của hình ảnh */
+  }
+.form-floating {
+  display: flex;
+  /* height: 40px !important;
+  margin-top: -20px;
+  margin-left: 80px !important; */
+}
+
+.form-floating input   {
+  height: 40px !important;
+}
+  .voucher-card .details {}
+
+  .details h5 {
+    font-weight: bold;
+    padding-bottom: 5px;
+  }
+
+  .modal-footer-vch {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+</style>

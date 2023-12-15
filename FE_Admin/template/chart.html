@@ -37,15 +37,15 @@
         <div class="card card-tale">
           <div class="card-body">
             <p class="mb-4">Doanh thu ngày {{currentDay}}/{{currentMonth}}/{{currentYear}}</p>
-            <p class="fs-30 mb-2">{{listDayCurrent | vndCurrency}}</p>
+            <p class="fs-30 mb-2">{{dailyRevenue | vndCurrency}}</p>
           </div>
         </div>
       </div>
       <div class="col-md-6 mb-4 stretch-card transparent">
         <div class="card card-dark-blue">
           <div class="card-body">
-            <p class="mb-4">Doanh thu tháng {{currentMonth}} (30 days)</p>
-            <p class="fs-30 mb-2">{{listMonthDay | vndCurrency}}</p>
+            <p class="mb-4">Doanh thu tuần thứ {{currentWeek}} của tháng {{currentMonth}}</p>
+            <p class="fs-30 mb-2">{{ weeklyTotalRevenue |vndCurrency}}</p>
           </div>
         </div>
       </div>
@@ -55,8 +55,8 @@
       <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
         <div class="card card-light-blue">
           <div class="card-body">
-            <p class="mb-4">Doanh thu năm ({{currentYear}})</p>
-            <p class="fs-30 mb-2">{{listYearDay |vndCurrency}}</p>
+            <p class="mb-4">Doanh thu tháng ({{currentMonth}})</p>
+            <p class="fs-30 mb-2">{{monthlyRevenue  |vndCurrency}}</p>
           </div>
          
         </div>
@@ -64,8 +64,8 @@
       <div class="col-md-6  stretch-card transparent">
         <div class="card  card-light-danger">
           <div class="card-body">
-            <p class="mb-4">Tổng doanh thu</p>
-            <p class="fs-30 mb-2">{{totalAll | vndCurrency}}</p>
+            <p class="mb-4">Doanh thu năm ({{currentYear}})</p>
+            <p class="fs-30 mb-2">{{listYearDay |vndCurrency}}</p>
           </div>
         </div>
       </div>
@@ -220,7 +220,7 @@
                         </div>
                     </div>
 
-                    <button class="filter-date2 ms-5" ng-click="filterDate(selectedDisplay)" style="margin-top: -0.1rem;">
+                    <button class="filter-date2 ms-5" ng-click="filterDate2(selectedDisplay2)" style="margin-top: -0.1rem;">
                       <i class="fa-solid fa-filter ms-1"></i> Lọc
                   </button>
                 </div>

@@ -428,11 +428,11 @@ myApp.service('VoucherService', function () {
 myApp.filter('customFilter', function() {
   return function(input, searchName, searchDiscountType, searchStatus, searchDate) {
       return input.filter(function(item) {
-        console.log('input:', input);
-        console.log('searchName:', searchName);
-        console.log('searchDiscountType:', searchDiscountType);
-        console.log('searchStatus:', searchStatus);
-        console.log('searchDate:', searchDate);
+        // console.log('input:', input);
+        // console.log('searchName:', searchName);
+        // console.log('searchDiscountType:', searchDiscountType);
+        // console.log('searchStatus:', searchStatus);
+        // console.log('searchDate:', searchDate);
           
           // Kiểm tra sự khớp dựa trên tất cả các trường dữ liệu
           var nameMatch = !searchName || (item.name && item.name.toLowerCase().includes(searchName.toLowerCase()));

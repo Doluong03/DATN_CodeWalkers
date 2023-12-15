@@ -47,8 +47,22 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
   var currentMonth = currentDate.getMonth() + 1;
 
   $scope.currentMonth = currentMonth;
-  var currentDay = currentDate.getDate();
 
+  var currentDay = currentDate.getDate();
+  var currentDate = new Date();
+
+  // Get the ISO week number
+  $scope.currentWeek = getISOWeek(currentDate)-1;
+
+  // Function to calculate the ISO week number
+  function getISOWeek(date) {
+    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    var dayOfWeek = firstDay.getDay() - 1; // Adjust to start from Sunday (0-indexed)
+    if (dayOfWeek === -1) dayOfWeek = 6; // Sunday is 0, but in our adjusted system, Sunday should be 6
+
+    var day = date.getDate() + dayOfWeek;
+    return Math.ceil(day / 7);
+  }
   $scope.currentDay = currentDay;
 
   var baseUrl = 'http://localhost:8080/CodeWalkers/';
@@ -251,8 +265,8 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
   $scope.weeklyRevenue = async function () {
     // Lấy ngày đầu tiên của tuần hiện tại
     var currentDate = moment();
-    console.log(currentDate.clone().startOf('isoWeek').format('DD-MM-YYYY'),'a')
-    console.log(currentDate.format('DD-MM-YYYY'),'a')
+    console.log(currentDate.clone().startOf('isoWeek').format('DD-MM-YYYY'), 'a')
+    console.log(currentDate.format('DD-MM-YYYY'), 'a')
     $scope.weeklyTotalRevenue = 0;
 
     // Lặp qua mỗi ngày của tuần từ ngày đầu tiên đến ngày hiện tại
@@ -273,7 +287,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
           'Content-Type': 'application/json'
         }
       });
-      console.log(day,'1')
+      console.log(day, '1')
       $scope.dailyRevenue = parseInt(response.data);
       $scope.weeklyTotalRevenue += $scope.dailyRevenue || 0;
     } catch (error) {
@@ -728,7 +742,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
   };
 
   // Đăng ký sự kiện $viewContentLoaded
-  $scope.$on('$viewContentLoaded', $scope.onViewContentLoaded2);
+  // $scope.$on('$viewContentLoaded', $scope.onViewContentLoaded2);
   $scope.filterDate2 = function (selectedDisplay2) {
     $scope.loadingBarchar = true;
     $scope.data = null; // Clear old data
@@ -788,7 +802,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
                 datasets: [{
                   label: '# of Votes',
                   data: response.data.map(item => item.soLuong),
-                  backgroundColor: colors.backgroundColor,
+                  // backgroundColor: colors.backgroundColor,
                   borderColor: colors.borderColor,
                   borderWidth: 1,
                   fill: false
@@ -810,7 +824,10 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
                   point: {
                     radius: 0
                   }
-                }
+                },
+                hover: {
+                  animationDuration: 0 // Tắt hiệu ứng hover để tăng tính responsivity
+                },
               };
 
               // Vẽ biểu đồ
@@ -853,7 +870,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
               datasets: [{
                 label: '# of Votes',
                 data: response.data.map(item => item[1]),
-                backgroundColor: colors.backgroundColor,
+                // backgroundColor: colors.backgroundColor,
                 borderColor: colors.borderColor,
                 borderWidth: 1,
                 fill: false
@@ -875,7 +892,10 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
                 point: {
                   radius: 0
                 }
-              }
+              },
+              hover: {
+                animationDuration: 0 // Tắt hiệu ứng hover để tăng tính responsivity
+              },
             };
 
             // Vẽ biểu đồ
@@ -930,7 +950,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
                 datasets: [{
                   label: '# of Votes',
                   data: response.data.map(item => item.soLuong),
-                  backgroundColor: colors.backgroundColor,
+                  // backgroundColor: colors.backgroundColor,
                   borderColor: colors.borderColor,
                   borderWidth: 1,
                   fill: false
@@ -952,17 +972,26 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
                   point: {
                     radius: 0
                   }
-                }
+                },
+                hover: {
+                  animationDuration: 0 // Tắt hiệu ứng hover để tăng tính responsivity
+                },
               };
 
               // Vẽ biểu đồ
               if ($("#barChart").length) {
                 var barChartCanvas = $("#barChart").get(0).getContext("2d");
-                var barChart = new Chart(barChartCanvas, {
+                new Chart(barChartCanvas, {
                   type: 'bar',
                   data: data,
-                  options: options
+                  options: options,
                 });
+                console.log( new Chart(barChartCanvas, {
+                  type: 'bar',
+                  data: data,
+                  options: options,
+                }),'a');
+
               }
             })
             .catch(function (error) {
@@ -979,7 +1008,6 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
         }
       }
     }, 1000);
-
   };
 
   // Function để tạo mảng màu động
@@ -994,7 +1022,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
         Math.floor(Math.random() * 256) + ',' +
         '0.2)';
 
-      backgroundColors.push(dynamicColor);
+      // backgroundColors.push(dynamicColor);
 
       var borderColor = dynamicColor.replace('0.2', '1');
       borderColors.push(borderColor);
@@ -1005,6 +1033,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
       borderColor: borderColors
     };
   }
+  $scope.filterDate2('');
 
   // thu vien jQuery không đụng vào
   (function ($) {

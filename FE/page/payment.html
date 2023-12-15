@@ -525,28 +525,4 @@
             </div>
         </div>
     </div>
-
-
-
-
-    <div ng-repeat="item in listAllVouchers" id="vouchers">
-        <div class="voucher-card" >
-            <b class="voucher-quantity">x{{item.quantity}}</b>
-            <img src="/assets/img/Voucher/{{item.image}}" alt="Voucher Image" />
-            <div class="details pb-1">
-                <h5 ng-show="item.discountType=='Phần Trăm'">Giảm {{item.value}}%</h5>
-                <h5 ng-show="item.discountType=='VND'">Giảm {{item.value |vndCurrency}}</h5>
-                <p ng-show="item.discountType=='Phần Trăm'">Giảm tối đa: {{item.maxReduction
-                    |vndCurrency}}</p>
-                <!-- <p ng-show="item.discountType=='VND'">Giảm tối đa: {{item.maxReduction
-                    |vndCurrency}}</p> -->
-                <p>Đơn tối thiểu: {{item.condition|vndCurrency }}</p>
-                <p>HSD: {{item.endDate |dateFormat }}</p>
-                <p>Đổi điểm : {{item.exchangePoint}} </p>
-                <input type="number" ng-model="voucherUser.usageCount">
-
-            </div>
-        </div>
-        <button ng-click="doidiem(item.id,item.exchangePoint,item.quantity)" style="float: right;">Đổi điểm</button>
-    </div>
 </div>
