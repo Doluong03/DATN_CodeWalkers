@@ -1,6 +1,10 @@
 package com.example.asm_be.repositories;
 
+import com.example.asm_be.dto.VoucherUserDTO;
+import com.example.asm_be.dto.VoucherUserDTO2;
+import com.example.asm_be.entities.VoucherUsers;
 import com.example.asm_be.entities.Vouchers;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,9 +26,24 @@ public interface VoucherRepository extends JpaRepository<Vouchers, Integer> {
     Optional<Vouchers> getVouchersByCode(String maVc);
 
     @Query("""
-            select distinct p.usageCount from PhieuGiamGia vc
+            select distinct new com.example.asm_be.dto.VoucherUserDTO(p.usageCount,p.customType,p.id)  from PhieuGiamGia vc
             join Phieu_KhachHang p on vc.id = p.voucher.id
             where vc.id = :id
              """)
-    Optional<Integer> getUserVouchersById(@Param("id") int id);
+    List<VoucherUserDTO> getUserVouchersById(@Param("id") int id);
+
+
+    @Query("""
+            select new com.example.asm_be.dto.VoucherUserDTO2(p.users.id,p.usageCount,pgg.quantity)
+             from PhieuGiamGia pgg join Phieu_KhachHang p
+                    on pgg.id = p.voucher.id
+                    join Users kh on kh.id = p.users.id
+                    where p.voucher.id = :id and kh.userName = :userName
+             """)
+    List<VoucherUserDTO2> getUserVouchersByVoucherAndUserName(@Param("id") int id, @Param("userName") String userName);
+
+
+
+
+
 }

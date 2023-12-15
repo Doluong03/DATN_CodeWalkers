@@ -15,6 +15,110 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
       console.error('Error fetching weather data: ' + error);
     });
 
+  var datUser = localStorage.getItem('userData');
+
+  // Kiểm tra xem datUser có giá trị không rỗng
+  if (datUser) {
+    // Chuyển chuỗi JSON thành đối tượng JavaScript
+    var userData = JSON.parse(datUser);
+
+    // Kiểm tra xem userData có thuộc tính 'username' không
+    if (userData && userData.username) {
+      // Gán giá trị username vào $scope.userName
+      $scope.userName = userData.username;
+    } else {
+      console.error("Không tìm thấy thuộc tính 'username' trong userData.");
+    }
+  } else {
+    console.error("Không tìm thấy giá trị trong localStorage cho 'userData'.");
+  }
+
+
+  $scope.listDayCurrent = [];
+  $scope.listMonthDay = [];
+  $scope.listYearDay = [];
+  $scope.totalAll = [];
+
+  // Lấy ngày hiện tại
+  var currentDate = new Date();
+  var currentYear = currentDate.getFullYear();
+
+  $scope.currentYear = currentYear;
+  var currentMonth = currentDate.getMonth() + 1;
+
+  $scope.currentMonth = currentMonth;
+  var currentDay = currentDate.getDate();
+
+  $scope.currentDay = currentDay;
+
+  var baseUrl = 'http://localhost:8080/CodeWalkers/';
+
+  // Hàm gọi tổng thanh toán theo ngày trong tháng
+  function getTotalByMonthDay() {
+    $http.get(baseUrl + 'total-monthDay')
+      .then(function (response) {
+        // Xử lý dữ liệu khi thành công
+        console.log('Tổng thanh toán theo ngày trong tháng:', response.data);
+        $scope.listMonthDay = response.data;
+      })
+      .catch(function (error) {
+        // Xử lý lỗi
+        console.error('Lỗi khi lấy dữ liệu:', error);
+      });
+  }
+
+  // Hàm gọi tổng thanh toán theo ngày trong năm
+  function getTotalByYearDay() {
+    $http.get(baseUrl + 'total-yearDay')
+      .then(function (response) {
+        // Xử lý dữ liệu khi thành công
+        console.log('Tổng thanh toán theo ngày trong năm:', response.data);
+        $scope.listYearDay = response.data;
+
+      })
+      .catch(function (error) {
+        // Xử lý lỗi
+        console.error('Lỗi khi lấy dữ liệu:', error);
+      });
+  }
+
+  // Hàm gọi tổng thanh toán theo ngày hôm nay
+  function getTotalByToday() {
+    $http.get(baseUrl + 'total-today')
+      .then(function (response) {
+        // Xử lý dữ liệu khi thành công
+        console.log('Tổng thanh toán ngày hôm nay:', response.data);
+        $scope.listDayCurrent = response.data;
+      })
+      .catch(function (error) {
+        // Xử lý lỗi
+        console.error('Lỗi khi lấy dữ liệu:', error);
+      });
+  }
+
+  function getAllTotal() {
+
+    $http.get(baseUrl + 'totalAll')
+      .then(function (response) {
+        // Xử lý dữ liệu khi thành công
+        console.log('Tổng thanh toán ngày hôm nay:', response.data);
+        $scope.totalAll = response.data;
+      })
+      .catch(function (error) {
+        // Xử lý lỗi
+        console.error('Lỗi khi lấy dữ liệu:', error);
+      });
+  }
+
+  // Sự kiện khi trang được tải
+  $scope.$on('$viewContentLoaded', function () {
+    // Gọi các hàm khi trang được tải
+    getTotalByMonthDay();
+    getTotalByYearDay();
+    getTotalByToday();
+    getAllTotal();
+  });
+
 
   // Initialize default values
   $scope.selectedYear1 = '';

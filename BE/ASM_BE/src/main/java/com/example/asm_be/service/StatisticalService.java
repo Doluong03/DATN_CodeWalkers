@@ -1,5 +1,6 @@
 package com.example.asm_be.service;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -26,5 +27,15 @@ public interface StatisticalService {
     List<Object[]> statisticsAmountByYear(int sYear,int eYear);
 
     List<Object[]> getStock();
+
+
+    List<Double> getTotalPayByCurrentMonth();
+
+    List<Double> getTotalPayByCurrentDay();
+
+    List<Double> getTotalPayByCurrentYear();
+
+    List<Double> getAllTotalPay();
+
 
 }

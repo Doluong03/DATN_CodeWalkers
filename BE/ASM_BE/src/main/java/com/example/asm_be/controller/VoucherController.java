@@ -2,6 +2,8 @@ package com.example.asm_be.controller;
 
 import com.example.asm_be.dto.UserVoucherResponse;
 import com.example.asm_be.dto.VoucherRespone;
+import com.example.asm_be.dto.VoucherUserDTO;
+import com.example.asm_be.dto.VoucherUserDTO2;
 import com.example.asm_be.entities.ResponeObject;
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.entities.VoucherUsers;
@@ -14,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +55,7 @@ public class VoucherController {
                                 voucher.getCondition(),
                                 voucher.getMaxReduction(),
                                 voucher.getDiscountType(),
-                                voucher.getCustomType(),
+                                voucherUser.getCustomType(),
                                 voucherUser.getUsageCount(),
                                 voucherUser.isStatus(),
                                 voucherUser.getId()
@@ -94,8 +95,8 @@ public class VoucherController {
     }
 
     @GetMapping("/admin/user-voucher/getOne")
-    private Integer getUserVoucher(@RequestParam(value = "id") Integer id) {
-        return voucherService.getOneUserVoucher(id).get();
+    private List<VoucherUserDTO> getUserVoucher(@RequestParam(value = "id") Integer id) {
+        return voucherService.getOneUserVoucher(id);
     }
 
     @GetMapping("/admin/voucher/getOne")
@@ -115,6 +116,20 @@ public class VoucherController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
+
+    @PostMapping("/voucher/search2")
+    private ResponseEntity<List<Vouchers>> getVouchersByMa2(@RequestParam("maVc") String maVc1) {
+        String cleanedMaVc = maVc1.trim();
+
+        Optional<Vouchers> vouchersOptional = voucherService.getVouchersByMa(cleanedMaVc);
+        if (vouchersOptional.isPresent()) {
+            List<Vouchers> vouchersList = Collections.singletonList(vouchersOptional.get());
+            return new ResponseEntity<>(vouchersList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
     @PutMapping("/admin/voucher/update")
     private ResponseEntity<?> getVouchersByMa(@RequestBody Vouchers vouchers) {
@@ -186,8 +201,9 @@ public class VoucherController {
     }
 
     @PatchMapping("/admin/user-voucher/update")
-    private ResponseEntity<?> updateUserVoucher(@RequestParam int UsageCount,@RequestParam int id) {
-        String message = voucherService.updateUserVoucher(UsageCount,id) ? "update thanh cong" : "update that bai";
+    private ResponseEntity<?> updateUserVoucher(@RequestParam("UsageCount") int UsageCount,@RequestParam("id") int id
+            ,@RequestParam("idUser") int idUser) {
+        String message = voucherService.updateUserVoucher(UsageCount,id,idUser) ? "update thanh cong" : "update that bai";
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -195,6 +211,54 @@ public class VoucherController {
                         ? "success" : "Failed", message, message.equals("update thanh cong")));
     }
 
+    @PutMapping("/admin/user-voucher/update/all")
+    private ResponseEntity<?> updateUserVoucher(@RequestBody VoucherUsers voucherUsers) {
+        String message = voucherService.updateUserVouchers(voucherUsers) ? "update thanh cong" : "update that bai";
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject(message.equals("update thanh cong")
+                        ? "success" : "Failed", message, message.equals("update thanh cong")));
+    }
+
+
+    @GetMapping("/vouchers/getAll")
+    private List<Vouchers> geAllVoucherss() {
+        return voucherService.getAllVoucher();
+    }
+
+    @GetMapping("/vouchers/ckeck-exsits")
+    private List<VoucherUserDTO2> getVoucherByUserName(@RequestParam("id") int id,@RequestParam("userName") String userName) {
+        return voucherService.getUserVouchersByVoucherAndUserName(id,userName.trim());
+    }
+
+    @GetMapping("/vouchers/getOne-userVouchers")
+    private List<Vouchers> getVoucherById(@RequestParam("id") int id,@RequestParam("idVch") Integer idVch) {
+        return (List<Vouchers>) voucherService.findByUsersAndId(id,idVch).get();
+    }
+
+    @PutMapping("/voucher/update/quantity-voucher/{id}/{quantity}")
+    @ResponseBody
+    private ResponeObject updateQuantity(@PathVariable Integer id, @PathVariable Integer quantity) {
+        try {
+            boolean success = voucherService.updateQuantity(quantity, id);
+            String message = success ? "Update thành công" : "Update thất bại";
+            return new ResponeObject(success ? "success" : "Failed", message, success);
+        } catch (Exception e) {
+            // Ghi nhật ký lỗi
+            return new ResponeObject("error", "Có lỗi xảy ra trong quá trình xử lý", false);
+        }
+    }
+
+    @GetMapping("/vouchers/getCustomType")
+    private List<Integer> getVoucherCustomType(@RequestParam("idVch") Integer idVch) {
+          List<Integer> list = voucherService.getListCusType(idVch);
+          if(list.size() >0){
+              return list;
+          }
+          list.add(0);
+          return list;
+    }
 
 
 }

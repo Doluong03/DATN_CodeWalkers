@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <title>
+        Thanh toán qua Ngân hàng NCB
+    </title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;display=swap" rel="stylesheet">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="./assets/css/bootstrap.bundles.css">
+    <link rel="stylesheet" href="./assets/css/style2.css">
+    <link rel="stylesheet" href="./assets/css/custom.bundles.css">
+
+</head>
+
+<body  class="modal-open">
+   
+      
+        <!-- end modal.modal -->
+        <div class="modal fade modal-body-ubg-secondary show" id="modalPromo" aria-labelledby="exampleModalLabel"
+            style="display: block; padding-left: 0px;" aria-modal="true" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-size-sm modal-mobile modal-dialog-scrollable"
+                role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-wrap">
+                            <div class="row row-16 modal-title-wrap">
+                                <div class="col-12 text-center">
+                                    <h2 class="modal-title h2">
+                                        Khuyến mại
+                                    </h2>
+                                </div>
+                            </div>
+                            <a data-bs-dismiss="modal"
+                                class="ubg-transparent ubox-size-button-default ubox-square ubg-hover ubg-active ubtn modal-close-btn">
+                                <div class="ubtn-inner"></div>
+                            </a>
+                            <form id="promoCodeManual" class="mt20" novalidate="">
+                                <div class="form-group">
+                                    <div class="input-group-wrap input-default input-size-sm input-group-vertical">
+                                        <label class="input-inner-wrap">
+                                            <input type="text" id="inputPromoManual"
+                                                class="input input-label-change input-has-clear" name="promoCode"
+                                                placeholder="Bạn có mã khuyến mại khác?" required="required"
+                                                maxlength="20" autocorrect="off"
+                                                data-parsley-required-message="Quý khách vui lòng nhập mã khuyến mại"
+                                                data-parsley-length-message="Mã khuyến mại không hợp lệ">
+                                            <div class="input-extend input-extend-right">
+                                                <div class="input-box input-ic-clear"></div>
+                                                <div class="input-box input-extend-inner pr4">
+                                                    <button id="btnPromoManual"
+                                                        class="ubg-primary ubox-size-button-sm ubg-hover ubg-active ubtn ubtn-primary-disabled">
+                                                        <div class="ubtn-inner">
+                                                            <span class="ubtn-text">Áp dụng</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="input-frame"></div>
+                                        </label>
+                                    </div>
+                                    <div class="errorBlock"></div>
+                                </div>
+                            </form>
+                            <div class="promo-variable hidden">
+                                <span class="txt-expiry-date">HSD</span>
+                                <span class="txt-btn-apply">Áp dụng</span>
+                                <span class="txt-btn-cancel-promo">Hủy bỏ</span>
+                                <span class="txt-btn-details">Chi tiết</span>
+                                <span class="txt-input-promotion-code">Nhập mã ${promoCode} khi thanh toán, giảm
+                                    ngay:</span>
+                                <span class="txt-tooltip-copy">Sao chép</span>
+                                <span
+                                    class="icon-copy">/paymentv2/Images/icons-color/default2/default/24x24-copy.svg</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="list-promo" style="">
+                            <div id="listPromotions" class="list-mb24 list-last-mb">
+                                <div class="promo-card-wrap"> <input type="checkbox" name="rncPromo" id="rncPromo-HHT03"
+                                        class="hidden" value="HHT03">
+                                    <div class="promo-card rnc-content"> <a href="#"
+                                            class="promo-link-abs btn-promotion-details"></a>
+                                        <div class="promo-card-inner">
+                                            <div class="row row-0 align-items-center">
+                                                <div class="col promo-left">
+                                                    <div class="promo-left-inner">
+                                                        <div class="h3">Giảm 30% tối đa 200K</div>
+                                                        <div class="mt8 p"> <span class="color-sub-default">HSD:
+                                                            </span>10/10/2024 </div>
+                                                        <div class="mt16">
+                                                            <div
+                                                                class="ulabel-status ulabel-size-xl up ubg-porcelain color-sub-default">
+                                                                <div class="row row-border row-8 align-items-center">
+                                                                    <div class="col">HHT03</div>
+                                                                    <div class="col-auto">
+                                                                        <div class="u-label-border-left"> <a
+                                                                                data-bs-tooltip="tooltip" title=""
+                                                                                data-trigger="hover"
+                                                                                class="ubg-transparent ubox-size-button-xxs ubox-square ubg-hover ubg-active ubtn btn-copy-promo"
+                                                                                data-bs-original-title="Sao chép">
+                                                                                <div class="ubtn-inner"> <span
+                                                                                        class="ubtn-ic ubtn-ic-left">
+                                                                                        <img src="/paymentv2/Images/icons-color/default2/default/24x24-copy.svg"
+                                                                                            alt="" class="ic-sm">
+                                                                                    </span> </div>
+                                                                            </a> </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto scope-vertical">
+                                                    <div class="scope-divider-inner">
+                                                        <div class="scope-divider-line"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto promo-right">
+                                                    <div class="hide-checked"> <label
+                                                            class="ubg-transparent ubox-size-button-default ubg-active ubtn no-p btn-apply-promo">
+                                                            <div class="ubtn-inner"> <span
+                                                                    class="ubtn-text color-primary">Áp dụng</span>
+                                                            </div>
+                                                        </label> </div>
+                                                    <div class="show-checked"> <label
+                                                            class="ubg-transparent ubox-size-button-default ubg-active ubtn no-p btn-cancel-promo">
+                                                            <div class="ubtn-inner"> <span
+                                                                    class="ubtn-text color-primary">Hủy bỏ</span> </div>
+                                                        </label> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="promo-card-wrap"> <input type="checkbox" name="rncPromo" id="rncPromo-HTT11"
+                                        class="hidden" value="HTT11">
+                                    <div class="promo-card rnc-content"> <a href="#"
+                                            class="promo-link-abs btn-promotion-details"></a>
+                                        <div class="promo-card-inner">
+                                            <div class="row row-0 align-items-center">
+                                                <div class="col promo-left">
+                                                    <div class="promo-left-inner">
+                                                        <div class="h3">Giảm 10% tối đa 100K</div>
+                                                        <div class="mt8 p">
+                                                            <div class="color-warning">Không đáp ứng thời gian hưởng
+                                                                khuyến mại</div> <span class="color-sub-default">HSD:
+                                                            </span>15/11/2024
+                                                        </div>
+                                                        <div class="mt16">
+                                                            <div
+                                                                class="ulabel-status ulabel-size-xl up ubg-porcelain color-sub-default">
+                                                                <div class="row row-border row-8 align-items-center">
+                                                                    <div class="col">HTT11</div>
+                                                                    <div class="col-auto">
+                                                                        <div class="u-label-border-left"> <a
+                                                                                data-bs-tooltip="tooltip" title=""
+                                                                                data-trigger="hover"
+                                                                                class="ubg-transparent ubox-size-button-xxs ubox-square ubg-hover ubg-active ubtn btn-copy-promo"
+                                                                                data-bs-original-title="Sao chép">
+                                                                                <div class="ubtn-inner"> <span
+                                                                                        class="ubtn-ic ubtn-ic-left">
+                                                                                        <img src="/paymentv2/Images/icons-color/default2/default/24x24-copy.svg"
+                                                                                            alt="" class="ic-sm">
+                                                                                    </span> </div>
+                                                                            </a> </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto scope-vertical">
+                                                    <div class="scope-divider-inner">
+                                                        <div class="scope-divider-line"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto promo-right"> <button
+                                                        class="ubg-transparent ubox-size-button-default ubg-active ubtn no-p btn-promotion-details">
+                                                        <div class="ubtn-inner"> <span
+                                                                class="ubtn-text color-primary">Chi tiết</span> </div>
+                                                    </button> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="empty-box" style="display: none">
+                            <div class="empty-box-icon">
+                                <img src="/paymentv2/Images/icons-color/defaultlight/default/24x24-promocode.svg"
+                                    alt="">
+                            </div>
+                            <div class="empty-box-content mt16 color-sub-default h3">Hiện không có chương trình khuyến
+                                mại nào được áp dụng cho<br>nhà cung cấp này</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center error-block" style="display: none">
+                        <div class="modal-footer-content-after mt16">
+                            <div class="alert-box alert-box-danger ubg-sub-danger list-crop">
+                                <div class="alert-box-title">
+                                    <div class="row row-8">
+                                        <div class="col-auto ic"><img
+                                                src="/paymentv2/Images/icons-color/danger/default/24x24-alert.svg"
+                                                alt="" class="ic-default"></div>
+                                        <div class="col title weight5 error-message"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+        <div class="modal fade" id="modalPromoDetails" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true" style="z-index: 3002">
+            <div class="modal-dialog modal-dialog-centered modal-size-sm modal-mobile-full modal-dialog-scrollable"
+                role="document">
+                <div class="modal-content">
+                    <input type="text" name="promoCode" class="hidden">
+                    <div class="modal-header no-p no-minheight">
+                        <div class="modal-wrap">
+                            <a data-bs-dismiss="modal"
+                                class="ubg-default-80 ubox-size-button-default ubox-square ubox-rounded ubg-hover ubg-active ubtn modal-close-btn">
+                                <div class="ubtn-inner">
+                                    <span class="ubtn-ic ubtn-ic-left">
+                                        <img src="/paymentv2/Images/icons-color/invert/default/24x24-close.svg" alt=""
+                                            class="ic-default">
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-body-full">
+                            <div class="promo-info-banner">
+                                <div class="promo-info-banner-inner">
+                                    <img src="/paymentv2/Images/img/mics/gift.jpg" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="promo-info-box">
+                            <div class="h2 promo-summary"></div>
+                            <div class="p promo-end-time-wrapper" style="display: none">
+                                <span class="color-sub-default">HSD: </span>
+                                <span class="promo-end-time"></span>
+                            </div>
+                            <div class="p1 color-warning promo-apply-status-message" style="display: none"></div>
+                            <div class="mt16">
+                                <div class="ulabel-status ulabel-size-xl up ubg-porcelain color-sub-default">
+                                    <div class="row row-border row-8 align-items-center">
+                                        <div class="col promo-code"></div>
+                                        <div class="col-auto">
+                                            <div class="u-label-border-left">
+                                                <a data-bs-tooltip="tooltip" title="" data-trigger="hover"
+                                                    class="ubg-transparent ubox-size-button-xxs ubox-square ubg-hover ubg-active ubtn btn-copy-promo"
+                                                    data-bs-original-title="Sao chép">
+                                                    <div class="ubtn-inner">
+                                                        <span class="ubtn-ic ubtn-ic-left">
+                                                            <img src="/paymentv2/Images/icons-color/default2/default/24x24-copy.svg"
+                                                                alt="" class="ic-sm">
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-mb12 list-last-mb">
+                            <div class="p1 promo-benefits"></div>
+                            <div class="h3">Điều kiện áp dụng</div>
+                            <div class="p1 promo-conditions"></div>
+                            <div class="p1">Không sử dụng cùng với các khuyến mại khác của VNPAY.<br><br>Chương trình sẽ
+                                kết thúc khi hết hạn thời gian diễn ra hoặc hết lượt sử dụng mã ưu đãi của chương
+                                trình.<br><br>Ưu đãi sẽ không được cấp lại nếu đơn hàng bị hủy hoặc yêu cầu trả
+                                hàng/hoàn tiền vì bất kỳ lí do gì.<br><br>Ưu đãi không có giá trị quy đổi thành tiền mặt
+                                hoặc chuyển nhượng dưới bất kỳ hình thức nào.<br><br>Chương trình không áp dụng cho các
+                                đơn hàng có dấu hiệu lạm dụng khuyến mại hoặc không thỏa mãn đủ các điều kiện yêu
+                                cầu.<br><br>Nếu có thắc mắc hoặc vấn đề liên quan đến chương trình, Quý khách vui lòng
+                                liên hệ hotline 1900 55 55 77 trong vòng 24h từ lúc có sự cố phát sinh.</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <div
+                            class="ubtn-group list-mb16 list-crop row row-16 justify-content-center group-col-md-3 group-col-fill">
+                            <div class="group-col-item">
+                                <a href="#"
+                                    class="ubg-sub-primary ubox-size-button-default ubg-hover ubg-active ubtn btn-cancel-promo"
+                                    style="display: none">
+                                    <div class="ubtn-inner">
+                                        <span class="ubtn-text">Hủy áp dụng</span>
+                                    </div>
+                                </a>
+                                <a href="#"
+                                    class="ubg-primary ubox-size-button-default ubg-hover ubg-active ubtn btn-apply-promo"
+                                    style="display: none">
+                                    <div class="ubtn-inner">
+                                        <span class="ubtn-text">Áp dụng</span>
+                                    </div>
+                                </a>
+                                <button disabled=""
+                                    class="ubg-porcelain ubox-size-button-default ubg-hover ubg-active ubtn btn-unavailable-promo"
+                                    style="display: none">
+                                    <div class="ubtn-inner">
+                                        <span class="ubtn-text">Không khả dụng</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+   
+   
+</body>
+
+</html>

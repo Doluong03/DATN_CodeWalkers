@@ -4,6 +4,7 @@ import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.request.UserRequest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,4 +46,13 @@ public interface UserService {
     void switchStatus(Integer id);
 
 
+    void updateRankUser(Integer idUser);
+
+    boolean updatePointRankUser(Integer point,String userName);
+
+    List<Users> getUserSliver();
+
+    List<Users> getUserGold();
+
+    List<Users> getUserDiamond();
 }

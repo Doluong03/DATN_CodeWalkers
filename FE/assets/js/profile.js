@@ -45,6 +45,8 @@ app.controller(
             gender: false,
             dateOfBirth: "",
             image: "",
+            rank : "",
+            points : null
         };
         $scope.selectedImage = null;
 
@@ -96,70 +98,83 @@ app.controller(
                 return "";
             }
 
-            $scope.getProfile = function () {
-                if (profileUser) {
-                    $scope.info = {
-                        userName: profileUser.userName,
-                        fullName: profileUser.name,
-                        email: profileUser.email,
-                        phone: profileUser.phoneNumber,
-                        gender: profileUser.gender,
-                        dateOfBirth: new Date(profileUser.dateOfBirth),
-                        image: profileUser.image,
-                    };
-                    console.log($scope.info, $scope.dateFormat($scope.info.dateOfBirth));
-                }
+        $scope.getProfile = function () {
+            if (profileUser) {
+                $scope.info = {
+                    userName: profileUser.userName,
+                    fullName: profileUser.name,
+                    email: profileUser.email,
+                    phone: profileUser.phoneNumber,
+                    gender: profileUser.gender,
+                    dateOfBirth: new Date(profileUser.dateOfBirth),
+                    image: profileUser.image,
+                    rank : profileUser.rank.name,
+                    points : profileUser.points
+                };
+                console.log($scope.info, $scope.dateFormat($scope.info.dateOfBirth));
             }
-            $scope.getProfile();
+        }
+        $scope.getProfile();
 
 
-            $scope.loadProvince = function () {
-                var url = `${host}/get-province`;
-                $http.get(url).then(function (res) {
-                    $scope.provinces = res.data;
-                }).catch(function (error) {
-                    console.log("Lỗi khi tải danh sách kích thước", error);
-                });
-            }
-            $scope.loadProvince();
-            $scope.districtsByProvince = {};
-            $scope.loadDistrictUser = function (id) {
-                var url = `${host}/get-district/`;
-                $http.get(url + id).then(function (res) {
-                    $scope.districtsByProvince[id] = res.data;
-                    return res.data;
-                }).catch(function (error) {
-                    console.log("Lỗi khi tải danh sách kích thước", error);
-                });
-            }
-            $scope.loadDistrict = function (province) {
-                var url = `${host}/get-district/`;
-                $http.get(url + province).then(function (res) {
-                    $scope.districts = res.data;
-                    console.log("Danh sách Quận huyện ", res.data);
-                    return res.data;
-                }).catch(function (error) {
-                    console.log("Lỗi khi tải danh sách kích thước", error);
-                });
-            }
-            $scope.loadWard = function (district) {
-                var url = `${host}/get-Ward/`;
-                $http.get(url + district).then(function (res) {
-                    $scope.wards = res.data;
-                    console.log("Danh sách Phường xã ", res.data);
-                }).catch(function (error) {
-                    console.log("Lỗi khi tải danh sách kích thước", error);
-                });
-            }
-            $scope.wardsByProvince = {};
-            $scope.loadWardUser = function (id) {
-                var url = `${host}/get-Ward/`;
-                $http.get(url + id).then(function (res) {
-                    $scope.wardsByProvince[id] = res.data;
-                }).catch(function (error) {
-                    console.log("Lỗi khi tải danh sách kích thước", error);
-                });
-            }
+        $scope.loadProvince = function () {
+            var url = `${host}/get-province`;
+            $http.get(url).then(function (res) {
+                $scope.provinces = res.data;
+            }).catch(function (error) {
+                console.log("Lỗi khi tải danh sách kích thước", error);
+            });
+        }
+        $scope.loadProvince();
+        $scope.districtsByProvince = {};
+        $scope.loadDistrictUser = function (id) {
+            var url = `${host}/get-district/`;
+            $http.get(url + id).then(function (res) {
+                $scope.districtsByProvince[id] = res.data;
+                return res.data;
+            }).catch(function (error) {
+                console.log("Lỗi khi tải danh sách kích thước", error);
+            });
+        }
+        $scope.loadDistrict = function (province) {
+            var url = `${host}/get-district/`;
+            $http.get(url + province).then(function (res) {
+                $scope.districts = res.data;
+                console.log("Danh sách Quận huyện ", res.data);
+                return res.data;
+            }).catch(function (error) {
+                console.log("Lỗi khi tải danh sách kích thước", error);
+            });
+        }
+        $scope.loadWard = function (district) {
+            var url = `${host}/get-Ward/`;
+            $http.get(url + district).then(function (res) {
+                $scope.wards = res.data;
+                console.log("Danh sách Phường xã ", res.data);
+            }).catch(function (error) {
+                console.log("Lỗi khi tải danh sách kích thước", error);
+            });
+        }
+        $scope.wardsByProvince = {};
+        $scope.loadWardUser = function (id) {
+            var url = `${host}/get-Ward/`;
+            $http.get(url + id).then(function (res) {
+                $scope.wardsByProvince[id] = res.data;
+            }).catch(function (error) {
+                console.log("Lỗi khi tải danh sách kích thước", error);
+            });
+        }
+        $scope.formAddress = {
+            addressDetail: "",
+            ward: "",
+            province: "",
+            district: "",
+            userName: "",
+            phoneNumber: "",
+            email: ""
+        }
+
+   
             $scope.formAddress = {
                 addressDetail: "",
                 ward: "",

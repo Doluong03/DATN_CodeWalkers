@@ -11,11 +11,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 @Repository
 public interface BillDetailsRepository extends JpaRepository<BillDetails, Integer> {
     Optional<BillDetails> findByBillIdAndAndProductDetailId(int idBill, int idPrDt);
     List<BillDetails> findByBillId(int idBill);
+
     int deleteAllByBillId(int idBill);
+
     // doanh thu theo nam
     @Query("""
                 SELECT SUM(hd.totalPay)
@@ -149,4 +152,35 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
             GROUP BY sp.name
             """)
     List<Object[]> getStock();
+
+
+    @Query("""
+                SELECT SUM(hd.totalPay)
+                FROM HoaDon hd
+                WHERE YEAR(hd.createdAt) = YEAR(CURRENT_DATE)
+                  AND MONTH(hd.createdAt) = MONTH(CURRENT_DATE)
+            """)
+    List<Double> getTotalPayByCurrentMonth();
+
+
+    @Query("""
+                SELECT SUM(hd.totalPay)
+                FROM HoaDon hd
+                WHERE DATE(hd.createdAt) = CURRENT_DATE
+            """)
+    List<Double> getTotalPayByCurrentDay();
+
+    @Query("""
+                SELECT SUM(hd.totalPay)
+                FROM HoaDon hd
+                WHERE YEAR(hd.createdAt) = YEAR(CURRENT_DATE)
+            """)
+    List<Double> getTotalPayByCurrentYear();
+
+    @Query("""
+       SELECT SUM(hd.totalPay) FROM HoaDon hd
+""")
+
+    List<Double> getAllTotalPay();
+
 }

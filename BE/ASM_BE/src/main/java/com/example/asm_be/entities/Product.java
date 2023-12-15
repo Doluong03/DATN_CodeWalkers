@@ -46,7 +46,6 @@ public class Product {
     @JoinColumn(name = "danh_gia_id")
     private Rate rate;
 
-
     @Column(name = "trang_thai")
     private boolean status;
 

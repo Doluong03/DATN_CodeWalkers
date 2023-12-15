@@ -98,7 +98,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
         }
       }
     })
-    .when("/nsx", {
+    .when("/rank", {
       templateUrl: "/template/manufacture.html",
       controller: ManufactureController,
       resolve: {
@@ -478,4 +478,16 @@ myApp.filter('orderStatus', function () {
       return statusMapping[input] || 'Không xác định';
   };
 });
+myApp.filter('currencyFormat', function ($filter) {
+  return function (input) {
+      // Kiểm tra xem input có tồn tại không
+      if (input) {
+          // Định dạng số thành tiền tệ (ví dụ: 100,000) khi hiển thị
+          return $filter('number')(input, 0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+      return '';
+  };
+});
+
+
 

@@ -33,6 +33,8 @@ public class VoucherUsers {
     @Column(name = "trang_thai")
     private boolean status;
 
+    @Column(name = "loai_khach_hang")
+    private int customType;
 
 
 }

@@ -3,10 +3,7 @@ package com.example.asm_be.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -15,8 +12,7 @@ import java.util.UUID;
 @Entity(name = "HoaDon")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Table(name = "HoaDon")
 public class Bill {
     @Id
@@ -34,9 +30,9 @@ public class Bill {
     @Column(name = "phuong_xa_id")
     private String ward;
     @Column(name = "thanh_pho_id")
-    private int province;
+    private Integer province;
     @Column(name = "quan_huyen_id")
-    private int district;
+    private Integer  district;
     @Column(name = "ngay_giao")
     private Date shipDate;
     @Column(name = "phi_giao_hang")
@@ -59,10 +55,13 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "nguoi_lap_id")
     private Staff staff;
+
     @Column(name = "nguoi_nhan")
     private String userName;
+
     @Column(name = "sdt_nguoi_nhan")
     private String userPhone;
+
     @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<BillDetails> listBillDetail;

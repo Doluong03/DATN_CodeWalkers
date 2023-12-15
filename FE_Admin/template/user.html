@@ -8,14 +8,15 @@
       </div>
 
 
-      <button ng-click="deleteAll()" id="delete-all" class="btn btn-danger"><i class="fa-duotone fa-trash"></i> Xoá
+      <button ng-click="deleteAll()" id="delete-all" class="btn btn-outline-danger"><i class="fa-duotone fa-trash"></i> Xoá
         Nhiều</button>
+        <button  data-bs-toggle="modal" data-bs-target="#userAddModal" id="delete-all" class="btn btn-outline-primary" ng-click="toggleForm()" >
+          <i class=" fa-solid fa-plus fa-lg mr-2"   ></i>Thêm Mới
+      </button>
+
       <div class="btn-group">
 
-        <button type="button" id="btn-icon" class="btn btn-secondary" data-bs-toggle="modal"
-          data-bs-target="#userAddModal">
-          <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
-
+  
         <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
           <i class="fa-solid fa-arrows-rotate "></i>
         </button>
@@ -43,24 +44,6 @@
         <button type="button" id="btn-icon" class="btn btn-secondary " onclick="triggerFileInput()">
           <i class="fa-sharp fa-solid fa-file-import"></i>
         </button>
-
-        <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()"> Excel</button>
-                <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">SVG</button> -->
-
-        <!-- Phân trang -->
-        <!-- <ul class="pagination justify-content-end" style="margin-top: 20px;">
-                        <li class="page-item" ng-class="{ 'disabled': pageCurrent === 1, 'hovered': hoveredPage === 'previous' }">
-                          <a class="page-link" ng-click="previousPage()" ng-class="{ 'disabled-link': pageCurrent === 0 }" ng-mouseenter="onHover('previous')" ng-mouseleave="onLeave()"><span aria-hidden="true">&laquo;</span></a>
-                        </li>
-                        <li class="page-item" ng-repeat="page in pageRange()" ng-class="{ 'active': page === pageCurrent, 'hovered': hoveredPage === page }">
-                          <a class="page-link" ng-click="PageNo(page, sizePage)" ng-mouseenter="onHover(page)" ng-mouseleave="onLeave()">{{ page }}</a>
-                      </li>
-                      
-                        <li class="page-item" ng-class="{ 'disabled': pageCurrent === totalPage, 'hovered': hoveredPage === 'next' }">
-                          <a class="page-link" ng-click="nextPage()" ng-class="{ 'disabled-link': pageCurrent === totalPage - 1 }" ng-mouseenter="onHover('next')" ng-mouseleave="onLeave()"> <span aria-hidden="true">&raquo;</span></a>
-                        </li>
-                    </ul>
-                       </nav>   -->
 
         <div class="btn-group">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuIconButton1"
@@ -194,6 +177,21 @@
 </div>
 <!-- end table -->
 
+<style>
+  .modal-dialog .modal-content {
+    width: 1200px;
+    margin-top: -50px;
+    right: 70%;
+  }
+
+  .scrollable-modal-body {
+    max-height: 800px;
+    /* Điều chỉnh chiều cao tối đa theo ý muốn */
+    overflow-y: auto;
+    /* Tạo thanh cuộn dọc */
+  }
+</style>
+
 <!-- form add -->
 <div class="modal fade" id="userAddModal" tabindex="-1" aria-labelledby="userAddModalLabel" aria-hidden="true">
   <div class="modal-dialog col-12">
@@ -322,6 +320,12 @@
           </div>
         </form>
       </div>
+
+
+    
+    <div class="modal-footer sticky-bottom">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="submit" class="btn btn-primary"  ng-click="addUser($event)">Submit</button>
     </div>
   </div>
 </div>
@@ -412,3 +416,4 @@
     $('.dropdown-toggle').dropdown();
   });
 </Script>
+

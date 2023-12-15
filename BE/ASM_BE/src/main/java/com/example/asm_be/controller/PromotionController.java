@@ -7,6 +7,7 @@ import com.example.asm_be.entities.Product;
 import com.example.asm_be.entities.PromotionDetails;
 import com.example.asm_be.entities.Promotional;
 import com.example.asm_be.entities.ResponeObject;
+import com.example.asm_be.request.ProDetialRequets;
 import com.example.asm_be.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -103,4 +104,58 @@ public class PromotionController {
             return promotionalOptional.get();
     }
 
+
+    @PutMapping({"/admin/promotion/update"})
+    public ResponseEntity<?> updatePromotion(@RequestBody Promotional promotion) {
+        String message = promotionService.updatePromotion(promotion) ? "update thanh cong" : "update that bai";
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject(message.equals("update thanh cong")
+                        ? "success" : "Failed", message, message.equals("update that bai")
+                        ? "" : promotion));
+
+    }
+
+    @PutMapping("/admin/promotionDetials/update")
+    public ResponseEntity<?> PromotionDetails(@RequestBody ProDetialRequets requets) {
+        String message = promotionService.UpdateProDetai
+                (requets.getDiscount(),requets.getIdPro(),requets.getIdProduct()) ? "add thanh cong" : "add that bai";
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject(message.equals("add thanh cong")
+                        ? "success" : "Failed", message, message.equals("add thanh cong")
+                        ? "oke da xoa" : ""));
+
+    }
+    @DeleteMapping("/admin/promotion/delete-detail/{idProDetail}/{idPro}")
+    public ResponseEntity<?> deletePromotionDetail(@PathVariable("idProDetail") int idProDetail
+            ,@PathVariable("idPro") Integer idPro) {
+        String message = promotionService.deleteProDetail(idProDetail,idPro) ? "add thanh cong" : "add that bai";
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject(message.equals("add thanh cong")
+                        ? "success" : "Failed", message, message.equals("add thanh cong")
+                        ? "oke da xoa" : ""));
+
+    }
+
+    @DeleteMapping("/admin/promotion/delete-detail2/{idPro}")
+    public ResponseEntity<?> deleteAll(@PathVariable("idPro") int idPro) {
+        String message = promotionService.deleteAll(idPro) ? "add thanh cong" : "add that bai";
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject(message.equals("add thanh cong")
+                        ? "success" : "Failed", message, message.equals("add thanh cong")
+                        ? "oke da xoa" : ""));
+
+    }
+
+    @GetMapping({"/api/promotion2/getALL2"})
+    public List<Promotional> getALL2() {
+        return  promotionService.getAll();
+    }
 }

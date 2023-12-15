@@ -276,10 +276,6 @@ window.UserController = function ($scope, $http, $window, $timeout) {
       $scope.showFormUpdate = false;
     }
     $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
-    // Tìm và thêm lớp overlay
-    var overlay = document.getElementById('overlay');
-    overlay.style.display = $scope.showForm ? 'flex' : 'none';
-    $scope.formUser = {};
   };
   // add one product
   $scope.isValidDate = function () {
@@ -387,7 +383,7 @@ window.UserController = function ($scope, $http, $window, $timeout) {
   // show form user and load detail
   $scope.showFormUpdate = false;
   $scope.activeItem = -1;
-  $scope.formUserUpdate = {};
+  $scope.formManufactureUpdate = {}; // Khởi tạo biểu mẫu
 
   $scope.toggleFormUpdate = function (event, item) {
     event.preventDefault();
