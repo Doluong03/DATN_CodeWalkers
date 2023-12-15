@@ -1,6 +1,7 @@
 package com.example.asm_be.service.impl;
 
 import com.example.asm_be.entities.Address;
+import com.example.asm_be.entities.Material;
 import com.example.asm_be.entities.Size;
 import com.example.asm_be.repositories.AddressRepository;
 import com.example.asm_be.repositories.SizeRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public class SizeImpl implements SizeService {
 
     @Override
     public Page<Size> getAllPage(Integer pageNo, Integer sizePage) {
-        Pageable sizePageable = PageRequest.of(pageNo, sizePage);
+        Pageable sizePageable = PageRequest.of(pageNo, sizePage, Sort.by(Sort.Order.desc("id")));
         return sizeRepository.findAll(sizePageable);
     }
 
@@ -78,5 +80,15 @@ public class SizeImpl implements SizeService {
     @Override
     public Size findByName(String name) {
         return sizeRepository.findByName(name);
+    }
+
+    @Override
+    public void switchStatus(Integer id) {
+        Optional<Size> optinalBrand = sizeRepository.findById(id);
+        if (optinalBrand.isPresent()) {
+            Size size = optinalBrand.get();
+            size.setStatus(!size.isStatus());
+            sizeRepository.save(size);
+        }
     }
 }

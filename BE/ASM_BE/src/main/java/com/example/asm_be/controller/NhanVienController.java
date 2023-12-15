@@ -85,5 +85,10 @@ public class NhanVienController {
                 .body(new ResponeObject("success", "Delete thanh cong", this.staffService.delete(idStaff)));
     }
 
+    @PostMapping("/admin/Staff/switchStatus/{id}")
+    public ResponseEntity<?> turnOn(@PathVariable("id") int id) {
+        this.staffService.switchStatus(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
 

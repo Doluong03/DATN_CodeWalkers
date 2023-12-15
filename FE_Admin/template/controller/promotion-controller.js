@@ -1087,7 +1087,7 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
                 $scope.turnOff(promotion.id);
             } else {
                 // Nếu chưa đến thời điểm kết thúc, bạn có thể thực hiện các hành động khác hoặc đợi
-                console.log("Chương trình khuyến mại vẫn đang diễn ra...", promotion);
+                // console.log("Chương trình khuyến mại vẫn đang diễn ra...", promotion);
             }
         });
 

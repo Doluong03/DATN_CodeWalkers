@@ -3,6 +3,7 @@ package com.example.asm_be.controller.admin;
 import com.example.asm_be.dto.BillRespone;
 import com.example.asm_be.dto.ProductDetailsRespone;
 import com.example.asm_be.entities.*;
+import com.example.asm_be.service.BillDetailService;
 import com.example.asm_be.service.BillService;
 import com.example.asm_be.service.CartService;
 import com.example.asm_be.service.UserService;
@@ -29,6 +30,8 @@ public class BillManageController {
     UserService userService;
     @Autowired
     CartService cartService;
+    @Autowired
+    BillDetailService billDetailService;
     @Autowired
     ObjectMapper objectMapper;
 
@@ -104,6 +107,13 @@ public class BillManageController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi xóa gio hang");
         }
+    }
+
+    @PutMapping("/admin/BillDt/updateQuantity/{idBillDt}")
+    public ResponseEntity<?> updateQuantity(@PathVariable("idBillDt") int idBilldt, @RequestParam int quantity) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Update thanh cong", this.billDetailService.updateQuantity(idBilldt,quantity)));
     }
 
 }

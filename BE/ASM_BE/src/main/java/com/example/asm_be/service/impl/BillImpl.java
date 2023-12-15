@@ -1,10 +1,7 @@
 package com.example.asm_be.service.impl;
 
 import com.example.asm_be.configuration.VNpayConfig;
-import com.example.asm_be.entities.Bill;
-import com.example.asm_be.entities.ProductDetail;
-import com.example.asm_be.entities.Staff;
-import com.example.asm_be.entities.Users;
+import com.example.asm_be.entities.*;
 import com.example.asm_be.repositories.BillRepository;
 import com.example.asm_be.repositories.ProductDetailRepository;
 import com.example.asm_be.repositories.StaffRepository;
@@ -70,13 +67,13 @@ public class BillImpl implements BillService {
     @Override
     public Page<Bill> getAllPage(Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo, sizePage);
-        return billRepository.findAllByStatusNotOrderByCreatedAtDesc(0, pageable);
+        return billRepository.findAllByStatusNotOrderByCreatedAtDescCodeDesc(0, pageable);
     }
 
     @Override
     public Page<Bill> getAllPageByStatsus(Integer pageNo, Integer sizePage, int status) {
         Pageable pageable = PageRequest.of(pageNo, sizePage);
-        return billRepository.findAllByStatusOrderByCreatedAtDesc(status, pageable);
+        return billRepository.findAllByStatusOrderByCreatedAtDescCodeDesc(status, pageable);
     }
 
     @Override
@@ -101,8 +98,6 @@ public class BillImpl implements BillService {
 
     public boolean saveAdmin(Bill bill) {
         try {
-            // Bill bill=new Bill();
-            // billRequest.map1(bill);
             billRepository.save(bill);
             return true;
         } catch (Exception var3) {
@@ -125,6 +120,20 @@ public class BillImpl implements BillService {
                 Staff staff = staffRepository.findById(billRequest.getIdStaff()).get();
                 bill.get().setStaff(staff);
                 billRepository.save(bill.get());
+                if (billRequest.getStatus() == 1) {
+                    for (BillDetails x : bill.get().getListBillDetail()) {
+                        ProductDetail productDetail = productDetailRepository.findById(x.getProductDetail().getId()).get();
+                        productDetail.setQuantity(productDetail.getQuantity() - x.getQuantity());
+                        productDetailRepository.save(productDetail);
+                    }
+                }
+                if (billRequest.getStatus() == 6) {
+                    for (BillDetails x : bill.get().getListBillDetail()) {
+                        ProductDetail productDetail = productDetailRepository.findById(x.getProductDetail().getId()).get();
+                        productDetail.setQuantity(productDetail.getQuantity() - x.getQuantity());
+                        productDetailRepository.save(productDetail);
+                    }
+                }
 //                if (bill.get().getPaymentOptions() == Invariable.VNPAY) {
 //                    try {
 //                        int amount = bill.get().getTotalPay().intValue();
@@ -336,6 +345,13 @@ public class BillImpl implements BillService {
             if (bill.isPresent()) {
                 bill.get().setStatus(status);
                 this.billRepository.save(bill.get());
+                if (status == 5) {
+                    for (BillDetails x : bill.get().getListBillDetail()) {
+                        ProductDetail productDetail = productDetailRepository.findById(x.getProductDetail().getId()).get();
+                        productDetail.setQuantity(productDetail.getQuantity() + x.getQuantity());
+                        productDetailRepository.save(productDetail);
+                    }
+                }
             }
         } catch (Exception var3) {
             var3.printStackTrace();

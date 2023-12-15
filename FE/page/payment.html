@@ -22,9 +22,10 @@
         </div> -->
         <div class=" row">
             <div class="address-info-show d-flex " ng-show="selectedAddress">
-                <strong>{{selectedAddress.UserName}}</strong> | <span>{{selectedAddress.PhoneNumber}}</span>
+                <strong>{{selectedAddress.UserName}} </strong> | <span class="ms-2">
+                    (+84){{selectedAddress.PhoneNumber}}</span>
                 <div class="offset-2">{{selectedAddress.AddressDetail}},</div>
-                <div class="ms-3">{{wardsByProvince[selectedAddress.DistrictID]
+                <div class="ms-2">{{wardsByProvince[selectedAddress.DistrictID]
                     | findWardNameById:selectedAddress.WardCode}},
                     {{districtsByProvince[selectedAddress.ProvinceID] |
                     findDistrictNameById:selectedAddress.DistrictID}},
@@ -32,7 +33,6 @@
                     findProvinceNameById:selectedAddress.ProvinceID}}
                 </div>
             </div>
-
             <a class="col-lg-1 text-end me-4" ng-click data-bs-toggle="modal" data-bs-target="#exampleAddress"> Thay
                 đổi </a>
         </div>
@@ -42,7 +42,7 @@
     <div class="modal fade border" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel"
         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog  " style="height: 100px; ">
-            <div class="modal-content border-dark" style="max-height: 500px; width: 555px; left: 40%;">
+            <div class="modal-content border-dark" style="max-height: 500px; width: 700px; left: 30%;">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="addressModalLabel">Địa Chỉ
                     </h1>
@@ -50,67 +50,104 @@
                         ng-click="cancelAddr()"></button>
                 </div>
                 <div class="modal-body w-100">
-                    <div class="row ms-1 me-1">
-                        <div class="col-lg ">
-                            <input type="text" class=" form-control w-100" placeholder="Họ và tên*"
-                                ng-model="formAddress.userName"
-                                ng-class="{'is-invalid': checkAddress && !formAddress.userName}">
+                    <form action="" name="myForm">
+
+                        <div class="row ms-1 me-1">
+                            <div class="col-lg ">
+                                <input type="text" class=" form-control w-100" placeholder="Họ và tên*"
+                                    ng-model="formAddress.userName"
+                                    ng-class="{'is-invalid': checkAddress && !formAddress.userName}">
+                            </div>
+                            <div class="col-lg ms-3">
+                                <div class="form-group">
+                                    <input type="tel" class="form-control" id="exampleInputSDT" placeholder="Số điện thoại*"
+                                      ng-model="formAddress.phoneNumber" name="phoneNumber"
+                                      ng-class="{'is-invalid': checkAdd && (myForm.phoneNumber.$error.pattern || myForm.phoneNumber.$error.phoneNumberExists || !formAddress.phoneNumber)}"
+                                      required ng-pattern="/^(03|05|07|08|09)[0-9]{8}$/">
+                                    <span class="error-message text-danger form-text"
+                                      ng-show="(myForm.phoneNumber.$error.pattern && (myForm.phoneNumber.$dirty || myForm.$submitted)) || myForm.phoneNumber.$error.phoneNumberExists">
+                                      <span ng-show="myForm.phoneNumber.$error.pattern && (myForm.phoneNumber.$dirty || myForm.$submitted)">
+                                        Hãy nhập Số điện thoại hợp lệ.
+                                      </span>
+                                      <span ng-show="myForm.phoneNumber.$error.phoneNumberExists">
+                                        Số điện thoại đã tồn tại.
+                                      </span>
+                                    </span>
+                                  </div>
+                                <!-- <input type="text" class="form-control w-100" id="phoneNumber"
+                                    placeholder="Số điện thoại*" ng-model="formAddress.phoneNumber"
+                                    ng-class="{'is-invalid': checkAddress && !formAddress.phoneNumber}" maxlength="10"> -->
+                            </div>
                         </div>
-                        <div class="col-lg ms-3">
-                            <input type="text" class="form-control w-100" placeholder="Số điện thoại*"
-                                ng-model="formAddress.phoneNumber"
-                                ng-class="{'is-invalid': checkAddress && !formAddress.phoneNumber}" maxlength="10">
-                        </div>
-                    </div>
-                    <div class="row ms-3 mt-3 me-3">
-                        <div class="col-lg">
-                            <div class="form-group">
-                                <div class=" row  ">
-                                    <input type="text" class="form-control w-100 me-1 mb-2"
-                                        placeholder="Địa chỉ cụ thể*" ng-click="showSelect = !showSelect"
-                                        ng-model="formAddress.addressDetail"
-                                        ng-class="{'is-invalid': checkAddress && !formAddress.addressDetail}">
-                                    <select id="select1" class="form-select col" ng-model="formAddress.province"
-                                        ng-change="loadDistrict(formAddress.province)"
-                                        ng-class="{'is-invalid': checkAddress && !formAddress.province}">
-                                        <option value ng-selected="formAddress.province === ''">Tỉnh/Thành
-                                            phố
-                                        </option>
-                                        <option ng-repeat="provin in provinces" ng-value="provin.ProvinceID">
-                                            {{provin.ProvinceName}}</option>
-                                    </select>
-                                    <select id="select2" class="form-select col" ng-model="formAddress.district"
-                                        ng-change="loadWard(formAddress.district)"
-                                        ng-class="{'is-invalid': checkAddress && !formAddress.district}">
-                                        <option value ng-selected="formAddress.district === ''">Quận/Huyện</option>
-                                        <option ng-repeat="district in districts" ng-value="district.DistrictID">
-                                            {{district.DistrictName}}</option>
-                                    </select>
-                                    <select id="select3" class="form-select col" ng-model="formAddress.ward"
-                                        ng-class="{'is-invalid': checkAddress && !formAddress.ward}">
-                                        <option value ng-selected="formAddress.ward === ''">Phường/Xã</option>
-                                        <option ng-repeat="ward in wards" ng-value="ward.WardCode">{{ward.WardName}}
-                                        </option>
-                                    </select>
+                        <div class="row ms-3  me-3">
+                            <div class="col-lg">
+                                <div class="form-group">
+                                    <div class=" row  ">
+                                        <input type="text" class="form-control w-100 me-1 mb-2"
+                                            placeholder="Địa chỉ cụ thể*" ng-click="showSelect = !showSelect"
+                                            ng-model="formAddress.addressDetail"
+                                            ng-class="{'is-invalid': checkAddress && !formAddress.addressDetail}">
+                                        <select id="select1" class="form-select col" ng-model="formAddress.province"
+                                            ng-change="loadDistrict(formAddress.province)"
+                                            ng-class="{'is-invalid': checkAddress && !formAddress.province}">
+                                            <option value ng-selected="formAddress.province === ''">Tỉnh/Thành
+                                                phố
+                                            </option>
+                                            <option ng-repeat="provin in provinces" ng-value="provin.ProvinceID">
+                                                {{provin.ProvinceName}}</option>
+                                        </select>
+                                        <select id="select2" class="form-select col" ng-model="formAddress.district"
+                                            ng-change="loadWard(formAddress.district)"
+                                            ng-class="{'is-invalid': checkAddress && !formAddress.district}">
+                                            <option value ng-selected="formAddress.district === ''">Quận/Huyện</option>
+                                            <option ng-repeat="district in districts" ng-value="district.DistrictID">
+                                                {{district.DistrictName}}</option>
+                                        </select>
+                                        <select id="select3" class="form-select col" ng-model="formAddress.ward"
+                                            ng-class="{'is-invalid': checkAddress && !formAddress.ward}">
+                                            <option value ng-selected="formAddress.ward === ''">Phường/Xã</option>
+                                            <option ng-repeat="ward in wards" ng-value="ward.WardCode">{{ward.WardName}}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="ms-3 me-3">
-                        <input type="email" class="form-control w-100" placeholder="Email" ng-model="formAddress.email">
-                    </div>
-                    <div class="ms-3 mt-3 me-3">
-                        <textarea type="text" class="form-control w-100" placeholder="Nội dung"
-                            ng-model="note"> </textarea>
-                    </div>
+                        <!-- <div class="ms-3 me-3" ng-show="!showOption">
+                            <input type="email" class="form-control w-100" placeholder="Email*"
+                                ng-model="formAddress.email"
+                                ng-class="{'is-invalid': checkAddress && !formAddress.email}">
+                        </div> -->
+                        <div class="form-group ms-3 me-3">
+                            <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email*"
+                              ng-model="formAddress.email" name="email"
+                              ng-class="{'is-invalid': checkAdd && (myForm.email.$error.email || myForm.email.$error.emailExists || !formAddress.email)}"
+                              required>
+                            <span class="error-message text-danger form-text"
+                              ng-show="(myForm.email.$error.email && (myForm.email.$dirty || myForm.$submitted)) || myForm.email.$error.emailExists">
+                              <span ng-show="myForm.email.$error.email && (myForm.email.$dirty || myForm.$submitted)">
+                                Hãy nhập Email hợp lệ.
+                              </span>
+                              <span ng-show="myForm.email.$error.emailExists">
+                                Email đã tồn tại.
+                              </span>
+                            </span>
+                          </div>
+                
+                        <div class="ms-3 mt-3 me-3">
+                            <textarea type="text" class="form-control w-100" placeholder="Nội dung"
+                                ng-model="note"> </textarea>
+                        </div>
                 </div>
                 <div class="modal-footer w-100">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                        ng-click="cancelAddr()">Hủy</button>
+                        ng-click="checkAction ? '' :cancelAddr()">Hủy</button>
                     <button type="button" class="btn btn-primary"
                         ng-click="checkAction ? updateAddress() : saveAddress()" ng-model="checkAddress"> {{nameAction}}
                     </button>
                 </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -151,7 +188,7 @@
                         <hr>
                     </div>
                     <a class="col-lg-1 text-end me-4" ng-click="resetModalContent()" data-bs-toggle="modal"
-                        data-bs-target="#addressModal"> Thêm mới </a>
+                        data-bs-target="#addressModal" ng-show="showOption"> Thêm mới </a>
                 </div>
                 <div class="modal-footer w-100">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
@@ -428,9 +465,9 @@
         }
 
 
-        .voucher-card .details {
-        }
-        .details h5{
+        .voucher-card .details {}
+
+        .details h5 {
             font-weight: bold;
             padding-bottom: 5px;
         }
@@ -487,29 +524,5 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-
-    <div ng-repeat="item in listAllVouchers" id="vouchers">
-        <div class="voucher-card" >
-            <b class="voucher-quantity">x{{item.quantity}}</b>
-            <img src="/assets/img/Voucher/{{item.image}}" alt="Voucher Image" />
-            <div class="details pb-1">
-                <h5 ng-show="item.discountType=='Phần Trăm'">Giảm {{item.value}}%</h5>
-                <h5 ng-show="item.discountType=='VND'">Giảm {{item.value |vndCurrency}}</h5>
-                <p ng-show="item.discountType=='Phần Trăm'">Giảm tối đa: {{item.maxReduction
-                    |vndCurrency}}</p>
-                <!-- <p ng-show="item.discountType=='VND'">Giảm tối đa: {{item.maxReduction
-                    |vndCurrency}}</p> -->
-                <p>Đơn tối thiểu: {{item.condition|vndCurrency }}</p>
-                <p>HSD: {{item.endDate |dateFormat }}</p>
-                <p>Đổi điểm : {{item.exchangePoint}} </p>
-                <input type="number" ng-model="voucherUser.usageCount">
-
-            </div>
-        </div>
-        <button ng-click="doidiem(item.id,item.exchangePoint,item.quantity)" style="float: right;">Đổi điểm</button>
     </div>
 </div>

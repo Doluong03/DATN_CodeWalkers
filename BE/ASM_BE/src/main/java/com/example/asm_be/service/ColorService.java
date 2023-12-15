@@ -20,4 +20,6 @@ public interface ColorService {
     boolean update(Color color);
 
     boolean delete(Integer idColor);
+    void switchStatus(Integer id);
+
 }

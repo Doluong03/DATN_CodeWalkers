@@ -18,4 +18,5 @@ public interface MaterialService {
     boolean  update(Material material);
 
     boolean delete(Integer idMaterial);
+    void switchStatus(Integer id);
 }

@@ -6,7 +6,7 @@
 
 
       <div class="search-container">
-        <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a Size">
+        <input type="text" id="btn-search" ng-model="searchText" placeholder="Tìm kiếm kích cỡ">
         <i class="fa-light fa-magnifying-glass"></i>
       </div>
 
@@ -91,14 +91,13 @@
               <td><input type="checkbox" ng-model="item.isSelected"></td>
               <td ng-show="columns[1].selected" style="text-align: center;"> {{item.name}}</td>
               <td ng-show="columns[2].selected" style="text-align: center;">{{item.description}}</td>
-              <td ng-show="columns[3].selected" style="text-align: center;">
-                <span ng-if="item.status == true" style="margin-left: -9px;">
-                  <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i> Hoạt động
+              <td ng-click="switchStatus(item.id)">
+                <span ng-show="columns[3].selected" style="text-align: center;">
+                    <i ng-if="item.status" class="fa-2xl fa fa-toggle-on"
+                        style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
+                    <i ng-if="!item.status" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
                 </span>
-                <span ng-if="item.status != true">
-                  <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Ngừng hoạt động
-                </span>
-              </td>
+            </td>
               <td style="text-align: center;">
                 <a href="#" ng-click="toggleFormUpdate($event, item)" style="text-decoration: none; color: #1545e1;"
                   data-bs-toggle="modal" data-bs-target="#modalUpdate">
@@ -177,7 +176,7 @@
             <input type="text" class="form-control" ng-model="formSize.description" name="description" maxlength="100">
           </div>
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="exampleSelectGender">Trạng Thái</label>
             <select class="form-select" ng-model="formSize.status"
               ng-class="{'is-invalid': checkAdd && !formSize.status}" name="status" required>
@@ -185,7 +184,7 @@
               <option value="true">Đang hoạt động</option>
               <option value="false">Ngừng hoạt động</option>
             </select>
-          </div>
+          </div> -->
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary" ng-click="addSize($event)">Submit</button>

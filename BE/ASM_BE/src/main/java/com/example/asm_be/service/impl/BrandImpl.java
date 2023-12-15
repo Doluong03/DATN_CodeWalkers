@@ -2,6 +2,7 @@ package com.example.asm_be.service.impl;
 
 import com.example.asm_be.entities.Brands;
 import com.example.asm_be.entities.Users;
+import com.example.asm_be.entities.Vouchers;
 import com.example.asm_be.repositories.BrandRepository;
 import com.example.asm_be.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Component
@@ -63,5 +65,14 @@ public class BrandImpl implements BrandService {
             return false;
         }
 
+    }
+    @Override
+    public void switchStatus(Integer id) {
+        Optional<Brands> optinalBrand = brandRepository.findById(id);
+        if (optinalBrand.isPresent()) {
+            Brands brand = optinalBrand.get();
+            brand.setStatus(!brand.isStatus());
+            brandRepository.save(brand);
+        }
     }
 }

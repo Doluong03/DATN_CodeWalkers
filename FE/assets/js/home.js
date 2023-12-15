@@ -1,5 +1,5 @@
 
-app.controller("HomeController", function ($scope, $http, $window, $cookies, $anchorScroll, $compile, $timeout) {
+app.controller("HomeController", function ($scope, $http, $timeout) {
     $scope.now = new Date(); // Lấy ngày và thời gian hiện tại
     // Giảm đi 5 ngày
     $scope.now.setDate($scope.now.getDate() - 7);
@@ -8,7 +8,8 @@ app.controller("HomeController", function ($scope, $http, $window, $cookies, $an
     $scope.loadAllPrBs = function () {
         var url = `${host}/api/product_bs`;
         $http.get(url).then(res => {
-            $scope.itemsBs2 = res.data;
+            console.log(res.data);
+            $scope.itemsBs2 = res.data.filter(pr =>pr.status.id == 1);
 
             // Bước 1: Lấy thông tin chương trình khuyến mãi đang hoạt động
             var promoUrl = `${host}/api/active_promotions`;
@@ -51,7 +52,6 @@ app.controller("HomeController", function ($scope, $http, $window, $cookies, $an
                     });
 
                     // In ra để kiểm tra
-                    console.log(productPromotionsMap);
 
                     // Bước 4: Kiểm tra và áp dụng giảm giá cho từng sản phẩm
                     $scope.itemsBs2.forEach((item) => {
@@ -137,12 +137,11 @@ app.controller("HomeController", function ($scope, $http, $window, $cookies, $an
             var carouselContainer = $('.owl-carousel');
             // Sử dụng vòng lặp để thêm các slide từ dữ liệu
             var listItemPromo = $scope.itemsBs2.filter(item => item.hasPromotion === true);
-            console.log(listItemPromo,"here")
             for (var i = 0; i < listItemPromo.length; i++) {
                 var hasPromotion;
                 var product = listItemPromo[i].product;
                 var item = listItemPromo[i];
-                var imageLink = `assets/img/product/sp1/${product.listImage[0].link}`;
+                var imageLink = `assets/img/product/sp1/${product.mainImg}` ||"";
                 var price = listItemPromo[i].price;
                  hasPromotion = listItemPromo[i].hasPromotion;
                 
@@ -197,6 +196,6 @@ app.controller("HomeController", function ($scope, $http, $window, $cookies, $an
             });
         });
 
-    }, 250)
+    }, 350)
 
 });

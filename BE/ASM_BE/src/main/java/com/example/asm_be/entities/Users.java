@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +37,7 @@ public class Users {
     @Column(name = "ngay_sinh")
     private Date dateOfBirth;
 
-    @Column(name = "ngay_tao",updatable = false)
+    @Column(name = "ngay_tao", updatable = false)
     private Date createdDate;
 
     @Column(name = "ngay_sua")
@@ -81,4 +82,8 @@ public class Users {
     @JsonIgnore
     @OneToMany(mappedBy = "users")
     private List<VoucherUsers> usersUsages;
+
+    @OneToMany(mappedBy = "users")
+    @JsonManagedReference
+    private List<Address> addressList;
 }

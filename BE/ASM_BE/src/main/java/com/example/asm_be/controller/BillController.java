@@ -21,8 +21,6 @@ import java.util.Optional;
 @RequestMapping({"/CodeWalkers"})
 public class BillController {
     @Autowired
-    CartDetailService cartDetailService;
-    @Autowired
     CartService cartService;
     @Autowired
     ProductDetailService productDetailService;
@@ -80,9 +78,8 @@ public class BillController {
     }
 
     @GetMapping("/api/getBill")
-    public ResponseEntity<Collection<Bill>> getBill(@RequestParam int idCart) {
-        Users users = userService.findByCartId(idCart);
-        return ResponseEntity.ok(billService.getByUser(users.getId()));
+    public ResponseEntity<Collection<Bill>> getBill(@RequestParam int idUser) {
+        return ResponseEntity.ok(billService.getByUser(idUser));
     }
 
 
@@ -90,18 +87,18 @@ public class BillController {
     public ResponseEntity<?> CreateBill(@PathVariable("idUser") int idUser) {
         if (idUser == 0) {
             Users usersNew = new Users();
+            usersNew.setName("Khách lẻ");
             userService.save(usersNew);
             return ResponseEntity.ok(billService.save(new Bill(), usersNew));
         } else {
             Users users = userService.getOne(idUser);
-
             return ResponseEntity.ok(billService.save(new Bill(), users));
         }
     }
 
-    @PostMapping("/api/addBillDt/{idBill}/{idCart}")
-    public ResponseEntity<?> addBillDt(@PathVariable("idCart") int idCart, @PathVariable("idBill") int idBill) {
-        return ResponseEntity.ok(billDetailService.save(idBill, idCart));
+    @PostMapping("/api/addBillDt/{idBill}/{idPr}")
+    public ResponseEntity<?> addBillDt(@PathVariable("idPr") int idCart, @PathVariable("idBill") int idBill ,@RequestParam int quantity) {
+        return ResponseEntity.ok(billDetailService.save(idBill, idCart,quantity));
     }
 
     @PostMapping("/api/addBillDtSl/{idBill}")

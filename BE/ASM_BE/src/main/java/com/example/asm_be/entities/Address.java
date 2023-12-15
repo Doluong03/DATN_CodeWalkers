@@ -2,6 +2,7 @@ package com.example.asm_be.entities;
 
 
 import com.example.asm_be.response.AddressResponse;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class Address {
     @Column(name = "quan_huyen_id")
     private int district;
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "khach_hang_id")
     private Users users;
     @Column(name = "ten_khach_hang")

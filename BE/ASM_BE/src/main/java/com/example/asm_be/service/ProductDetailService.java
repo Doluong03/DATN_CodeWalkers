@@ -42,4 +42,7 @@ public interface ProductDetailService {
     List<ProductDetail> findByProductName(String productName);
 
     public List<ProductDetail> filterProductsByAttributes(ProductFilterDTO filterDTO);
+    void turnOn(int id);
+
+    void turnOff(int id);
 }

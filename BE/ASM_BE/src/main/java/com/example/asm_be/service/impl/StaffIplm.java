@@ -1,9 +1,7 @@
 package com.example.asm_be.service.impl;
 
-import com.example.asm_be.entities.Staff;
+import com.example.asm_be.entities.*;
 import com.example.asm_be.repositories.StaffRepository;
-import com.example.asm_be.entities.Role;
-import com.example.asm_be.entities.Size;
 import com.example.asm_be.entities.Staff;
 import com.example.asm_be.payload.request.SignUpRequest;
 import com.example.asm_be.payload.response.MessageRespone;
@@ -244,6 +242,15 @@ public class StaffIplm implements StaffService {
         // Sinh một số ngẫu nhiên và chuyển nó thành chuỗi
         int randomId = random.nextInt(Integer.MAX_VALUE);
         return String.valueOf(randomId);
+    }
+    @Override
+    public void switchStatus(Integer id) {
+        Optional<Staff> optinalBrand = staffRepository.findById(id);
+        if (optinalBrand.isPresent()) {
+            Staff staff = optinalBrand.get();
+            staff.setStatus(!staff.isStatus());
+            staffRepository.save(staff);
+        }
     }
 
 }

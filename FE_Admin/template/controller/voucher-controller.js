@@ -1022,7 +1022,7 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
     $scope.hienThiUser($scope.pageNoUser, $scope.sizePageUser);
 
     $scope.toggleStatus = function (item) {
-        if (item.status) {
+        if (item.status) { 
             $scope.turnOff(item.id);
         } else {
             $scope.turnOn(item.id);

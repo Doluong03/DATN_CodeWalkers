@@ -2,22 +2,32 @@
 var app = angular.module('login', []);
 
 app.controller('loginController', ['$scope', '$http', function ($scope, $http,CookieService) {
-  $scope.loginRequest = {
-    userName: "",
-    password: ""
-  };
+  var check = localStorage.getItem('rememberMe');
+
+  if(check){
+    $scope.loginRequest = {
+      userName: localStorage.getItem('rememberedUsername'),
+      password: localStorage.getItem('rememberedPassword')
+    };
+    $scope.rememberMe =true;
+  }else{
+    $scope.loginRequest = {
+      userName: "",
+      password: ""
+    };
+
+  }
   $scope.signUpRequest = {
     userName: "",
     password: "",
     phoneNumber: "",
-    fullName: ""
+    email: ""
   };
+  console.log(check,"aaa")
 
 
   $scope.login = function (event, item) {
     event.preventDefault();
-    console.log(item)
-
     let authURL = "http://localhost:8080/api/auth/loginUser";
     $scope.showLoading = false;
     $scope.showIcon = false;
@@ -34,7 +44,17 @@ app.controller('loginController', ['$scope', '$http', function ($scope, $http,Co
           toastr.success('Login successful!', 'Congratulations 🎉🎉🎉 ');
           $scope.showLoading = true;
           $scope.showIcon = true;
-
+          if ($scope.rememberMe) {
+            localStorage.setItem('rememberMe', 'true');
+            localStorage.setItem('rememberedUsername', item.userName);
+            // You may want to avoid storing passwords directly, consider using a token instead
+            localStorage.setItem('rememberedPassword', item.password);
+          } else {
+            // Clear stored credentials if "Remember Me" is not checked
+            localStorage.removeItem('rememberMe');
+            localStorage.removeItem('rememberedUsername');
+            localStorage.removeItem('rememberedPassword');
+          }
           // Sử dụng setTimeout để chuyển hướng sau 2 giây
           setTimeout(function () {
             // Use regular JavaScript for navigation to another app or page
@@ -46,10 +66,10 @@ app.controller('loginController', ['$scope', '$http', function ($scope, $http,Co
       .catch((err) => {
 
         if (err.status === 500) {
-          toastr.warning('Account dont exist!', 'Thông báo')
+          toastr.warning('Tài khoản không tồn tại!', 'Thông báo')
         }
         if (err.status === 403) {
-          toastr.error('Invalid password or username!', 'Thông báo')
+          toastr.error('Sai tên đăng nhập hoặc mật khẩu!', 'Thông báo')
         }
 
       });
@@ -66,7 +86,7 @@ app.controller('loginController', ['$scope', '$http', function ($scope, $http,Co
     if (
       !$scope.signUpRequest.userName || 
       !$scope.signUpRequest.phoneNumber ||
-      !$scope.signUpRequest.fullName ||
+      !$scope.signUpRequest.email ||
       !$scope.signUpRequest.password 
   ) {
     toastr.error('Vui lòng điền đầy đủ thông tin', 'Thông báo')
@@ -91,15 +111,14 @@ app.controller('loginController', ['$scope', '$http', function ($scope, $http,Co
       .catch((err) => {
 
         if (err.status === 500) {
-          toastr.warning('Account dont exist!', 'Thông báo')
+          toastr.warning('Tài khoản không tồn tại!', 'Thông báo')
         }
         if (err.status === 403) {
-          toastr.error('Invalid password or username!', 'Thông báo')
+          toastr.error('Sai tên đăng nhập hoặc mật khẩu!', 'Thông báo')
         }
         if (err.status === 400) {
-          toastr.warning('UserName is already registered', 'Thông báo')
+          toastr.warning('Tên đăng nhập đã tồn tại', 'Thông báo')
         }
-
       });
 
   };

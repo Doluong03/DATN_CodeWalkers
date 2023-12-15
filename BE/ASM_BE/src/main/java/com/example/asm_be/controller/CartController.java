@@ -1,10 +1,7 @@
 package com.example.asm_be.controller;
 
 import com.example.asm_be.entities.*;
-import com.example.asm_be.service.CartDetailService;
-import com.example.asm_be.service.CartService;
-import com.example.asm_be.service.ProductDetailService;
-import com.example.asm_be.service.SizeService;
+import com.example.asm_be.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +23,8 @@ public class CartController {
     ProductDetailService productDetailService;
     @Autowired
     SizeService sizeService;
-
+    @Autowired
+    BillDetailService billDetailService;
 
     @GetMapping("/api/cart")
     public ResponseEntity<Collection<CartDetails>> getAllProduct(@RequestParam int idCart) {
@@ -72,6 +70,12 @@ public class CartController {
     @PutMapping("/api/updateCart")
     public ResponseEntity<?> updateCart(@RequestBody List<CartDetails> listCartDt, @RequestParam int idCart) {
         cartDetailService.updateCart(listCartDt, idCart);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/api/cart/deleteBillDt/{billDt}")
+    public ResponseEntity<?> deleteCartDt(@PathVariable("billDt") int billDt) {
+        billDetailService.delete(billDetailService.getOne(billDt));
         return ResponseEntity.ok().build();
     }
 }

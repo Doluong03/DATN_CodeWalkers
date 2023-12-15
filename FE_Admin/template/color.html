@@ -1,12 +1,12 @@
 <div class="col-lg-12 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Color table</h4>
+      <h4 class="card-title">Quản lý màu sắc</h4>
 
 
 
       <div class="search-container">
-        <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a Color">
+        <input type="text" id="btn-search" ng-model="searchText" placeholder="Tìm kiếm màu sắc">
         <i class="fa-light fa-magnifying-glass"></i>
       </div>
 
@@ -77,7 +77,7 @@
               <th>
                 <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox" type="checkbox"> #
               </th>
-              <th ng-show="columns[1].selected" ng-click="sortData('name')">Tên Kích cỡ<span class="{{getSortClass('name')}}"></span></th>
+              <th ng-show="columns[1].selected" ng-click="sortData('name')">Tên Màu sắc<span class="{{getSortClass('name')}}"></span></th>
           
               <th ng-show="columns[2].selected" ng-click="sortData('status')">Trạng Thái<span class="{{getSortClass('status')}}"></span></th>    
               <th name="Action">Action</th>
@@ -88,12 +88,11 @@
               <td><input type="checkbox" ng-model="item.isSelected"></td>
               <td ng-show="columns[1].selected" style="text-align: center;"> {{item.name}}</td>
               
-              <td ng-show="columns[2].selected" style="text-align: center;">
-                <span ng-if="item.status == true" style="margin-left: -9px;">
-                    <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i> Active
-                </span>
-                <span ng-if="item.status != true">
-                    <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Disable
+              <td ng-click="switchStatus(item.id)">
+                <span ng-show="columns[2].selected" style="text-align: center;">
+                    <i ng-if="item.status" class="fa-2xl fa fa-toggle-on"
+                        style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
+                    <i ng-if="!item.status" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
                 </span>
             </td>
               <td>
@@ -164,7 +163,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content ">
       <div class="modal-header">
-        <h5 class="modal-title" id="colorAddModalLabel"> Thêm  Color</h5>
+        <h5 class="modal-title" id="colorAddModalLabel"> Thêm  Màu sắc</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -192,7 +191,7 @@
             <div class="modal-footer">
               <button id="btn-action-cancel" type="button" class="btn btn-secondary"
                 data-dismiss="modal">Cancel</button>
-              <button id="btn-action-add" type="button" class="btn btn-primary"
+              <button id="btn-action-add" type="submit" class="btn btn-primary"
                 ng-click="addColor($event)">Submit</button>
             </div>
           </form>
@@ -228,7 +227,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content ">
       <div class="modal-header">
-        <h5 class="modal-title" id="colorUpdateModalLabel">Cập nhật  Color</h5>
+        <h5 class="modal-title" id="colorUpdateModalLabel">Cập nhật  Màu sắc</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -258,7 +257,7 @@
             <div class="modal-footer">
               <button id="btn-action-cancel" type="button" class="btn btn-secondary"
                 data-dismiss="modal">Cancel</button>
-              <button id="btn-action-add" type="button" class="btn btn-primary"
+              <button id="btn-action-add" type="submit" class="btn btn-primary"
                 ng-click="UpdateColor($event)">Submit</button>
             </div>
           </form>

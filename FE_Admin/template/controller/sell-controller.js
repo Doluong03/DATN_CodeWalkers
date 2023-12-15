@@ -1,4 +1,21 @@
 window.SellAdminController = function ($scope, $http, $document, $window) {
+  toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "3000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "slideDown",
+    "hideMethod": "slideUp"
+  }
   var headers = {
     headers: {
       'Authorization': 'Bearer ' + tokenAuthen(),
@@ -33,6 +50,8 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
 
   $scope.increaseQuantity = function (tab, pr) {
     pr.quantity++; // Tăng số lượng cho sản phẩm cụ thể
+    pr.quantity = Math.min(pr.quantity, pr.productDetail.quantity);
+
     pr.total += pr.price;
     $scope.updateTotalPay(tab, pr);
   };
@@ -54,6 +73,8 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
       if (pr.quantity <= 0) {
         $scope.removeProduct(tab, pr);
       }
+      pr.quantity = Math.min(pr.quantity, pr.productDetail.quantity);
+
       pr.total = pr.price * pr.quantity;
       $scope.updateTotalPay(tab, pr);
     }
@@ -63,6 +84,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
     if (pr.quantity <= 0) {
       $scope.removeProduct(tab, pr);
     } else {
+      pr.quantity = Math.min(pr.quantity, pr.productDetail.quantity);
       pr.total = pr.price * pr.quantity;
       $scope.updateTotalPay(tab, pr);
     }
@@ -70,11 +92,10 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
 
 
   $scope.removeProduct = function (tab, pr) {
-    $scope.confirmDelete(pr.productDetail.id, pr.cart.id, tab);
+    $scope.confirmDelete(tab, pr);
   };
-  $scope.confirmDelete = function (productDtId, cartId, tab) {
-    console.log(productDtId, 'praaaa')
-    var url = `${host}/api/cart/delete/`;
+  $scope.confirmDelete = function (tab, pr) {
+    var url = `${host}/api/cart/deleteBillDt/`;
     return swal.fire({
       title: "Xác nhận xóa",
       text: "Bạn có chắc muốn xóa sản phẩm khỏi giỏ hàng?",
@@ -87,10 +108,11 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
     }).then((result) => {
       if (result.value) {
         // Xử lý khi người dùng xác nhận xóa ở đây
-        $http.delete(url + productDtId + "/" + cartId)
+        $http.delete(url + pr.id)
           .then(function () {
             toastr.success('Xóa sản phẩm thành công!', 'Thông báo')
             $scope.getFee(tab);
+            $scope.loadAllPrBs();
             return $scope.getCart(tab);
           })
           .catch(function (error) {
@@ -107,15 +129,14 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
     });
   };
 
-  $scope.updateProductQuantity = function (idCartdt, quantity, tab) {
-    var url = `${host}/api/updateQuantity/`;
-    var updateData = { quantity: quantity };
-
+  $scope.updateProductQuantity = function (idBilldt, quantity, tab) {
+    var url = `${host}/admin/BillDt/updateQuantity/`;
     // Sử dụng $http.put để gửi yêu cầu cập nhật đến API
-    $http.put(url + idCartdt, updateData, headers)
+    $http.put(url + idBilldt + "?quantity=" + quantity)
       .then(function (response) {
         console.log('Cập nhật số lượng thành công');
         $scope.getFee(tab);
+        $scope.loadAllPrBs();
         $scope.activateTab(tab);
         $scope.activateTab(tab);
       })
@@ -125,6 +146,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
       });
     console.log('Giá trị đã thay đổi:', quantity);
   }
+
   $scope.updateTotalPay = function (tab, pr) {
     if (pr.quantity !== 0) {
       $scope.updateProductQuantity(pr.id, pr.quantity, tab);
@@ -192,7 +214,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
   $scope.loadAllPrBs = function () {
     var url = `${host}/api/get-all-pr`;
     $http.get(url).then(res => {
-      $scope.itemsBs = res.data;
+      $scope.itemsBs = res.data.filter(item => item.quantity > 0);
       $scope.filteredItems = $scope.itemsBs;
     }).catch(error => {
       console.log("Error", error);
@@ -207,27 +229,27 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
     var searchTerms = searchText.split(' ');
 
     $scope.filteredItems = $scope.itemsBs.filter(function (item) {
-      if(item.quantity>0){
-      var nameMatch = item.product.name.toLowerCase().includes(searchText);
-      var sizeMatch = item.size.name.toLowerCase().includes(searchText);
-      var colorMatch = item.color.name.toLowerCase().includes(searchText);
+      if (item.quantity > 0) {
+        var nameMatch = item.product.name.toLowerCase().includes(searchText);
+        var sizeMatch = item.size.name.toLowerCase().includes(searchText);
+        var colorMatch = item.color.name.toLowerCase().includes(searchText);
 
-      // Lọc theo mỗi từ khóa trong searchTerms
-      var searchTermMatch = searchTerms.every(function (term) {
-        return (
-          item.product.name.toLowerCase().includes(term) ||
-          item.size.name.toLowerCase().includes(term) ||
-          item.color.name.toLowerCase().includes(term)
-        );
-      });
-    }
+        // Lọc theo mỗi từ khóa trong searchTerms
+        var searchTermMatch = searchTerms.every(function (term) {
+          return (
+            item.product.name.toLowerCase().includes(term) ||
+            item.size.name.toLowerCase().includes(term) ||
+            item.color.name.toLowerCase().includes(term)
+          );
+        });
+      }
       return nameMatch || sizeMatch || colorMatch || searchTermMatch;
     });
-    
+
   };
 
   $scope.selectProduct = function (tab, pr) {
-    $scope.sendDetailAddRequest(tab, pr);
+    $scope.pay(tab, pr, 1);
     $scope.saveTabsToLocalStorage();
     tab.formData.totalPay = 0;
     for (var i = 0; i < tab.formData.listPrByCart.length; i++) {
@@ -262,6 +284,8 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
       tab.formData.userIDNew = $scope.bill.users.id;
       // Cập nhật title của tab thành mã hóa đơn vừa tạo
       tab.title = 'Hóa đơn ' + $scope.bill.code.slice(5);
+      $scope.getCart(tab);
+
       $scope.saveTabsToLocalStorage();
       console.log($scope.bill, 'bill')
     }).catch(function (error) {
@@ -281,10 +305,10 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
     });
   };
   $scope.getCart = function (tab) {
-    var url = `${host}/api/cart`;
+    var url = `${host}/api/billDt`;
     $scope.totalPrice = 0;
     var config = {
-      params: { idCart: tab.formData.cart }
+      params: { idBill: tab.formData.id }
     };
     return $http.get(url, config)
       .then(function (res) {
@@ -296,6 +320,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
 
           tab.formData.totalPay += $scope.calculateTotalPrice(tab.formData.listPrByCart[i]);
           $scope.saveTabsToLocalStorage();
+          $scope.getFee(tab);
         }
         $scope.saveTabsToLocalStorage();
       })
@@ -309,6 +334,20 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
   };
 
 
+  $scope.pay = function (tab, pr, quantity) {
+    var billId = tab.formData.id;
+    var idPrDt = pr.id;
+    var url = `${host}/api/addBillDt/`;
+    $http.post(url + billId + "/" + idPrDt + "?quantity=" + quantity).then(function () {
+      console.log('ADD thành công');
+      $scope.getCart(tab);
+      $scope.loadAllPrBs();
+      toastr.success('Thêm sản phẩm thành công!', 'Thông báo');
+    }).catch(function (error) {
+      console.error('ADD thất bại', error);
+    });
+  }
+
   $scope.sendDetailAddRequest = function (tab, pr) {
     $scope.productId = pr.product.id;
     $scope.selectedValue = pr.size.id;
@@ -319,6 +358,8 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
     $http.post(url, data)
       .then(function (response) {
         $scope.getCart(tab);
+        // $scope.pay(tab.formData.id,tab.formData.cart);
+        $scope.loadAllPrBs();
         toastr.success('Thêm sản phẩm thành công!', 'Thông báo');
       })
       .catch(function (error) {
@@ -369,7 +410,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
       $scope.tabs[i].active = false;
     }
     $scope.addBill(newTab);
-    $scope.createCart(newTab);
+    // $scope.createCart(newTab);
     updateTabStatus();
     $scope.saveTabsToLocalStorage();
   };
@@ -392,9 +433,9 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
   // Call clearTabsFromLocalStorage when needed
 
   $scope.removeTab = function (tabToRemove) {
-    if (!$scope.checkDone) {
-      $scope.removeBill(tabToRemove);
-    }
+    // if (!$scope.checkDone) {
+    //   $scope.removeBill(tabToRemove);
+    // }
     var tabIndex = $scope.tabs.indexOf(tabToRemove);
     var previousTabIndex = (tabIndex === $scope.tabs.length - 1) ? tabIndex - 1 : tabIndex;
     // Kích hoạt tab trước đó
@@ -426,6 +467,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
   $scope.listUser = []; // Tạo danh sách người dùng
   $scope.filteredUsers = []; // Tạo danh sách người dùng lọc
 
+
   $scope.loadUser = function () {
     var url = `${host}/user/getAll`;
     $http.get(url).then(function (res) {
@@ -441,28 +483,27 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
   };
   $scope.loadUser();
 
-  $scope.filterUsers = function () {
-    var searchText = $scope.userInput.toLowerCase();
-    $scope.filteredUsers = $scope.listUser.filter(function (user) {
-      return user.name.toLowerCase().includes(searchText);
-    });
-  };
-
-
   $scope.searchCustomers = function (tab) {
-    var searchText = tab.formData.userName.toLowerCase();
+    $scope.disabled = false;
     $scope.filteredUsers = $scope.listUser.filter(function (user) {
-      var lowerSearchText = searchText.toLowerCase();
-      return user.name.toLowerCase().includes(lowerSearchText) || (user.phoneNumber && user.phoneNumber.includes(searchText));
+      var searchText = tab.formData.userPhone.toLowerCase();
+
+      // Kiểm tra nếu user.name và user.phoneNumber không phải là null hoặc undefined
+      if (user.name && user.phoneNumber) {
+        return user.name.toLowerCase().includes(searchText) || user.phoneNumber.includes(searchText);
+      }
+
+      return false; // Nếu một trong những giá trị là null hoặc undefined, trả về false
     });
   };
+
 
   $scope.selectCustomer = function (user, tab) {
     tab.formData.userName = user.name;
     tab.formData.userPhone = user.phoneNumber; // Replace 'phoneNumber' with the actual property name in your user object
     tab.formData.userID = user.id;
     console.log(tab.formData.userID, 'iddddd select');
-
+    $scope.disabled = true;
     $scope.saveTabsToLocalStorage();
   };
 
@@ -508,6 +549,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
+        $scope.removeTab(tab);
         // Hành động khi người dùng ấn "Có"
         $http.delete(api, headers).then(function (response) {
           Swal.fire('Xóa thành công!', '', 'success');
@@ -522,14 +564,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
       }
     });
   };
-  $scope.pay = function (idBill, idCart) {
-    var url = `${host}/api/addBillDt/`;
-    $http.post(url + idBill + "/" + idCart).then(function () {
-      console.log('ADD thành công');
-    }).catch(function (error) {
-      console.error('ADD thất bại', error);
-    });
-  }
+
   $scope.deleteCartDt = function (cart) {
     var url = `${host}/api/cart/deleteCart/` + cart;
     // Gửi yêu cầu xóa đến server hoặc thực hiện xóa trên giao diện
@@ -559,13 +594,25 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
       $scope.saveTabsToLocalStorage();
     }
   }
+
   $scope.submitForm = function (event, tab) {
     event.preventDefault();
+    const checkPay = document.getElementById("userPay");
     $scope.checkDone = false;
     if (!tab.formData.listPrByCart) {
       toastr.error("Chưa có sản phẩm trong giỏ hàng", "Lỗi");
       return;
     }
+    console.log(tab.formData.moneyBack, 'a', Number(tab.formData.moneyBack))
+    if (
+      (!tab.formData.moneyBack || checkPay.classList.contains("is-invalid")) &&  !tab.formData.checkAct
+    ) {
+      // Hiển thị thông báo lỗi
+      console.log("a")
+      $scope.checkAddress = true;
+      return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
+    }
+
     var dataToSend = {
       userId: tab.formData.userID,
       idBill: tab.formData.id,
@@ -624,15 +671,16 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
           if (response) {
             Swal.fire({
               icon: "success",
-              title: "Cập nhật thành công!",
-              text: "Thông tin đơn hàng đã được cập nhật.",
+              title: "Mua hàng thành công!",
+              text: "Thông tin đơn hàng đã được thêm.",
             });
             if (dataToSend.userId !== tab.formData.userIDNew) {
               $scope.deleteUser(tab.formData.userIDNew);
             }
             $scope.generatePDF(tab);
-            $scope.deleteCartDt(tab.formData.cart);
-            $scope.pay(tab.formData.id, tab.formData.cart);
+            $scope.loadAllPrBs();
+            // $scope.deleteCartDt(tab.formData.cart);
+            // $scope.pay(tab.formData.id, tab.formData.cart);
             $scope.checkDone = true;
             $scope.removeTab(tab);
           }
@@ -652,13 +700,23 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
   };
 
   $scope.changCurrency = function (tab) {
-    tab.formData.userPay = tab.formData.userPay.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-    tab.formData.moneyBack = (tab.formData.userPay - tab.formData.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    let invalidCharacterRegex = /[^0-9₫,.]/;
+    const checkPay = document.getElementById("userPay");
+    if (invalidCharacterRegex.test(tab.formData.userPay)) {
+      checkPay.classList.add("is-invalid");
+      console.log("f")
+    } else {
+      console.log("s")
+      checkPay.classList.remove("is-invalid");
+    }    
+    tab.formData.moneyBack = (Number(tab.formData.userPay) - tab.formData.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    // tab.formData.userPay = tab.formData.userPay.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
   }
-  $scope.changeSelect = function (tab) {
-    if( tab.formData.optionPay === "1"){
-      tab.formData.userPay = (tab.formData.totalPay).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-    }else{
+  $scope.changeSelect = function (tab) {   
+    if (tab.formData.optionPay === "1") {
+      tab.formData.userPay = (tab.formData.totalPay)
+      $scope.changCurrency(tab);
+    } else {
       tab.formData.userPay = 0;
     }
     $scope.saveTabsToLocalStorage();
@@ -760,7 +818,7 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
               tab.formData.optionPay == 0 && !tab.formData.checkAct
                 ? ['Tiền trả lại:', { text: ((tab.formData.moneyBack) || 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }), alignment: 'right', margin: [0, 0, 10, 0], bold: true }]
                 : ['', { text: '' }],
-              ['Phương thức thanh toán:', { text: tab.formData.optionPay == 0 ? "Thanh toán bằng tiền mặt" : "Thanh toán online" || 'None', alignment: 'right', margin: [0, 0, 10, 0], bold: true }]
+              ['Phương thức thanh toán:', { text: tab.formData.optionPay == 0 ? "Thanh toán bằng tiền mặt" : "Thanh toán chuyển khoản" || 'None', alignment: 'right', margin: [0, 0, 10, 0], bold: true }]
             ]
           },
           margin: [0, 10, 0, 0],
@@ -867,10 +925,10 @@ window.SellAdminController = function ($scope, $http, $document, $window) {
           if (parseInt($scope.detectedCode) === $scope.itemsBs[i].id) {
             console.log(tab.formData.cart);
             $scope.sendDetailAddRequest(tab, $scope.itemsBs[i]);
-            checkSp +=1;
+            checkSp += 1;
           }
         }
-        if(checkSp===0){
+        if (checkSp === 0) {
           toastr.info('Sản phẩm không tồn tại!', 'Thông báo')
         }
       });

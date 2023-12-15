@@ -37,7 +37,7 @@ window.BrandsController = function ($scope, $http, $window, $timeout) {
     id: "",
     name: "",
     description: "",
-    status: "",
+    status: true,
   };
 
   $scope.formBrandsUpdate = {
@@ -181,6 +181,21 @@ window.BrandsController = function ($scope, $http, $window, $timeout) {
 
   };
 
+
+$scope.switchStatus = function (id) {
+    let api = apiBrands + "/switchStatus/" + id;
+    $http.post(api, null).then(function (res) {
+        console.log(res.data);
+        $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+    });
+};
+
+
+  $scope.closeModal = function (id) {
+    document.getElementById(id).style.display = ('none')
+    $('body').removeClass('modal-open'); // Loại bỏ class 'modal-open' khỏi body
+    $('.modal-backdrop').remove();
+  };
   // show form add
   $scope.showForm = false; // Mặc định ẩn form
   $scope.toggleForm = function () {
@@ -225,6 +240,7 @@ window.BrandsController = function ($scope, $http, $window, $timeout) {
             });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
             $scope.formBrands = {};
+            $scope.closeModal('brandsAddModal')
           })
           .catch(function (error) {
             console.error("Error:", error);
@@ -312,6 +328,8 @@ window.BrandsController = function ($scope, $http, $window, $timeout) {
             });
             $scope.formUserUpdate = {};
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            $scope.closeModal('brandsUpdateModal')
+
           })
           .catch(function (error) {
             console.error("Error:", error);

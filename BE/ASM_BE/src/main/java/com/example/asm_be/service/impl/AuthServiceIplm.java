@@ -153,7 +153,7 @@ public class AuthServiceIplm implements AuthService {
             users.setUserName(userSignUpRequest.getUserName());
             users.setPassword(passwordEncoder.encode(userSignUpRequest.getPassword()));
             users.setPhoneNumber(userSignUpRequest.getPhoneNumber());
-            users.setName(userSignUpRequest.getFullName());
+            users.setEmail(userSignUpRequest.getEmail());
             users.setRole("ROLE_USER");
             userService.save(users);
             return ResponseEntity.ok(userSignUpRequest);
@@ -178,7 +178,7 @@ public class AuthServiceIplm implements AuthService {
             String role = userDetailsCustom.getAuthorities().iterator().next().getAuthority();
 
             return ResponseEntity.ok(
-                    new JwtRespone(jwt, userDetailsCustom.getUsername(), userDetailsCustom.getPassword(), role));
+                    new JwtRespone(jwt, userDetailsCustom.getUsername(), userDetailsCustom.getPassword(), role,userDetailsCustom.getEmail()));
         } else {
             // Handle the case when the principal is not of type UserDetailsCustom
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

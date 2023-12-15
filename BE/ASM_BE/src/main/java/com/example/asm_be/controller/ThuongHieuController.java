@@ -62,4 +62,11 @@ public class ThuongHieuController {
 
     }
 
+    @PostMapping("/api/product/brand/switchStatus/{id}")
+    public ResponseEntity<?> turnOn(@PathVariable("id") int id) {
+        this.brandService.switchStatus(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }

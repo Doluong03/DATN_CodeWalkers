@@ -9,10 +9,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface BillDetailsRepository extends JpaRepository<BillDetails, Integer> {
+    Optional<BillDetails> findByBillIdAndAndProductDetailId(int idBill, int idPrDt);
     List<BillDetails> findByBillId(int idBill);
 
     int deleteAllByBillId(int idBill);
@@ -70,7 +72,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT
                 pl.name,
-                COUNT(DISTINCT csanpham.product.id)
+                COUNT( csanpham.product.id)
                 FROM
                 HoaDonChiTiet hdc
                 JOIN
@@ -91,7 +93,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT
                     pl.name,
-                    COUNT(DISTINCT csanpham.product.id)
+                    COUNT( csanpham.product.id)
                 FROM
                     HoaDonChiTiet hdc
                     JOIN ChiTietSanPham csanpham ON hdc.productDetail.id = csanpham.id
@@ -120,7 +122,7 @@ public interface BillDetailsRepository extends JpaRepository<BillDetails, Intege
     @Query("""
                 SELECT
                  pl.name,
-                COUNT(DISTINCT csanpham.product.id)
+                COUNT( csanpham.product.id)
                 FROM
                 HoaDonChiTiet hdc
                 JOIN

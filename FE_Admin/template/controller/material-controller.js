@@ -37,7 +37,7 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
     id: "",
     name: "",
     moTa: "",
-    status: "",
+    status: true,
   };
 
   $scope.formMaterialUpdate = {
@@ -117,7 +117,7 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
   // end phân trang
 
   $scope.hienThi = function (pageNo, sizePage) {
-    let apiUrl =  apiAdmin + "Material/select"  + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
+    let apiUrl = apiAdmin + "Material/select" + "?pageNo=" + pageNo + "&sizePage=" + sizePage;
 
     $http.get(apiUrl, headers).then(
       function (response) {
@@ -152,7 +152,7 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
 
     console.log(item);
     let materialId = item.id;
-    let api =  apiAdmin + "Material/delete/" + materialId;
+    let api = apiAdmin + "Material/delete/" + materialId;
 
     Swal.fire({
       title: 'Xác nhận',
@@ -188,18 +188,28 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
       $scope.showFormUpdate = false;
     }
     $scope.showForm = !$scope.showForm; // Khi click, đảo ngược trạng thái của form thêm mới
-    $scope.formMaterial= {};
+    $scope.formMaterial = {};
+  };
+
+    //switch status
+    $scope.switchStatus = function (id) {
+      let api = apiAdmin + "Material" + "/switchStatus/" + id;
+      $http.post(api, null).then(function (res) {
+          console.log(res.data);
+          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+      });
   };
   // add one product
-  $('#materialAddModal').on('hidden.bs.modal', function (e) {
-    // Thực hiện hành động khi modal đóng
-    $scope.formMaterial = {};
-  });
+  $scope.closeModal = function (id) {
+    document.getElementById(id).style.display = ('none')
+    $('body').removeClass('modal-open'); // Loại bỏ class 'modal-open' khỏi body
+    $('.modal-backdrop').remove();
+  };
+  
   $scope.addMaterial = function (event) {
 
     if (!$scope.formMaterial.name
       || !$scope.formMaterial.moTa
-      || !$scope.formMaterial.status
     ) {
       // Hiển thị thông báo lỗi
       $scope.checkAddress = true;
@@ -226,6 +236,7 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
             });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
             $scope.formMaterial = {};
+            $scope.closeModal('materialAddModal')
           })
           .catch(function (error) {
             console.error("Error:", error);
@@ -282,7 +293,7 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
   $('#materialUpdateModal').on('hidden.bs.modal', function (e) {
     // Thực hiện hành động khi modal đóng
     $scope.formMaterialUpdate = {};
-});
+  });
 
   // update
   $scope.UpdateMaterial = function (event) {
@@ -316,6 +327,8 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
             });
             $scope.formUserUpdate = {};
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            $scope.closeModal('materialUpdateModal')
+
           })
           .catch(function (error) {
             console.error("Error:", error);
@@ -342,7 +355,7 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
     if ($scope.importInProgress) {
       return;
     }
- 
+
     $scope.importInProgress = true; // Set the flag to true
 
     $scope.importing = true; // Bắt đầu animation

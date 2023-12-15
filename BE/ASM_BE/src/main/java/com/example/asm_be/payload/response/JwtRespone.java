@@ -15,6 +15,7 @@ public class JwtRespone {
     private String username;
     private String password;
     private String role;
+    private String email;
 
     public JwtRespone(String token,List<String> roles, String username, String password) {
         this.token = token;
@@ -23,10 +24,11 @@ public class JwtRespone {
         this.password = password;
     }
 
-    public JwtRespone(String token, String username, String password, String role) {
+    public JwtRespone(String token, String username, String password, String role,String email) {
         this.token = token;
         this.username = username;
         this.password = password;
         this.role = role;
+        this.email = email;
     }
 }

@@ -23,4 +23,6 @@ public interface SizeService {
 
     public Size findByName(String name);
     Optional<Size> findbyId(Integer idSize);
+    void switchStatus(Integer id);
+
 }

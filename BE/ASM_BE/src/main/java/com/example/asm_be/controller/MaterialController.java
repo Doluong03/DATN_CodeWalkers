@@ -39,6 +39,7 @@ public MaterialRespone getAllMaterial(@RequestParam(value = "pageNo",defaultValu
     @PostMapping({"/Material/insert"})
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponObject> insertCategory(@RequestBody Material materialRequest) {
+        materialRequest.setStatus(true);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Add thanh cong", this.materialService.save(materialRequest)));
     }
 
@@ -52,5 +53,10 @@ public MaterialRespone getAllMaterial(@RequestParam(value = "pageNo",defaultValu
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponObject> deleteStaff(@PathVariable("id") Integer idMaterial) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponObject("success", "Delete thanh cong", this.materialService.delete(idMaterial)));
+    }
+    @PostMapping("/Material/switchStatus/{id}")
+    public ResponseEntity<?> turnOn(@PathVariable("id") int id) {
+        this.materialService.switchStatus(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

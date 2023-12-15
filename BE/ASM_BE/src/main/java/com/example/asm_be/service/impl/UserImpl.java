@@ -1,5 +1,6 @@
 package com.example.asm_be.service.impl;
 
+import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
 import com.example.asm_be.repositories.UserRepository;
 import com.example.asm_be.request.UserRequest;
@@ -22,10 +23,11 @@ public class UserImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public Page<Users> getAll(Integer pageNo, Integer sizePage) {
+    public Page<Users> getAll(Boolean checkAcc ,Integer pageNo, Integer sizePage) {
         Pageable pageable = PageRequest.of(pageNo, sizePage, Sort.by(Sort.Order.desc("id")));
-        return userRepository.findAll(pageable);
+        return userRepository.findByAcc(checkAcc ,pageable);
     }
+
     @Override
     public List<Users> getAllUser() {
         return userRepository.findAll();
@@ -54,6 +56,17 @@ public class UserImpl implements UserService {
         try {
             Users users = userRepository.findById(userRequest.getId()).get();
             userRequest.map(users);
+            this.userRepository.save(users);
+            return true;
+        } catch (Exception var4) {
+            var4.getMessage();
+            return false;
+        }
+    }
+    public boolean updateInActive(int  id) {
+        try {
+            Users users = userRepository.findById(id).get();
+            users.setStatus(false);
             this.userRepository.save(users);
             return true;
         } catch (Exception var4) {
@@ -103,6 +116,15 @@ public class UserImpl implements UserService {
     }
 
     @Override
+    public void switchStatus(Integer id) {
+        Optional<Users> optinalBrand = userRepository.findById(id);
+        System.out.println(optinalBrand.get().isStatus()+"aaaa");
+        if (optinalBrand.isPresent()) {
+            Users user = optinalBrand.get();
+            user.setStatus(!user.isStatus());
+            userRepository.save(user);
+        }
+    }
     public void updateRankUser(Integer idUser) {
         userRepository.capNhatRankTheoIdKhachHang(idUser);
     }

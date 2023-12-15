@@ -1,327 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
+<head>
 
-        <meta charset="utf-8">
-        <meta name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content>
-        <meta name="author" content>
-        <link
-            href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
-            rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content>
+    <meta name="author" content>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+        rel="stylesheet">
 
-        <title>CodeWalkers Ecommerce</title>
+    <title>CodeWalkers Ecommerce</title>
 
-        <!-- Vendor CSS Files -->
-        <script
-            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-        <!-- <link href="assets/scss/button.css" rel="stylesheet"> -->
 
-        <!-- Template Main CSS File -->
-        <link href="assets/css/style.css" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <!-- <link href="assets/scss/button.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-        <!-- <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css"> -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script
-            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-cookies.js"></script>
-        <link rel="stylesheet" type="text/css"
-            href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
 
-        <link href="assets/vendor/bootstrap/css/bootstrap.min.css"
-            rel="stylesheet">
+    <!-- <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-cookies.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
-            rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- Owl Carousel CSS -->
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-        <link href="assets/scss/button.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
 
-        <!-- Animate.css -->
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-        <!-- Additional CSS Files -->
-        <link rel="stylesheet" type="text/css"
-            href="assets/css/bootstrap.min.css">
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <link href="assets/scss/button.css" rel="stylesheet">
 
-        <link rel="stylesheet" type="text/css"
-            href="assets/css/font-awesome.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
 
-        <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
 
-        <link rel="stylesheet" href="assets/css/owl-carousel.css">
+    <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
 
-        <link rel="stylesheet" href="assets/css/lightbox.css">
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-        <!-- Bootstrap JS and Popper.js -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-        <script
-            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="assets/css/owl-carousel.css">
 
-        <!-- Owl Carousel JS -->
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <link rel="stylesheet" href="assets/css/lightbox.css">
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-        <!--
+    <!-- Owl Carousel JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+    <!-- Include jQuery via CDN -->
 
-TemplateMo 571 Hexashop
 
-https://templatemo.com/tm-571-hexashop
 
--->
-    </head>
 
-    <body ng-app="app" ng-controller="LayOutController" id="pageContent">
+</head>
+<style>
+    .menu li a {
+        color: white;
+    }
+</style>
 
-        <!-- ***** Preloader Start ***** -->
-        <div id="preloader">
-            <div class="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
+<body ng-app="app" ng-controller="LayOutController" id="pageContent">
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="" style="padding: 0 0px 0 290px; ">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="#home" class="logo">
+                            <img src="assets/img/logo.png" style="width: 250px; margin-top: -30px; margin-left: -130px; ">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav menu" style="right: 13%; font-family: sans-serif;">
+                            <li class=""><a href="#home" class="">TRANG CHỦ</a> </li>
+                            <li class=""><a href="#product/all" class="">SẢN PHẨM</a> </li>
+                            <li class=""><a href="#about">VỀ CHÚNG TÔI</a></li>
+                            <li class=""><a href="#contact">LIÊN HỆ</a></li>
+
+                            <li><input placeholder="Search" type="search" name="name" ng-model="name"
+                                    class="form-control rounded-4" ng-keypress="onKeyPress($event)"
+                                    class="form-control rounded-4" style="width: 300px;"></li>
+                            <li class="submenu " ng-show="showIcon" id="profile" style="cursor: pointer;"><a
+                                    class="text-decoration-none text-dark d-flex ">
+                                    <img src="assets/img/user/{{imgProfile}}" alt> {{username}}</a>
+                                <ul>
+                                    <li><a href="#portfolio/account"> <i
+                                                class=" me-2 fs-5 text-end bi bi-person-fill"></i>
+                                            Trang cá nhân </a></li>
+                                    <li><a href="#portfolio/order"><i
+                                                class=" me-2 fs-5 text-end bi bi-receipt-cutoff "></i>
+                                            Đơn mua</a></li>
+                                    <li><a ng-click="logOut()" class>
+                                            <i class=" me-2 fs-5 text-end bi bi-box-arrow-right"></i>Đăng
+                                            xuất</a></li>
+                                </ul>
+                            </li>
+                            <li class style="margin-top: -6px;" ng-show="!showIcon">
+                                <a ng-click="logOut()" href="/login_v2.html" class=" btn btn ">ĐĂNG NHẬP/ĐĂNG KÝ</a>
+                            </li>
+
+                            <li class=" position-relative " style="margin-top: -3px;"><a href="#cart"
+                                    data-title="Giỏ hàng"><i class="bi bi-cart3 fs-4 mb-5"></i>
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger w-50">0
+                                    </span></a></li>
+                            <img src="assets/img/chris_banner_candy.png" alt="" srcset=""
+                                style="height: 100px; width: 300px; margin: -35px -200px 0px 60px">
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
             </div>
         </div>
-        <!-- ***** Preloader End ***** -->
+    </header>
+    <!-- ***** Header Area End ***** -->
+    <img src="assets/img/3066.jpg" alt="" style="height: 600px; width: 1875px; margin: 0 30px 0 15px;">
+    <main id="main" style="margin-top: -78px;">
+        <div ng-view></div>
+    </main>
 
-        <!-- ***** Header Area Start ***** -->
-        <header class="header-area header-sticky">
-            <div class=""  style="padding: 0 200px 0 290px;">
-                <div class="row">
-                    <div class="col-12">
-                        <nav class="main-nav">
-                            <!-- ***** Logo Start ***** -->
-                            <a href="#home" class="logo">
-                                <img src="assets/img/logo.png"
-                                    style="width: 250px; margin-top: -30px;">
-                            </a>
-                            <!-- ***** Logo End ***** -->
-                            <!-- ***** Menu Start ***** -->
-                            <ul class="nav">
-                                <li class=""><a href="#home"
-                                        class="active">Trang chủ</a> </li>
-                                <li class=""><a href="#about">Về chúng tôi</a></li>
-                                <li class=""><a href="#new">Tin tức</a></li>
-                                <li class=""><a href="#contact">Liên hệ</a></li>
-                                <li class="submenu " ng-show="showIcon"
-                                    id="profile" style="cursor: pointer;"><a
-                                        class="text-decoration-none text-dark d-flex ">
-                                        <img
-                                            src="assets/img/user/{{imgProfile}}"
-                                            alt> {{username}}</a>
-                                    <ul>
-                                        <li><a href="#profile"> <i
-                                                    class=" me-2 fs-5 text-end bi bi-person-fill"></i>
-                                                Trang cá nhân </a></li>
-                                        <li><a href="#orderOverview"><i
-                                                    class=" me-2 fs-5 text-end bi bi-receipt-cutoff "></i>
-                                                Đơn mua</a></li>
-                                        <li><a ng-click="logOut()"
-                                                class>
-                                                <i
-                                                    class=" me-2 fs-5 text-end bi bi-box-arrow-right"></i>Đăng
-                                                xuất</a></li>
-                                    </ul>
-                                </li>
-                                <li><input placeholder="Search" type="search" name="name"
-                                    ng-model="name" class="form-control rounded-4" ng-keypress="onKeyPress($event)"
-                                    class="form-control rounded-4 " ></li>
-                                <li class style="margin-top: -6px;"
-                                    ng-show="!showIcon">
-                                    <a ng-click="logOut()" href="/sign_up.html"
-                                        class=" btn btn ">Đăng
-                                        nhập/Đăng ký</a></li>
-
-                                <li class=" position-relative "
-                                    style="margin-top: -3px;"><a
-                                        href="#cart" data-title="Giỏ hàng"><i
-                                            class="bi bi-cart3 fs-4 mb-5"></i>
-                                        <span
-                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger w-50">
-                                        </span></a></li>
-                                        
-                    <div class="custom-dropdown-sell" ng-if="tabs.length > 0">
-                        <input type="text" class="form-control" id="productInput" ng-click="toggleDropdown()"
-                            placeholder="Search products" ng-model="tab.formData.search"
-                            ng-change="filterProducts(tab)">
-                        <div id="productDropdown" class="dropdown-content-sell w-100">
-                            <!-- Product options go here -->
-                            <div ng-repeat="pr in filteredItems">
-                                <button ng-click="selectProduct(tab,pr)" class=" border-0 row bg-light">
-                                    <img ng-src="{{'/template/images/sp1/' + pr.product.listImage[0].link }}"
-                                        class="img-fluid w-25 h-25 border rounded-4"
-                                        alt="{{pr.product.listImage[0].link}}">
-                                    <span class="col-8 h-25 row text-start mb-2">
-                                        <span class="prName-sell col "> {{pr.product.name}}</span>
-                                        <span class="text-end col-3">{{pr.price | vndCurrency}}</span>
-                                        <span class=" fw-bold">[{{pr.size.name}} - {{pr.color.name}}]</span>
-                                        <span class=" ">Còn lại: {{pr.quantity}}</span>
-                                    </span>
-                                </button>
-                                <hr class="mt-2">
-                            </div>
-                            <!-- Add more products as needed -->
+    <!-- ***** Footer Start ***** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="first-item">
+                        <div class="logo">
+                            <img src="assets/img/logo-white.png" class="w-100"
+                                style="margin-top: -35px; margin-left: -50px;" alt="hexashop ecommerce templatemo">
                         </div>
+                        <ul>
+                            <li><a href="#">Tòa nhà FPT Polytechnic., Cổng số 2, 13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ
+                                    Liêm, Hà Nội</a></li>
+                            <li><a href="#">CodeWalkers@company.com</a></li>
+                            <li><a href="#">0865683753</a></li>
+                        </ul>
                     </div>
-                            </ul>
-                            <a class='menu-trigger'>
-                                <span>Menu</span>
-                            </a>
-                            <!-- ***** Menu End ***** -->
-                        </nav>
+                </div>
+                <div class="col-lg-3">
+                    <h4>CHĂM SÓC KHÁC HÀNG</h4>
+                    <ul>
+                        <li><a href="#">Hướng dẫn mua hàng</a></li>
+                        <li><a href="#">Vận Chuyển Và Giao Nhận</a></li>
+                        <li><a href="#">Điều khoản dịch vụ</a></li>
+                        <li><a href="#orderOverview">Kiểm tra đơn hàng</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Trang thông tin</h4>
+                    <ul>
+                        <li><a href="#home">Trang chủ</a></li>
+                        <li><a href="#about">Về chúng tôi</a></li>
+                        <li><a href="#news">Tin tức</a></li>
+                        <li><a href="#contact">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Thương hiệu</h4>
+                    <ul>
+                        <li><a href="#">Adidas</a></li>
+                        <li><a href="#">Nike</a></li>
+
+                    </ul>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <p>Copyright © 2022 CodeWalkers Co., Ltd. All Rights
+                            Reserved.
+
+                            <br>Design: <a href="https://templatemo.com" target="_parent"
+                                title="free css templates">TemplateMo</a>
+                        </p>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </header>
-        <!-- ***** Header Area End ***** -->
-        <main id="main">
-            <div ng-view></div>
-        </main>
+        </div>
+    </footer>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 
-        <!-- ***** Footer Start ***** -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="first-item">
-                            <div class="logo">
-                                <img src="assets/img/logo-white.png" class="w-100" style="margin-top: -35px; margin-left: -50px;"
-                                    alt="hexashop ecommerce templatemo">
-                            </div>
-                            <ul>
-                                <li><a href="#">Tòa nhà FPT Polytechnic., Cổng số 2, 13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</a></li>
-                                <li><a href="#">CodeWalkers@company.com</a></li>
-                                <li><a href="#">0865683753</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>CHĂM SÓC KHÁC HÀNG</h4>
-                        <ul>
-                            <li><a href="#">Hướng dẫn mua hàng</a></li>
-                            <li><a href="#">Vận Chuyển Và Giao Nhận</a></li>
-                            <li><a href="#">Điều khoản dịch vụ</a></li>
-                            <li><a href="#">Kiểm tra đơn hàng</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Trang thông tin</h4>
-                        <ul>
-                            <li><a href="#home">Trang chủ</a></li>
-                            <li><a href="#about">Về chúng tôi</a></li>
-                            <li><a href="#news">Tin tức</a></li>
-                            <li><a href="#contact">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Thương hiệu</h4>
-                        <ul>
-                            <li><a href="#">Adidas</a></li>
-                            <li><a href="#">Nike</a></li>
+    <!-- Owl Carousel JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- jQuery -->
+    <script src="assets/js_home/jquery-2.1.0.min.js"></script>
 
-                        </ul>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="under-footer">
-                            <p>Copyright © 2022 CodeWalkers Co., Ltd. All Rights
-                                Reserved.
+    <!-- Bootstrap -->
+    <script src="assets/js_home/popper.js"></script>
 
-                                <br>Design: <a href="https://templatemo.com"
-                                    target="_parent" title="free css templates">TemplateMo</a></p>
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- Bootstrap JS and Popper.js -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <!-- Plugins -->
+    <script src="assets/js_home/owl-carousel.js"></script>
+    <script src="assets/js_home/accordions.js"></script>
+    <script src="assets/js_home/datepicker.js"></script>
+    <script src="assets/js_home/scrollreveal.min.js"></script>
+    <script src="assets/js_home/waypoints.min.js"></script>
+    <script src="assets/js_home/jquery.counterup.min.js"></script>
+    <script src="assets/js_home/imgfix.min.js"></script>
+    <script src="assets/js_home/slick.js"></script>
+    <script src="assets/js_home/lightbox.js"></script>
+    <script src="assets/js_home/isotope.js"></script>
 
-        <!-- Owl Carousel JS -->
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-        <!-- jQuery -->
-        <script src="assets/js_home/jquery-2.1.0.min.js"></script>
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.js"></script>
 
-        <!-- Bootstrap -->
-        <script src="assets/js_home/popper.js"></script>
+    <!-- Template Main JS File -->
+    <script src="assets/js/layOut.js"></script>
+    <script src="assets/js/product.js"></script>
+    <script src="assets/js/detail.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/payment.js"></script>
+    <script src="assets/js/order.js"></script>
+    <script src="assets/js/login.js"></script>
+    <script src="assets/js/profile.js"></script>
+    <script src="assets/js/home.js"></script>
+    <script src="assets/js/blog.js"></script>
 
-        <!-- Plugins -->
-        <script src="assets/js_home/owl-carousel.js"></script>
-        <script src="assets/js_home/accordions.js"></script>
-        <script src="assets/js_home/datepicker.js"></script>
-        <script src="assets/js_home/scrollreveal.min.js"></script>
-        <script src="assets/js_home/waypoints.min.js"></script>
-        <script src="assets/js_home/jquery.counterup.min.js"></script>
-        <script src="assets/js_home/imgfix.min.js"></script>
-        <script src="assets/js_home/slick.js"></script>
-        <script src="assets/js_home/lightbox.js"></script>
-        <script src="assets/js_home/isotope.js"></script>
+    <!-- Global Init -->
+    <script src="assets/js_home/custom.js"></script>
 
-        <!-- Vendor JS Files -->
-        <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-        <script src="assets/vendor/aos/aos.js"></script>
-        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-        <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-        <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-        <script src="assets/vendor/php-email-form/validate.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/angular.min.js"></script>
-        <script src="js/angular-route.js"></script>
+    
+    <script>
 
-        <!-- Template Main JS File -->
-        <script src="assets/js/layOut.js"></script>
-        <script src="assets/js/product.js"></script>
-        <script src="assets/js/detail.js"></script>
-        <script src="assets/js/cart.js"></script>
-        <script src="assets/js/payment.js"></script>
-        <script src="assets/js/order.js"></script>
-        <script src="assets/js/login.js"></script>
-        <script src="assets/js/profile.js"></script>
-        <script src="assets/js/home.js"></script>
-        <script src="assets/js/blog.js"></script>
-
-        <!-- Global Init -->
-        <script src="assets/js_home/custom.js"></script>
-
-        <script>
-
-        $(function() {
+        $(function () {
             var selectedClass = "";
-            $("p").click(function(){
-            selectedClass = $(this).attr("data-rel");
-            $("#portfolio").fadeTo(50, 0.1);
-                $("#portfolio div").not("."+selectedClass).fadeOut();
-            setTimeout(function() {
-              $("."+selectedClass).fadeIn();
-              $("#portfolio").fadeTo(50, 1);
-            }, 500);
-                
+            $("p").click(function () {
+                selectedClass = $(this).attr("data-rel");
+                $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("." + selectedClass).fadeOut();
+                setTimeout(function () {
+                    $("." + selectedClass).fadeIn();
+                    $("#portfolio").fadeTo(50, 1);
+                }, 500);
+
             });
         });
 
     </script>
-        <!-- <script>
+    <!-- <script>
         $(document).ready(function () {
           $('#myCarousel').owlCarousel({
             items: 3, // Number of cards shown in each slide
@@ -347,5 +309,6 @@ https://templatemo.com/tm-571-hexashop
         });
       </script> -->
 
-    </body>
+</body>
+
 </html>

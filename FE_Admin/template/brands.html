@@ -1,15 +1,14 @@
 <div class="col-lg-12 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Brands table</h4>
+      <h4 class="card-title">Quản lý thương hiệu</h4>
 
 
 
       <div class="search-container">
-        <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a Brands">
+        <input type="text" id="btn-search" ng-model="searchText" placeholder="Tìm kiếm thương hiệu">
         <i class="fa-light fa-magnifying-glass"></i>
       </div>
-
 
       <button ng-click="deleteAll()" id="delete-all" class="btn btn-danger mt-3"><i class="fa-duotone fa-trash"></i> Xoá
         Nhiều</button>
@@ -77,7 +76,7 @@
               <th>
                 <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox" type="checkbox"> #
               </th>
-              <th ng-show="columns[1].selected" ng-click="sortData('name')">Tên Kích cỡ<span class="{{getSortClass('name')}}"></span></th>
+              <th ng-show="columns[1].selected" ng-click="sortData('name')">Tên Thương hiệu<span class="{{getSortClass('name')}}"></span></th>
               <th ng-show="columns[2].selected" ng-click="sortData('description')">Mô Tả<span class="{{getSortClass('description')}}"></span></th>
               <th ng-show="columns[3].selected" ng-click="sortData('status')">Trạng Thái<span class="{{getSortClass('status')}}"></span></th>    
               <th name="Action">Action</th>
@@ -88,12 +87,11 @@
               <td><input type="checkbox" ng-model="item.isSelected"></td>
               <td ng-show="columns[1].selected" style="text-align: center;"> {{item.name}}</td>
               <td ng-show="columns[2].selected" style="text-align: center;">{{item.description}}</td>
-              <td ng-show="columns[3].selected" style="text-align: center;">
-                <span ng-if="item.status == true" style="margin-left: -9px;">
-                    <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i> Active
-                </span>
-                <span ng-if="item.status != true">
-                    <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Disable
+              <td ng-click="switchStatus(item.id)">
+                <span ng-show="columns[3].selected" style="text-align: center;">
+                    <i ng-if="item.status" class="fa-2xl fa fa-toggle-on"
+                        style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
+                    <i ng-if="!item.status" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
                 </span>
             </td>
               <td>
@@ -171,7 +169,7 @@
         
           <form class="forms-sample" name="AddBrands">
             <div class="form-group">
-              <label for="exampleSelectGender">Tên Chất liệu</label>
+              <label for="exampleSelectGender">Tên Thương hiệu</label>
               <input type="text" class="form-control" ng-model="formBrands.name" required maxlength="30" name="txtName"
               ng-class="{'is-invalid': checkAddress && !formBrands.name}">
            <!-- <label ng-show="AddBrands.txtName.$invalid" style="color: #FC424A;"
@@ -186,14 +184,14 @@
               >Bạn cần nhập Description tối đa 50 ký tự</label>    -->
             </div>
   
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="exampleSelectGender">Trạng Thái</label>
               <select class="form-control" ng-model="formBrands.status"
               ng-class="{'is-invalid': checkAddress && !formBrands.status}">
                 <option value=true>Đang hoạt động</option>
                 <option value=false>Ngừng hoạt động</option>
               </select>
-            </div>
+            </div> -->
             <div class="modal-footer">
               <button id="btn-action-cancel" type="button" class="btn btn-secondary"
                 data-dismiss="modal">Cancel</button>

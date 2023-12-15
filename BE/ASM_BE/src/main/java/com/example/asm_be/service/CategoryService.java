@@ -20,5 +20,6 @@ public interface CategoryService {
     boolean save( Category categoryRequest);
     boolean update( Category categoryRequest);
     boolean delete( Integer idCategory);
+    void switchStatus(Integer id);
 
 }

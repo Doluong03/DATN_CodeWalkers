@@ -34,12 +34,13 @@ public class KhachHangController {
     }
 
     @GetMapping({"/User"})
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public UserRespone getAllUser(
+            @RequestParam Boolean checkAcc,
             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
             @RequestParam(value = "sizePage", defaultValue = "5") Integer sizePage) {
         UserRespone userRespone = new UserRespone();
-        Page<Users> usersPage = userService.getAll(pageNo - 1, sizePage);
+        Page<Users> usersPage = userService.getAll(checkAcc,pageNo-1, sizePage);
 
         userRespone.setUsersList(usersPage.getContent());
         userRespone.setTotalPages(usersPage.getTotalPages());
@@ -47,16 +48,11 @@ public class KhachHangController {
         return userRespone;
     }
 
+
     @PostMapping({"/admin/User/insert"})
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') ")
     public ResponseEntity<ResponeObject> insertStaff(@RequestBody Users users) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-        Date current = new Date();
-        Date BirthDayFormat = dateFormat.parse(users.getDateOfBirth().toString());
-        Date createdDate = dateFormat.parse(current.toString());
-        users.setDateOfBirth(BirthDayFormat);
-        users.setCreatedDate(createdDate);
-        users.setPhoneNumber(users.getPhoneNumber());
+        users.setCreatedDate(new Date());
         users.setStatus(true);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -68,6 +64,12 @@ public class KhachHangController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponeObject("success", "Update thanh cong", this.userService.update(users)));
+    }
+    @PutMapping({"/admin/User/updateInActive/{id}"})
+    public ResponseEntity<ResponeObject> UpdateInActive(@PathVariable("id") int id) throws ParseException {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponeObject("success", "Update thanh cong", this.userService.updateInActive(id)));
     }
 
     @PutMapping({"/admin/User/update/point-rank"})
@@ -113,6 +115,11 @@ public class KhachHangController {
     @GetMapping("/user/getUserNew")
     public ResponseEntity<Collection<Users>> getUserNew() {
         return ResponseEntity.ok(userService.getUserNew());
+    }
+    @PostMapping("/admin/User/switchStatus/{id}")
+    public ResponseEntity<?> turnOn(@PathVariable("id") int id) {
+        this.userService.switchStatus(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/user/getUserSliver")

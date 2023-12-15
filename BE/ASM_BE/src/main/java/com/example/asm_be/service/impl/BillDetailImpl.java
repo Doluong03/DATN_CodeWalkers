@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class BillDetailImpl implements BillDetailService {
@@ -35,28 +32,71 @@ public class BillDetailImpl implements BillDetailService {
     }
 
     @Override
-    public List<BillDetails> save(int idBill, int idCart) {
-        List<BillDetails> billDetailsList = new ArrayList<>();
+    public List<BillDetails> save(int idBill, int idProDt, int quantity) {
         try {
-            List<CartDetails> listCartDt = cartDetailsRepository.findByCartId(idCart);
+            ProductDetail productDetail = productDetailRepository.findById(idProDt).orElse(null);
             Bill bill = billRepository.findById(idBill).orElse(null);
-            if (bill != null) {
-                for (CartDetails cartDetails : listCartDt) {
-                    BillDetails billDetail = new BillDetails();
-                    billDetail.setBill(bill);
-                    billDetail.setProductDetail(cartDetails.getProductDetail());
-                    billDetail.setQuantity(cartDetails.getQuantity());
-                    billDetail.setPrice(cartDetails.getProductDetail().getPrice());
-                    billDetailsRepository.save(billDetail);
-                    billDetailsList.add(billDetail);
+            List<BillDetails> billDetailsList = billDetailsRepository.findByBillId(idBill);
+            if (bill != null && productDetail != null) {
+                if (billDetailsList.isEmpty()) {
+                    createNewBillDetails(bill, productDetail, 1);
+                } else {
+                    Optional<BillDetails> existingDetails = billDetailsRepository.findByBillIdAndAndProductDetailId(idBill, idProDt);
+
+                    if (existingDetails.isPresent()) {
+                        existingDetails.get().setQuantity(existingDetails.get().getQuantity() + quantity);
+                        existingDetails.get().setPrice(productDetail.getPrice());
+                        existingDetails.get().setCreatedAt(new Date());
+                        billDetailsRepository.save(existingDetails.get());
+//                        productDetail.setQuantity(productDetail.getQuantity() - quantity);
+//                        productDetailRepository.save(productDetail);
+                    } else {
+                        createNewBillDetails(bill, productDetail, 1);
+                    }
                 }
             }
-        }catch (Exception e){
+            return billDetailsList;
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void createNewBillDetails(Bill bill, ProductDetail productDetail, int quantity) {
+        BillDetails billDetails = new BillDetails();
+        billDetails.setQuantity(quantity);
+        billDetails.setBill(bill);
+        billDetails.setProductDetail(productDetail);
+        billDetails.setPrice(productDetail.getPrice());
+        billDetails.setCreatedAt(new Date());
+//        productDetail.setQuantity(productDetail.getQuantity() - quantity);
+//        productDetailRepository.save(productDetail);
+        billDetailsRepository.save(billDetails);
+    }
+    @Override
+    public boolean updateQuantity(int idBillDt, int quantity) {
+        Optional<BillDetails> existingDetails = billDetailsRepository.findById(idBillDt);
+        ProductDetail productDetail = productDetailRepository.findById(existingDetails.get().getProductDetail().getId()).orElse(null);
+//        productDetail.setQuantity(existingDetails.get().getQuantity() + productDetail.getQuantity());
+//        productDetailRepository.save(productDetail);
+        int quantityFinal = 0;
+        if (existingDetails.isPresent()) {
+            if(quantity>productDetail.getQuantity()){
+                quantityFinal = productDetail.getQuantity();
+            }else {
+                quantityFinal = quantity;
+            }
+            existingDetails.get().setQuantity(quantityFinal);
+            billDetailsRepository.save(existingDetails.get());
+//            productDetail.setQuantity(productDetail.getQuantity() - quantityFinal);
+//            productDetailRepository.save(productDetail);
+            return true;
+        } else {
+            return false;
         }
 
-        return billDetailsList;
     }
+
 
     @Override
     @Transactional
@@ -70,7 +110,7 @@ public class BillDetailImpl implements BillDetailService {
                 // Thêm mới chi tiết hóa đơn từ danh sách chi tiết giỏ hàng
                 List<BillDetails> billDetailsList = new ArrayList<>();
                 for (CartDetails cartDetails : detailsList) {
-                    System.out.println(cartDetails.toString()+"aaaaaaaa111111");
+                    System.out.println(cartDetails.toString() + "aaaaaaaa111111");
                     BillDetails billDetail = new BillDetails();
                     billDetail.setBill(bill);
                     billDetail.setProductDetail(cartDetails.getProductDetail());
@@ -81,31 +121,15 @@ public class BillDetailImpl implements BillDetailService {
                 }
                 // Trả về danh sách chi tiết hóa đơn mới
                 return billDetailsList;
-            }else {
+            } else {
                 System.out.println("ko co");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         // Trả về danh sách rỗng nếu hóa đơn không tồn tại
         return Collections.emptyList();
     }
-
-    @Override
-    public Double getTongGia(List<BillDetailsRequest> list) {
-        Double result = 0.0;
-
-        for (int i = 0; i < list.size(); ++i) {
-            Double giaBan = 0.0;
-            ProductDetail ctsp = this.productDetailRepository.findById((list.get(i)).getPrDetailId()).get();
-            if (ctsp != null) {
-                giaBan = ctsp.getPrice();
-            }
-            result = result + (double) (list.get(i)).getQuantity() * giaBan;
-        }
-        return result;
-    }
-
 
     @Override
     @Transactional
@@ -131,6 +155,9 @@ public class BillDetailImpl implements BillDetailService {
 
     @Override
     public void delete(BillDetails billDetail) {
+        ProductDetail productDetail = billDetail.getProductDetail();
+//        productDetail.setQuantity(productDetail.getQuantity() + billDetail.getQuantity());
+//        productDetailRepository.save(productDetail);
         billDetailsRepository.delete(billDetail);
     }
 }

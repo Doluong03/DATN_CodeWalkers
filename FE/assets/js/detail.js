@@ -16,6 +16,8 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   var idUserCook = $cookies.get('idUser');
   var dataUser = localStorage.getItem('userData');
   var dataUserJson = JSON.parse(dataUser);
+  var dataUserId = localStorage.getItem('userIdData');
+
   toastr.options = {
     "closeButton": true,
     "debug": false,
@@ -62,28 +64,29 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   $scope.productDTId = $routeParams.productId;
   $scope.promotionId = $routeParams.promotionId;
   $scope.currentImageSource = null;
-
+  $scope.categoryName = "";
   $scope.loadDetail = function () {
     var url = `${host}/api/product/${$scope.productDTId}`;
 
     $http.get(url).then(res => {
       $scope.totalQuantity = 0;
-      $scope.itemDetail = res.data;
+      $scope.itemDetail = res.data.filter(pr =>pr.status.id == 1);
       $scope.img = res.data[0].product.listImage;
       $scope.productId = $scope.itemDetail[0].product.id;
+      $scope.categoryName = $scope.itemDetail[0].product.category.name;
       $scope.currentImageSource = `assets/img/product/sp1/${$scope.itemDetail[0].product.mainImg}`;
       for (var i = 0; i < $scope.itemDetail.length; i++) {
-        if($scope.itemDetail[i].quantity>0){
-        $scope.sizesPr.push({
-          name: $scope.itemDetail[i].size.name,
-          checkcl: true
-        });
-        $scope.colorPr.push({
-          name: $scope.itemDetail[i].color.name,
-        });
-        $scope.totalQuantity += $scope.itemDetail[i].quantity;
+        if ($scope.itemDetail[i].quantity > 0) {
+          $scope.sizesPr.push({
+            name: $scope.itemDetail[i].size.name,
+            checkcl: true
+          });
+          $scope.colorPr.push({
+            name: $scope.itemDetail[i].color.name,
+          });
+          $scope.totalQuantity += $scope.itemDetail[i].quantity;
+        }
       }
-    }
     }).catch(error => {
       console.log("Error", error);
     });
@@ -285,7 +288,9 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   $scope.loadAllPr = function () {
     var url = `${host}/api/product`;
     $http.get(url).then(res => {
-      $scope.items = res.data;
+
+      // Assuming res.data is an array
+      $scope.items = res.data.slice(-10);
       // Gọi loadDetail sau khi tải dữ liệu thành công
       $scope.loadDetail();
       $scope.numVisibleItems = 4;
@@ -422,7 +427,6 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   };
 
   // Hàm thêm sản phẩm vào giỏ hàng
-  var dataUserCart = localStorage.getItem('userCartData');
   $scope.addCart = function (sl) {
     var cartId = $cookies.get('cartId');
     var productId = $scope.productId;
@@ -445,9 +449,13 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       return;
     }
 
-    if (!cartId || cartId == 95) {
+    if (!cartId && !dataUserCart) {
       $scope.createCart().then(function (cartIdResponse) {
-        var cartIdResponse = $cookies.get('cartId');
+        if (dataUserJson) {
+          localStorage.setItem('userCartData', cartIdResponse);
+        } else {
+          var cartIdResponse = $cookies.get('cartId');
+        }
         $scope.loadAllPrCart(cartIdResponse);
         $scope.cartIdFinal = cartIdResponse;
         console.log("Cart ID created:", $scope.cartIdFinal);
@@ -459,34 +467,38 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
       $scope.sendDetailAddRequest(sl, $scope.cartIdFinal);
     }
   };
+  var dataUserCart = JSON.parse(JSON.stringify(localStorage.getItem('userCartData')));
 
   $scope.sendDetailAddRequest = function (sl, idCart) {
     var url = `${host}/api/detailAdd/${idCart}/${$scope.productId}/${$scope.selectedValue}/${$scope.selectedColor || ''}`;
     var data = { quantity: sl };
-
     console.log("Sending request to:", url);
-
     $http.post(url, data)
       .then(function (response) {
+        if (!response.data) {
+          toastr.error('Số lượng sản phẩm trong kho không đủ để thêm nhiều hơn vào giỏ hàng.', 'Thông báo');
+          return;
+        }
         $scope.idCartDt = response.data.id;
-        console.log('Successfully updated');
+        console.log(response, 'Successfully updated');
         $scope.loadAllPr();
         $scope.loadAllPrCart(idCart);
-
         toastr.success('Thêm sản phẩm thành công!', 'Thông báo');
       })
       .catch(function (error) {
         console.error('Update failed:', error);
         toastr.error('Có lỗi xảy ra trong quá trình thêm sản phẩm', 'Error');
+        return
       });
   };
 
 
   $scope.addBill = function () {
-    $scope.idUserFinal = idUserCook || dataUserJson || 0;
+    $scope.idUserFinal = idUserCook || dataUserId || 0;
 
     var url = `${host}/api/addBill/${$scope.idUserFinal}`;
-    console.log(url, "url");
+    console.log(idUserCook, "url");
+    console.log(dataUserId, "url");
 
     var idBill = $cookies.get('billId');
 
@@ -504,12 +516,10 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
             CookieService.set('idUser', billData.users.id, 1);
             $scope.pay();
           }
-
-          return true;
         })
         .catch(function (error) {
           console.error('Failed to add bill', error);
-          return false;
+          return;
         });
     }
 
@@ -535,6 +545,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     $scope.addCart(od);
     setTimeout(function () {
       $scope.addBill();
+      window.location.href = "http://127.0.0.1:5501/index.html#/payment";
     }, 200)
   };
 

@@ -428,11 +428,11 @@ myApp.service('VoucherService', function () {
 myApp.filter('customFilter', function() {
   return function(input, searchName, searchDiscountType, searchStatus, searchDate) {
       return input.filter(function(item) {
-        console.log('input:', input);
-        console.log('searchName:', searchName);
-        console.log('searchDiscountType:', searchDiscountType);
-        console.log('searchStatus:', searchStatus);
-        console.log('searchDate:', searchDate);
+        // console.log('input:', input);
+        // console.log('searchName:', searchName);
+        // console.log('searchDiscountType:', searchDiscountType);
+        // console.log('searchStatus:', searchStatus);
+        // console.log('searchDate:', searchDate);
           
           // Kiểm tra sự khớp dựa trên tất cả các trường dữ liệu
           var nameMatch = !searchName || (item.name && item.name.toLowerCase().includes(searchName.toLowerCase()));
@@ -446,7 +446,38 @@ myApp.filter('customFilter', function() {
   };
 });
 
+myApp.filter('orderStatus', function () {
+  return function (input) {
+      var statusMapping = {
+          0: 'Thanh toán tiền mặt',
+          1: 'Thanh toán chuyển khoản',
+      };
+      return statusMapping[input] || 'Không xác định';
+  };
+});
+myApp.filter('orderStatus2', function () {
+  return function (input) {
+      var statusMapping = {
+          0: 'Thanh toán khi nhận hàng',
+          1: 'Thanh toán qua VnPay',
+      };
+      return statusMapping[input] || 'Không xác định';
+  };
+});
+myApp.filter('orderStatus', function () {
+  return function (input) {
+      var statusMapping = {
+          1: 'Chờ xác nhận',
+          2: 'Chờ giao hàng',
+          3: 'Đang giao hàng',
+          4: 'Hoàn thành',
+          5: 'Đã hủy',
+          6: 'Mua hàng tại quầy'
+      };
 
+      return statusMapping[input] || 'Không xác định';
+  };
+});
 myApp.filter('currencyFormat', function ($filter) {
   return function (input) {
       // Kiểm tra xem input có tồn tại không
