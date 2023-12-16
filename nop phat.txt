@@ -1,6 +1,6 @@
 Nộp phạt:
-Hiệp: 38k + 20k + 20k + 25k + 26K
-Cường: 62k + 25k + 28k
-Thảo: 12k + 6k + 25k
+Hiệp: 38k + 20k + 20k + 25k + 26K = 130k
+Cường: 62k + 25k + 28k = 120k
+Thảo: 12k + 6k + 25k = 45k
 Huy: 25k
-Tổng(now) : 312k
+Tổng(now) : 320K
