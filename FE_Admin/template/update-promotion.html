@@ -309,8 +309,8 @@
                 <select id="select1" class="form-select col" style="margin-bottom: 20px;max-width: 22%;"
                     ng-model="selectedOption" ng-change="onOptionChange()">
                     <option value="Sản phẩm" selected>Sản phẩm</option>
-                    <option value="Danh mục" ng-show="!isCash">Danh mục sản phẩm</option>
-                    <option value="Tất cả" ng-show="!isCash">Tất cả</option>
+                    <!-- <option value="Danh mục" ng-show="!isCash">Danh mục sản phẩm</option>
+                    <option value="Tất cả" ng-show="!isCash">Tất cả</option> -->
                 </select>
 
                 <div class="custom-dropdown-sell" ng-show="isSearchProduct">
@@ -337,13 +337,13 @@
 
                 <div class="custom-dropdown-sell" ng-show="isSearchCategoryPr">
                     <input type="text" class="form-control" id="productInput" ng-click="toggleDropdown()"
-                        placeholder="Tìm kiếm danh mục" ng-model="tab.formData.search" ng-change="filterProducts(tab)">
+                        placeholder="Tìm kiếm danh mục" ng-model="tab.formData.search" ng-change="filterProducts2(tab)">
                     <div id="productDropdown" class="dropdown-content-sell w-25">
                         <!-- Product options go here -->
                         <div ng-repeat="pr in category">
-                            <div ng-click="toggleCheckbox(pr)">
+                            <div ng-click="toggleCheckbox2(pr)">
                                 <button class="checkbox-container col-lg-12">
-                                    <input type="checkbox" ng-model="pr.selected" ng-change="checkboxChanged(pr)">
+                                    <input type="checkbox" ng-model="pr.selected" ng-change="checkboxChanged2(pr)">
                                     <span>{{pr.name}}</span>
 
                                 </button>

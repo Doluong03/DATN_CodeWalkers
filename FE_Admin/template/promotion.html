@@ -87,28 +87,28 @@
         <input type="text" class="form-control" placeholder="Nhập tên chương trình khuyến mãi" ng-model="searchName">
 
         <div class="col-md-3">
-            <select class="form-select" ng-model="searchDiscountType" ng-change="selectedDiscountType">
-                <option value="" selected >Loại Chương Trình</option>
+            <select class="form-select" ng-model="searchDiscountType" ng-change="searchByDiscountType()">
+                <option value="" selected>Loại Chương Trình</option>
                 <option value="Phần Trăm">Phần Trăm</option>
                 <option value="Đồng giá">Đồng giá</option>
             </select>
         </div>
-
+        
         <div class="col-md-3">
-            <select class="form-select" ng-model="searchStatus" ng-change="selectedStatuss">
-                <option value="" selected >Loại Trạng Thái</option>
+            <select class="form-select" ng-model="searchStatus" ng-change="searchByStatus()">
+                <option value="" selected>Loại Trạng Thái</option>
                 <option value="1">Đang hoạt động</option>
                 <option value="0">Ngừng hoạt động</option>
             </select>
         </div>
-
+        
         <div class="col-md-3">
             <div class="custom-date-picker input-group">
                 <input type="text" class="form-control" id="hiddenDateInput" ng-model="searchDate"
                     uib-datepicker-popup="{{datePickerFormat}}" is-open="datePickerOpened" ng-required="true"
                     close-text="Đóng" alt-input-formats="altInputFormats" ng-click="openDatePicker()"
                     placeholder="Ngày diễn ra" />
-
+        
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openDatePicker()">
                         <img src="./images/clock_10314522.png" alt="calender img">
@@ -116,6 +116,7 @@
                 </span>
             </div>
         </div>
+        
 
         <div class="col-md-3 mt-3">
             <!-- Use ng-click to trigger the search -->
@@ -141,7 +142,7 @@
         </thead>
         <tbody>
             <!-- Use filteredPromotions in ng-repeat -->
-            <tr ng-repeat="item in listPromotions | customFilter:searchName:searchDiscountType:searchStatus:searchDate">
+            <tr ng-repeat="item in listPromotions | filter:searchName">
                 <td>{{item.id}}</td>
                 <td>{{item.name}}</td>
                 <td>{{item.typeDiscount}}</td>

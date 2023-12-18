@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -156,6 +157,26 @@ public class PromotionIplm implements PromotionService {
     @Override
     public List<Promotional> getAll() {
         return promotinonalrepository.findAll();
+    }
+
+    @Override
+    public List<Promotional> findAllByName(String name) {
+        return promotinonalrepository.findAllByName(name);
+    }
+
+    @Override
+    public List<Promotional> findAllByTypeDiscounts(String type) {
+        return promotinonalrepository.findAllByTypeDiscounts(type);
+    }
+
+    @Override
+    public List<Promotional> findAllByStatus(Integer status) {
+        return promotinonalrepository.findAllByStatus(status);
+    }
+
+    @Override
+    public List<Promotional> findAllByConditions(Integer status, String name, String type, Date date) {
+        return promotinonalrepository.findAllByConditions(status,name,type,date);
     }
 
 
