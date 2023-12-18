@@ -63,9 +63,9 @@
             <i class="fa-solid fa-down-to-line"></i>
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
-            <a class="dropdown-item" ng-click="exportToSVG()">SVG</a>
+            <!-- <a class="dropdown-item" ng-click="exportToSVG()">SVG</a> -->
             <a class="dropdown-item" ng-click="exportToExcel()">Excel</a>
-            <a class="dropdown-item" ng-click="exportToPDF();">PDF</a>
+            <!-- <a class="dropdown-item" ng-click="exportToPDF();">PDF</a> -->
           </div>
         </div>
 
@@ -82,17 +82,19 @@
                 <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox"
                   type="checkbox"> #
               </th>
-              <th ng-show="columns[1].selected" ng-click="sortData('name')"style="width: 10%;" >Tên Sản phẩm <span
+              <th ng-show="columns[1].selected" ng-click="sortData('name')"style="width: 8%;" >Mã Sản phẩm <span
+                class="{{getSortClass('name')}}"></span></th>
+              <th ng-show="columns[2].selected" ng-click="sortData('name')"style="width: 15%;" >Tên Sản phẩm <span
                   class="{{getSortClass('name')}}"></span></th>
-              <th ng-show="columns[2].selected" ng-click="sortData('mainImg')" >Ảnh chính<span
+              <th ng-show="columns[3].selected" ng-click="sortData('mainImg')" >Ảnh chính<span
                   class="{{getSortClass('name')}}"></span></th>
-              <th ng-show="columns[3].selected" ng-click="sortData('description')"  style="width: 50%;">Mô tả<span
+              <th ng-show="columns[4].selected" ng-click="sortData('description')"  style="width: 40%;">Mô tả<span
                   class="{{getSortClass('name')}}"></span></th>
-              <th ng-show="columns[4].selected" ng-click="sortData('brands')">Thương hiệu<span
+              <th ng-show="columns[5].selected" ng-click="sortData('brands')">Thương hiệu<span
                   class="{{getSortClass('name')}}"></span></th>
-              <th ng-show="columns[5].selected" ng-click="sortData('category')">Phân loại<span
+              <th ng-show="columns[6].selected" ng-click="sortData('category')">Phân loại<span
                   class="{{getSortClass('name')}}"></span></th>
-              <th ng-show="columns[6].selected" ng-click="sortData('status')">Trạng Thái<span
+              <th ng-show="columns[7].selected" ng-click="sortData('status')">Trạng Thái<span
                   class="{{getSortClass('status')}}"></span></th>
               <th name="Action">Action</th>
             </tr>
@@ -100,13 +102,14 @@
           <tbody>
             <tr ng-repeat="item in listProduct | filter:searchText   | orderBy:sortColumn:reverseSort" >
               <td><input type="checkbox" ng-model="item.isSelected" ></td>
-              <td ng-show="columns[1].selected" style="text-align: start;"> {{item.name}}</td>
-              <td ng-show="columns[2].selected" style="text-align: center;"><img src="/template/images/sp1/{{item.mainImg}}" alt="{{item.mainImg}}" style="width: 120px; height: 120px;" class="border rounded-4" ></td>
-              <td ng-show="columns[3].selected" style="text-align: start; height: 10px;"> {{item.description}}</td>
-              <td ng-show="columns[4].selected" style="text-align: start;"> {{item.brands.name}}</td>
-              <td ng-show="columns[5].selected" style="text-align: start;"> {{item.category.name}}</td>
+              <td ng-show="columns[1].selected" style="text-align: start;"> {{item.code}}</td>
+              <td ng-show="columns[2].selected" style="text-align: start;"> {{item.name}}</td>
+              <td ng-show="columns[3].selected" style="text-align: center;"><img src="/template/images/sp1/{{item.mainImg}}" alt="{{item.mainImg}}" style="width: 120px; height: 120px;" class="border rounded-4" ></td>
+              <td ng-show="columns[4].selected" style="text-align: start; height: 10px;" class="shorten-text"> {{item.description}}</td>
+              <td ng-show="columns[5].selected" style="text-align: start;"> {{item.brands.name}}</td>
+              <td ng-show="columns[6].selected" style="text-align: start;"> {{item.category.name}}</td>
               <td ng-click="switchStatus(item.id)">
-                <span ng-show="columns[6].selected" style="text-align: center;">
+                <span ng-show="columns[7].selected" style="text-align: center;">
                     <i ng-if="item.status" class="fa-2xl fa fa-toggle-on"
                         style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
                     <i ng-if="!item.status" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
@@ -118,7 +121,7 @@
                   <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
                 </a>
 
-                <a href="#" ng-click="removeColor($event, item)" style="text-decoration: none; color: #FC424A;">
+                <a href="#" ng-click="removeProduct($event, item)" style="text-decoration: none; color: #FC424A;">
                   <i class="fas fa-fw fa-trash"></i>
                 </a>
               </td>
@@ -207,7 +210,7 @@
             <div class="form-group">
               <label for="exampleInputDescription">Mô tả</label>
               <textarea type="text" class="form-control" id="exampleInputDescription" placeholder="Mô tả"
-                ng-model="formproduct.description"  maxlength="30" name="txtMota"
+                ng-model="formproduct.description" name="txtMota"
                 ng-class="{'is-invalid': checkAddress && !formproduct.description}"></textarea>
               <!-- <label ng-show="AddProduct.txtMota.$invalid" style="color: #FC424A;">Bạn cần nhập tối đa 30 ký tự</label> -->
             </div>
@@ -241,7 +244,7 @@
             <div class="modal-footer">
               <button id="btn-action-cancel" type="button" class="btn btn-secondary"
                 data-dismiss="modal">Hủy</button>
-              <button id="btn-action-add" type="button" class="btn btn-primary"
+              <button id="btn-action-add" type="submit" class="btn btn-primary"
                 ng-click="addProduct($event)">Thêm mới</button>
             </div>
           </form>
@@ -261,6 +264,7 @@
     width: 1400px;
     margin-top: -50px;
     right: 70%;
+
   }
 
   .scrollable-modal-body {
@@ -336,7 +340,7 @@
             <div class="modal-footer">
               <button id="btn-action-cancel" type="button" class="btn btn-secondary"
                 data-dismiss="modal">Hủy</button>
-              <button id="btn-action-add" type="button" class="btn btn-primary"
+              <button id="btn-action-add" type="submit" class="btn btn-primary"
                 ng-click="UpdateProduct($event)">Cập nhật</button>
             </div>
           </form>
@@ -393,6 +397,21 @@
     border-radius: 5px;
     margin: 5px 5px 5px 0;
   }
+  table {
+  border-collapse: collapse;
+}
+
+td {
+  border-bottom: 1px solid #ccc;
+  padding: 8px;
+  /* Chọn một trong các lựa chọn sau: */
+  /* white-space: pre-line; */
+  /* white-space: pre-wrap; */
+  word-wrap: break-word;
+}
+
+
+
 </style>
 
 <!-- The Modal -->
@@ -408,7 +427,7 @@
 
       <!-- Modal Body -->
       <div class="modal-body-pr" style="overflow-y: auto;max-height: 750px;">
-        <div ng-repeat="image in listCheckBox" class="image-container">
+        <div ng-repeat="image in listCheckBox " class="image-container">
           <label class="label-checkbox border rounded-1 m-2">
             <input type="checkbox" ng-model="image.selected" ng-change="updateSelection(image)"
               class="checkboxImg ms-2">
@@ -433,7 +452,6 @@
   </div>
 </div>
 <!-- The Modal -->
-
 
 
 <div class="import-container">

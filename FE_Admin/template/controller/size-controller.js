@@ -434,12 +434,24 @@ window.SizeController = function ($scope, $http, $window, $timeout) {
   $scope.exportToExcel = function () {
     var table = document.getElementById("SizeTable");
     var data = [];
-    
+
+    // Hàm chuyển đổi giá trị từ class sang boolean
+    function convertStatusClassToBoolean(statusClass) {
+        return statusClass === 'fa-2xl fa fa-toggle-on ng-scope';
+    }
+
     for (var i = 0; i < table.rows.length; i++) {
         var rowData = [];
         // Bỏ cột đầu tiên và cột cuối
         for (var j = 1; j < table.rows[i].cells.length - 1; j++) {
-            rowData.push(table.rows[i].cells[j].innerText);
+            // Kiểm tra nếu là cột "Trạng Thái"
+            if (j === table.rows[i].cells.length - 2 && i!==0) {
+                var statusCell = table.rows[i].cells[j].querySelector('i');
+                var statusValue = statusCell ? convertStatusClassToBoolean(statusCell.getAttribute('class')) : false;
+                rowData.push(statusValue);
+            } else {
+                rowData.push(table.rows[i].cells[j].innerText);
+            }
         }
         data.push(rowData);
     }
@@ -448,7 +460,7 @@ window.SizeController = function ($scope, $http, $window, $timeout) {
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Danh sách Kích cỡ");
 
-    XLSX.writeFile(wb, "Danh sách Kích cỡ.xlsx");
+    XLSX.writeFile(wb, "export_data_size.xlsx");
 };
 
 

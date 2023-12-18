@@ -13,9 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductImpl implements ProductService {
@@ -43,6 +45,8 @@ public class ProductImpl implements ProductService {
     @Override
     public Product save(Product product) {
         try {
+            String codeRes = mapToAggregatedData(product);
+            product.setCode(codeRes);
             return  this.productRepository.save(product);
         } catch (Exception var3) {
             var3.printStackTrace();
@@ -50,9 +54,53 @@ public class ProductImpl implements ProductService {
         }
     }
 
+    private String mapToAggregatedData(Product product) {
+        String[] words = product.getName().split("\\s+");
+        StringBuilder codeBuilder = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                codeBuilder.append(word.charAt(0));
+            }
+        }
+
+        List<Product> products = productRepository.findAll();
+
+        Optional<Product> maxProduct = products.stream()
+                .max(Comparator.comparingInt(Product::getId));
+        Product productWithMaxId = maxProduct.orElse(null);
+
+        if (productWithMaxId != null) {
+            // Get the last three characters of the product code and add 1
+            String lastThreeChars = productWithMaxId.getCode()
+                    .substring(Math.max(productWithMaxId.getCode().length() - 3, 0));
+
+            // Convert to integer and add 1
+            int incrementedValue = Integer.parseInt(lastThreeChars) + 1;
+
+            // Format the incrementedValue with leading zeros
+            String formattedIncrementedValue = String.format("%03d", incrementedValue);
+
+            // Limit the result to 3 characters
+            String result = codeBuilder.toString().substring(0, Math.min(codeBuilder.length(), 3)) + formattedIncrementedValue;
+
+            // Remove leading zeros if incrementedValue reaches 100
+            if (incrementedValue >= 100) {
+                result = result.replaceAll("^0+", "");
+            }
+
+            return result;
+        } else {
+            return ""; // Handle the case when no products are found
+        }
+    }
+
+
     @Override
     public boolean update(Product product) {
         try {
+            Product product1 = productRepository.findById(product.getId()).get();
+            product.setCode(product1.getCode());
             this.productRepository.save(product);
             return true;
         } catch (Exception var4) {

@@ -25,8 +25,13 @@
                                 <p class="mb-0">Màu sắc: {{pr.productDetail.color.name}}</p>
                                 <p class="mb-0">Size : {{pr.productDetail.size.name}} x {{pr.quantity}}</p>
                             </div>
-                            <p class="card-text col-lg-3 text-end"> {{pr.productDetail.price | vndCurrency }}
-                            </p>
+                            <div class="card-text col-lg-3 text-end">
+                                <p class="text-danger" ng-show="pr.price !== pr.productDetail.price">{{ pr.price | vndCurrency }}</p>
+                                <p class="text-decoration-line-through" ng-show="pr.price !== pr.productDetail.price">{{ pr.productDetail.price | vndCurrency }}</p>
+    
+                                <br>
+                                <p class="" ng-show="pr.price == pr.productDetail.price">{{ pr.productDetail.price | vndCurrency }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>

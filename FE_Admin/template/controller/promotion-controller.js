@@ -700,6 +700,7 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
                     try {
                         console.log(newProDetails)
                         return await $http.post('http://localhost:8080/CodeWalkers/admin/promotion-details/save', JSON.stringify(newProDetails), headers);
+                        
                     } catch (error) {
                         console.error("Error adding promotion details:", error);
                         return Promise.reject(error);
@@ -715,6 +716,8 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
         });
 
         await Promise.all(promises);
+        $window.location.href = "#khuyen-mai"
+
     };
 
 

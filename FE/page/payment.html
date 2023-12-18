@@ -62,7 +62,7 @@
                                 <div class="form-group">
                                     <input type="tel" class="form-control" id="exampleInputSDT" placeholder="Số điện thoại*"
                                       ng-model="formAddress.phoneNumber" name="phoneNumber"
-                                      ng-class="{'is-invalid': checkAdd && (myForm.phoneNumber.$error.pattern || myForm.phoneNumber.$error.phoneNumberExists || !formAddress.phoneNumber)}"
+                                      ng-class="{'is-invalid': checkAddress && (myForm.phoneNumber.$error.pattern || !formAddress.phoneNumber || myForm.phoneNumber.$error.phoneNumberExists)  }"
                                       required ng-pattern="/^(03|05|07|08|09)[0-9]{8}$/">
                                     <span class="error-message text-danger form-text"
                                       ng-show="(myForm.phoneNumber.$error.pattern && (myForm.phoneNumber.$dirty || myForm.$submitted)) || myForm.phoneNumber.$error.phoneNumberExists">
@@ -121,7 +121,7 @@
                         <div class="form-group ms-3 me-3">
                             <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email*"
                               ng-model="formAddress.email" name="email"
-                              ng-class="{'is-invalid': checkAdd && (myForm.email.$error.email || myForm.email.$error.emailExists || !formAddress.email)}"
+                              ng-class="{'is-invalid': checkAddress && (myForm.email.$error.email || myForm.email.$error.emailExists || !formAddress.email)}"
                               required>
                             <span class="error-message text-danger form-text"
                               ng-show="(myForm.email.$error.email && (myForm.email.$dirty || myForm.$submitted)) || myForm.email.$error.emailExists">
@@ -496,7 +496,7 @@
                     <button id="addVoucher" class="btn btn-outline-primary" ng-click="search()">Tìm kiếm</button>
                 </div>
                 <div class="modal-body modal-body-vch">
-                    <div ng-repeat="item in listVouchers" id="vouchers">                       
+                    <div ng-repeat="item in filtedVch" id="vouchers">                       
                         <div class="voucher-card" ng-click="selectVoucher(item.id,item.usageCount,item.idVchUser)">
                             <b class="voucher-quantity">x{{item.usageCount}}</b>
                             <img src="/assets/img/Voucher/{{item.image}}" alt="Voucher Image" />

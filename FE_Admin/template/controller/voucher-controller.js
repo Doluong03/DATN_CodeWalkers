@@ -354,7 +354,31 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
         }
     };
     //save 
+  $scope.currentDate = new Date();
+
     $scope.addVoucher = async function (event) {
+        // Kiểm tra xem form có hợp lệ không
+        if (
+            !$scope.formVoucher.name ||
+            !$scope.formVoucher.code ||
+            !$scope.formVoucher.value ||
+            $scope.formVoucher.value <= 0 || // Check if value is greater than 0
+            !$scope.formVoucher.endDate ||
+            new Date($scope.formVoucher.endDate) <= $scope.currentDate || // Check if endDate is greater than the current date
+            !$scope.formVoucher.condition ||
+            $scope.formVoucher.condition < 0 || // Check if condition is greater than or equal to 0
+            !$scope.formVoucher.maxReduction ||
+            $scope.formVoucher.maxReduction < 0 || // Check if maxReduction is greater than or equal to 0
+            !$scope.formVoucher.quantity ||
+            $scope.formVoucher.quantity < 0 ||
+            !$scope.formVoucher.exchangePoint ||
+            $scope.formVoucher.exchangePoint < 0 ||// Check if quantity is greater than or equal to 0
+            $scope.voucherUser.usageCount < 0
+        ) {
+            // Nếu form không hợp lệ, thông báo lỗi và ngăn chặn việc thực hiện tiếp
+            $scope.checkAdd = true;
+            return;
+        }
         event.preventDefault();
         console.log($scope.formVoucher)
 
@@ -421,6 +445,7 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
                         title: 'Tạo Voucher thành công!',
                         text: 'Thông tin Voucher đã được thêm.',
                     });
+                    $window.location.href = "#voucher"
                 }
             }
         } catch (error) {
@@ -464,7 +489,7 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
     }
 
 
-   
+
     // Function to add voucher users
     $scope.addVoucherUsers = async function (idVoucher, listUser) {
         // Create a promise for each userVoucher
@@ -638,8 +663,7 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
                     title: 'Cập nhật thành công!',
                     text: 'Thông tin voucher đã được cập nhật.'
                 });
-                window.location.href = 'http://127.0.0.1:5500/template/index.html#/voucher';
-
+                $window.location.href = "#voucher"
             } catch (error) {
                 console.error("Error:", error);
 
@@ -727,7 +751,7 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
             });
     };
 
-    if($scope.formUpdateVoucher.id){
+    if ($scope.formUpdateVoucher.id) {
         $scope.getCustomTypes($scope.formUpdateVoucher.id);
 
     };
@@ -1022,7 +1046,7 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
     $scope.hienThiUser($scope.pageNoUser, $scope.sizePageUser);
 
     $scope.toggleStatus = function (item) {
-        if (item.status) { 
+        if (item.status) {
             $scope.turnOff(item.id);
         } else {
             $scope.turnOn(item.id);

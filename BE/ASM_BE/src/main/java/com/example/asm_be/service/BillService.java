@@ -30,4 +30,7 @@ public interface BillService {
     public Object createOrder(CreateOrder createOrder);
     public String paymentVnPay(int totalPay) throws UnsupportedEncodingException;
 
+
+    void updateBillIdVoucher(Integer idBill,int idPhieu);
+
 }

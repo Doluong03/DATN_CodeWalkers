@@ -80,6 +80,7 @@ public class AdressController {
     public ResponseEntity<?> saveAddress(@RequestBody @Valid AddressRequest addressRequest, @RequestParam int idUser, @RequestParam int idCart, BindingResult result) {
         Address address = new Address();
         Optional<Users> users = userService.findByNameandPhone(addressRequest.getUserName(), addressRequest.getPhoneNumber());
+        int idUser2 = 0;
         Cart cart = cartService.getOne(idCart);
         try {
             if (result.hasErrors()) {
@@ -89,6 +90,7 @@ public class AdressController {
                 Users usersRes = userService.getOne(idUser);
                 if (usersRes.getUserName() == null) {
                     if (users.isPresent()) {
+                        idUser2 = users.get().getId();
                         addressRequest.map(address);
                         address.setUserName(addressRequest.getUserName());
                         address.setUserPhone(addressRequest.getPhoneNumber());
@@ -109,6 +111,7 @@ public class AdressController {
                         Users users1 = new Users();
                         users1.setId(idUser);
                         address.setUsers(users1);
+                        idUser2= idUser;
                         addressService.save(address);
                     }
                 } else {
@@ -120,13 +123,14 @@ public class AdressController {
                     Users users1 = new Users();
                     users1.setId(idUser);
                     address.setUsers(users1);
+                    idUser2 = idUser;
                     addressService.save(address);
                 }
             }
         } catch (Exception var) {
             var.printStackTrace();
         }
-        return ResponseEntity.ok(address);
+        return ResponseEntity.ok(idUser2);
     }
 
     @PostMapping("/update-address")

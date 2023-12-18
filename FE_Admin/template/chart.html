@@ -37,16 +37,20 @@
         <div class="card card-tale">
           <div class="card-body">
             <p class="mb-4">Doanh thu ngày {{currentDay}}/{{currentMonth}}/{{currentYear}}</p>
-            <p class="fs-30 mb-2">{{dailyRevenue | vndCurrency}}</p>
+            <p class="fs-30 mb-2">{{dailyRevenue || "0đ" | vndCurrency}}</p>
           </div>
+                    <p></p>
+          <p></p>
         </div>
       </div>
       <div class="col-md-6 mb-4 stretch-card transparent">
         <div class="card card-dark-blue">
           <div class="card-body">
-            <p class="mb-4">Doanh thu tuần thứ {{currentWeek}} của tháng {{currentMonth}}</p>
-            <p class="fs-30 mb-2">{{ weeklyTotalRevenue |vndCurrency}}</p>
+            <p class="mb-4">Doanh thu tháng ({{currentMonth}})</p>
+            <p class="fs-30 mb-2">{{ monthlyRevenue |vndCurrency}}</p>
           </div>
+          <p></p>
+          <p></p>
         </div>
       </div>
 
@@ -55,17 +59,22 @@
       <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
         <div class="card card-light-blue">
           <div class="card-body">
-            <p class="mb-4">Doanh thu tháng ({{currentMonth}})</p>
-            <p class="fs-30 mb-2">{{monthlyRevenue  |vndCurrency}}</p>
+            <p class="mb-4">Doanh thu năm ({{currentYear}})</p>
+            <p class="fs-30 mb-2">{{listYearDay |vndCurrency}}</p>
           </div>
-         
+          <p></p>
+          <p></p>
         </div>
       </div>
       <div class="col-md-6  stretch-card transparent">
         <div class="card  card-light-danger">
           <div class="card-body">
-            <p class="mb-4">Doanh thu năm ({{currentYear}})</p>
-            <p class="fs-30 mb-2">{{listYearDay |vndCurrency}}</p>
+            <p class="mb-4">Tổng doanh thu</p>
+            <p class="fs-30 mb-2">{{totalAll |vndCurrency}}</p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
           </div>
         </div>
       </div>
@@ -228,7 +237,7 @@
             <h4 style="margin-top: 60px;" class="card-title">Biểu Đồ Doanh Số</h4>
             <div class="spinner" ng-show="loadingBarchar" style="margin-top: 100px;"></div>
             <div ng-hide="loadingBarchar">
-                <canvas id="barChart"></canvas>
+                <div id="barChart"></div>
             </div>
         </div>
     </div>
@@ -238,7 +247,11 @@
 
 
 </div>
-
+<style>
+  .c3 svg{
+    font-size: 12px !important;
+  }
+</style>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

@@ -150,7 +150,7 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
       function (response) {
         // Xử lý phản hồi thành công
         $scope.listAllStaff = response.data.staffList;
-        console.log(response.data,'a');
+        console.log(response.data, 'a');
       },
       function (error) {
         // Xử lý lỗi
@@ -568,7 +568,10 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
   $scope.exportToExcel = function () {
     var table = document.getElementById("StaffTable");
     var data = [];
-
+    // Hàm chuyển đổi giá trị từ class sang boolean
+    function convertStatusClassToBoolean(statusClass) {
+      return statusClass === "fa-2xl fa fa-toggle-on ng-scope";
+    }
     // Tạo một hàng tiêu đề với tên các cột
     var headerRow = [];
     for (var k = 1; k < table.rows[0].cells.length - 1; k++) {
@@ -588,6 +591,11 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
           var imgElement = table.rows[i].cells[j].querySelector('img');
           var altText = imgElement ? imgElement.alt : '';
           rowData.push(altText);
+        }
+        if (i!==0 && j === table.rows[i].cells.length - 3) {
+          var statusCell = table.rows[i].cells[j].querySelector("i");
+          var statusValue = statusCell ? convertStatusClassToBoolean(statusCell.getAttribute("class")) : false;
+          rowData.push(statusValue);
         } else {
           rowData.push(table.rows[i].cells[j].innerText);
         }
@@ -599,7 +607,7 @@ window.StaffController = function ($scope, $http, $window, $timeout) {
     var ws = XLSX.utils.aoa_to_sheet(data);
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Danh sách Nhân viên");
-    XLSX.writeFile(wb, "Danh sách Nhân viên.xlsx");
+    XLSX.writeFile(wb, "export_data_staff.xlsx");
   };
 
 

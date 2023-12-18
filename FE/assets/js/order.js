@@ -21,7 +21,7 @@ app.controller(
 
       // Lặp qua danh sách sản phẩm của mỗi đơn hàng và tính tổng tiền
       angular.forEach(order.listBillDetail, function (pr) {
-        orderTotal += pr.productDetail.price * pr.quantity;
+        orderTotal += pr.price * pr.quantity;
       });
 
       return orderTotal;

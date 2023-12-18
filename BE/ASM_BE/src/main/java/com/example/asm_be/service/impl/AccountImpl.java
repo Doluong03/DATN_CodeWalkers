@@ -55,6 +55,9 @@ public class AccountImpl implements CommandLineRunner {
             Status status = new Status();
             status.setName("Đang hoạt động");
             statusService.save(status);
+            Status status1 = new Status();
+            status.setName("Ngừng hoạt động");
+            statusService.save(status);
             // Lấy quyền mặc định (ví dụ: ROLE_ADMIN)
             Role defaultRole = roleService.findByNameRole("ROLE_ADMIN")
                     .orElseThrow(() -> new RuntimeException("Error: Role 'ADMIN' not found"));

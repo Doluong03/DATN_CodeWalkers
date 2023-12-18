@@ -89,13 +89,11 @@
                                     Quản lý
                                 </span>
                             </td>
-                            <td ng-show="columns[5].selected">
-                                <span ng-if="item.status == true" style="margin-left: -9px;">
-                                    <i class="fa-solid fa-circle fa-2xs" style="color: #63ff38;margin-right: 2px;"></i>
-                                    Hoạt động
-                                </span>
-                                <span ng-if="item.status != true">
-                                    <i class="fa-solid fa-circle fa-2xs" style="color: #a0a0a0;"></i> Ngừng hoạt động
+                            <td ng-click="switchStatus(item.id)">
+                                <span ng-show="columns[5].selected" style="text-align: center;">
+                                    <i ng-if="item.status" class="fa-2xl fa fa-toggle-on"
+                                        style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
+                                    <i ng-if="!item.status" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
                                 </span>
                             </td>
                             <td>

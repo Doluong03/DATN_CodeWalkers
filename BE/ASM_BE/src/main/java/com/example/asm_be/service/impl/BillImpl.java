@@ -91,6 +91,7 @@ public class BillImpl implements BillService {
         // Users usersRes = new Users();
         // usersRes.setName("Khách lẻ");
         // userRepository.save(usersRes);
+        bill.setIdPhieu(0);
         bill.setUsers(user);
         bill.setStatus(0);
         return billRepository.save(bill);
@@ -120,37 +121,7 @@ public class BillImpl implements BillService {
                 Staff staff = staffRepository.findById(billRequest.getIdStaff()).get();
                 bill.get().setStaff(staff);
                 billRepository.save(bill.get());
-                if (billRequest.getStatus() == 1) {
-                    for (BillDetails x : bill.get().getListBillDetail()) {
-                        ProductDetail productDetail = productDetailRepository.findById(x.getProductDetail().getId()).get();
-                        productDetail.setQuantity(productDetail.getQuantity() - x.getQuantity());
-                        productDetailRepository.save(productDetail);
-                    }
-                }
-                if (billRequest.getStatus() == 6) {
-                    for (BillDetails x : bill.get().getListBillDetail()) {
-                        ProductDetail productDetail = productDetailRepository.findById(x.getProductDetail().getId()).get();
-                        productDetail.setQuantity(productDetail.getQuantity() - x.getQuantity());
-                        productDetailRepository.save(productDetail);
-                    }
-                }
-//                if (bill.get().getPaymentOptions() == Invariable.VNPAY) {
-//                    try {
-//                        int amount = bill.get().getTotalPay().intValue();
-//                        Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
-//                        String jsonString = gson.toJson(paymentVnPay(amount));
-//                        System.out.println(jsonString);
-//                        return jsonString;
-//                    } catch (UnsupportedEncodingException e) {
-//                        // Xử lý ngoại lệ một cách thích hợp ở đây
-//                        e.printStackTrace(); // Hoặc ghi log, hoặc trả về thông báo lỗi
-//                    }
-//                } else {
-//                    Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
-//                    String jsonString = gson.toJson("http://127.0.0.1:5501/index.html#/orderOverview");
-//                    System.out.println(jsonString);
-//                    return jsonString;
-//                }
+
             }
             Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
             return gson.toJson("success");
@@ -336,6 +307,16 @@ public class BillImpl implements BillService {
         String jsonString = gson.toJson(paymentUrl);
         System.out.println(jsonString);
         return jsonString;
+    }
+
+    @Override
+    public void updateBillIdVoucher(Integer idBill, int idPhieu) {
+        Optional<Bill> billOptional = billRepository.findById(idBill);
+        if(billOptional.isPresent()){
+              Bill bill = billOptional.get();
+              bill.setIdPhieu(idPhieu);
+              billRepository.save(bill);
+        }
     }
 
     @Override

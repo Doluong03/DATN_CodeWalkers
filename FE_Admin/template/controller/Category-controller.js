@@ -469,25 +469,39 @@ window.CategoryController = function ($scope, $http, $window, $timeout) {
   $scope.exportToExcel = function () {
     // Lấy bảng theo ID
     var table = document.getElementById("CategoryTable"); // Thay id table bảng của bạn vào đây
-
+  
+    // Hàm chuyển đổi giá trị từ class sang boolean
+    function convertStatusClassToBoolean(statusClass) {
+      return statusClass === "fa-2xl fa fa-toggle-on ng-scope";
+    }
+  
     // Lấy dữ liệu từ bảng
     var data = [];
     for (var i = 0; i < table.rows.length; i++) {
       var rowData = [];
-      for (var j = 0; j < table.rows[i].cells.length; j++) {
-        rowData.push(table.rows[i].cells[j].innerText);
+      for (var j = 1; j < table.rows[i].cells.length - 1; j++) {
+        // Kiểm tra nếu là cột "Trạng Thái"
+        if (i !==0 &&j === 2) {
+          var statusCell = table.rows[i].cells[j].querySelector("i");
+          var statusValue = statusCell ? convertStatusClassToBoolean(statusCell.getAttribute("class")) : false;
+          rowData.push(statusValue);
+        } else {
+          rowData.push(table.rows[i].cells[j].innerText);
+        }
       }
       data.push(rowData);
     }
-
+  
     // Tạo một workbook và một worksheet
     var ws = XLSX.utils.aoa_to_sheet(data);
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-
+  
     // Xuất file Excel
-    XLSX.writeFile(wb, "exported_data.xlsx");
+    XLSX.writeFile(wb, "exported_data_category.xlsx");
   };
+  
+  
 
   $scope.exportToSVG = function () {
     // Lấy bảng theo ID

@@ -52,7 +52,7 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
   var currentDate = new Date();
 
   // Get the ISO week number
-  $scope.currentWeek = getISOWeek(currentDate)-1;
+  $scope.currentWeek = getISOWeek(currentDate) - 1;
 
   // Function to calculate the ISO week number
   function getISOWeek(date) {
@@ -741,11 +741,11 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
     $scope.filterDate2('');
   };
 
-  // Đăng ký sự kiện $viewContentLoaded
-  // $scope.$on('$viewContentLoaded', $scope.onViewContentLoaded2);
+
+
   $scope.filterDate2 = function (selectedDisplay2) {
     $scope.loadingBarchar = true;
-    $scope.data = null; // Clear old data
+    $scope.data = null;
 
     $timeout(function () {
       if (selectedDisplay2 === 'day2' || selectedDisplay2 === 'month2' || selectedDisplay2 === 'year2') {
@@ -759,7 +759,6 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
 
           var sDay = dayList[0];
           var eDay = dayList[dayList.length - 1];
-
 
           var monthPicker1 = $scope.selectedMonths2['monthPicker3'];
           var monthPicker2 = $scope.selectedMonths2['monthPicker4'];
@@ -793,123 +792,32 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
           })
             .then(function (response) {
               console.log(response.data);
-
-              // Sử dụng hàm generateColors để tạo mảng màu
-              var colors = generateColors(response.data.length);
-
               var data = {
-                labels: response.data.map(item => item.tenLoai),
-                datasets: [{
-                  label: '# of Votes',
-                  data: response.data.map(item => item.soLuong),
-                  // backgroundColor: colors.backgroundColor,
-                  borderColor: colors.borderColor,
-                  borderWidth: 1,
-                  fill: false
-                }]
-              };
-
-              var options = {
-                scales: {
-                  yAxes: [{
-                    ticks: {
-                      beginAtZero: true
-                    }
-                  }]
-                },
-                legend: {
-                  display: false
-                },
-                elements: {
-                  point: {
-                    radius: 0
-                  }
-                },
-                hover: {
-                  animationDuration: 0 // Tắt hiệu ứng hover để tăng tính responsivity
-                },
-              };
-
-              // Vẽ biểu đồ
-              if ($("#barChart").length) {
-                var barChartCanvas = $("#barChart").get(0).getContext("2d");
-                var barChart = new Chart(barChartCanvas, {
-                  type: 'bar',
-                  data: data,
-                  options: options
-                });
-              }
-            })
-            .catch(function (error) {
-              // Xử lý lỗi khi có
-              console.log(error);
-            })
-            .finally(function () {
-              $scope.loadingBarchar = false;
-            });
-        } catch (error) {
-          console.error("Error:", error.message);
-          // Xử lý lỗi khi có
-          $scope.loadingBarchar = false;
-        }
-      }
-    }, 1000); // Set timeout to 1 second (1000 milliseconds)
-    //tồn kho
-    $timeout(function () {
-      if (selectedDisplay2 === 'stock') {
-        try {
-          $http.get('http://localhost:8080/CodeWalkers/ton').then(function (response) {
-            console.log(response.data);
-
-
-            // Sử dụng hàm generateColors để tạo mảng màu
-            var colors = generateColors(response.data.length);
-
-            var data = {
-              labels: response.data.map(item => item[0]),
-              datasets: [{
-                label: '# of Votes',
-                data: response.data.map(item => item[1]),
-                // backgroundColor: colors.backgroundColor,
-                borderColor: colors.borderColor,
-                borderWidth: 1,
-                fill: false
-              }]
-            };
-
-            var options = {
-              scales: {
-                yAxes: [{
-                  ticks: {
-                    beginAtZero: true
-                  }
-                }]
-              },
-              legend: {
-                display: false
-              },
-              elements: {
-                point: {
-                  radius: 0
-                }
-              },
-              hover: {
-                animationDuration: 0 // Tắt hiệu ứng hover để tăng tính responsivity
-              },
-            };
-
-            // Vẽ biểu đồ
-            if ($("#barChart").length) {
-              var barChartCanvas = $("#barChart").get(0).getContext("2d");
-              var barChart = new Chart(barChartCanvas, {
+                columns: [
+                  ['Số lượng'].concat(response.data.map(item => item.soLuong))
+                ],
                 type: 'bar',
+                color: function (color, d) {
+                  // Sử dụng hàm generateColors để lấy màu sắc tương ứng cho từng cột
+                  return generateColors(response.data.length).borderColor[d.index];
+                }
+              };
+
+              var axis = {
+                x: {
+                  type: 'category',
+                  categories: response.data.map(item => item.tenLoai)
+                }
+              };
+
+              var barChart = c3.generate({
+                bindto: '#barChart',
                 data: data,
-                options: options
+                axis: axis
               });
-            }
-          })
+
+            })
             .catch(function (error) {
-              // Xử lý lỗi khi có
               console.log(error);
             })
             .finally(function () {
@@ -917,85 +825,123 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
             });
         } catch (error) {
           console.error("Error:", error.message);
-          // Xử lý lỗi khi có
           $scope.loadingBarchar = false;
         }
       }
     }, 1000);
 
-    // dèault
+    // Remaining code for 'stock' and default cases...
+    $timeout(function () {
+      if (selectedDisplay2 === 'stock') {
+        try {
+          $http.get('http://localhost:8080/CodeWalkers/ton').then(function (response) {
+            console.log(response.data);
+            var data = {
+              columns: [
+                ['Số lượng'].concat(response.data.map(item => item[1]))
+              ],
+              type: 'bar',
+              color: function (color, d) {
+                // Sử dụng hàm generateColors để lấy màu sắc tương ứng cho từng cột
+                return generateColors(response.data.length).borderColor[d.index];
+              },
+              borderWidth: {
+                'Số lượng': 1
+              }
+            };
+
+            var axis = {
+              x: {
+                type: 'category',
+                categories: response.data.map(item => item[0]),
+                tick:{
+                  rotate: 45, // Góc quay của nhãn trục x
+                }
+              }
+            };
+
+            var barChart = c3.generate({
+              bindto: '#barChart',
+              data: data,
+              axis: axis
+            });
+
+          })
+            .catch(function (error) {
+              console.log(error);
+            })
+            .finally(function () {
+              $scope.loadingBarchar = false;
+            });
+        } catch (error) {
+          console.error("Error:", error.message);
+          $scope.loadingBarchar = false;
+        }
+      }
+    }, 1000);
+
+    // Default case
     $timeout(function () {
       if (selectedDisplay2 === '') {
         try {
           var year1 = new Date().getFullYear();
           var year2 = new Date().getFullYear();
 
-
           $http({
             method: 'POST',
             url: 'http://localhost:8080/CodeWalkers/doanh-so/nam',
-            params: { sYear: year1, eYear: year2 }, // Dữ liệu gửi đi trong request body
+            params: { sYear: year1, eYear: year2 },
             headers: {
               'Content-Type': 'application/json'
             }
           })
             .then(function (response) {
               console.log(response.data);
-
-              // Sử dụng hàm generateColors để tạo mảng màu
+              // Khởi tạo biểu đồ C3.js
               var colors = generateColors(response.data.length);
 
               var data = {
-                labels: response.data.map(item => item.tenLoai),
-                datasets: [{
-                  label: '# of Votes',
-                  data: response.data.map(item => item.soLuong),
-                  // backgroundColor: colors.backgroundColor,
-                  borderColor: colors.borderColor,
-                  borderWidth: 1,
-                  fill: false
-                }]
+                columns: [
+                  ['Số lượng'].concat(response.data.map(item => item.soLuong))
+                ],
+                type: 'bar',
+                color: function (color, d) {
+                  // Sử dụng hàm generateColors để lấy màu sắc tương ứng cho từng cột
+                  return generateColors(response.data.length).backgroundColor[d.index];
+                },
+                borderColor: function (color, d) {
+                  // Sử dụng hàm generateColors để lấy màu viền tương ứng cho từng cột
+                  return generateColors(response.data.length).borderColor[d.index];
+                }
               };
 
-              var options = {
-                scales: {
-                  yAxes: [{
-                    ticks: {
-                      beginAtZero: true
-                    }
-                  }]
-                },
-                legend: {
-                  display: false
-                },
-                elements: {
-                  point: {
-                    radius: 0
+              var axis = {
+                x: {
+                  type: 'category',
+                  categories: response.data.map(item => item.tenLoai),
+                  tick: {
+                    multiline: false,
+                    fit: true,
+                    size: 22
                   }
                 },
-                hover: {
-                  animationDuration: 0 // Tắt hiệu ứng hover để tăng tính responsivity
-                },
+                y: {
+                  label: {
+                    text: 'Số lượng', // Nhãn của trục y
+                    position: 'outer-middle' // Vị trí của nhãn trục y
+                  }
+                }
+              
               };
 
-              // Vẽ biểu đồ
-              if ($("#barChart").length) {
-                var barChartCanvas = $("#barChart").get(0).getContext("2d");
-                new Chart(barChartCanvas, {
-                  type: 'bar',
-                  data: data,
-                  options: options,
-                });
-                console.log( new Chart(barChartCanvas, {
-                  type: 'bar',
-                  data: data,
-                  options: options,
-                }),'a');
+              var barChart = c3.generate({
+                bindto: '#barChart',
+                data: data,
+                axis: axis
+              });
 
-              }
             })
             .catch(function (error) {
-              // Xử lý lỗi khi có
               console.log(error);
             })
             .finally(function () {
@@ -1003,36 +949,38 @@ window.ChartController = function ($scope, $http, $timeout, DateService, $q, Yea
             });
         } catch (error) {
           console.error("Error:", error.message);
-          // Xử lý lỗi khi có
           $scope.loadingBarchar = false;
         }
       }
     }, 1000);
+
   };
+
 
   // Function để tạo mảng màu động
   function generateColors(count) {
     var backgroundColors = [];
     var borderColors = [];
-
+  
     for (var i = 0; i < count; i++) {
       var dynamicColor = 'rgba(' +
         Math.floor(Math.random() * 256) + ',' +
         Math.floor(Math.random() * 256) + ',' +
         Math.floor(Math.random() * 256) + ',' +
-        '0.2)';
-
-      // backgroundColors.push(dynamicColor);
-
-      var borderColor = dynamicColor.replace('0.2', '1');
+        '0.6)';
+  
+      backgroundColors.push(dynamicColor);
+  
+      var borderColor = dynamicColor.replace('0.2', '1'); // Sửa thành '0.6' để phù hợp với alpha của backgroundColor
       borderColors.push(borderColor);
     }
-
+  
     return {
       backgroundColor: backgroundColors,
       borderColor: borderColors
     };
   }
+  
   $scope.filterDate2('');
 
   // thu vien jQuery không đụng vào

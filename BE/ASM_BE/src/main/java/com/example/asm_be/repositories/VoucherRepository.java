@@ -16,14 +16,16 @@ import java.util.Optional;
 
 @Repository
 public interface VoucherRepository extends JpaRepository<Vouchers, Integer> {
-//    @Query("""
+    //    @Query("""
 //            select vc from PhieuGiamGia vc
 //            join Users u on vc.users.id = u.id
 //            where u.userName = :username
 //             """)
 //    List<Vouchers> getVoucher(@Param("username") String username);
+    @Query("SELECT v FROM PhieuGiamGia v WHERE LOWER(v.code) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+    List<Vouchers> getVouchersByCodeContaining(@Param("searchTerm") String maVc);
 
-    Optional<Vouchers> getVouchersByCode(String maVc);
+    Optional<Vouchers> getVouchersByCode( String maVc);
 
     @Query("""
             select distinct new com.example.asm_be.dto.VoucherUserDTO(p.usageCount,p.customType,p.id)  from PhieuGiamGia vc
@@ -41,9 +43,6 @@ public interface VoucherRepository extends JpaRepository<Vouchers, Integer> {
                     where p.voucher.id = :id and kh.userName = :userName
              """)
     List<VoucherUserDTO2> getUserVouchersByVoucherAndUserName(@Param("id") int id, @Param("userName") String userName);
-
-
-
 
 
 }

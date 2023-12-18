@@ -50,19 +50,64 @@ public class ProductDetailImpl implements ProductDetailService {
     }
 
     @Override
-    public boolean save(ProductDetail product) {
+    public boolean save(ProductDetail productDetail) {
         try {
-            productDetailRepository.save(product);
+            // Check if a matching ProductDetail exists in the database
+            Optional<ProductDetail> existingProductDetail = productDetailRepository.findBySizeIdAndColorIdAndProductId(
+                    productDetail.getSize().getId(), productDetail.getColor().getId(), productDetail.getProduct().getId());
+
+            if (existingProductDetail.isPresent()) {
+                // Update the quantity if a matching ProductDetail exists
+                ProductDetail productDetail1 = existingProductDetail.get();
+                productDetail1.setQuantity(productDetail1.getQuantity() + productDetail.getQuantity());
+                productDetail1.setPrice(productDetail.getPrice());
+                productDetailRepository.save(productDetail1);
+            } else {
+                // Generate a new code for the ProductDetail
+                String generatedCode = generateProductDetailCode(productDetail.getProduct().getId());
+
+                // Set the new code to the ProductDetail
+                productDetail.setCode(generatedCode);
+
+                // Save the new ProductDetail to the database
+                productDetailRepository.save(productDetail);
+            }
+
             return true;
-        } catch (Exception var4) {
-            var4.getMessage();
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception instead of just printing the stack trace
             return false;
         }
     }
 
+    private String generateProductDetailCode(int productId) {
+        // Retrieve the product by ID
+        Product product = productRepository.findById(productId).orElse(null);
+
+        if (product != null) {
+            // Retrieve existing product details for the product
+            List<ProductDetail> productDetailList = productDetailRepository.findAll();
+
+            // Find the max ID among existing product details
+            Optional<ProductDetail> maxProduct = productDetailList.stream()
+                    .max(Comparator.comparingInt(ProductDetail::getId));
+            // Get the max ID or default to 0 if no existing product details
+            int maxId = maxProduct.map(ProductDetail::getId).orElse(0);
+
+            // Generate the new code based on the product's code and max ID
+            return product.getCode() + "_" + (maxId + 1);
+        }
+
+        return null; // Handle the case where the product is not found
+    }
+
+
+
     @Override
     public boolean update(ProductDetail product) {
         try {
+            ProductDetail product1 = productDetailRepository.findById(product.getId()).get();
+            product.setCode(product1.getCode());
             productDetailRepository.save(product);
             return true;
         } catch (Exception var4) {
@@ -106,7 +151,7 @@ public class ProductDetailImpl implements ProductDetailService {
         return matchingProducts;
     }
 
-    public List<ProductDetail> getSortedProducts(List<ProductDetail> detailsList ,String sortBy) {
+    public List<ProductDetail> getSortedProducts(List<ProductDetail> detailsList, String sortBy) {
         // Sắp xếp danh sách dựa vào tham số sortBy
         List<ProductDetail> sortedList = detailsList.stream()
                 .map(detail -> (ProductDetail) detail)  // Chỉ định kiểu của đối tượng
@@ -137,6 +182,7 @@ public class ProductDetailImpl implements ProductDetailService {
 
         }
     }
+
     public List<ProductDetail> filterProductsByAttributes(ProductFilterDTO filterDTO) {
         List<ProductDetail> detailsList = productDetailRepository.findAll();
         List<ProductDetail> filteredProducts = new ArrayList<>(detailsList);
@@ -209,15 +255,16 @@ public class ProductDetailImpl implements ProductDetailService {
     public List<ProductDetail> findByProductName(String productName) {
         return productDetailRepository.findByProductName(productName);
     }
+
     @Override
     @Transactional
     public void turnOn(int id) {
         Optional<ProductDetail> optionalVoucher = productDetailRepository.findById(id);
-        System.out.println(optionalVoucher.get().getStatus().getName()+"aaaaa");
+        System.out.println(optionalVoucher.get().getStatus().getName() + "aaaaa");
         if (optionalVoucher.isPresent()) {
             ProductDetail productDetail = optionalVoucher.get();
             Status status = statusRepository.findById(1).get();
-            System.out.println(productDetail.getStatus().getName()+"aaaaaaaaaaaaaa");
+            System.out.println(productDetail.getStatus().getName() + "aaaaaaaaaaaaaa");
             productDetail.setStatus(status);
             productDetailRepository.save(productDetail);
         }
@@ -228,13 +275,13 @@ public class ProductDetailImpl implements ProductDetailService {
     public void turnOff(int id) {
         try {
             Optional<ProductDetail> optionalVoucher = productDetailRepository.findById(id);
-            System.out.println(optionalVoucher.get().getStatus().getName()+"aaaaa");
+            System.out.println(optionalVoucher.get().getStatus().getName() + "aaaaa");
             ProductDetail productDetail = optionalVoucher.get();
             Status status = statusRepository.findById(2).get();
             productDetail.setStatus(status);
-            System.out.println(productDetail.getStatus().getName()+"aaaaaaaaaaaaaa");
+            System.out.println(productDetail.getStatus().getName() + "aaaaaaaaaaaaaa");
             productDetailRepository.save(productDetail);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
