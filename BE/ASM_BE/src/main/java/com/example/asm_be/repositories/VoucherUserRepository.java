@@ -30,6 +30,6 @@ public interface VoucherUserRepository extends JpaRepository<VoucherUsers, Integ
     @Query("select p from Phieu_KhachHang p where p.users.id = :id and p.id = :idVc")
     Optional<VoucherUsers> findByUsersId(@Param("id") Integer id,@Param("idVc") Integer idVc);
 
-    @Query("select p.customType from Phieu_KhachHang p where p.voucher.id = :idVc")
+    @Query("select distinct p.customType from Phieu_KhachHang p where p.voucher.id = :idVc")
     List<Integer> getListCusType(@Param("idVc") Integer idVc);
 }

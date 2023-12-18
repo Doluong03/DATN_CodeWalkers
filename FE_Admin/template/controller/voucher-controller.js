@@ -1,5 +1,5 @@
 
-window.VoucherController = function ($scope, $http, $window, $timeout, $filter, $location, VoucherService) {
+window.VoucherController = function ($scope, $http, $window, $timeout, $filter, $location, VoucherService,$routeParams) {
     $scope.listVoucher = [];
     $scope.pageNo = 1;
     $scope.sizePage = 5;
@@ -70,7 +70,6 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
         useForm: "Đơn Hàng",
         discountType: "Phần Trăm",
         status: false,
-        customType: 0,
         exchangeAllowed: false
     }
     $scope.voucherUser = {
@@ -134,6 +133,9 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
     ];
 
     $scope.selectedStatus = [$scope.statusOptions[0]];
+
+    $scope.idVch = $routeParams.idVch;
+
 
     $timeout(function () {
         var selectStatus = $('#selectStatus');
@@ -380,8 +382,8 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
             return;
         }
         event.preventDefault();
-        console.log($scope.formVoucher)
-
+        console.log($scope.formVoucher);
+    
         try {
             const confirmResult = await Swal.fire({
                 title: 'Xác nhận',
@@ -391,19 +393,24 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
                 confirmButtonText: 'Có',
                 cancelButtonText: 'Không'
             });
-
+    
             if (!confirmResult.isConfirmed) {
                 Swal.fire('Hủy bỏ', '', 'error');
                 return;
             }
-
+    
             if ($scope.selectedStatus.length === 0) {
                 $scope.formVoucher.customType = 0;
             } else {
-                for (const status of $scope.selectedStatus) {
-                    const selectedId = status.id;
+                   // Tiếp tục thực hiện các thao tác khác cho voucher duy nhất
+                   const response = await $http.post(apiVoucher + "/save", JSON.stringify($scope.formVoucher), headers);
+                   console.log("Success Response:", response.data);
 
-                    // Set customType based on the selectedStatus id
+                // Xử lý tất cả trạng thái được chọn
+                for (const selectedStatus of $scope.selectedStatus) {
+                    const selectedId = selectedStatus.id;
+    
+                    // Đặt customType dựa trên ID của trạng thái đã chọn
                     switch (selectedId) {
                         case '':
                             $scope.voucherUser.customType = 0;
@@ -424,22 +431,21 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
                             $scope.voucherUser.customType = 5;
                             break;
                         default:
-                            // Handle other cases if needed
+                            // Xử lý các trường hợp khác nếu cần
                             break;
                     }
-
-                    const response = await $http.post(apiVoucher + "/save", JSON.stringify($scope.formVoucher), headers);
-                    console.log("Success Response:", response.data);
-
+    
+                 
+    
                     const idVoucher = response.data.data.id;
-
+    
                     if (!$scope.formVoucher.exchangeAllowed) {
-                        // Add voucher users based on the selectedStatus id
+                        // Thêm người dùng voucher dựa trên ID của trạng thái đã chọn
                         const voucherUsersList = getVoucherUsersList(selectedId);
                         await $scope.addVoucherUsers(idVoucher, voucherUsersList);
                     }
-
-                    // Display success message after voucher users have been added
+    
+                    // Hiển thị thông báo thành công sau khi thêm người dùng voucher
                     Swal.fire({
                         icon: 'success',
                         title: 'Tạo Voucher thành công!',
@@ -450,22 +456,23 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
             }
         } catch (error) {
             console.error("Error:", error);
-
-            // If there was an error, delete the voucher if it was added
+    
+            // Nếu có lỗi, xóa voucher nếu đã thêm
             if (idVoucher) {
                 await $http.delete(apiVoucher + "/delete/" + idVoucher, headers);
             }
-
+    
             Swal.fire({
                 icon: "error",
                 title: "Lỗi!",
                 text: "Đã xảy ra lỗi khi thêm voucher. Vui lòng thử lại sau."
             });
         } finally {
-            // Ensure that the loading flag is set to false regardless of success or failure
+            // Đảm bảo rằng cờ loading được đặt thành giá trị false bất kể thành công hay thất bại
             $scope.loading = false;
         }
     };
+    
 
     // Function to get voucher users list based on the selected status id
     function getVoucherUsersList(selectedStatusId) {
@@ -487,7 +494,6 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
                 return [];
         }
     }
-
 
 
     // Function to add voucher users
@@ -549,8 +555,9 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
             $http.get(url, headers).then(function (res) {
                 console.log("use geate", res.data);
                 $scope.voucherUser.usageCount = res.data[0].useCount;
-                $scope.voucherUserUpdate.customType = res.data[0].customType;
+                // $scope.voucherUserUpdate.customType = res.data[0].customType;
                 $scope.voucherUserUpdate.id = res.data[0].id;
+                $scope.getCustomTypes(id);
 
             }).catch(function (err) {
                 console.log("loi lay user voucher:" + err);
@@ -610,54 +617,61 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
 
         if (confirmResult.isConfirmed) {
             try {
-                const selectedIds = $scope.selectedStatus.map(status => status.id);
 
-                for (const selectedId of selectedIds) {
-                    let customType = 0;
 
-                    if (selectedId !== '') {
-                        // Thiết lập customType dựa trên ID của selectedStatus
+                if ($scope.selectedStatus.length === 0) {
+                    $scope.voucherUserUpdate.customType = 0;
+                } else {
+                       // Tiếp tục thực hiện các thao tác khác cho voucher duy nhất
+                       const response = await $http.put(apiVoucher + "/update", JSON.stringify($scope.formUpdateVoucher), headers);
+                       console.log("Success Response:", response.data);
+       
+                       const voucherId = $scope.formUpdateVoucher.id;
+                       await $scope.deleteVoucherUsers(voucherId);
+    
+                    // Xử lý tất cả trạng thái được chọn
+                    for (const selectedStatus of $scope.selectedStatus) {
+                        const selectedId = selectedStatus.id;
+        
+                        // Đặt customType dựa trên ID của trạng thái đã chọn
                         switch (selectedId) {
+                            case '':
+                                $scope.voucherUser.customType = 0;
+                                break;
                             case '1':
-                                customType = 1;
+                                $scope.voucherUser.customType = 1;
                                 break;
                             case '2':
-                                customType = 2;
+                                $scope.voucherUser.customType = 2;
                                 break;
                             case '3':
-                                customType = 3;
+                                $scope.voucherUser.customType = 3;
                                 break;
                             case '4':
-                                customType = 4;
+                                $scope.voucherUser.customType = 4;
                                 break;
                             case '5':
-                                customType = 5;
+                                $scope.voucherUser.customType = 5;
                                 break;
                             default:
                                 // Xử lý các trường hợp khác nếu cần
                                 break;
                         }
+        
+            
+                            // Thêm người dùng voucher dựa trên ID của trạng thái đã chọn
+                            const voucherUsersList = getVoucherUsersList(selectedId);
+                            await $scope.addVoucherUsers(voucherId, voucherUsersList);
+                        
+        
+
                     }
-
-                    // Thiết lập customType cho voucherUserUpdate
-                    $scope.voucherUserUpdate.customType = customType;
-
-                    const response = await $http.put(apiVoucher + "/update", JSON.stringify($scope.formUpdateVoucher), headers);
-                    console.log("Success Response:", response.data);
-
-                    const voucherId = $scope.formUpdateVoucher.id;
-
-                    if (!$scope.formVoucher.exchangeAllowed) {
-
-                        // Xử lý thêm, cập nhật hoặc xóa voucher users dựa trên ID của selectedStatus
-                        await $scope.deleteVoucherUsers(voucherId);
-                        const userList = $scope.getListAllUserByStatus(selectedId);
-                        await $scope.addVoucherUsers(voucherId, userList);
-                        await $scope.UpdateVoucherUsers(voucherId);
-                    }
+                    await $scope.UpdateVoucherUsers(voucherId);
 
                 }
 
+
+    
                 Swal.fire({
                     icon: 'success',
                     title: 'Cập nhật thành công!',
@@ -721,41 +735,49 @@ window.VoucherController = function ($scope, $http, $window, $timeout, $filter, 
 
     $scope.getCustomTypes = function (idVoucher) {
         var url = 'http://localhost:8080/CodeWalkers/vouchers/getCustomType?idVch=' + idVoucher;
-
-        $http.get(url)
-            .then(function (response) {
-                // Xử lý dữ liệu trả về nếu cần
-                $scope.customTypes = response.data;
-                // Lặp qua danh sách customTypes
-                for (var i = 0; i < $scope.customTypes.length; i++) {
-                    var customType = $scope.customTypes[i];
-
-                    // Tìm kiếm giá trị tương ứng trong statusOptions dựa trên customType.id
-                    var matchingStatusOption = $scope.statusOptions.find(function (option) {
-                        return option.id === customType.id;
-                    });
-
-                    // Nếu tìm thấy, thêm vào selectedStatus
-                    if (matchingStatusOption) {
-                        $scope.selectedStatus.push(matchingStatusOption);
+    
+        $http.get(url).then(function (response) {
+            if (response.data && response.data.length > 0) {
+                const selectedStatusArray = response.data.map(customType => {
+                    switch (customType) {
+                        case 1:
+                            return $scope.statusOptions[1]; // Khách hàng cũ
+                        case 2:
+                            return $scope.statusOptions[2]; // Khách hàng mới
+                        case 3:
+                            return $scope.statusOptions[3]; // Hạng bạc
+                        case 4:
+                            return $scope.statusOptions[4]; // Hạng vàng
+                        case 5:
+                            return $scope.statusOptions[5]; // Hạng kim cương
+                        default:
+                            return null; // Xử lý các trường hợp khác nếu cần
                     }
-                }
 
-                // In ra kết quả trong console
-                console.log("Selected setSelctedtatus2: ", $scope.selectedStatus);
-
-            })
-            .catch(function (error) {
-                // Xử lý lỗi nếu có
-                console.error('Lỗi khi gọi API:', error);
-            });
+                });
+    
+                console.log("Selected Status Array: ", selectedStatusArray);
+    
+                // Gán mảng mới vào $scope.selectedStatus
+                $scope.selectedStatus = selectedStatusArray;
+                $timeout(function () {
+                    var selectStatus = $('#selectStatus');
+    
+                    // Cập nhật giá trị trong Select2
+                    selectStatus.val(selectedStatusArray.map(option => option.id));
+                    selectStatus.trigger('change');
+                });
+            }
+        })
+        .catch(function (error) {
+            console.error('Lỗi khi gọi API:', error);
+        });
     };
+    
+    
 
-    if ($scope.formUpdateVoucher.id) {
-        $scope.getCustomTypes($scope.formUpdateVoucher.id);
-
-    };
-
+    
+    
 
     //import exel
     $scope.import = function (files) {

@@ -115,6 +115,83 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
         );
     };
 
+
+    $scope.getAllByName = function(name) {
+        $http.get('/api/promotion/search-name/' + name)
+            .then(function(response) {
+                $scope.listPromotions = response.data;
+            })
+            .catch(function(error) {
+                console.error('Error fetching promotions by name', error);
+            });
+    };
+
+    $scope.getAllByStatus = function(status) {
+        $http.get('http://localhost:8080/CodeWalkers/api/promotion2/search-status/' + status)
+            .then(function(response) {
+                $scope.listPromotions = response.data;
+            })
+            .catch(function(error) {
+                console.error('Error fetching promotions by status', error);
+            });
+    };
+
+    $scope.getAllByType = function(type) {
+        $http.get('http://localhost:8080/CodeWalkers/api/promotion2/search-type/' + type)
+            .then(function(response) {
+                console.log(response.data,'ssss');
+                $scope.listPromotions = response.data;
+            })
+            .catch(function(error) {
+                console.error('Error fetching promotions by type', error);
+            });
+    };
+
+    $scope.getAllCondition = function(serachPromotionRequest) {
+        $http.get('http://localhost:8080/CodeWalkers/api/promotion2/searchAll', { params: serachPromotionRequest })
+            .then(function(response) {
+                $scope.listPromotions = response.data;
+            })
+            .catch(function(error) {
+                console.error('Error fetching promotions by conditions', error);
+            });
+    };
+
+    
+    $scope.searchByStatus = function() {
+      console.log($scope.searchStatus);
+      $scope.getAllByStatus($scope.searchStatus);
+    };
+    
+    $scope.searchByDiscountType = function() {
+         console.log($scope.searchDiscountType);
+        $scope.getAllByType($scope.searchDiscountType);
+    };
+    
+    $scope.searchButton = function() {
+        // Gọi tất cả các hàm tìm kiếm khi có sự thay đổi
+        $scope.getAllByName($scope.searchName);
+        $scope.getAllByStatus($scope.searchStatus);
+        $scope.getAllByType($scope.searchDiscountType);
+
+        console.log($scope.searchDate);
+    
+        // Tạo đối tượng để truyền vào hàm getAllCondition
+        var searchPromotionRequest = {
+            name: $scope.searchName,
+            type: $scope.searchDiscountType,
+            status: $scope.searchStatus,
+            date: $scope.searchDate
+        };
+    
+        $scope.getAllCondition(searchPromotionRequest);
+    };
+    
+
+
+
+
+
     // ham date 
     $scope.datePickerOpened = false;
     $scope.openDatePicker = function () {
@@ -238,6 +315,7 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
         $scope.isSearchCategoryPr = !$scope.isSearchProduct && $scope.selectedOption === "Danh mục";
         if ($scope.selectedOption == "Tất cả") {
             $scope.discountAllProducts();
+            
         }
     };
 
@@ -295,6 +373,8 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
 
         console.log($scope.listPrReduced);
     };
+
+
 
     // xóa các loại sản phẩm lăp lại
     function removeDuplicateCategories(items) {
@@ -437,6 +517,9 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
             console.log("Đã giảm giá cho tất cả sản phẩm trong danh sách.");
         }
     };
+
+   
+    
 
     $scope.removeProduct = function (selectedProduct) {
         // Xác định vị trí của sản phẩm trong danh sách
@@ -604,6 +687,11 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
                 text: "Ngày bắt đầu phải trước ngày kết thúc."
             });
             return;
+        }
+
+        var currentDate = new Date();
+        if($scope.formAddPro.startDate > currentDate){
+            $scope.formAddPro.status =0;
         }
 
 
@@ -971,8 +1059,6 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
                 return;
             }
     
-            // Tiếp tục xử lý nếu xác nhận
-    
             // Tạo bản sao của formUpdatePro
             var promotionData = angular.copy($scope.formUpdatePro);
     
@@ -1079,26 +1165,33 @@ window.promotionController = function ($scope, $http, $window, $timeout, $filter
     function checkAndClosePromotions() {
         // Thời gian hiện tại
         var currentDate = new Date();
-
+    
         // Iterate through the promotions
         promotions.forEach(function (promotion) {
             // Đối tượng Date từ timestamp
             var endDate = new Date(promotion.endDate);
-
+            var startDate = new Date(promotion.startDate);
+    
             // So sánh thời gian hiện tại với thời gian kết thúc của mỗi promotion
             if (currentDate >= endDate) {
                 $scope.turnOff(promotion.id);
             } else {
-                // Nếu chưa đến thời điểm kết thúc, bạn có thể thực hiện các hành động khác hoặc đợi
-                // console.log("Chương trình khuyến mại vẫn đang diễn ra...", promotion);
+                // Nếu chưa đến thời điểm kết thúc, và startDate bằng ngày hiện tại
+                if (currentDate >= startDate) {
+                    $scope.turnOn(promotion.id);
+                } else {
+                    // Nếu chưa đến thời điểm kết thúc, và startDate không bằng ngày hiện tại
+                    // console.log("Chương trình khuyến mại vẫn đang diễn ra...", promotion);
+                }
             }
         });
-
+    
         // Hẹn giờ kiểm tra lại sau mỗi giây
         setTimeout(function () {
             checkAndClosePromotions();
         }, 1000);
     }
+    
 
     // Example usage
     $scope.getAllPromotions(); // Call this function when you want to fetch and check promotions

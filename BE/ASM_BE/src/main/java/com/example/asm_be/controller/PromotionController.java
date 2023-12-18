@@ -3,6 +3,7 @@ package com.example.asm_be.controller;
 import com.example.asm_be.dto.ProductRespone;
 import com.example.asm_be.dto.PromotionDetailRespone;
 import com.example.asm_be.dto.PromotionRespone;
+import com.example.asm_be.dto.SerachPromotionRequest;
 import com.example.asm_be.entities.Product;
 import com.example.asm_be.entities.PromotionDetails;
 import com.example.asm_be.entities.Promotional;
@@ -158,4 +159,33 @@ public class PromotionController {
     public List<Promotional> getALL2() {
         return  promotionService.getAll();
     }
+
+
+
+    @GetMapping({"/api/promotion/search-name/{name}"})
+    public List<Promotional> getALLByName(@PathVariable("name") String name) {
+        return  promotionService.findAllByName(name);
+    }
+
+
+    @GetMapping({"/api/promotion2/search-status/{status}"})
+    public List<Promotional> getALLBystatus(@PathVariable("status") Integer status) {
+        return  promotionService.findAllByStatus(status);
+    }
+
+
+    @GetMapping({"/api/promotion2/search-type/{type}"})
+    public List<Promotional> getALLByType(@PathVariable("type") String type) {
+        return  promotionService.findAllByTypeDiscounts(type);
+    }
+
+
+    @GetMapping({"/api/promotion2/searchAll"})
+    public List<Promotional> getALLCondition(@RequestBody SerachPromotionRequest serachPromotionRequest) {
+        return  promotionService.findAllByConditions(serachPromotionRequest.getStatus()
+                ,serachPromotionRequest.getName()
+                ,serachPromotionRequest.getType()
+                ,serachPromotionRequest.getDate());
+    }
+
 }
