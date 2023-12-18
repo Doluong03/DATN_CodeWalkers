@@ -212,6 +212,7 @@ window.ColorController = function ($scope, $http, $window, $timeout) {
       $scope.checkAddress = true;
       return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
     }
+    $scope.checkAddress = false;
 
     Swal.fire({
       title: 'Xác nhận',
@@ -461,16 +462,28 @@ window.ColorController = function ($scope, $http, $window, $timeout) {
 
   $scope.exportToExcel = function () {
     // Lấy bảng theo ID
-    var table = document.getElementById("ColorTable"); // Thay id table bảng của bạn vào đây
+    var table = document.getElementById("ColorTable");
+
+    // Hàm chuyển đổi giá trị từ class sang boolean
+    function convertStatusClassToBoolean(statusClass) {
+        return statusClass === 'fa-2xl fa fa-toggle-on ng-scope';
+    }
 
     // Lấy dữ liệu từ bảng
     var data = [];
     for (var i = 0; i < table.rows.length; i++) {
-      var rowData = [];
-      for (var j = 0; j < table.rows[i].cells.length; j++) {
-        rowData.push(table.rows[i].cells[j].innerText);
-      }
-      data.push(rowData);
+        var rowData = [];
+        for (var j = 1; j < table.rows[i].cells.length-1; j++) {
+            // Kiểm tra nếu là cột "Trạng Thái"
+            if (j === table.rows[i].cells.length - 2 && i!== 0) {
+                var statusCell = table.rows[i].cells[j].querySelector('i');
+                var statusValue = statusCell ? convertStatusClassToBoolean(statusCell.getAttribute('class')) : false;
+                rowData.push(statusValue);
+            } else {
+                rowData.push(table.rows[i].cells[j].innerText);
+            }
+        }
+        data.push(rowData);
     }
 
     // Tạo một workbook và một worksheet
@@ -479,8 +492,9 @@ window.ColorController = function ($scope, $http, $window, $timeout) {
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
 
     // Xuất file Excel
-    XLSX.writeFile(wb, "exported_data.xlsx");
-  };
+    XLSX.writeFile(wb, "exported_data_color.xlsx");
+};
+
 
   $scope.exportToSVG = function () {
     // Lấy bảng theo ID

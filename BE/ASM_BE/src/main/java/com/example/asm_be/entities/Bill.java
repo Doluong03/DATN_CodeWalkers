@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 import java.util.List;
@@ -42,7 +43,8 @@ public class Bill {
     @Column(name = "phuong_thuc")
     private int paymentOptions;
 
-    @Column(name = "ngay_lap")
+    @CreationTimestamp
+    @Column(name = "ngay_lap", updatable = false)
     private Date createdAt;
 
     @ManyToOne
@@ -65,6 +67,10 @@ public class Bill {
     @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<BillDetails> listBillDetail;
+
+    @Column(name = "phieu_id")
+    private int idPhieu;
+
 
 
 }

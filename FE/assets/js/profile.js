@@ -8,6 +8,7 @@ app.controller(
         // Retrieve the data from local storage and parse it
         var dataUser = localStorage.getItem('userData');
         var dataJson = JSON.parse(dataUser);
+        console.log(dataJson, '5')
         //config headers
         var headers = {
             headers: {
@@ -38,7 +39,22 @@ app.controller(
             }
         }
 
-        var profileUser = JSON.parse(localStorage.getItem('userProfile'));
+        $scope.getDataByUserName = function (username) {
+            var url = `${host}/profile/${username}`;
+            $http.get(url).then(function (res) {
+                // Lưu giá trị vào localStorage
+                localStorage.setItem('profileUserData', JSON.stringify(res.data));
+
+                // Cập nhật giá trị trong $scope
+                $scope.profileUser = res.data;
+                console.log(profileUser, 'a')
+            }).catch(function (err) {
+                console.log("Lỗi khi tải voucher: " + err);
+            });
+        }
+        $scope.getDataByUserName(dataJson.username);
+
+        var profileUser = JSON.parse(localStorage.getItem('profileUserData'));
         $scope.info = {
             userName: "",
             fullName: "",
@@ -52,8 +68,9 @@ app.controller(
         };
         $scope.selectedImage = null;
         $scope.getProfile = function () {
+            $scope.getDataByUserName(dataJson.username);
             if (profileUser) {
-                console.log(profileUser, 'a')
+                console.log(profileUser);
                 $scope.info = {
                     userName: profileUser.userName,
                     fullName: profileUser.name,
@@ -65,7 +82,6 @@ app.controller(
                     rank: profileUser.rank.name,
                     points: profileUser.points
                 };
-                console.log($scope.info,);
             }
         }
         $scope.selectTab = function () {
@@ -78,6 +94,8 @@ app.controller(
         }
         $scope.selectTab();
         function handleTabClick(tabId) {
+            $scope.getProfile();
+
             // Deactivate all tabs
             var tabs = document.querySelectorAll('.nav-pills li');
             tabs.forEach(function (tab) {
@@ -117,7 +135,7 @@ app.controller(
             return "";
         }
 
- 
+
         $scope.getProfile();
 
 
@@ -443,7 +461,25 @@ app.controller(
                     console.log("Lỗi khi tải danh sách voucher: " + err);
                 });
         }
-
+        $scope.loadVoucherUser = function () {
+            var url = `${host}/user-voucher?userName=${dataJson.username}`;
+            $http.get(url).then(function (res) {
+                console.log(new Date(res.data[0].endDate), 'a', new Date())
+                $scope.listVouchers = res.data.filter(vch => {
+                    const dateParts = vch.endDate.split('.');
+                    const formattedEndDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+    
+                    return vch.usageCount > 0 && formattedEndDate > new Date();
+                });
+                $scope.filtedVch = $scope.listVouchers;
+    
+                console.log(" khi tải voucher: " + JSON.stringify(res.data));
+    
+            }).catch(function (err) {
+                console.log("Lỗi khi tải voucher: " + err);
+            });
+        }
+        $scope.loadVoucherUser();
         // Gọi hàm để tải danh sách voucher khi cần
         loadAllVouchers2();
         $scope.voucherUser = {
@@ -458,10 +494,10 @@ app.controller(
             $http.get(url).then(function (res) {
                 // Lưu giá trị vào localStorage
                 localStorage.setItem('profileUserData', JSON.stringify(res.data));
-    
+
                 // Cập nhật giá trị trong $scope
                 $scope.profileUser = res.data;
-    
+
             }).catch(function (err) {
                 console.log("Lỗi khi tải voucher: " + err);
             });
@@ -474,12 +510,12 @@ app.controller(
             var newPoitUser = 0;
             var quantity1 = quantity;
             var usageCount = $scope.voucherUser.usageCount;
-            console.log($scope.voucherUser.usageCount,'a',userPoint)
+            console.log($scope.voucherUser.usageCount, 'a', userPoint)
             if ($scope.voucherUser.usageCount <= 0 || ($scope.voucherUser.usageCount * exChangePoint) > userPoint) {
-                toastr.error( 'Vui lòng nhập số lượng muốn đổi hoặc xem lại số điểm bạn hiện có','Lỗi!');
+                toastr.error('Vui lòng nhập số lượng muốn đổi hoặc xem lại số điểm bạn hiện có', 'Lỗi!');
                 return;
             } else if ($scope.voucherUser.usageCount > quantity) {
-                toastr.error( 'Vui lòng nhập số lượng muốn đổi <= số lượng phiếu hiện có','Lỗi!');
+                toastr.error('Vui lòng nhập số lượng muốn đổi <= số lượng phiếu hiện có', 'Lỗi!');
                 return;
             }
 
@@ -520,14 +556,14 @@ app.controller(
                                     voucher: { id: id },
                                     status: true,
                                     customType: 0,
-                                    usageCount:usageCount
+                                    usageCount: usageCount
                                 };
 
                                 if (userPoint > exChangePoint) {
                                     // Update quantity first
-                                    console.log(usageCount,'a',quantity1)
+                                    console.log(usageCount, 'a', quantity1)
 
-                                    return $scope.updateQuantity(id, quantity1 -usageCount)
+                                    return $scope.updateQuantity(id, quantity1 - usageCount)
                                         .then(function () {
                                             // After updating quantity, save voucher user
                                             toastr.success('Thành công!', 'Tiêu đề thông báo');
@@ -560,7 +596,7 @@ app.controller(
         };
         $scope.checkExists = function (id, userName) {
             let url = 'http://localhost:8080/CodeWalkers/vouchers/ckeck-exsits?' + 'id=' + id + '&userName=' + userName;
-    
+
             return $http.get(url)
                 .then(function (res) {
                     console.log("Khi tải voucher: " + JSON.stringify(res.data));
@@ -576,59 +612,59 @@ app.controller(
             var url = 'http://localhost:8080/CodeWalkers/admin/voucher/save-voucherUser';
             $http.post(url, data).then(function (res) {
                 console.log("update thanh cong", res.data);
-    
+
             }).catch(function (err) {
                 console.log(err);
             });
         };
-        
-    $scope.updateUsageCount2 = function (idUser, usageCount, idUser_Vch) {
 
-        $http.patch(`http://localhost:8080/CodeWalkers/admin/user-voucher/update?UsageCount=${usageCount}&id=${idUser_Vch}&idUser=` + idUser)
-            .then(function (res) {
-                // Xử lý kết quả thành công
-            })
-            .catch(function (err) {
-                console.log("Lỗi Update số lần sử dụng", err);
-            });
+        $scope.updateUsageCount2 = function (idUser, usageCount, idUser_Vch) {
 
-    };
-    $scope.updatePoitn = function (point1) {
-        var data = {
-            userName: dataJson.username,
-            point: point1
+            $http.patch(`http://localhost:8080/CodeWalkers/admin/user-voucher/update?UsageCount=${usageCount}&id=${idUser_Vch}&idUser=` + idUser)
+                .then(function (res) {
+                    // Xử lý kết quả thành công
+                })
+                .catch(function (err) {
+                    console.log("Lỗi Update số lần sử dụng", err);
+                });
+
         };
-        console.log(data);
+        $scope.updatePoitn = function (point1) {
+            var data = {
+                userName: dataJson.username,
+                point: point1
+            };
+            console.log(data);
 
-        // Trả về promise từ $http.put
-        return $http.put('http://localhost:8080/CodeWalkers/admin/User/update/point-rank', JSON.stringify(data))
-            .then(function (response) {
-                // Khi hàm $http.put hoàn thành, bạn có thể xử lý kết quả tại đây
-                console.log('update thành công ne', response.data);
-                return response.data; // Trả về dữ liệu từ response để có thể xử lý tiếp theo nếu cần
-            })
-            .catch(function (error) {
-                // Xử lý lỗi nếu có
-                console.error('Create thất bại', error);
-                throw error; // Ném lỗi để có thể xử lý tiếp theo nếu cần
-            });
-    }
-    
-    $scope.updateQuantity = function (idVch, quantity) {
-        var url = 'http://localhost:8080/CodeWalkers/voucher/update/quantity-voucher/' + idVch + '/' + quantity;
+            // Trả về promise từ $http.put
+            return $http.put('http://localhost:8080/CodeWalkers/admin/User/update/point-rank', JSON.stringify(data))
+                .then(function (response) {
+                    // Khi hàm $http.put hoàn thành, bạn có thể xử lý kết quả tại đây
+                    console.log('update thành công ne', response.data);
+                    return response.data; // Trả về dữ liệu từ response để có thể xử lý tiếp theo nếu cần
+                })
+                .catch(function (error) {
+                    // Xử lý lỗi nếu có
+                    console.error('Create thất bại', error);
+                    throw error; // Ném lỗi để có thể xử lý tiếp theo nếu cần
+                });
+        }
 
-        return $http.put(url)
-            .then(function (response) {
-                console.log("Update Quantity Response:", response.data);
-                // Handle the response data as needed
-                return response.data;
-            })
-            .catch(function (error) {
-                console.error("Error updating quantity:", error);
-                // Handle the error appropriately
-                throw error; // Rethrow the error to propagate it
-            });
-    };
+        $scope.updateQuantity = function (idVch, quantity) {
+            var url = 'http://localhost:8080/CodeWalkers/voucher/update/quantity-voucher/' + idVch + '/' + quantity;
+
+            return $http.put(url)
+                .then(function (response) {
+                    console.log("Update Quantity Response:", response.data);
+                    // Handle the response data as needed
+                    return response.data;
+                })
+                .catch(function (error) {
+                    console.error("Error updating quantity:", error);
+                    // Handle the error appropriately
+                    throw error; // Rethrow the error to propagate it
+                });
+        };
 
     });
 app.directive('fileInput', ['$parse', function ($parse) {

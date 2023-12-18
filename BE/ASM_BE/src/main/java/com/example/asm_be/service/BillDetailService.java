@@ -14,7 +14,7 @@ public interface BillDetailService {
 
     public BillDetails getOne(int id);
 
-    public List<BillDetails> save(int idBill, int idProDt, int quantity);
+    public List<BillDetails> save(int idBill, int idProDt);
 
     public List<BillDetails> saveSl(int idBill, List<CartDetails> detailsList);
 

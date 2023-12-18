@@ -8,28 +8,28 @@
   <div class=" d-flex ms-2">
     <ul class=" mcd-menu  flex-column nav-pills ms-0" id="v-pills-tab" role="tablist" aria-orientation="vertical">
       <li id="account-tab" data-bs-toggle="pill" data-bs-target="#account" aria-controls="account" aria-selected="true"
-        class="active" ng-click="getProfile()">
-        <a>
+        class="active" ng-click="getProfile()" >
+        <a href="#portfolio/account">
           <i class="fa fa-home"></i>
           <strong>Tài khoản</strong>
         </a>
       </li>
       <li id="order-tab" data-bs-toggle="pill" data-bs-target="#order" aria-controls="order" aria-selected="false">
-        <a>
+        <a href="#portfolio/order">
           <i class="fa fa-edit"></i>
           <strong>Đơn mua</strong>
         </a>
       </li>
       <li id="address-tab" data-bs-toggle="pill" data-bs-target="#address" aria-controls="address"
         aria-selected="false">
-        <a>
+        <a href="#portfolio/address">
           <i class="fa fa-gift"></i>
           <strong>Địa chỉ</strong>
         </a>
       </li>
       <li id="voucher-tab" data-bs-toggle="pill" data-bs-target="#voucher" aria-controls="voucher"
         aria-selected="false">
-        <a>
+        <a href="#portfolio/voucher">
           <i class="fa fa-globe"></i>
           <strong>Kho voucher</strong>
         </a>
@@ -44,11 +44,11 @@
               <h4>Hồ sơ của tôi</h4>
               <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
             </div>
-            <div>
+            <!-- <div>
               Hạng : {{info.rank}} <img style="width: 44px;height: 44px;" ng-show="info.image!==1" src="../assets/images/rank_{{info.image}}.png"
                 alt="rank ct"> <br>
               Điểm hiện có : {{info.points}}
-            </div>
+            </div> -->
 
             <!-- <div class="col text-center ">
             <img src="/assets/img/user/{{info.image}} " class="rounded-4 mt-3" style="width: 120px; height: 100px;"
@@ -154,9 +154,9 @@
       <div id="voucher" class="tab-pane fade">
         <div class="bg-light border " style="width:1200px; padding: 0 20px 20px 20px;">
 
-          <div ng-repeat="item in listAllVouchers" id="vouchers">
+          <div ng-repeat="item in listVouchers" id="vouchers">
             <div class="voucher-card w-100">
-              <b class="voucher-quantity">x{{item.quantity}}</b>
+              <b class="voucher-quantity">x{{item.usageCount}}</b>
               <img src="/assets/img/Voucher/{{item.image}}" alt="Voucher Image" />
               <div class="details pb-1 row w-50">
                 <div class="col">
@@ -167,19 +167,8 @@
                   <!-- <p ng-show="item.discountType=='VND'">Giảm tối đa: {{item.maxReduction
                   |vndCurrency}}</p> -->
                   <p>Đơn tối thiểu: {{item.condition|vndCurrency }}</p>
+                  <p>HSD: {{item.endDate  }}</p>
                 </div>
-                <div class="col mt-4">
-                  <p>HSD: {{item.endDate |dateFormat }}</p>
-                  <p>Đổi điểm : {{item.exchangePoint}} </p>
-                </div>
-              </div>
-              <div class="form-floating mt-2  w-25">
-                <input type="number" class="form-control" id="inputCount" placeholder="name@example.com"
-                  ng-model="voucherUser.usageCount">
-                <label for="floatingInput" >Số lượng muốn đổi
-                </label>
-                <button ng-click="doidiem(item.id,item.exchangePoint,item.quantity)"
-                  class="btn btn-outline-secondary w-50 ms-1">Đổi điểm</button>
               </div>
             </div>
           </div>

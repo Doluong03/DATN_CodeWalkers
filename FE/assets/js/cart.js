@@ -240,7 +240,7 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
         }
 
         $http.get(url, config).then((res) => {
-            $scope.items = res.data;
+            $scope.items = res.data.reverse();
             var badge = document.querySelector(".badge");
             badge.textContent = $scope.items.length;
             $scope.check();
@@ -408,14 +408,11 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
         $scope.quantity = sl;
     }
     // Hàm xử lý khi người dùng tăng số lượng
-    $scope.increaseQuantity = function (product) {
-        product.quantity++;
-        if (product.quantity > product.productDetail.quantity) {
-            product.quantity = product.productDetail.quantity;
-        }
-        // Gọi hàm để cập nhật số lượng trong cơ sở dữ liệu
-        $scope.updateProductQuantity(product.id, product.quantity);
-    };
+        $scope.increaseQuantity = function (product) {
+                product.quantity++;
+            // Gọi hàm để cập nhật số lượng trong cơ sở dữ liệu
+            $scope.updateProductQuantity(product.id, product.quantity);
+        };
 
     // Hàm xử lý khi người dùng giảm số lượng
     $scope.decreaseQuantity = function (product) {
@@ -462,9 +459,6 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
             if (pr.quantity <= 0) {
                 pr.quantity = 1;
             }
-            if (pr.quantity > pr.productDetail.quantity) {
-                pr.quantity = pr.productDetail.quantity;
-            }
             $scope.updateProductQuantity(pr.id, pr.quantity);
         }
     };
@@ -473,9 +467,6 @@ app.controller("CartController", function ($scope, $http, $cookies, CookieServic
     $scope.onInputBlur = function (pr) {
         if (pr.quantity <= 0) {
             pr.quantity = 1;
-        }
-        if (pr.quantity > pr.productDetail.quantity) {
-            pr.quantity = pr.productDetail.quantity;
         }
         $scope.updateProductQuantity(pr.id, pr.quantity);
     };

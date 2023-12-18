@@ -36,7 +36,14 @@ window.AccountController = function ($scope, $http, $window, $timeout) {
       console.log('Không có dữ liệu đăng nhập trong localStorage.');
     }
   }
-
+  //switch status
+  $scope.switchStatus = function (id) {
+    let api = apiURL + "admin/Staff/switchStatus/" + id;
+    $http.post(api, null).then(function (res) {
+      console.log(res.data);
+      $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+    });
+  };
 
   $scope.formStaffUpdate = {
     id: "",
@@ -299,12 +306,24 @@ window.AccountController = function ($scope, $http, $window, $timeout) {
   $scope.exportToExcel = function () {
     var table = document.getElementById("AccountTable");
     var data = [];
-    
+
+    // Hàm chuyển đổi giá trị từ class sang boolean
+    function convertStatusClassToBoolean(statusClass) {
+        return statusClass === 'fa-2xl fa fa-toggle-on ng-scope';
+    }
+
     for (var i = 0; i < table.rows.length; i++) {
         var rowData = [];
         // Bỏ cột đầu tiên và cột cuối
         for (var j = 1; j < table.rows[i].cells.length - 1; j++) {
-            rowData.push(table.rows[i].cells[j].innerText);
+            // Kiểm tra nếu là cột "Trạng Thái"
+            if (j === table.rows[i].cells.length - 2 && i!==0) {
+                var statusCell = table.rows[i].cells[j].querySelector('i');
+                var statusValue = statusCell ? convertStatusClassToBoolean(statusCell.getAttribute('class')) : false;
+                rowData.push(statusValue);
+            } else {
+                rowData.push(table.rows[i].cells[j].innerText);
+            }
         }
         data.push(rowData);
     }
@@ -313,8 +332,9 @@ window.AccountController = function ($scope, $http, $window, $timeout) {
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Quản lý Tài khoản");
 
-    XLSX.writeFile(wb, "Quản lý Tài khoản.xlsx");
+    XLSX.writeFile(wb, "export_data_account.xlsx");
 };
+
 
   $scope.exportToSVG = function () {
     // Lấy bảng theo ID

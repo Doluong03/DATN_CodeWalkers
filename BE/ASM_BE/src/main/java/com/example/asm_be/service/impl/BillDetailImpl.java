@@ -32,34 +32,22 @@ public class BillDetailImpl implements BillDetailService {
     }
 
     @Override
-    public List<BillDetails> save(int idBill, int idProDt, int quantity) {
-        try {
-            ProductDetail productDetail = productDetailRepository.findById(idProDt).orElse(null);
-            Bill bill = billRepository.findById(idBill).orElse(null);
-            List<BillDetails> billDetailsList = billDetailsRepository.findByBillId(idBill);
-            if (bill != null && productDetail != null) {
-                if (billDetailsList.isEmpty()) {
-                    createNewBillDetails(bill, productDetail, 1);
-                } else {
-                    Optional<BillDetails> existingDetails = billDetailsRepository.findByBillIdAndAndProductDetailId(idBill, idProDt);
-
-                    if (existingDetails.isPresent()) {
-                        existingDetails.get().setQuantity(existingDetails.get().getQuantity() + quantity);
-                        existingDetails.get().setPrice(productDetail.getPrice());
-                        existingDetails.get().setCreatedAt(new Date());
-                        billDetailsRepository.save(existingDetails.get());
-//                        productDetail.setQuantity(productDetail.getQuantity() - quantity);
-//                        productDetailRepository.save(productDetail);
-                    } else {
-                        createNewBillDetails(bill, productDetail, 1);
-                    }
-                }
+    public List<BillDetails> save(int idBill, int idCart) {
+        List<CartDetails> listCartDt = cartDetailsRepository.findByCartId(idCart);
+        Bill bill = billRepository.findById(idBill).orElse(null);
+        List<BillDetails> billDetailsList = new ArrayList<>();
+        if (bill != null) {
+            for (CartDetails cartDetails : listCartDt) {
+                BillDetails billDetail = new BillDetails();
+                billDetail.setBill(bill);
+                billDetail.setProductDetail(cartDetails.getProductDetail());
+                billDetail.setQuantity(cartDetails.getQuantity());
+                billDetail.setPrice(cartDetails.getProductDetail().getPrice());
+                billDetailsRepository.save(billDetail);
+                billDetailsList.add(billDetail);
             }
-            return billDetailsList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
+        return billDetailsList;
     }
 
     private void createNewBillDetails(Bill bill, ProductDetail productDetail, int quantity) {
@@ -135,6 +123,12 @@ public class BillDetailImpl implements BillDetailService {
     @Transactional
     public void update(int idBill, List<BillDetailsRequest> requestList) {
         try {
+            List<BillDetails> billDetailsList = billDetailsRepository.findByBillId(idBill);
+            billDetailsList.forEach(billDetails -> {
+                billDetails.getProductDetail()
+                        .setQuantity(billDetails.getProductDetail().getQuantity()+billDetails.getQuantity());
+                productDetailRepository.save(billDetails.getProductDetail());
+            });
             billDetailsRepository.deleteAllByBillId(idBill);
             for (BillDetailsRequest x : requestList) {
                 BillDetails details = new BillDetails();
@@ -142,7 +136,8 @@ public class BillDetailImpl implements BillDetailService {
 
                 Optional<Bill> bill = billRepository.findById(idBill);
                 details.setBill(bill.get());
-
+                details.getProductDetail()
+                        .setQuantity(details.getProductDetail().getQuantity()-x.getQuantity());
                 details.setQuantity(x.getQuantity());
                 details.setPrice(x.getPrice());
                 billDetailsRepository.save(details);

@@ -18,6 +18,8 @@ public interface VoucherService {
 
     Optional<Vouchers> getVouchersByMa(String maVc);
 
+    public List<Vouchers> getVouchersByMaContain(String maVc);
+
     List<Vouchers> getAllVoucher();
 
     boolean addVoucher(Vouchers vouchers);
@@ -51,5 +53,7 @@ public interface VoucherService {
     boolean updateQuantity( Integer quantity, Integer id);
 
     List<Integer> getListCusType(Integer idVc);
+
+    Optional<Vouchers> getVoucherById (int idPhieu);
 
 }

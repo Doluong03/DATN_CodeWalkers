@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController()
 @RequestMapping({"/CodeWalkers"})
@@ -97,8 +96,8 @@ public class BillController {
     }
 
     @PostMapping("/api/addBillDt/{idBill}/{idPr}")
-    public ResponseEntity<?> addBillDt(@PathVariable("idPr") int idCart, @PathVariable("idBill") int idBill ,@RequestParam int quantity) {
-        return ResponseEntity.ok(billDetailService.save(idBill, idCart,quantity));
+    public ResponseEntity<?> addBillDt(@PathVariable("idPr") int idCart, @PathVariable("idBill") int idBill ) {
+        return ResponseEntity.ok(billDetailService.save(idBill, idCart));
     }
 
     @PostMapping("/api/addBillDtSl/{idBill}")
@@ -160,5 +159,16 @@ public class BillController {
             var.printStackTrace();
         }
         return null;
+    }
+
+
+    @PutMapping("/bill/updateIdPhieu/{billId}/{phieuId}")
+    public ResponseEntity<?> updateIdPhieu(@PathVariable("billId") Integer billId
+            , @PathVariable("phieuId") Integer phieuId ) {
+
+          billService.updateBillIdVoucher(billId,phieuId);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+
     }
 }

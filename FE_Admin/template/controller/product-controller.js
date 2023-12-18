@@ -200,6 +200,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
     }).then((result) => {
       if (result.isConfirmed) {
         // Hành động khi người dùng ấn "Có"
+        $scope.UpdateImageNull(productId);
         $http.delete(api, headers).then(function (response) {
           Swal.fire('Xóa thành công!', '', 'success');
           $scope.hienThi($scope.pageCurrent, $scope.sizePage);
@@ -236,6 +237,11 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       $scope.hienThi($scope.pageCurrent, $scope.sizePage);
     });
   };
+  $scope.closeModal = function (id) {
+    document.getElementById(id).style.display = ('none')
+    $('body').removeClass('modal-open'); // Loại bỏ class 'modal-open' khỏi body
+    $('.modal-backdrop').remove();
+  };
   // add one product
 
   $scope.addProduct = function (event) {
@@ -270,7 +276,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
               isDeleted = true;
             });
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-            $('#productAddModal').modal('hide');
+            $scope.closeModal('productAddModal');
             $scope.selectedImages = [];
             $scope.formproduct = {};
           })
@@ -292,8 +298,9 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
   $scope.showFormUpdate = false;
   $scope.activeItem = -1;
   $scope.formProductUpdate = {};
-
   $scope.changeImg = function () {
+    // Create a new array to store selected items
+    const selectedItems = [];
 
     $scope.selectedImages.forEach(element => {
       $scope.listCheckBox.push(element);
@@ -301,49 +308,49 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       $scope.listCheckBox = $scope.listCheckBox.map(img => {
         if (img.id === element.id) {
           img.selected = true;
+          // Add the selected item to the new array
+          selectedItems.push(img);
         }
         return img;
       });
     });
 
+    // Remove selected items from their current positions in the listCheckBox array
+    selectedItems.forEach(img => {
+      const index = $scope.listCheckBox.findIndex(item => item.id === img.id);
+      if (index !== -1) {
+        $scope.listCheckBox.splice(index, 1);
+      }
+    });
+
+    // Add selected items to the beginning of the listCheckBox array
+    $scope.listCheckBox = selectedItems.concat($scope.listCheckBox);
   };
+
 
 
   $scope.toggleFormUpdate = function (event, item) {
     event.preventDefault();
-
+    $scope.hienThiCheckBox();
     if ($scope.showForm) {
       // Nếu form thêm mới đang mở, đóng nó trước khi mở form cập nhật
       $scope.showForm = false;
     }
-
-    if (item && $scope.activeItem === item && $scope.showFormUpdate) {
-      // Trường hợp ấn lại dòng đã chọn và form đang hiển thị, đóng form và xóa dữ liệu
-      $scope.showFormUpdate = false;
-      $scope.activeItem = null;
-      $scope.formProductUpdate = {};
-    } else if (item) {
-      // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
-      $scope.showFormUpdate = true;
-      $scope.activeItem = item;
-      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-      // Nạp dữ liệu của dòng được chọn vào biểu mẫu
-      $scope.formProductUpdate = {
-        id: item.id,
-        name: item.name,
-        mainImg: item.mainImg,
-        description: item.description,
-        brands: { id: item.brands.id },
-        category: { id: item.category.id },
-        status: item.status
-      };
-      $scope.selectedImages = item.listImage;
-    } else {
-      // Trường hợp không có đối tượng được chọn, đóng form và xóa dữ liệu
-      $scope.showFormUpdate = false;
-      $scope.activeItem = null;
-      $scope.formProductsUpdate = {};
-    }
+    // Trường hợp ấn dòng khác hoặc form chưa hiển thị, hiển thị và nạp dữ liệu của dòng được chọn
+    $scope.showFormUpdate = true;
+    $scope.activeItem = item;
+    // Nạp dữ liệu của dòng được chọn vào biểu mẫu
+    // Nạp dữ liệu của dòng được chọn vào biểu mẫu
+    $scope.formProductUpdate = {
+      id: item.id,
+      name: item.name,
+      mainImg: item.mainImg,
+      description: item.description,
+      brands: { id: item.brands.id },
+      category: { id: item.category.id },
+      status: item.status
+    };
+    $scope.selectedImages = item.listImage;
   };
 
   // update
@@ -382,9 +389,8 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
               title: 'Cập nhật thành công!',
               text: 'Thông tin sản phẩm đã được cập nhật.'
             });
-            $('#productUpdateModal').modal('hide');
+            $scope.closeModal('productUpdateModal');
             $scope.formProductUpdate = {};
-
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
           })
           .catch(function (error) {
@@ -412,7 +418,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
       function (response) {
 
         // Xử lý phản hồi thành công
-        $scope.listCheckBox = response.data.imageList;
+        $scope.listCheckBox = response.data.imageList.sort((a, b) => b.id - a.id);
         console.log("here1", $scope.listCheckBox)
 
       },
@@ -511,6 +517,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
         console.error('No file selected');
       }
     }
+    $scope.hienThiCheckBox();
   });
 
 
@@ -521,15 +528,10 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
   $scope.importInProgress = false; // Flag để kiểm soát quá trình import
   $scope.errorShown = false; // Flag để kiểm soát việc hiển thị lỗi
 
-  $scope.import = function (files) {
-    // Check if an import is already in progress
-    if ($scope.importInProgress) {
-      return;
-    }
-
-    $scope.importInProgress = true; // Set the flag to true
-    $scope.importing = true; // Start animation
-    $scope.errorShown = false; // Reset the error flag
+  $scope.import = async function (files) {
+    $scope.importInProgress = true;
+    $scope.importing = true;
+    $scope.errorShown = false;
 
     var reader = new FileReader();
     reader.onloadend = async () => {
@@ -537,18 +539,15 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
         var workbook = new ExcelJS.Workbook();
         await workbook.xlsx.load(reader.result);
         const worksheet = workbook.getWorksheet("Sheet1");
-        worksheet.eachRow((row, index) => {
-          if (index <= 1) {
-            // Skip the header row
-            return;
-          }
+
+        for (let index = 2; index <= worksheet.rowCount; index++) {
+          let row = worksheet.getRow(index);
 
           let product = {
-            code: row.getCell(1).value,
-            name: row.getCell(2).value.trim(),
-            description: row.getCell(3).value,
-            brands: { id: findBrandId(row.getCell(4).value) || null },
-            category: { id: findCategoryId(row.getCell(5).value) || null },
+            name: row.getCell(1).value.trim(),
+            description: row.getCell(2).value,
+            brands: { id: findBrandId(row.getCell(3).value) || null },
+            category: { id: findCategoryId(row.getCell(4).value) || null },
             status: 1,
           };
 
@@ -558,69 +557,51 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
             product.status = 0;
           }
 
-          $http.post(apiAdmin + "Product" + "/insert", JSON.stringify(product), headers)
-            .then(handleSuccess)
-            .catch(handleError);
-        });
-
-        function findBrandId(brandName) {
-          return $scope.brands.find(sz => sz.name.toLowerCase().trim() === brandName.toLowerCase().trim())?.id;
-        }
-
-        function findCategoryId(categoryName) {
-          return $scope.category.find(sz => sz.name.toLowerCase().trim() === categoryName.toLowerCase().trim())?.id;
-        }
-
-        function handleSuccess(response) {
-          console.log(response);
-
-          if (!$scope.errorShown) {
-            Swal.fire({
-              icon: "success",
-              title: "Ok",
-              text: "Đã import thành công",
-            });
-          }
-
-          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-        }
-
-        function handleError(error) {
-          if (!$scope.errorShown) {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Đã xảy ra lỗi!",
-            });
-
-            console.log(error);
-            $scope.errorShown = true; // Set the error flag
+          try {
+            await $http.post(apiAdmin + "Product" + "/insert", JSON.stringify(product), headers);
+            handleSuccess();
+          } catch (error) {
+            handleError(error);
           }
         }
-
       } catch (error) {
-        if (!$scope.errorShown) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Đã xảy ra lỗi!",
-          });
-          console.error("Error reading file:", error);
-          $scope.errorShown = true; // Set the error flag
-        }
+        handleError(error);
       } finally {
-        $scope.importing = false; // End animation
-        $scope.importInProgress = false; // Reset the flag
-        $scope.$apply(); // Update scope
-        // Clear the file input after processing
+        $scope.importing = false;
+        $scope.importInProgress = false;
+        $scope.$apply();
         document.getElementById("input-file").value = "";
+        $scope.hienThi($scope.pageNo, $scope.sizePage);
       }
     };
 
     reader.readAsArrayBuffer(files[0]);
-    $scope.hienThi($scope.pageNo, $scope.sizePage);
-  };
 
+    function findBrandId(brandName) {
+      return $scope.brands.find(sz => sz.name.toLowerCase().trim() === brandName.toLowerCase().trim())?.id;
+    }
+
+    function findCategoryId(categoryName) {
+      return $scope.category.find(sz => sz.name.toLowerCase().trim() === categoryName.toLowerCase().trim())?.id;
+    }
+
+    function handleSuccess() {
+      console.log("Success");
+    }
+
+    function handleError(error) {
+      if (!$scope.errorShown) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Đã xảy ra lỗi!",
+        });
+
+        console.log(error);
+        $scope.errorShown = true;
+      }
+    }
+  };
 
   function formatDate(date) {
     // Giả sử ngày đang trong định dạng ISO 8601
@@ -670,12 +651,27 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
     // Lấy bảng theo ID
     var table = document.getElementById("ProductTable"); // Thay id table bảng của bạn vào đây
 
+    // Hàm chuyển đổi giá trị từ class sang boolean
+    function convertStatusClassToBoolean(statusClass) {
+      return statusClass === "fa-2xl fa fa-toggle-on ng-scope";
+    }
+
     // Lấy dữ liệu từ bảng
     var data = [];
     for (var i = 0; i < table.rows.length; i++) {
       var rowData = [];
-      for (var j = 0; j < table.rows[i].cells.length; j++) {
-        rowData.push(table.rows[i].cells[j].innerText);
+      for (var j = 1; j < table.rows[i].cells.length - 1; j++) {
+        if (j === 3) {
+          continue; // Loại bỏ cột "Trạng Thái"
+        }
+        // Kiểm tra nếu là cột "Trạng Thái" và không phải là hàng đầu tiên
+        if (j === table.rows[i].cells.length - 2 && i !== 0) {
+          var statusCell = table.rows[i].cells[j].querySelector("i");
+          var statusValue = statusCell ? convertStatusClassToBoolean(statusCell.getAttribute("class")) : false;
+          rowData.push(statusValue);
+        } else {
+          rowData.push(table.rows[i].cells[j].innerText);
+        }
       }
       data.push(rowData);
     }
@@ -686,8 +682,9 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
 
     // Xuất file Excel
-    XLSX.writeFile(wb, "exported_data.xlsx");
+    XLSX.writeFile(wb, "exported_data_product.xlsx");
   };
+
 
   $scope.exportToSVG = function () {
     // Lấy bảng theo ID
@@ -696,25 +693,38 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
     // Tạo một đối tượng SVG
     var svg = SVG().size(2000, 1500); // Kích thước SVG
 
-    // Lấy số cột của bảng
-    var numColumns = table.rows.length > 0 ? table.rows[0].cells.length : 0;
-
-    // Xác định chiều rộng của cột rộng nhất
-    var maxWidth = 0;
-    for (var i = 0; i < table.rows.length; i++) {
-      var cellWidth = table.rows[i].cells[0].offsetWidth;
-      maxWidth = Math.max(maxWidth, cellWidth);
-    }
-
     // Thêm các đối tượng SVG từ các cột của bảng
     for (var i = 0; i < table.rows.length; i++) {
-      for (var j = 0; j < table.rows[i].cells.length; j++) {
-        // Tính toán vị trí dựa trên chỉ số của cột
-        var xPosition = 10 + j * (maxWidth + 180); // 10 là khoảng cách giữa các cột
-        var yPosition = 30 * i + 40;
+      var xPosition = 10; // Reset vị trí x cho mỗi dòng
+      var yPosition = 30 * i + 40;
 
-        // Thêm văn bản từ cột của bảng vào SVG
-        svg.text(table.rows[i].cells[j].innerText).move(xPosition, yPosition);
+      for (var j = 0; j < table.rows[i].cells.length; j++) {
+        // Tạo đối tượng text trong SVG
+        var text = svg.text(table.rows[i].cells[j].innerText).move(xPosition, yPosition);
+
+        // Tính toán chiều rộng thực tế của văn bản
+        var textWidth = text.bbox().width;
+
+        // Nếu chiều rộng vượt quá giới hạn, chia thành các dòng sử dụng tspan
+        if (textWidth > 180) {
+          var words = table.rows[i].cells[j].innerText.split(' ');
+          var line = '';
+          var tspan = text.tspan(line).move(xPosition, yPosition); // Sử dụng move() để thiết lập vị trí của tspan
+
+          for (var k = 0; k < words.length; k++) {
+            var testLine = line + words[k] + ' ';
+            var testWidth = tspan.text(testLine).bbox().width;
+
+            if (testWidth > 180 && k > 0) {
+              tspan = text.tspan(words[k] + ' ').newLine().move(xPosition, yPosition + 20); // Tạo một dòng mới và thiết lập vị trí mới
+            } else {
+              line = testLine;
+            }
+          }
+        }
+
+        // Di chuyển vị trí x cho cột tiếp theo
+        xPosition += 180 + 10; // 180 là chiều rộng của mỗi cột, 10 là khoảng cách giữa các cột
       }
     }
 
@@ -731,6 +741,7 @@ window.ProductController = function ($scope, $http, $window, $timeout) {
     a.click();
     document.body.removeChild(a);
   };
+
 
   $scope.selectAllChanged = function () {
     console.log("Trạng thái của selectAllCheckbox:", $scope.selectAllCheckbox);

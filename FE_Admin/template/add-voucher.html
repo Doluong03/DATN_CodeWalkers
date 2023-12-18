@@ -40,7 +40,7 @@
             <div class="form-group col-lg-6 justify-items-end">
                 <label for="exampleInputMiddleName">Mã giảm giá *</label>
                 <input type="text" class="form-control" id="exampleInputDate" placeholder="Nhập mã giảm giá"
-                    ng-model="formVoucher.code">
+                    ng-model="formVoucher.code" ng-class="{'is-invalid': checkAdd &&  !formVoucher.code}">
             </div>
         </div>
         <div class="col-lg-12" style="margin-top: -15px;margin-left: -20px;margin-bottom: 12px;">
@@ -65,24 +65,30 @@
             <div class="form-group col-lg ">
                 <label for="exampleInputDate">Tên mã *</label>
                 <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Nhập tên mã" required
-                    ng-model="formVoucher.name">
+                    ng-model="formVoucher.name" ng-class="{'is-invalid':checkAdd && !formVoucher.name}">
             </div>
             <div class="form-group col-lg justify-items-end">
                 <label for="exampleInputMiddleName">Tiêu đề *</label>
                 <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Nhập tiêu đề" required
-                    ng-model="formVoucher.description">
+                    ng-model="formVoucher.description" ng-class="{'is-invalid':checkAdd && !formVoucher.description}">
             </div>
         </div>
         <div class="row ">
             <div class="form-group col-lg ">
                 <label for="exampleInputDate">Giá trị giảm</label>
                 <input type="number" class="form-control" id="exampleInputMiddleName" placeholder="Nhập giá trị giảm"
-                    ng-model="formVoucher.value" ng-change="updateMaxReduction()">
+                    ng-model="formVoucher.value" ng-change="updateMaxReduction()" ng-class="{'is-invalid':checkAdd &&( !formVoucher.value || formVoucher.value <=0)}">
+                    <small class="text-danger fst-italic" ng-show="checkAdd && (!formVoucher.value || formVoucher.value <= 0)">
+                        Giá trị phải lớn hơn 0
+                    </small>
             </div>
             <div class="form-group col-lg justify-items-end" ng-show="formVoucher.discountType === 'Phần Trăm'">
                 <label for="exampleInputMiddleName">Tiền giảm tối đa</label>
                 <input type="number" class="form-control" id="exampleInputMiddleName"
-                    ng-model="formVoucher.maxReduction">
+                    ng-model="formVoucher.maxReduction" ng-class="{'is-invalid':checkAdd && ( !formVoucher.maxReduction || formVoucher.maxReduction <=0)}">
+                    <small class="text-danger fst-italic " ng-show="checkAdd && (!formVoucher.maxReduction || formVoucher.maxReduction <= 0)">
+                        Giá trị phải lớn hơn 0
+                    </small>
             </div>
             <div class="form-group col-lg justify-items-end" ng-show="formVoucher.discountType === 'VND'">
                 <label for="exampleInputMiddleName">Tiền giảm tối đa</label>
@@ -95,7 +101,10 @@
                 <label for="exampleInputDate">Giá trị đơn hàng tối thiểu</label>
                 <input type="number" class="form-control" id="exampleInputMiddleName"
                     placeholder="Nhập giá trị đơn hàng tối thiểu"
-                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.fee}" ng-model="formVoucher.condition ">
+                    ng-class="{'is-invalid':checkAdd &&( !formVoucher.condition || formVoucher.condition <=0)}" ng-model="formVoucher.condition ">
+                    <small class="text-danger fst-italic " ng-show="checkAdd && (!formVoucher.condition || formVoucher.condition <= 0)">
+                        Giá trị phải lớn hơn 0
+                    </small>
             </div>
 
             <div class="form-group col-lg justify-items-end">
@@ -104,21 +113,20 @@
                     ng-model="formVoucher.image" onchange="angular.element(this).scope().setFile(this)">
             </div>
         </div>
-
         <div class="row ">
-        
-
-
             <div class="form-group col-lg justify-items-end">
                 <label for="exampleInputMiddleName">Ngày hết hạn</label>
                 <input type="date" class="form-control" id="exampleInputMiddleName" placeholder="Ngày hết hạn"
                     ng-model="formattedEndDate" ng-model-options="{ updateOn: 'blur' }"
-                    ng-change="updateEndDateDisplay()">
+                    ng-change="updateEndDateDisplay()" ng-class="{'is-invalid':checkAdd &&( !formattedEndDate)}">
+                    <small class="text-danger" ng-show="checkAdd && (!formattedEndDate || formattedEndDate <= currentDate)">
+                        Ngày hết hạn phải lớn hơn ngày hiện tại
+                    </small>
             </div>
 
             <div class="form-group col-lg-6">
                 <label class="label" for="selectStatus">Nhóm khách hàng áp dụng</label>
-                <select class="form-control select2" id="selectStatus" ng-model="selectedStatus"
+                <select class="form-select select2" id="selectStatus" ng-model="selectedStatus"
                     ng-options="option as option.value for option in statusOptions track by option.id"
                     ng-disabled="isSelectStatusDisabled()" multiple>
                 </select>
@@ -127,21 +135,30 @@
             <div class="form-group col-lg-6 ">
                 <label for="exampleInputMiddleName">Số Lượng 1 khách hàng đựơc sử dụng</label>
                 <input type="number" class="form-control" id="exampleInputMiddleName"
-                    placeholder="Nhập số lượng sử dụng" ng-model="voucherUser.usageCount">
+                    placeholder="Nhập số lượng sử dụng" ng-model="voucherUser.usageCount" ng-class="{'is-invalid':checkAdd &&( !voucherUser.usageCount || voucherUser.usageCount<=0)}">
+                    <small class="text-danger fst-italic " ng-show="checkAdd && (!voucherUser.usageCount || voucherUser.usageCount <= 0)">
+                        Giá trị phải lớn hơn 0
+                    </small>
             </div>
             <div class="form-group col-lg-6" >
                 <label for="exampleInputMiddleName">Điểm đổi :</label>
-                <input type="number" class="form-control" id="exampleInputMiddleName" ng-model="formVoucher.exchangePoint"  >
+                <input type="number" class="form-control" id="exampleInputMiddleName" ng-model="formVoucher.exchangePoint"  ng-class="{'is-invalid':checkAdd &&( !formVoucher.exchangePoint || formVoucher.exchangePoint<=0)}" >
+                <small class="text-danger fst-italic " ng-show="checkAdd && (!formVoucher.exchangePoint || formVoucher.exchangePoint <= 0)">
+                    Giá trị phải lớn hơn 0
+                </small>
             </div>
             <div class="form-group col-lg-6" >
                 <label for="exampleInputMiddleName">Số lượng :</label>
-                <input type="number" class="form-control" id="exampleInputMiddleName" ng-model="formVoucher.quantity"  >
+                <input type="number" class="form-control" id="exampleInputMiddleName" ng-model="formVoucher.quantity"  ng-class="{'is-invalid':checkAdd &&( !formVoucher.quantity || formVoucher.quantity<=0)}"  >
+                <small class="text-danger fst-italic " ng-show="checkAdd && (!formVoucher.quantity || formVoucher.quantity <= 0)">
+                    Giá trị phải lớn hơn 0
+                </small>
             </div>
           
         </div>
         
         <div class="form-group col-lg-6" >
-            <label for="exampleInputMiddleName">Trang thái :</label>
+            <label for="exampleInputMiddleName">Trạng thái :</label>
             <i ng-click="toggleStatus1('on')" class="fa-2xl fa fa-toggle-on" ng-show="formVoucher.status" style="color: rgb(120, 204, 107);"></i>
             <i ng-click="toggleStatus1('off')" class="fa-2xl fa fa-toggle-off" ng-show="!formVoucher.status" style="color: #afa9a9;"></i>
             <label for="exampleInputMiddleName">Chọn để đổi trạng thái</label>

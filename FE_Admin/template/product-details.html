@@ -1,5 +1,10 @@
 <link rel="stylesheet" href="css/css-layout/search.css">
 
+<div class="spinner-container" id="spinner-container" ng-show="loading">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
 <div class="col-lg-12 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
@@ -11,36 +16,46 @@
       </div>
 
       <div class="btn-group">
+
+
         <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="toggleForm()" data-toggle="modal"
           data-target="#formAddModal">
-          <i class="fa-solid fa-plus fa-lg" style="color: #ffffff"></i>
+          <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
+        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reloadItems()">
+          <i class="fa-solid fa-arrows-rotate "></i>
         </button>
-
-        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToPDF();">
-          PDF
-        </button>
-
         <input type="file" id="input-file" onchange="angular.element(this).scope().import(this.files)"
-          style="display: none" />
-        <button type="button" id="btn-icon" class="btn btn-secondary" onclick="triggerFileInput()">
-          Upload
+          style="display:none;">
+        <button type="button" id="btn-icon" class="btn btn-secondary " onclick="triggerFileInput()">
+          <i class="fa-sharp fa-solid fa-file-import"></i>
         </button>
 
-        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToExcel()">
-          Excel
-        </button>
-        <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="exportToSVG()">
-          SVG
-        </button>
+        <div class="btn-group">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuIconButton1"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-down-to-line"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+            <a class="dropdown-item" ng-click="exportTo('svg')">SVG</a>
+            <a class="dropdown-item" ng-click="exportTo('excel')">Excel</a>
+            <a class="dropdown-item" ng-click="exportTo('pdf');">PDF</a>
+          </div>
+        </div>
+
       </div>
+
       <!-- start table -->
       <div class="table-responsive pt-3">
         <table class=" expandable-table table-hover" style="width: 100%; " id="DTProductTable">
           <thead>
             <tr>
-              <th ng-click="sortData('id')">
-                #<span class="{{getSortClass('id')}}"></span>
+              <th>
+                <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox"
+                  type="checkbox"> #
               </th>
+              <!-- <th ng-click="sortData('id')">
+                #<span class="{{getSortClass('id')}}"></span>
+              </th> -->
               <!-- Cột cho Họ và Tên -->
               <th ng-click="sortData('product.name')">
                 Tên sản phẩm<span class="{{getSortClass('product.name')}}"></span>
@@ -62,9 +77,12 @@
           </thead>
           <tbody>
             <tr ng-repeat="item in displayedFinalMergedProducts | filter:searchText | orderBy:sortColumn:reverseSort "
-               style="padding: 100px;">
-              <td>{{$index+1}}</td>
-              <td style="width: 450px; text-align: start; font-size: 16px; margin-left: 50px; " ng-click="openModal(item.name)">{{item.name}}</td>
+              style="padding: 100px;">
+              <td><input type="checkbox" ng-model="item.isSelected"></td>
+
+              <!-- <td>{{$index+1}}</td> -->
+              <td style="width: 450px; text-align: start; font-size: 16px; margin-left: 50px; "
+                ng-click="openModal(item.name)">{{item.name}}</td>
               <td class="text-center" ng-click="openModal(item.name)">
                 <span class="sizes" style=" width: 200px; margin-left: 70px;">
                   <span ng-repeat="size in item.sizes  | orderBy:size.name" class="size">{{ removeSizeText(size)
@@ -82,12 +100,12 @@
                 </div>
               </td>
               <td ng-click="switchStatusPr(item)">
-                <span  style="text-align: center;">
-                    <i ng-if="item.status" class="fa-2xl fa fa-toggle-on"
-                        style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
-                    <i ng-if="!item.status" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
+                <span style="text-align: center;">
+                  <i ng-if="item.status" class="fa-2xl fa fa-toggle-on"
+                    style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
+                  <i ng-if="!item.status" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
                 </span>
-            </td>
+              </td>
               <td><i ng-click="openModal(item.name)" class="fas fa-solid fa-eye " style="cursor: pointer;"></i></td>
             </tr>
           </tbody>
@@ -96,6 +114,23 @@
         </table>
 
         <style>
+          .spinner-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            /* Transparent black background for the blur effect */
+            z-index: 1000;
+            /* Ensure the spinner is on top of other content */
+            /* display: none; */
+            /* Initially hidden */
+          }
+
           .color-details {
             display: flex;
             flex-wrap: wrap;
@@ -131,12 +166,17 @@
         <hr style="margin-top: -4px;">
         <!-- phân trang -->
         <nav id="phantrang" aria-label="Page navigation example" style="color: #000000">
-          <p style="margin-top: 20px">
-
+          <p style="margin-top: 25px" class="offset-8">
+            <label for="itemsPerPageSelect">Xem:</label>
+            <select id="itemsPerPageSelect" ng-model="itemsPerPage" ng-change="onItemsPerPageChange()">
+              <option ng-repeat="option in itemsPerPageOptions" ng-value="option">{{ option }}</option>
+            </select>
+            <label for="itemsPerPageSelect">mục</label>
           </p>
           <!-- Phân trang -->
           <ul class="pagination justify-content-end" style="margin-top: 20px">
             <!-- Các nút phân trang ở đây -->
+
             <li class="page-item" ng-class="{ 'disabled': currentPage === 1, 'hovered': hoveredPage === 'previous' }">
               <a class="page-link" ng-click="prevPage()" ng-class="{ 'disabled-link': currentPage === 1 }"
                 ng-mouseenter="onHover('previous')" ng-mouseleave="onLeave()"><span
@@ -157,6 +197,7 @@
         </nav>
 
 
+
         <!-- // Cập nhật thẻ select trong HTML -->
         <!-- <div id="sizePage">
           <label for="itemsPerPage">Xem:</label>
@@ -175,6 +216,7 @@
   </div>
 </div>
 <!-- end table -->
+
 <div class="modal fade " id="formAddModal" tabindex="-1" aria-labelledby="formAddModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content " style="width: 1000px; right: 40%;">
@@ -197,23 +239,35 @@
                       -- Chọn Tên Sản Phẩm --
                     </option> -->
                   <!-- </select> -->
-                  <select id="product" name="state" ng-model="formProductDetail.product.id" ng-options="product as product.name for product in products track by product.id" multiple >
-    
+                  <select id="product" name="state" ng-model="formProductDetail.product.id"
+                    ng-options="product as product.name for product in products track by product.id" multiple
+                    ng-class="{'is-invalid': checkProductDetail && selectSize.length === 0}">
                   </select>
+                  <div class="invalid-feedback fst-italic" ng-show="checkProductDetail && productData.length === 0">
+                    Vui lòng chọn sản phẩm.
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <label for="exampleInputDate">Số Lượng</label>
                   <input type="number" class="form-control" id="exampleInputDate" ng-model="formProductDetail.quantity"
-                    ng-class="{'is-invalid': checkProductDetail && !formProductDetail.quantity}" />
-
+                    ng-class="{'is-invalid': checkProductDetail && (formProductDetail.quantity <= 0 || !formProductDetail.quantity)}" />
+                  <div class="invalid-feedback fst-italic"
+                    ng-show="checkProductDetail && (formProductDetail.quantity <= 0 || !formProductDetail.quantity) ">
+                    Số lượng phải lớn hơn 0.
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <label for="exampleInputDate">Giá</label>
                   <input type="number" class="form-control" id="exampleInputDate" ng-model="formProductDetail.price"
-                    ng-class="{'is-invalid': checkProductDetail && !formProductDetail.price}" />
+                    ng-class="{'is-invalid': checkProductDetail && (formProductDetail.price <= 0 || !formProductDetail.price)}" />
+                  <div class="invalid-feedback fst-italic"
+                    ng-show="checkProductDetail && (formProductDetail.price <= 0 || !formProductDetail.price)">
+                    Giá phải lớn hơn 0.
+                  </div>
                 </div>
+
                 <div class="form-group">
                   <label for="exampleInputMaterial">Chất Liệu</label>
                   <select class="form-select" id="exampleInputMaterial" ng-model="formProductDetail.material.id"
@@ -224,11 +278,19 @@
                 </div>
                 <div class="form-group w-100">
                   <label for="exampleInputColor">Màu Sắc</label>
-                  <select class="form-select" id="exampleInputColor" ng-model="formProductDetail.color.id"
+                  <!-- <select class="form-select" id="exampleInputColor" ng-model="formProductDetail.color.id"
                     ng-options="color.id as color.name for color in colorProduct"
                     ng-class="{'is-invalid': checkProductDetail && !formProductDetail.color.id}">
                     <option value="" disabled selected>-- Chọn Màu Sắc --</option>
+                  </select> -->
+                  <select class="" id="exampleInputColor" ng-model="formProductDetail.size.id"
+                    ng-options="color as color.name for color in colorProduct track by color.id"
+                    ng-class="{'is-invalid': checkProductDetail && selectSize.length ==0}" multiple>
+                    <!-- <option value="0" selected>Tất cả</option> -->
                   </select>
+                  <div class="invalid-feedback fst-italic" ng-show="checkProductDetail && selectSize.length === 0">
+                    Vui lòng chọn màu sắc.
+                  </div>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputSize">Kích Thước</label>
@@ -238,6 +300,9 @@
                     ng-class="{'is-invalid': checkProductDetail && selectSize.length ==0}" multiple>
                     <!-- <option value="0" selected>Tất cả</option> -->
                   </select>
+                  <div class="invalid-feedback fst-italic" ng-show="checkProductDetail && selectSize.length === 0">
+                    Vui lòng chọn kích cỡ.
+                  </div>
                 </div>
                 <button id="btn-action-add" ng-click="addUser($event)">Submit</button>
                 <button id="btn-action-cancel" data-dismiss="modal">Cancel</button>
@@ -280,14 +345,22 @@
 
                 <div class="form-group">
                   <label for="exampleInputDate">Số Lượng</label>
-                  <input type="text" class="form-control" id="exampleInputDate" ng-model="formPdDetailUpdate.quantity"
-                    ng-class="{'is-invalid': checkPdDetailUpdate && !formPdDetailUpdate.quantity}" />
+                  <input type="number" class="form-control" id="exampleInputDate" ng-model="formPdDetailUpdate.quantity"
+                    ng-class="{'is-invalid': checkPdDetailUpdate && (formPdDetailUpdate.quantity <= 0 || !formPdDetailUpdate.quantity)}" />
+                  <div class="invalid-feedback fst-italic"
+                    ng-show="checkPdDetailUpdate && (formPdDetailUpdate.quantity <= 0 || !formPdDetailUpdate.quantity) ">
+                    Số lượng phải lớn hơn 0.
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <label for="exampleInputDate">Giá</label>
-                  <input type="text" class="form-control" id="exampleInputDate" ng-model="formPdDetailUpdate.price"
-                    ng-class="{'is-invalid': checkPdDetailUpdate && !formPdDetailUpdate.price}" />
+                  <input type="number" class="form-control" id="exampleInputDate" ng-model="formPdDetailUpdate.price"
+                    ng-class="{'is-invalid': checkPdDetailUpdate && (formPdDetailUpdate.price <= 0 || !formPdDetailUpdate.price)}" />
+                  <div class="invalid-feedback fst-italic"
+                    ng-show="checkPdDetailUpdate && (formPdDetailUpdate.price <= 0 || !formPdDetailUpdate.price)">
+                    Giá phải lớn hơn 0.
+                  </div>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputMaterial">Chất Liệu</label>
@@ -299,11 +372,11 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="exampleInputSize">Kích Thước</label>
+                  <label for="exampleInputSize">Kích cỡ</label>
                   <select class="form-select" id="exampleInputSize" ng-model="formPdDetailUpdate.size.id"
                     ng-options="size.id as size.name for size in sizeProduct"
                     ng-class="{'is-invalid': checkPdDetailUpdate && !formPdDetailUpdate.size.id}">
-                    <option value="" disabled selected>-- Chọn Kích Thước --</option>
+                    <option value="" disabled selected>-- Chọn Kích cỡ --</option>
                   </select>
                 </div>
 
@@ -370,7 +443,14 @@
     width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-25') ? '25%' : 'style',
     placeholder: "-- Chọn kích thước--",
     closeOnSelect: false,
-    
+
+  })
+  $('#exampleInputColor').select2({
+    theme: "bootstrap-5",
+    width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-25') ? '25%' : 'style',
+    placeholder: "-- Chọn màu sắc--",
+    closeOnSelect: false,
+
   })
 </script>
 <script>// In your Javascript (external .js resource or <script> tag)
@@ -382,7 +462,8 @@
       placeholder: "-- Chọn sản phẩm --",
       closeOnSelect: false,
     });
-  });</script>
+  });
+</script>
 <!-- Modal -->
 <div class="modal fade custom-modal" id="myModal" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -390,6 +471,9 @@
     <div class="modal-content">
       <div class="modal-header">
         {{ modalContent }}
+        <button ng-click="deleteAll()" id="delete-all" class="btn btn-danger mt-3"><i class="fa-duotone fa-trash"></i>
+          Xoá
+          Nhiều</button>
         <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
         <!-- <button type="button" class="btn btn-default" data-bs-dismiss="modal" aria-label="Close">a</button> -->
 
@@ -397,10 +481,14 @@
       <div class="modal-body">
         <div class="table-responsive pt-3">
           <div class="table-responsive pt-3">
-            <table class="table expandable-table table-hover" style="width: 100%" id="DTProductTable">
+            <table class="table expandable-table table-hover" style="width: 100%" id="DTProductTable2">
               <thead>
                 <tr>
-                  <th ng-click="sortData('id')">#<span class="{{getSortClass('id')}}"></span></th>
+                  <th>
+                    <input ng-model="selectAllCheckbox2" ng-change="selectAllChanged2()" class="select-checkbox"
+                      type="checkbox"> #
+                  </th>
+                  <th ng-click="sortData('id')">Mã<span class="{{getSortClass('id')}}"></span></th>
                   <!-- Cột cho Họ và Tên -->
                   <th ng-click="sortData('product.name')">Tên sản phẩm<span
                       class="{{getSortClass('product.name')}}"></span></th>
@@ -416,13 +504,15 @@
                   </th>
                   <!-- Cột cho Màu sắc -->
                   <th ng-click="sortData('color.name')">Màu sắc<span class="{{getSortClass('color.name')}}"></span></th>
-                  <th ng-click="sortData('color.name')">Trạng thái<span class="{{getSortClass('color.name')}}"></span></th>
+                  <th ng-click="sortData('color.name')">Trạng thái<span class="{{getSortClass('color.name')}}"></span>
+                  </th>
                   <th name="Action">Action</th>
                 </tr>
               </thead>
               <tbody class="table-hover">
                 <tr ng-repeat="item in data | filter:searchText | orderBy:sortColumn:reverseSort | orderBy:'-id'">
-                  <td>{{item.id}}</td>
+                  <td><input type="checkbox" ng-model="item.isSelected"></td>
+                  <td>{{item.code}}</td>
                   <td>{{item.product.name}}</td>
                   <td>{{item.quantity}}</td>
                   <td>{{item.price}}</td>
@@ -430,12 +520,12 @@
                   <td>{{item.size.name}}</td>
                   <td>{{item.color.name}}</td>
                   <td ng-click="toggleStatus(item)">
-                    <span  style="text-align: center;">
-                        <i ng-if="item.status.id==1" class="fa-2xl fa fa-toggle-on"
-                            style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
-                        <i ng-if="item.status.id==2" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
+                    <span style="text-align: center;">
+                      <i ng-if="item.status.id==1" class="fa-2xl fa fa-toggle-on"
+                        style="color: rgb(120, 204, 107); margin-left: -9px;"></i>
+                      <i ng-if="item.status.id==2" class="fa-2xl fa fa-toggle-off" style="color: #827575;"></i>
                     </span>
-                </td>
+                  </td>
 
                   <td>
                     <a href="#" ng-click="toggleFormUpdate($event,item)" style="text-decoration: none; color: #1545e1;"

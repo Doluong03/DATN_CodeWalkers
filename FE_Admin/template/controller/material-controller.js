@@ -191,13 +191,13 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
     $scope.formMaterial = {};
   };
 
-    //switch status
-    $scope.switchStatus = function (id) {
-      let api = apiAdmin + "Material" + "/switchStatus/" + id;
-      $http.post(api, null).then(function (res) {
-          console.log(res.data);
-          $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-      });
+  //switch status
+  $scope.switchStatus = function (id) {
+    let api = apiAdmin + "Material" + "/switchStatus/" + id;
+    $http.post(api, null).then(function (res) {
+      console.log(res.data);
+      $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+    });
   };
   // add one product
   $scope.closeModal = function (id) {
@@ -205,7 +205,8 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
     $('body').removeClass('modal-open'); // Loại bỏ class 'modal-open' khỏi body
     $('.modal-backdrop').remove();
   };
-  
+  $scope.checkAddress = false;
+
   $scope.addMaterial = function (event) {
 
     if (!$scope.formMaterial.name
@@ -215,6 +216,7 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
       $scope.checkAddress = true;
       return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
     }
+    $scope.checkAddress = false;
     event.preventDefault();
     console.log($scope.formMaterial);
     Swal.fire({
@@ -468,29 +470,41 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
     // Tải file PDF
     pdf.save(`${fileName}.pdf`);
   };
-
   $scope.exportToExcel = function () {
     // Lấy bảng theo ID
     var table = document.getElementById("MaterialTable"); // Thay id table bảng của bạn vào đây
-
+  
+    // Hàm chuyển đổi giá trị từ class sang boolean
+    function convertStatusClassToBoolean(statusClass) {
+      return statusClass === "fa-2xl fa fa-toggle-on ng-scope";
+    }
+  
     // Lấy dữ liệu từ bảng
     var data = [];
     for (var i = 0; i < table.rows.length; i++) {
       var rowData = [];
-      for (var j = 0; j < table.rows[i].cells.length; j++) {
-        rowData.push(table.rows[i].cells[j].innerText);
+      for (var j = 0; j < table.rows[i].cells.length - 1; j++) {
+        // Kiểm tra nếu là cột "Trạng Thái" và không phải là hàng đầu tiên
+        if (j === table.rows[i].cells.length - 2 && i !== 0) {
+          var statusCell = table.rows[i].cells[j].querySelector("i");
+          var statusValue = statusCell ? convertStatusClassToBoolean(statusCell.getAttribute("class")) : false;
+          rowData.push(statusValue);
+        } else {
+          rowData.push(table.rows[i].cells[j].innerText);
+        }
       }
       data.push(rowData);
     }
-
+  
     // Tạo một workbook và một worksheet
     var ws = XLSX.utils.aoa_to_sheet(data);
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-
+  
     // Xuất file Excel
-    XLSX.writeFile(wb, "exported_data.xlsx");
+    XLSX.writeFile(wb, "exported_data_material.xlsx");
   };
+  
 
   $scope.exportToSVG = function () {
     // Lấy bảng theo ID
@@ -561,8 +575,6 @@ window.MaterialController = function ($scope, $http, $window, $timeout) {
       cancelButtonText: "Không",
     }).then((result) => {
       if (result.isConfirmed) {
-
-
         selectedItems.forEach(element => {
           let materialId = element.id;
           let api = apiAdmin + "Material/delete/" + materialId;

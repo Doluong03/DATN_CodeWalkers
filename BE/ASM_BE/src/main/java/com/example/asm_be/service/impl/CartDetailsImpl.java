@@ -23,7 +23,7 @@ public class CartDetailsImpl implements CartDetailService {
     @Autowired
     private SizeRepository sizeRepository;
     @Autowired
-    private BillDetailsRepository billDetailsRepository;
+    private StatusRepository statusRepository;
 
     @Override
     public List<CartDetails> findByCart(int id) {
@@ -37,15 +37,14 @@ public class CartDetailsImpl implements CartDetailService {
 
 //    @Scheduled(fixedRate = 5000)
     public void checkQuantity() {
-        List<CartDetails> cartDetailsList = cartDetailsRepository.findAll();
-        for (CartDetails x : cartDetailsList) {
-            Optional<ProductDetail> productDetail = productDetailRepository.findById(x.getProductDetail().getId());
-            if (x.getQuantity() > productDetail.get().getQuantity()) {
-                x.setStatus(1);
-                cartDetailsRepository.save(x);
+        List<ProductDetail> proDtList = productDetailRepository.findAll();
+        for (ProductDetail x : proDtList) {
+            if (x.getQuantity() > 0) {
+                x.setStatus(statusRepository.findById(1).get());
+                productDetailRepository.save(x);
             } else {
-                x.setStatus(0);
-                cartDetailsRepository.save(x);
+                x.setStatus(statusRepository.findById(2).get());
+                productDetailRepository.save(x);
             }
         }
     }
@@ -53,6 +52,9 @@ public class CartDetailsImpl implements CartDetailService {
     @Override
     public CartDetails save(CartDetails cartDetail) {
         cartDetail.setQuantity(1);
+        ProductDetail productDetailOld = productDetailRepository.findById(cartDetail.getProductDetail().getId()).get();
+        productDetailOld.setQuantity(productDetailOld.getQuantity() -1);
+        productDetailRepository.save(productDetailOld);
         cartDetail.setStatus(1);
         return cartDetailsRepository.save(cartDetail);
     }
@@ -66,15 +68,27 @@ public class CartDetailsImpl implements CartDetailService {
             cartDetails.setProductDetail(productDetail);
             cartDetails.setCart(cart);
             cartDetails.setQuantity(quantity);
+            if(productDetail.getQuantity() - quantity<=0){
+                productDetail.setQuantity(0);
+                productDetail.setStatus(statusRepository.findById(2).get());
+            }
+            productDetail.setQuantity(productDetail.getQuantity() - quantity);
+            productDetailRepository.save(productDetail);
             return cartDetailsRepository.save(cartDetails);
         } else {
-            if (cartDetailExist.get().getQuantity() + quantity > productDetail.getQuantity()) {
-                return null;
+            if ((cartDetailExist.get().getQuantity() + quantity) >= (cartDetailExist.get().getQuantity()+ productDetail.getQuantity())) {
+                cartDetailExist.get().setQuantity(cartDetailExist.get().getQuantity() + productDetail.getQuantity());
+                productDetail.setQuantity(0);
+                productDetail.setStatus(statusRepository.findById(2).get());
+                productDetailRepository.save(productDetail);
             } else {
                 cartDetailExist.get().setQuantity(cartDetailExist.get().getQuantity() + quantity);
-                return cartDetailsRepository.save(cartDetailExist.get());
+                productDetail.setQuantity(productDetail.getQuantity() - quantity);
+                productDetailRepository.save(productDetail);
             }
+            return cartDetailsRepository.save(cartDetailExist.get());
         }
+
     }
 
     @Override
@@ -107,22 +121,43 @@ public class CartDetailsImpl implements CartDetailService {
                         CartDetails cartDetailsExist = cartDetailsRepository.findByProductDetailIdAndCartId(productDetail.getId(), Integer.valueOf(idCart));
                         if (cartDetailsExist != null) {
                             // Nếu đã tồn tại, tăng số lượng lên 1
-                            if (cartDetailsExist.getQuantity() + cartDetails.getQuantity() > productDetail.getQuantity()) {
-                                cartDetailsExist.setQuantity(productDetail.getQuantity());
+                            if (cartDetailsExist.getQuantity() + cartDetails.getQuantity() > (productDetail.getQuantity()+cartDetailsExist.getQuantity())) {
+                                cartDetailsExist.setQuantity(productDetail.getQuantity()+cartDetailsExist.getQuantity());
+                                productDetail.setQuantity(0);
+                                productDetail.setStatus(statusRepository.findById(2).get());
+                                productDetailRepository.save(productDetail);
                             } else {
                                 cartDetailsExist.setQuantity(cartDetailsExist.getQuantity() + cartDetails.getQuantity());
+                                productDetail.setQuantity(productDetail.getQuantity() - cartDetails.getQuantity());
+                                productDetailRepository.save(productDetail);
                             }
+                            ProductDetail productDetailOld = productDetailRepository.findById(cartDetails.getProductDetail().getId()).get();
+                            productDetailOld.setQuantity(productDetailOld.getQuantity() + cartDetails.getQuantity());
+                            productDetailOld.setStatus(statusRepository.findById(1).get());
+                            productDetailRepository.save(productDetailOld);
                             cartDetailsRepository.save(cartDetailsExist);
                             // Xóa cartDetails cũ
                             cartDetailsRepository.delete(cartDetails);
                         } else {
                             // Nếu không tồn tại, cập nhật sản phẩm với kích thước mới
+                            int quantity = cartDetails.getQuantity();
                             if (cartDetails.getQuantity() > productDetail.getQuantity()) {
                                 cartDetails.setQuantity(productDetail.getQuantity());
+                                productDetail.setQuantity(0);
+                                productDetail.setStatus(statusRepository.findById(2).get());
+                                productDetailRepository.save(productDetail);
+                            }else {
+                                productDetail.setQuantity(productDetail.getQuantity() - cartDetails.getQuantity());
+                                productDetailRepository.save(productDetail);
                             }
+                            ProductDetail productDetailOld = productDetailRepository.findById(cartDetails.getProductDetail().getId()).get();
+                            productDetailOld.setQuantity(productDetailOld.getQuantity() + quantity);
+                            productDetailOld.setStatus(statusRepository.findById(1).get());
+                            productDetailRepository.save(productDetailOld);
                             cartDetails.setProductDetail(productDetail);
                             cartDetailsRepository.save(cartDetails);
                         }
+
                     } else {
                         // Xử lý trường hợp không tìm thấy CartDetails theo ID
                         System.out.println("không tìm thấy CartDetails theo ID");
@@ -153,6 +188,10 @@ public class CartDetailsImpl implements CartDetailService {
     public Boolean delete(int productId, int cartId) {
         Optional<CartDetails> cartDetail = cartDetailsRepository.findBy2Id(cartId, productId);
         if (cartDetail.isPresent()) {
+            ProductDetail productDetailOld = productDetailRepository.findById(cartDetail.get().getProductDetail().getId()).get();
+            productDetailOld.setQuantity(productDetailOld.getQuantity() + cartDetail.get().getQuantity());
+            productDetailOld.setStatus(statusRepository.findById(1).get());
+            productDetailRepository.save(productDetailOld);
             cartDetailsRepository.delete(cartDetail.get());
             return true;
         } else {
@@ -176,9 +215,25 @@ public class CartDetailsImpl implements CartDetailService {
         Optional<CartDetails> cartDetails = cartDetailsRepository.findById(productId);
         if (cartDetails.isPresent()) {
             CartDetails cartDetails1 = cartDetails.get();
-            // Cập nhật size của sản phẩm
-            cartDetails1.setQuantity(newQuantity);
-            cartDetailsRepository.save(cartDetails1); // Lưu lại sản phẩm cập nhật
+            ProductDetail productDetailOld = productDetailRepository.findById(cartDetails.get().getProductDetail().getId()).get();
+                int max = (productDetailOld.getQuantity() + cartDetails.get().getQuantity())-newQuantity ;
+            if(max <=0){
+                cartDetails1.setQuantity((productDetailOld.getQuantity() + cartDetails.get().getQuantity()));
+                productDetailOld.setQuantity(0);
+                productDetailOld.setStatus(statusRepository.findById(2).get());
+                productDetailRepository.save(productDetailOld);
+                cartDetailsRepository.save(cartDetails1); // Lưu lại sản phẩm cập nhật
+                System.out.println("aaaaaaaaaaa");
+            }else{
+                System.out.println("bbbbbbbbbbbbbb");
+
+                cartDetails1.setQuantity(newQuantity);
+                productDetailOld.setQuantity(max);
+                productDetailOld.setStatus(statusRepository.findById(1).get());
+                productDetailRepository.save(productDetailOld);
+                cartDetailsRepository.save(cartDetails1); // Lưu lại sản phẩm cập nhật
+
+            }
         } else {
             throw new RuntimeException("Không tìm thấy sản phẩm với ID: " + productId);
         }

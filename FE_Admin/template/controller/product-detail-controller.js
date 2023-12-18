@@ -105,7 +105,7 @@ window.productDetailController = function ($scope, $http, $window, $timeout) {
               if (!mergedProducts[product.product.name]) {
                 // If the product doesn't exist, add a new entry
                 mergedProducts[product.product.name] = {
-                  id:product.product.id,
+                  id: product.product.id,
                   name: product.product.name,
                   sizes: [product.size.name],  // Use an array to store unique sizes
                   colors: [englishColorName],   // Use an array to store unique colors
@@ -136,7 +136,10 @@ window.productDetailController = function ($scope, $http, $window, $timeout) {
       }
     );
   };
-
+  $scope.reloadItems = function () {
+    $scope.itemsPerPage = 5;
+    $scope.setPage(1);
+  };
   // phan trang 
   // Assuming you have $scope.currentPage and $scope.itemsPerPage in your controller
   $scope.pageRange = function () {
@@ -169,9 +172,16 @@ window.productDetailController = function ($scope, $http, $window, $timeout) {
     // Slice the array to get the current page's items
     $scope.displayedFinalMergedProducts = $scope.finalMergedProducts.slice(begin, end);
   };
+  $scope.itemsPerPageOptions = [5, 10, 20, 100];  // You can customize the available options
+
+  // Function to handle changes in itemsPerPage
+  $scope.onItemsPerPageChange = function () {
+    $scope.currentPage = 1;
+    $scope.paginateFinalMergedProducts();
+  };
 
   // Watch for changes in currentPage or finalMergedProducts and update the displayed items
-  $scope.$watchGroup(['currentPage', 'finalMergedProducts'], function () {
+  $scope.$watchGroup(['currentPage', 'itemsPerPage', 'finalMergedProducts'], function () {
     $scope.paginateFinalMergedProducts();
   });
 
@@ -238,6 +248,8 @@ window.productDetailController = function ($scope, $http, $window, $timeout) {
           Swal.fire('Xóa thành công!', '', 'success');
           $scope.Reload($scope.modalContent)
           $scope.updateFinalMergedProducts()
+          $scope.setPage(1);
+
           console.log(response);
         })
           .catch(function (error) {
@@ -251,7 +263,7 @@ window.productDetailController = function ($scope, $http, $window, $timeout) {
 
   };
   $scope.switchStatusPr = function (item) {
-    let api = apiProductDetails +"/switch-all-by-pr/" + item.id;
+    let api = apiProductDetails + "/switch-all-by-pr/" + item.id;
     $http.post(api, null).then(function (res) {
       console.log(res.data);
       $scope.hienThi($scope.pageCurrent, $scope.sizePage);
@@ -259,35 +271,35 @@ window.productDetailController = function ($scope, $http, $window, $timeout) {
   };
 
   $scope.toggleStatus = function (item) {
-    if (item.status.id==1) { 
-        $scope.turnOff(item);
+    if (item.status.id == 1) {
+      $scope.turnOff(item);
     } else {
-        $scope.turnOn(item);
+      $scope.turnOn(item);
     }
     $scope.Reload(item.product.name);
 
     // Gọi hàm hiển thị sau khi cập nhật trạng thái
-    console.log(item.status.id,"")
+    console.log(item.status.id, "")
   };
 
-$scope.turnOn = function (item) {
-    let api = apiProductDetails +"/turn-on/" + item.id;
+  $scope.turnOn = function (item) {
+    let api = apiProductDetails + "/turn-on/" + item.id;
     $http.post(api, null).then(function (res) {
-        console.log(res.data);
-        $scope.Reload(item.product.name);
+      console.log(res.data);
+      $scope.Reload(item.product.name);
     });
 
-};
+  };
 
-$scope.turnOff = function (item) {
-    let api = apiProductDetails +"/turn-off/" + item.id;
+  $scope.turnOff = function (item) {
+    let api = apiProductDetails + "/turn-off/" + item.id;
     $http.post(api, null).then(function (res) {
-        console.log(res.data);
-        $scope.Reload(item.product.name);
+      console.log(res.data);
+      $scope.Reload(item.product.name);
 
     });
-};
-  
+  };
+
   // show form add
   $scope.showForm = false; // Mặc định ẩn form
   $scope.toggleForm = function () {
@@ -306,25 +318,78 @@ $scope.turnOff = function (item) {
     $scope.formProductDetail = {};
   };
   // add one product
+  $scope.reLoadForm = function () {
+
+    $scope.paginateFinalMergedProducts();
+  };
+  $scope.selectAllChanged2 = function () {
+    console.log("Trạng thái của selectAllCheckbox:", $scope.selectAllCheckbox2);
+    angular.forEach($scope.data, function (item) {
+      item.isSelected = $scope.selectAllCheckbox2;
+    });
+  };
+  $scope.isDeleted = false;
+
+  $scope.deleteAll = function () {
+    var selectedItems = $scope.data.filter(function (item) {
+      return item.isSelected;
+    });
+
+    if (selectedItems.length === 0) {
+      alert("Vui lòng chọn các kích thước bạn muốn xóa ?");
+      return false;
+    }
+    var isDeleted = false;
+    Swal.fire({
+      title: "Xác nhận",
+      text: "Bạn có chắc chắn muốn thực hiện hành động này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Có",
+      cancelButtonText: "Không",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        selectedItems.forEach(element => {
+          let productDt = element.id;
+          let api = apiProductDetails + "/delete/" + productDt;
+          $http.delete(api).then(function (response) {
+            isDeleted = true;
+            console.log(response);
+            $scope.Reload($scope.modalContent);
+            $scope.reLoadForm();
+          })
+
+            .catch(function (error) {
+              console.log(error);
+            });
+        });
+        $scope.hienThi($scope.pageNo, $scope.sizePage);
+        Swal.fire("Xóa thành công!", "", "success");
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Hành động khi người dùng ấn "Không"
+        Swal.fire("Hủy bỏ", "", "error");
+      }
+    });
+    // Thực hiện xử lý xóa tất cả ở đây với mảng selectedItems
+  };
+
+  $scope.loading=false;
 
   $scope.addUser = function (event) {
-    if (!$scope.formProductDetail.quantity ||
+
+    if (
+      !$scope.formProductDetail.quantity ||
       !$scope.formProductDetail.price ||
       !$scope.formProductDetail.material.id ||
-      !$scope.formProductDetail.color.id ||
-      $scope.selectSize.length == 0
+      $scope.selectSize.length === 0 ||
+      $scope.productData.length === 0
     ) {
-      console.log($scope.selectSize, '1')
-      // Hiển thị thông báo lỗi
       toastr.error('Vui lòng nhập đủ thông tin!', 'Thông báo');
-      // Assuming you have a variable named checkProductDetail to handle the error message
       $scope.checkProductDetail = true;
-      return; // Dừng việc thực hiện lưu nếu thông tin không hợp lệ
+      return;
     }
 
     event.preventDefault();
-
-    console.log($scope.formProductDetail);
 
     Swal.fire({
       title: 'Xác nhận',
@@ -335,48 +400,72 @@ $scope.turnOff = function (item) {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log($scope.selectSize)
-        $scope.selectSize.forEach(function (size) {
-          console.log(Number(size.id), 'a')
-          var checkExist = $scope.listProductDetail.find(prDt => prDt.product.id === Number($scope.productData[0].id) && prDt.color.id === $scope.formProductDetail.color.id && prDt.size.id === Number(size.id))
-          if (checkExist) {
-            // toastr.error('Kích thước '+size.text+ ' đã tồn tại!' , 'Vui lòng chọn kích thước khác');
-            return;
-          }
-          $scope.formProductDetail.size = {};
-          $scope.formProductDetail.size.id = "";
-          $scope.formProductDetail.product = {};
-          $scope.formProductDetail.product.id = "";
-          $scope.formProductDetail.size.id = Number(size.id);
-          $scope.formProductDetail.product.id = Number($scope.productData[0].id);
-          console.log($scope.formProductDetail.product.id, 'ba')
-          $http.post(apiProductDetails + "/insert", JSON.stringify($scope.formProductDetail))
-            .then(function (response) {
-              console.log("Success Response:", response.data); // Assuming the data property contains the relevant information
-              Swal.fire({
-                icon: 'success',
-                title: 'Thêm thành công!',
-                text: 'Thông tin người dùng đã được thêm.'
-              });
-              $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-              $scope.formProductDetail = {};
-              $scope.closeModal('formAddModal');
-            })
-            .catch(function (error) {
-              console.error("Error:", error);
-              Swal.fire({
-                icon: "error",
-                title: "Lỗi!",
-                text: "Đã xảy ra lỗi khi thêm người dùng. Vui lòng thử lại sau."
-              });
-            });
-        })
+        $scope.loading=true;
+        $scope.closeModal('formAddModal');
+        $scope.selectSize.reduce(function (sizePromise, size) {
+          return sizePromise.then(function () {
+            // Iterate through each color
+            return $scope.productColors.reduce(function (colorPromise, color) {
+              return colorPromise.then(function () {
+                // Set color properties in formProductDetail
+                $scope.formProductDetail.color = {};
+                $scope.formProductDetail.color.id = Number(color.id);
+                $scope.formProductDetail.size = {};
+                $scope.formProductDetail.size.id = Number(size.id);
+                $scope.formProductDetail.product = {};
+                $scope.formProductDetail.product.id = Number($scope.productData[0].id);
+                // Other properties (size, product) remain the same as before
 
+                // Add product detail for the current size and color
+                return addProductDetail(size);
+              });
+            }, Promise.resolve());
+          });
+        }, Promise.resolve())
+          .then(function () {
+            // All iterations completed successfully
+            $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+            $scope.paginateFinalMergedProducts();
+            $scope.setPage(1);
+            toastr.success('Thêm thành công', 'Thông báo');
+            $scope.loading=false;
+
+            console.log("All product details added successfully");
+          })
+          .catch(function (error) {
+            // Handle errors from any iteration
+            console.error("Error:", error);
+          });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire('Hủy bỏ', '', 'error');
       }
     });
   };
+
+  // Define a function to add a product detail and return a promise
+  function addProductDetail(size) {
+    return new Promise(function (resolve, reject) {
+      var checkExist = $scope.listProductDetail.find(
+        (prDt) =>
+          prDt.product.id === Number($scope.productData[0].id) &&
+          prDt.color.id === $scope.formProductDetail.color.id &&
+          prDt.size.id === Number(size.id)
+      );
+      console.log($scope.formProductDetail, 'here');
+      // Send POST request to insert product detail
+      $http.post(apiProductDetails + "/insert", JSON.stringify($scope.formProductDetail))
+        .then(function (response) {
+          // Success handling
+          resolve(response.data);
+        })
+        .catch(function (error) {
+          // Error handling
+          reject(error);
+        });
+    });
+  }
+
+
 
 
   // show form user and load detail
@@ -465,6 +554,7 @@ $scope.turnOff = function (item) {
             $scope.formPdDetailUpdate = {};
             $scope.hienThi($scope.pageCurrent, $scope.sizePage);
             $scope.closeModal('formUpdateModal');
+            $scope.setPage(1);
           })
           .catch(function (error) {
             console.error("Error:", error);
@@ -533,6 +623,22 @@ $scope.turnOff = function (item) {
 
       });
     });
+
+    $('#exampleInputColor').on('change', function () {
+      // Manually update the AngularJS model
+      $scope.$apply(function () {
+        $scope.selectedData2 = $('#exampleInputColor').select2('data');
+        // Check if any data is selected
+        if ($scope.selectedData2 && $scope.selectedData2.length > 0) {
+          // Access the first selected data's id
+          // Assuming you want to remove the option with value 'first'
+          $scope.productColors = $scope.selectedData2;
+          console.log($scope.productColors, '111')
+        }
+
+      });
+    });
+
     $('#product').on('change', function () {
       // Manually update the AngularJS model
       $scope.$apply(function () {
@@ -554,21 +660,20 @@ $scope.turnOff = function (item) {
   $scope.loadColor();
   $scope.loadMaterial();
   // import exel
+  $scope.importing = false;
+  $scope.importInProgress = false;
+  $scope.errorShown = false;
 
-  $scope.importing = false; // Biến để theo dõi trạng thái của animation
-  $scope.importInProgress = false; // Flag để kiểm soát quá trình import
-  $scope.errorShown = false; // Flag để kiểm soát việc hiển thị lỗi
+  $scope.import = async function (files) {
+    $scope.loading=true;
 
-  $scope.import = function (files) {
-    // Check if an import is already in progress
     if ($scope.importInProgress) {
       return;
     }
 
-    $scope.importInProgress = true; // Set the flag to true
-
-    $scope.importing = true; // Bắt đầu animation
-    $scope.errorShown = false; // Reset the error flag
+    $scope.importInProgress = true;
+    $scope.importing = true;
+    $scope.errorShown = false;
 
     var reader = new FileReader();
     reader.onloadend = async () => {
@@ -576,76 +681,91 @@ $scope.turnOff = function (item) {
         var workbook = new ExcelJS.Workbook();
         await workbook.xlsx.load(reader.result);
         const worksheet = workbook.getWorksheet("Sheet2");
-        worksheet.eachRow((row, index) => {
-          $scope.checkSl = 0;
-          console.log(row.getCell(3).value)
+
+        for (let index = 2; index <= worksheet.rowCount; index++) {
+          let row = worksheet.getRow(index);
+
           if (index > 1) {
+            $scope.checkSl = 0;
+            console.log(row.getCell(3).value);
+
             let productDt = {
               product: {
-                id: $scope.products.filter(pr => pr.name.toLowerCase().trim() === (row.getCell(1).value).toLowerCase().trim())[0]?.id
+                id: $scope.products.find(pr => pr.name.toLowerCase().trim() === row.getCell(1).value.toLowerCase().trim())?.id,
               },
-              material: { id: $scope.materials.filter(sz => sz.name.toLowerCase().trim() === (row.getCell(2).value).toLowerCase().trim())[0]?.id },
-              size: { id: $scope.sizes.filter(sz => sz.name === String(row.getCell(3).value).trim())[0]?.id },
-              color: { id: $scope.colors.filter(sz => sz.name.toLowerCase().trim() === (row.getCell(4).value).toLowerCase().trim())[0]?.id },
+              material: {
+                id: $scope.materials.find(sz => sz.name.toLowerCase().trim() === row.getCell(2).value.toLowerCase().trim())?.id,
+              },
+              size: {
+                id: $scope.sizes.find(sz => sz.name === String(row.getCell(3).value).trim())?.id,
+              },
+              color: {
+                id: $scope.colors.find(sz => sz.name.toLowerCase().trim() === row.getCell(4).value.toLowerCase().trim())?.id,
+              },
               quantity: row.getCell(6).value,
               price: row.getCell(7).value,
-              status: { id: 1 },
+              status: {
+                id: 1,
+              },
             };
+
             if (!productDt.product || !productDt.material || !productDt.size || !productDt.color) {
-              productDt.statusstatus.id = 0;
+              productDt.status.id = 0;
             }
-            console.log(productDt, '2')
-            if (!$scope.listProductDetail.some(pr => pr.product.id === productDt.product.id && pr.size.id === productDt.size.id && pr.color.id === productDt.color.id)) {
-              console.log($scope.checkSl)
-              $http.post(apiProductDetails + "/insert", JSON.stringify(productDt))
-                .then(function (response) {
-                  if (response) {
-                    $scope.checkSl += 1;
-                    $scope.hienThi($scope.pageCurrent, $scope.sizePage);
-                  }
-                  console.log($scope.checkSl);
-                  if (!$scope.errorShown) {
-                    Swal.fire({
-                      icon: "success",
-                      title: "Ok",
-                      text: "Đã import sản phẩm thành công",
-                    });
-                  }
-                })
-                .catch(function (error) {
-                  if (!$scope.errorShown) {
-                    Swal.fire({
-                      icon: "error",
-                      title: "Oops...",
-                      text: "Đã xảy ra lỗi!",
-                    });
-                    console.log(error);
-                    $scope.errorShown = true; // Set the error flag
-                  }
-                });
+
+            console.log(productDt, '2');
+
+            try {
+              let response = await $http.post(apiProductDetails + "/insert", JSON.stringify(productDt));
+              if (response) {
+                $scope.checkSl += 1;
+                $scope.hienThi($scope.pageCurrent, $scope.sizePage);
+              }
+
+              console.log($scope.checkSl);
+
+
+            } catch (error) {
+              handleError(error);
             }
+
           }
-        });
-      } catch (error) {
+        }
         if (!$scope.errorShown) {
           Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Đã xảy ra lỗi!",
+            icon: "success",
+            title: "Ok",
+            text: "Đã import sản phẩm thành công",
           });
-          console.error('Error reading file:', error);
-          $scope.errorShown = true; // Set the error flag
+          $scope.loading=false;
+
         }
+      } catch (error) {
+        handleError(error);
       } finally {
-        $scope.importing = false; // Kết thúc animation
-        $scope.importInProgress = false; // Reset the flag
-        $scope.$apply(); // Cập nhật scope
-        // Xóa file sau khi đã xử lý xong
+        $scope.importing = false;
+        $scope.importInProgress = false;
+        $scope.$apply();
         document.getElementById('input-file').value = '';
       }
     };
+
     reader.readAsArrayBuffer(files[0]);
+
+    function handleError(error) {
+      if (!$scope.errorShown) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Đã xảy ra lỗi!",
+        });
+
+        console.log(error);
+        $scope.errorShown = true;
+      }
+    }
   };
+
 
 
   // sort column
@@ -663,32 +783,118 @@ $scope.turnOff = function (item) {
     }
     return 'sort-none';
   };
+  // Lấy tên cột từ bảng HTML
+  $scope.selectAll = true; // Đặt giá trị mặc định cho checkbox "Chọn Tất Cả"
+  $scope.columns = [];
 
-  // export pdf
-  $scope.exportToPDF = function () {
-    const tableId = 'DTProductTable';
-    const fileName = 'exported_data';
+  // Khai báo biến và khởi tạo giá trị mặc định
+  $scope.columnFilters = {};
 
-    // Tạo đối tượng jsPDF
-    const pdf = new $window.jsPDF('p', 'pt', 'letter');
-
-    // Thêm bảng vào PDF
-    pdf.autoTable({ html: `#${tableId}` });
-
-    // Tải file PDF
-    pdf.save(`${fileName}.pdf`);
+  $scope.selectAllChanged = function () {
+    console.log("Trạng thái của selectAllCheckbox:", $scope.selectAllCheckbox);
+    angular.forEach($scope.displayedFinalMergedProducts, function (item) {
+      item.isSelected = $scope.selectAllCheckbox;
+    });
   };
+
+  $scope.exportTo = function (checkSelect) {
+    var selectedItems = $scope.displayedFinalMergedProducts.filter(function (item) {
+      return item.isSelected;
+    });
+
+    function reloadAndExport(element) {
+      return new Promise((resolve, reject) => {
+        $scope.Reload(element.name).then(() => {
+          // Reload succeeded, resolve the promise
+          resolve();
+        }).catch((error) => {
+          // Reload failed, reject the promise
+          reject(error);
+        });
+      });
+    }
+
+    // ...
+
+    selectedItems.reduce((previousPromise, element) => {
+      return previousPromise.then(() => {
+        // Chain the promise for each item
+        return reloadAndExport(element).then(() => {
+          // After reload and export, open modal, hide modal, etc.
+          if (checkSelect == "pdf") {
+            dataExport();
+          } else if (checkSelect == "excel") {
+            $scope.exportToExcel();
+          } else if (checkSelect == "svg") {
+            $scope.exportToSVG();
+          }
+          console.log('a');
+        });
+      });
+    }, Promise.resolve());
+
+  };
+
+  function dataExport() {
+    const tableId = 'DTProductTable2';
+    const fileName = 'exported_data(' + $scope.modalContent + ')';
+
+    const data = [];
+    const table = document.getElementById(tableId);
+
+    for (let i = 0; i < table.rows.length; i++) {
+      const rowData = [];
+      for (let j = 0; j < table.rows[i].cells.length - 2; j++) {
+        rowData.push(table.rows[i].cells[j].innerText);
+      }
+      data.push(rowData);
+    }
+
+    const docDefinition = {
+      content: [
+        {
+          table: {
+            body: data,
+            rowHeight: 15,
+            styles: {
+              cellPadding: 5,
+              fontSize: 10,
+              fontStyle: 'normal',
+              fillColor: '#f3f3f3',
+            },
+          },
+        },
+      ],
+    };
+
+    pdfMake.createPdf(docDefinition).download(`${fileName}.pdf`);
+  }
 
   $scope.exportToExcel = function () {
     // Lấy bảng theo ID
-    var table = document.getElementById('DTProductTable'); // Thay id table bảng của bạn vào đây
+    var table = document.getElementById('DTProductTable2'); // Thay id table bảng của bạn vào đây
 
-    // Lấy dữ liệu từ bảng
+    // Hàm chuyển đổi giá trị từ class sang boolean
+    function convertStatusClassToBoolean(statusClass) {
+      return statusClass === 'fa-2xl fa fa-toggle-on ng-scope';
+    }
+
+    // Lấy dữ liệu từ bảng và loại bỏ 2 cột cuối cùng
     var data = [];
     for (var i = 0; i < table.rows.length; i++) {
       var rowData = [];
       for (var j = 0; j < table.rows[i].cells.length; j++) {
-        rowData.push(table.rows[i].cells[j].innerText);
+        // Kiểm tra nếu là cột "Trạng Thái" và không phải là hàng cuối cùng
+        if (j === table.rows[i].cells.length - 2 && i !== 0) {
+          var statusCell = table.rows[i].cells[j].querySelector('i');
+          var statusValue = statusCell ? convertStatusClassToBoolean(statusCell.getAttribute('class')) : false;
+          rowData.push(statusValue);
+        } else {
+          // Bỏ 2 cột cuối cùng (j >= table.rows[i].cells.length - 2)
+          if (j < table.rows[i].cells.length - 1) {
+            rowData.push(table.rows[i].cells[j].innerText);
+          }
+        }
       }
       data.push(rowData);
     }
@@ -699,12 +905,13 @@ $scope.turnOff = function (item) {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
     // Xuất file Excel
-    XLSX.writeFile(wb, 'exported_data.xlsx');
+    XLSX.writeFile(wb, 'exported_data(' + table.rows[table.rows.length - 2].cells[1].innerText + ').xlsx');
   };
+
 
   $scope.exportToSVG = function () {
     // Lấy bảng theo ID
-    var table = document.getElementById('DTProductTable'); // Thay id table bảng của bạn vào đây
+    var table = document.getElementById('DTProductTable2'); // Thay id table bảng của bạn vào đây
 
     // Tạo một đối tượng SVG
     var svg = SVG().size(2000, 1500); // Kích thước SVG
@@ -712,19 +919,28 @@ $scope.turnOff = function (item) {
     // Lấy số cột của bảng
     var numColumns = table.rows.length > 0 ? table.rows[0].cells.length : 0;
 
-    // Xác định chiều rộng của cột rộng nhất
+    // Xác định chiều rộng của cột thứ hai và chiều rộng của cột cuối cùng
+    var secondColumnWidth = table.rows.length > 0 ? table.rows[0].cells[1].offsetWidth : 0;
+    var lastColumnWidth = table.rows.length > 0 ? table.rows[0].cells[numColumns - 1].offsetWidth : 0;
+
+    // Xác định chiều rộng của cột rộng nhất (loại bỏ cột cuối cùng)
     var maxWidth = 0;
     for (var i = 0; i < table.rows.length; i++) {
-      var cellWidth = table.rows[i].cells[0].offsetWidth;
+      var cellWidth = i !== numColumns - 1 ? table.rows[i].cells[0].offsetWidth : 0;
       maxWidth = Math.max(maxWidth, cellWidth);
     }
 
-    // Thêm các đối tượng SVG từ các cột của bảng
+    // Thêm các đối tượng SVG từ các cột của bảng (loại bỏ cột cuối cùng)
     for (var i = 0; i < table.rows.length; i++) {
-      for (var j = 0; j < table.rows[i].cells.length; j++) {
+      for (var j = 0; j < numColumns - 2; j++) {
         // Tính toán vị trí dựa trên chỉ số của cột
         var xPosition = 10 + j * (maxWidth + 180); // 10 là khoảng cách giữa các cột
         var yPosition = 30 * i + 40;
+
+        // Chỉnh độ rộng của cột thứ hai
+        if (j > 1) {
+          xPosition = 100 + j * (secondColumnWidth + 280);
+        }
 
         // Thêm văn bản từ cột của bảng vào SVG
         svg.text(table.rows[i].cells[j].innerText).move(xPosition, yPosition);
@@ -739,11 +955,12 @@ $scope.turnOff = function (item) {
     var url = window.URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url;
-    a.download = 'exported_svg.svg';
+    a.download = 'exported_svg(' + table.rows[1].cells[1].innerText + ').svg';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
   };
+
 
 
   $scope.getColorClass = function (color) {
@@ -814,11 +1031,14 @@ $scope.turnOff = function (item) {
   };
 
   $scope.Reload = function (itemName) {
+
+    $scope.modalContent = itemName;
     let api = "http://localhost:8080/CodeWalkers/admin/ProductDetails/details?productName=" + itemName.trim();
     console.log(api)
-    $http.get(api).then(function (res) {
+    return $http.get(api).then(function (res) {
       console.log(res.data)
       $scope.data = res.data;
+      return $scope.data;
     });
   };
 

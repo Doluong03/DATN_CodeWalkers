@@ -5,24 +5,20 @@
       <div class="col-12 col-md-10 hh-grayBox pt45 pb20 ">
         <div class="row justify-content-between">
           <div class="order-tracking completed">
-            <span class="is-complete"> <i
-                class=" text-end bi bi-receipt-cutoff fs-2"></i>
+            <span class="is-complete"> <i class=" text-end bi bi-receipt-cutoff fs-2"></i>
             </span>
             <p>Chờ xác nhận <br><span>{{selectedOrder.status}}</span></p>
           </div>
-          <div class="order-tracking "
-            ng-class="{ 'completed': selectedOrder.status >= 2 }">
+          <div class="order-tracking " ng-class="{ 'completed': selectedOrder.status >= 2 }">
             <span class="is-complete"><i class="bi bi-box-seam-fill fs-2"></i></span>
             <p>Chờ giao hàng <br><span>Tue, June 25</span></p>
           </div>
-          <div class="order-tracking"
-            ng-class="{ 'completed': selectedOrder.status >= 3 }">
+          <div class="order-tracking" ng-class="{ 'completed': selectedOrder.status >= 3 }">
             <span class="is-complete"><i class="bi bi-truck fs-2"></i></span>
 
             <p>Đang giao hàng <br><span>Fri, June 28</span></p>
           </div>
-          <div class="order-tracking"
-            ng-class="{ 'completed': selectedOrder.status >= 4 }">
+          <div class="order-tracking" ng-class="{ 'completed': selectedOrder.status >= 4 }">
             <span class="is-complete"><i class="bi bi-cash fs-2"></i></span>
             <p>Hoàn thành <br><span>Fri, June 28</span></p>
           </div>
@@ -59,12 +55,9 @@
   <div class="part mt-2 mb-2">
     <h5 class="text-end pt-3 me-3">Mã đơn hàng: {{selectedOrder.code}}</h5>
     <hr>
-    <div class="row pr-info ms-1 me-1"
-      ng-repeat="pr in selectedOrder.listBillDetail">
-      <img id="imgPr"
-        src="assets/img/product/sp1/{{pr.productDetail.product.listImage[0].link}}"
-        alt="{{pr.productDetail.product.listImage[0].name}}"
-        class="col-lg">
+    <div class="row pr-info ms-1 me-1" ng-repeat="pr in selectedOrder.listBillDetail">
+      <img id="imgPr" src="assets/img/product/sp1/{{pr.productDetail.product.listImage[0].link}}"
+        alt="{{pr.productDetail.product.listImage[0].name}}" class="col-lg">
       <div class="col-lg-8 info">
         <p class="fw-bold">{{pr.productDetail.product.name}}</p>
         <p class="mb-0">Phân loại hàng:
@@ -72,22 +65,24 @@
         <p class="mb-0">Màu sắc: {{pr.productDetail.color.name}}</p>
         <p class="mb-0">Size : {{pr.productDetail.size.name}} x {{pr.quantity}}</p>
       </div>
-      <div class="col-lg text-end me-2 text-danger">{{pr.productDetail.price |
-        vndCurrency }}</div>
+      <div class="col-lg text-end me-2 text-danger">
+        <p class="text-danger"> {{pr.price | vndCurrency }}</p> <br>
+        <p class="text-decoration-line-through"> {{pr.productDetail.price | vndCurrency }}</p>
+      </div>
       <hr>
     </div>
     <div class="pay row mb-3">
       <div class="col-lg text-end">
         <p>Tổng tiền hàng: </p>
         <p>Phí vận chuyển: </p>
-        <!-- <p>Thành tiền: </p> -->
+        <p>Tiền giảm: </p>
         <p class="mt-2 pt-1">Thành tiền: </p>
         <p class="mt-1 pt-1">Phương thức thanh toán: </p>
       </div>
       <div class="col-lg-3 text-end me-4 line-lg">
         <p>{{ totalAmount | vndCurrency }}</p>
         <p>{{selectedOrder.fee==0 ? '0đ': selectedOrder.fee | vndCurrency}}</p>
-        <!-- <p class="fs-5">{{selectedOrder.totalPay|| 0 |vndCurrency}}</p> -->
+        <p class="">{{selectedOrder.totalPay - (totalAmount + selectedOrder.fee) || 0 |vndCurrency}}</p>
         <p class="fs-4 mt-2 text-danger">{{selectedOrder.totalPay|| 0 |vndCurrency}}</p>
         <p class="mt-2">{{selectedOrder.paymentOptions == 0 ?'Thanh toán khi nhận hàng':'Thanh toán online'}}
         </p>

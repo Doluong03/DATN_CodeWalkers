@@ -22,6 +22,8 @@ public class ProductDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_chi_tiet_san_pham")
     private int id;
+    @Column(name = "ma_chi_tiet_san_pham")
+    private String code;
     @Column(name = "so_luong_ton")
     private int quantity;
     @Column(name = "don_gia")

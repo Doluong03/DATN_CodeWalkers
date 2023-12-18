@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 @Repository
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Integer> {
@@ -39,5 +40,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
     List<ProductDetail> findBySizeIdIn(List<Long> sizeIds);
 
     List<ProductDetail> findByMaterialIdIn(List<Long> materialIds);
+
+    Optional<ProductDetail> findBySizeIdAndColorIdAndProductId(int size, int color, int pr);
 
 }

@@ -37,4 +37,5 @@ public class BillRespone {
     private List<Staff> staff;
     private List<BillDetails> listBillDetail;
     private long totalPages;
+    private Integer idPhieu;
 }

@@ -70,7 +70,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
 
     $http.get(url).then(res => {
       $scope.totalQuantity = 0;
-      $scope.itemDetail = res.data.filter(pr =>pr.status.id == 1);
+      $scope.itemDetail = res.data.filter(pr => pr.status.id == 1 && pr.product.status);
       $scope.img = res.data[0].product.listImage;
       $scope.productId = $scope.itemDetail[0].product.id;
       $scope.categoryName = $scope.itemDetail[0].product.category.name;
@@ -155,7 +155,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     };
     // Sử dụng $http.get trả về một promise
     return $http.get(url, config).then(function (res) {
-      $scope.list = res.data;
+      $scope.list = res.data.filter(prDt => prDt.status.id ==1);
       console.log(url, config);
       $scope.totalQuantity = 0;
       $scope.selectedValue = '';
@@ -425,6 +425,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
         console.log("Error loading the list of products in the cart", error);
       });
   };
+  $scope.checkSuccess = false;
 
   // Hàm thêm sản phẩm vào giỏ hàng
   $scope.addCart = function (sl) {
@@ -434,7 +435,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
     var selectedColor = $scope.selectedColor || '';
 
     if (!selectedColor) {
-      toastr.error("Vui lòng chọn màu sắc!", "Warning");
+      toastr.error("Vui lòng chọn màu sắc!", "Thông báo");
       return;
     }
 
@@ -445,7 +446,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
 
     if (!productId || !selectedValue) {
       console.log(productId, selectedValue);
-      toastr.error("Vui lòng chọn kích cỡ!", "Warning");
+      toastr.error("Vui lòng chọn kích cỡ!", "Thông báo");
       return;
     }
 
@@ -472,6 +473,7 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
   $scope.sendDetailAddRequest = function (sl, idCart) {
     var url = `${host}/api/detailAdd/${idCart}/${$scope.productId}/${$scope.selectedValue}/${$scope.selectedColor || ''}`;
     var data = { quantity: sl };
+    $scope.checkSuccess = false;
     console.log("Sending request to:", url);
     $http.post(url, data)
       .then(function (response) {
@@ -479,16 +481,20 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
           toastr.error('Số lượng sản phẩm trong kho không đủ để thêm nhiều hơn vào giỏ hàng.', 'Thông báo');
           return;
         }
+        $scope.checkSuccess = true;
         $scope.idCartDt = response.data.id;
         console.log(response, 'Successfully updated');
         $scope.loadAllPr();
         $scope.loadAllPrCart(idCart);
         toastr.success('Thêm sản phẩm thành công!', 'Thông báo');
+        $scope.loadDetail();
+        $scope.check(0);
+        $scope.selectedColor=null;
       })
       .catch(function (error) {
         console.error('Update failed:', error);
         toastr.error('Có lỗi xảy ra trong quá trình thêm sản phẩm', 'Error');
-        return
+        return;
       });
   };
 
@@ -534,7 +540,10 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
 
     $http.post(url + idBill, $scope.itemSelected)
       .then(function (res) {
-        console.log('Successfully added', res.data);
+          console.log('Successfully addedaaa', $scope.checkSuccess);
+          if($scope.checkSuccess){
+            window.location.href = "http://127.0.0.1:5501/index.html#/payment";
+          }
       })
       .catch(function (error) {
         console.error('Failed to add', error);
@@ -543,10 +552,10 @@ app.controller("DetailController", function ($scope, $http, $routeParams, Cookie
 
   $scope.payNow = function (od) {
     $scope.addCart(od);
-    setTimeout(function () {
+    console.log($scope.checkSuccess, '1');
+    setTimeout(function(){
       $scope.addBill();
-      window.location.href = "http://127.0.0.1:5501/index.html#/payment";
-    }, 200)
+    },200)
   };
 
 

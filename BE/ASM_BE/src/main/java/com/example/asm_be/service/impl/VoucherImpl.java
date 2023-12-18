@@ -34,6 +34,10 @@ public class VoucherImpl implements VoucherService {
     public Optional<Vouchers> getVouchersByMa(String maVc) {
         return voucherRepository.getVouchersByCode(maVc);
     }
+    @Override
+    public List<Vouchers> getVouchersByMaContain(String maVc) {
+        return voucherRepository.getVouchersByCodeContaining(maVc);
+    }
 
     @Override
     public List<Vouchers> getAllVoucher() {
@@ -125,7 +129,12 @@ public class VoucherImpl implements VoucherService {
     @Override
     public boolean updateUserVoucher(int usageCount, int id,int idUser) {
         try{
-            voucherUserRepository.updateUserVoucher(usageCount,id,idUser);
+            Optional<VoucherUsers> vouchers = voucherUserRepository.findById(id);
+            if (vouchers.isPresent()) {
+                VoucherUsers vouchers1 = vouchers.get();
+                vouchers1.setUsageCount(usageCount);
+                voucherUserRepository.save(vouchers1);
+            }
             return true;
         }catch (Exception e){
             e.printStackTrace();
@@ -185,6 +194,11 @@ public class VoucherImpl implements VoucherService {
     @Override
     public List<Integer> getListCusType(Integer idVc) {
         return voucherUserRepository.getListCusType(idVc);
+    }
+
+    @Override
+    public Optional<Vouchers> getVoucherById(int idPhieu) {
+        return voucherRepository.findById(idPhieu);
     }
 
 

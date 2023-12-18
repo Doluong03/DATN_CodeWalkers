@@ -1,7 +1,9 @@
 package com.example.asm_be.service.impl;
 
+import com.example.asm_be.entities.Rank;
 import com.example.asm_be.entities.Staff;
 import com.example.asm_be.entities.Users;
+import com.example.asm_be.repositories.RankRepository;
 import com.example.asm_be.repositories.UserRepository;
 import com.example.asm_be.request.UserRequest;
 import com.example.asm_be.service.UserService;
@@ -21,6 +23,8 @@ import java.util.List;
 public class UserImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RankRepository rankRepository;
 
     @Override
     public Page<Users> getAll(Boolean checkAcc ,Integer pageNo, Integer sizePage) {
@@ -44,6 +48,8 @@ public class UserImpl implements UserService {
 
     public Users save(Users users) {
         try {
+            Rank rank = rankRepository.findById(1).get();
+            users.setRank(rank);
             this.userRepository.save(users);
             return users;
         } catch (Exception var3) {

@@ -121,10 +121,9 @@ public class VoucherController {
     private ResponseEntity<List<Vouchers>> getVouchersByMa2(@RequestParam("maVc") String maVc1) {
         String cleanedMaVc = maVc1.trim();
 
-        Optional<Vouchers> vouchersOptional = voucherService.getVouchersByMa(cleanedMaVc);
-        if (vouchersOptional.isPresent()) {
-            List<Vouchers> vouchersList = Collections.singletonList(vouchersOptional.get());
-            return new ResponseEntity<>(vouchersList, HttpStatus.OK);
+        List<Vouchers> vouchersOptional = voucherService.getVouchersByMaContain(cleanedMaVc);
+        if (!vouchersOptional.isEmpty()) {
+            return new ResponseEntity<>(vouchersOptional, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -260,5 +259,9 @@ public class VoucherController {
           return list;
     }
 
+    @GetMapping("/vouchers/finbyIdVoucher/{id}")
+    private List<Vouchers> geAllVoucherssa(@PathVariable("id") Integer id) {
+        return Collections.singletonList(voucherService.getVoucherById(id).get());
+    }
 
 }

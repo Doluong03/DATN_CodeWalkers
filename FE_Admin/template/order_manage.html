@@ -52,16 +52,16 @@
             aria-labelledby="nav-home-tab" tabindex="0">
             <div class="card-body">
               <div class="search-container">
-                <input type="text" id="btn-search" ng-model="searchText" placeholder="Search a Order">
+                <input type="text" id="btn-search" ng-model="searchText" placeholder="Tìm kiếm......">
                 <i class="fa-light fa-magnifying-glass"></i>
               </div>
               <div class="btn-group">
                 <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="toggleForm()">
                   <i class="fa-solid fa-plus fa-lg" style="color: #ffffff;"></i></button>
 
-                <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
+                <!-- <button type="button" id="btn-icon" class="btn btn-secondary" ng-click="reLoad()">
                   <i class="fa-solid fa-arrows-rotate "></i>
-                </button>
+                </button> -->
                 <div class="btn-group">
                   <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuIconButton3"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -146,8 +146,8 @@
                           <a href="#" ng-click="removeStaff($event, item)" style="text-decoration: none; color: #FC424A;">
                             <i class="fas fa-fw fa-trash"></i>
                           </a> -->
-                        <a href="#" ng-click="toggleFormUpdate($event, item)" data-toggle="modal"
-                          data-target="#userUpdateModal" style="text-decoration: none; color: rgb(62, 44, 165);">
+                        <a ng-click="toggleFormUpdate($event, item)" data-toggle="modal" data-target="#userUpdateModal"
+                          style="text-decoration: none; color: rgb(62, 44, 165);">
                           <i class="fa fa-eye" aria-hidden="true"></i>
                         </a>
                       </td>
@@ -882,7 +882,7 @@
                     <tr>
                       <th>
                         <input ng-model="selectAllCheckbox" ng-change="selectAllChanged()" class="select-checkbox"
-                          type="checkbox"> #
+                          type="checkbox">
                       </th>
                       <th ng-show="columns[1].selected" ng-click="sortData('name')">Mã hóa đơn<span
                           class="{{getSortClass('name')}}"><i class="fa-solid fa-arrow-up-arrow-down"></i></span></th>
@@ -1033,7 +1033,7 @@
     <div class="modal-dialog w-100 ms-0 " role="document">
       <div class="modal-content ">
         <div class="modal-header">
-          <h5 class="modal-title" id="userUpdateModalLabel">Cập nhật đơn hàng</h5>
+          <h5 class="modal-title" id="userUpdateModalLabel">Thông tin đơn hàng</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -1059,7 +1059,12 @@
                     class="img-fluid w-25 h-25 border rounded-4" alt="{{pr.product.listImage[0].link}}">
                   <span class="col-8 h-25 row text-start mb-2">
                     <span class="prName col "> {{pr.product.name}}</span>
-                    <span class="text-end col-3">{{pr.price | vndCurrency}}</span>
+                    <span class="text-end col-3 text-danger me-3" ng-show="pr.hasPromotion">{{pr.priceWithPromo |
+                      vndCurrency}}</span>
+                    <br>
+                    <span class="text-end col-2 text-decoration-line-through" ng-show="pr.hasPromotion">{{pr.price |
+                      vndCurrency}}</span>
+                    <span class="text-end col-2 " ng-show="!pr.hasPromotion">{{pr.price | vndCurrency}}</span>
                     <span class=" fw-bold">[{{pr.size.name}} -
                       {{pr.color.name}}]</span>
                     <span class=" ">Còn lại: {{pr.quantity}}</span>
@@ -1078,7 +1083,7 @@
               <!-- <div class="row ">
                 <div class="form-group col-lg mt-1">
                   <input type="search" class="form-control mt-4" id="exampleInputMiddleName"
-                    placeholder="Search by phone or email" required ng-model="formOrderUpdate.search">
+                    placeholder="" required ng-model="formOrderUpdate.search">
                 </div>
                 <div class="form-group col-lg justify-items-end">
                   <label for="exampleInputMiddleName">Tên Khách Hàng</label>
@@ -1091,7 +1096,7 @@
                 <div class="custom-dropdown-user form-group col-lg justify-items-end">
                   <label for="customerSearch">Tìm Khách Hàng</label>
                   <input type="search" class="form-control" id="exampleInputMiddleName"
-                    placeholder="Search by phone or email" ng-model="formOrderUpdate.userName"
+                    placeholder="TÌm kiếm theo tên hoặc sdt" ng-model="formOrderUpdate.userName"
                     ng-change="searchCustomers(tab)"
                     ng-class="{'is-invalid': checkAddress && !formOrderUpdate.userName}">
                   <div id="customerDropdown" class="dropdown-content-user">
@@ -1120,7 +1125,7 @@
                 <div class="form-group col-lg ">
                   <label for="exampleInputDate">Nhân viên</label>
                   <input type="search" class="form-control" id="exampleInputMiddleName"
-                    placeholder="Search by phone or email" required ng-model="formNotEdit.staff[0].name" readonly>
+                    placeholder="" required ng-model="formNotEdit.staff[0].name" readonly>
                 </div>
                 <div class="form-group col-lg justify-items-end">
                   <label for="exampleInputMiddleName">Số điện thoại</label>
@@ -1169,37 +1174,48 @@
                 <div class="form-group col-lg ">
                   <label for="exampleInputDate">Phí vận chuyển</label>
                   <input type="search" class="form-control" id="exampleInputMiddleName"
-                    placeholder="Search by phone or email"
+                    placeholder=""
                     ng-class="{'is-invalid': checkAddress && !formOrderUpdate.fee}" ng-model="formOrderUpdate.fee"
                     ng-value="formOrderUpdate.fee == 0 ? 'Mua hàng tại quầy': formOrderUpdate.fee | vndCurrency">
                 </div>
-                <div class="form-group col-lg ">
-                  <label for="exampleInputDate">Khuyến mãi</label>
-                  <input type="search" class="form-control" id="exampleInputMiddleName"
-                    placeholder="Search by phone or email"
-                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.fee}" ng-model="promotional "
-                    ng-value="promotional ">
+                <div class="form-group col-lg " ng-show="phieu[0].code">
+                  <label for="exampleInputDate">Phiếu khuyến mại đã áp dụng</label>
+                  <input type="text" class="form-control" id="exampleInputMiddleName"
+                    placeholder=""
+                    ng-class="{'is-invalid': checkAddress && !formOrderUpdate.fee}" ng-model="phieu[0].code"
+                    readonly
+                    >
+                </div>
+                <div class="form-group col-lg "ng-show="phieu[0].code">
+                  <label for="exampleInputDate">Tiền giảm</label>
+                  <input type="text" class="form-control" id="exampleInputMiddleName"
+                    placeholder=""
+                    ng-class="{'text-danger fst-italic': valueRes==0}" ng-model="valueRes" ng-value="valueRes==0?'Không đủ điều kiện': -valueRes  | vndCurrency"
+                    readonly
+                    >
                 </div>
               </div>
               <div class="row ">
                 <div class="form-group col-lg justify-items-end ">
                   <label for="exampleInputMiddleName">Tổng tiền sản phẩm</label>
-                  <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên"
+                  <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="....."
                     ng-model="formOrderUpdate.totalPay" ng-value="formOrderUpdate.totalPay | vndCurrency"
                     ng-class="{'is-invalid': checkAddress && !formOrderUpdate.totalPay}">
                 </div>
                 <div class="form-group col-lg justify-items-end" ng-show="formOrderUpdate.status == 6">
                   <label for="exampleInputMiddleName">Phương thức thanh toán</label>
-                  <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="Họ và Tên"
-                    ng-model="formOrderUpdate.optionPay" ng-value="formOrderUpdate.optionPay |orderStatus">
+                  <input type="text" class="form-control" id="exampleInputMiddleName" placeholder="....."
+                    ng-model="formOrderUpdate.optionPay" ng-value="formOrderUpdate.optionPay |orderStatus1">
                 </div>
                 <div class="form-group col-lg justify-items-end" ng-show="formOrderUpdate.status !== 6">
                   <label for="exampleInputMiddleName">Phương thức thanh toán</label>
-                  <select class="form-select mt-1" id="exampleInputMiddleName" ng-model="formOrderUpdate.optionPay"
+                  <input type="text" class="form-control" ng-model="formOrderUpdate.optionPay"
+                    ng-value="formOrderUpdate.optionPay | orderStatus2">
+                  <!-- <select class="form-select mt-1" id="exampleInputMiddleName" ng-model="formOrderUpdate.optionPay"
                     ng-class="{'is-invalid': checkAddress && !formOrderUpdate.optionPay}">
-                    <option value= "0" ng-selected="">Thanh toán bằng tiền mặt</option>
+                    <option value= "0">Thanh toán bằng tiền mặt</option>
                     <option value= "1">Thanh toán chuyển khoản</option>
-                  </select>
+                  </select> -->
                 </div>
               </div>
 
@@ -1212,7 +1228,7 @@
                 <thead class="sticky-top fs-4 thead-dark" style="background-color: #878b8f;">
                   <tr class="fs-1">
                     <th>#</th>
-                    <th style="width: 62%;">Sản phẩm</th>
+                    <th style="width: 36%;">Sản phẩm</th>
                     <th style="width: 30%;">Số lượng</th>
                     <th>Đơn giá</th>
                     <th>Thành tiền</th>
@@ -1232,7 +1248,7 @@
                           </button>
                         </div>
                         <!-- Sử dụng ng-model để liên kết quantity với productInfoList.quantity -->
-                        <input type="number" class="quantity-value border-1 " aria-label="Quantity"
+                        <input type="number" class="quantity-value border-1 w-25" aria-label="Quantity"
                           ng-model="pr.quantity" ng-keypress="onInputKeyPress($event,pr)" ng-blur="onInputBlur(pr)">
 
                         <div class="input-group-append">
@@ -1241,8 +1257,18 @@
                           </button>
                         </div>
                     </td>
-                    <td>{{pr.productDetail.price | vndCurrency }}</td>
-                    <td>{{pr.total| vndCurrency}}</td>
+                    <td class="align-middle text-center" ng-show="!pr.hasPromotion">{{pr.productDetail.price |
+                      vndCurrency }}</td>
+                    <td class="pt-3 ps-4 align-middle text-center" ng-show="pr.hasPromotion"> <span
+                        class=" text-danger">{{pr.price| vndCurrency}}</span> <br>
+                      <span class=" text-decoration-line-through">{{pr.productDetail.price| vndCurrency}}</span>
+                    </td>
+                    <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="!pr.hasPromotion">
+                      {{pr.productDetail.price *pr.quantity | vndCurrency}}
+                      <!-- // giá khi có khuyến mại -->
+                  <td id="totalPrice" class="ps-4 align-middle text-center " ng-show="pr.hasPromotion">
+                      {{pr.price *pr.quantity | vndCurrency}}
+                  </td>
                   </tr>
 
                 </tbody>
