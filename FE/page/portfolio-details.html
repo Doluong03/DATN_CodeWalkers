@@ -44,18 +44,18 @@
               <h4>Hồ sơ của tôi</h4>
               <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
             </div>
-            <!-- <div>
+            <div>
               Hạng : {{info.rank}} <img style="width: 44px;height: 44px;" ng-show="info.image!==1" src="../assets/images/rank_{{info.image}}.png"
                 alt="rank ct"> <br>
               Điểm hiện có : {{info.points}}
-            </div> -->
+            </div>
 
             <!-- <div class="col text-center ">
             <img src="/assets/img/user/{{info.image}} " class="rounded-4 mt-3" style="width: 120px; height: 100px;"
               alt="{{info.image}}">
             <input type="file" id="imageInput" accept="image/*" style="display: none" file-input ng-model="info.image">
-            <button class="btn text-start border mt-1 ms-2" ng-click="selectImage($event)">Chọn ảnh</button>
-          </div> -->
+            <button class="btn text-start border mt-1 ms-2" ng-click="selectImage($event)">Chọn ảnh</button> -->
+          <!-- </div> -->
             <hr>
           </div>
           <div>
@@ -154,9 +154,9 @@
       <div id="voucher" class="tab-pane fade">
         <div class="bg-light border " style="width:1200px; padding: 0 20px 20px 20px;">
 
-          <div ng-repeat="item in listVouchers" id="vouchers">
+          <div ng-repeat="item in listAllVouchers" id="vouchers">
             <div class="voucher-card w-100">
-              <b class="voucher-quantity">x{{item.usageCount}}</b>
+              <b class="voucher-quantity">x{{item.quantity}}</b>
               <img src="/assets/img/Voucher/{{item.image}}" alt="Voucher Image" />
               <div class="details pb-1 row w-50">
                 <div class="col">
@@ -167,8 +167,19 @@
                   <!-- <p ng-show="item.discountType=='VND'">Giảm tối đa: {{item.maxReduction
                   |vndCurrency}}</p> -->
                   <p>Đơn tối thiểu: {{item.condition|vndCurrency }}</p>
-                  <p>HSD: {{item.endDate  }}</p>
                 </div>
+                <div class="col mt-4">
+                  <p>HSD: {{item.endDate |dateFormat }}</p>
+                  <p>Đổi điểm : {{item.exchangePoint}} </p>
+                </div>
+              </div>
+              <div class="form-floating mt-2  w-25">
+                <input type="number" class="form-control" id="inputCount" placeholder="name@example.com"
+                  ng-model="voucherUser.usageCount">
+                <label for="floatingInput" >Số lượng muốn đổi
+                </label>
+                <button ng-click="doidiem(item.id,item.exchangePoint,item.quantity)"
+                  class="btn btn-outline-secondary w-50 ms-1">Đổi điểm</button>
               </div>
             </div>
           </div>

@@ -5,100 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89fb8e46-4ef5-470f-91b8-dd71389cb16c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/SerachPromotionRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/AdressController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/AdressController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/BillController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/BillController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/VoucherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/VoucherController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/BillRespone.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/dto/BillRespone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Bill.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/Bill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/BillDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/BillDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/entities/ProductDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ProductDetailRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/ProductDetailRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/VoucherRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/VoucherRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/BillDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/BillDetailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/BillService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/BillService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/VoucherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/VoucherService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/AccountImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/AccountImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillDetailImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillDetailImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/BillImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/CartDetailsImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/CartDetailsImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductDetailImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductDetailImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/ProductImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/UserImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/UserImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/VoucherImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/VoucherImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/AdressController.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/AdressController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/BillController.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/BillController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/VoucherController.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/controller/VoucherController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Bill.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/Bill.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/BillDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/BillDetails.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/ProductDetail.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/entities/ProductDetail.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/VoucherRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/VoucherRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/BillDetailService.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/BillDetailService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/VoucherService.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/VoucherService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/AccountImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/AccountImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillDetailImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillDetailImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/BillImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/CartDetailsImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/CartDetailsImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ProductDetailImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ProductDetailImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ProductImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/ProductImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/UserImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/UserImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/VoucherImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/service/impl/VoucherImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/assets/js/cart.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/cart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/assets/js/detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/detail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/assets/js/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/assets/js/payment.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/payment.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE/assets/js/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/assets/js/profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE/page/payment.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/page/payment.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE/page/portfolio-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/page/portfolio-details.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/SellAdmin.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/SellAdmin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/account.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/account.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/add-promotion.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/add-promotion.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/add-voucher.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/add-voucher.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/brands.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/brands.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/category.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/category.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/chart.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/chart.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/color.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/color.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/Category-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/Category-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/account-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/account-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/brands-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/brands-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/chart-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/chart-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/color-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/color-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/material-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/material-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/order_manage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/order_manage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/product-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/product-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/product-detail-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/product-detail-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/promotion-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/promotion-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/sell-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/sell-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/size-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/size-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/staff-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/staff-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/voucher-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/voucher-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/material.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/material.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FE_Admin/template/order_manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/order_manage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/partials/_sidebar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/product-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/product-details.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/product.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/route.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/size.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/size.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/update-promotion.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/update-promotion.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/update-voucher.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/update-voucher.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/user.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/PromotionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/controller/PromotionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/Promotinonalrepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/Promotinonalrepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/VoucherRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/VoucherRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/VoucherUserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/repositories/VoucherUserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/PromotionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/PromotionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/PromotionIplm.java" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/src/main/java/com/example/asm_be/service/impl/PromotionIplm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/VoucherUserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/ASM_BE/target/classes/com/example/asm_be/repositories/VoucherUserRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/promotion-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/promotion-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/controller/voucher-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/controller/voucher-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/promotion.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/promotion.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/update-promotion.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/update-promotion.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FE_Admin/template/update-voucher.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FE_Admin/template/update-voucher.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,17 +127,6 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -530,6 +429,9 @@
       <workItem from="1702863411319" duration="6963000" />
       <workItem from="1702886578657" duration="13571000" />
       <workItem from="1702831346157" duration="12004000" />
+      <workItem from="1702950283240" duration="674000" />
+      <workItem from="1703142672373" duration="97000" />
+      <workItem from="1703750352760" duration="58000" />
     </task>
     <servers />
   </component>

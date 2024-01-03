@@ -453,7 +453,7 @@ app.controller(
             $http.get(url)
                 .then(function (res) {
                     // Lọc danh sách voucher có số lượng lớn hơn 0
-                    $scope.listAllVouchers = res.data.filter(vch => vch.quantity > 0);
+                    $scope.listAllVouchers = res.data.filter(vch => vch.quantity > 0 && new Date(vch.endDate) >= new Date());
 
                     console.log("Danh sách voucher khi tải: " + JSON.stringify(res.data));
                 })
@@ -468,13 +468,13 @@ app.controller(
                 $scope.listVouchers = res.data.filter(vch => {
                     const dateParts = vch.endDate.split('.');
                     const formattedEndDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
-    
+
                     return vch.usageCount > 0 && formattedEndDate > new Date();
                 });
                 $scope.filtedVch = $scope.listVouchers;
-    
+
                 console.log(" khi tải voucher: " + JSON.stringify(res.data));
-    
+
             }).catch(function (err) {
                 console.log("Lỗi khi tải voucher: " + err);
             });
